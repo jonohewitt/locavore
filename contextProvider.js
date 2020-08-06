@@ -1,14 +1,17 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import localStorageMemory from "localstorage-memory"
 
 export const myContext = React.createContext()
 
-const localTheme = window.localStorage.getItem("darkTheme") === "true"
-console.log(localTheme)
+const windowGlobal = typeof window !== "undefined" && window
+const storage = windowGlobal ? windowGlobal.localStorage : localStorageMemory
+
+const localTheme = storage.getItem("darkTheme") === "true"
 
 const systemTheme =
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches &&
-  window.localStorage.getItem("darkTheme") === null
+  windowGlobal.matchMedia &&
+  windowGlobal.matchMedia("(prefers-color-scheme: dark)").matches &&
+  storage.getItem("darkTheme") === null
 
 const Provider = props => {
   const [isDark, setTheme] = useState(localTheme || systemTheme)
@@ -20,7 +23,7 @@ const Provider = props => {
         isDark,
         changeTheme: () => {
           setTheme(!isDark)
-          window.localStorage.setItem("darkTheme", !isDark)
+          windowGlobal.localStorage.setItem("darkTheme", !isDark)
         },
         settingsOpen,
         toggleSettings: () => toggleSettings(!settingsOpen),

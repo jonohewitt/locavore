@@ -7,40 +7,50 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 
-import Header from "./header"
-import "./layout.css"
+import { myContext } from "../../contextProvider"
+import { lightTheme, darkTheme, GlobalStyles } from "../theme/global"
+import styled, { ThemeProvider } from "styled-components"
+
+import Page from "./page"
+import Nav from "./nav"
+import Settings from "./settings"
+import Footer from "./footer"
+
+const ContentWrapper = styled.div`
+  width: 70%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-top: 100px;
+`
+const OverflowWrapper = styled.div`
+  width: 100vw;
+  overflow-x: hidden;
+`
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+
 
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
+    <myContext.Consumer>
+      {context => (
+        <React.Fragment>
+          <ThemeProvider theme={context.isDark ? darkTheme : lightTheme}>
+            <GlobalStyles />
+            <Nav />
+            <OverflowWrapper>
+              <Settings context={context}/>
+              <Page context={context}>
+                <ContentWrapper>
+                  <main>{children}</main>
+                  <Footer/>
+                </ContentWrapper>
+              </Page>
+            </OverflowWrapper>
+          </ThemeProvider>
+        </React.Fragment>
+      )}
+    </myContext.Consumer>
   )
 }
 

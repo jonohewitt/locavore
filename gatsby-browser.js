@@ -8,4 +8,6 @@
 
 import Provider from './contextProvider';
 
+require("typeface-quicksand");
+
 export const wrapRootElement = Provider;

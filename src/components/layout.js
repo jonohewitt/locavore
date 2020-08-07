@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
   return (
     <myContext.Consumer>
       {context => (
-        <React.Fragment>
+        <>
           <ThemeProvider theme={context.isDark ? darkTheme : lightTheme}>
             <GlobalStyles />
             <Nav />
@@ -48,7 +48,7 @@ const Layout = ({ children }) => {
               </Page>
             </OverflowWrapper>
           </ThemeProvider>
-        </React.Fragment>
+        </>
       )}
     </myContext.Consumer>
   )

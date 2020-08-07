@@ -5,10 +5,10 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
+import React, {useState, useContext} from "react"
 import PropTypes from "prop-types"
 
-import { myContext } from "../../contextProvider"
+import { ThemeContext } from "../../contextProvider"
 import { lightTheme, darkTheme, GlobalStyles } from "../theme/global"
 import styled, { ThemeProvider } from "styled-components"
 
@@ -29,18 +29,16 @@ const OverflowWrapper = styled.div`
 `
 
 const Layout = ({ children }) => {
-
+  const [settingsIsOpen, toggleSettings] = useState(false);
+  const context = useContext(ThemeContext)
 
   return (
-    <myContext.Consumer>
-      {context => (
-        <>
           <ThemeProvider theme={context.isDark ? darkTheme : lightTheme}>
             <GlobalStyles />
-            <Nav />
+            <Nav settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}/>
             <OverflowWrapper>
-              <Settings context={context}/>
-              <Page context={context}>
+              <Settings settingsIsOpen={settingsIsOpen} context={context}/>
+              <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
                 <ContentWrapper>
                   <main>{children}</main>
                   <Footer/>
@@ -48,9 +46,6 @@ const Layout = ({ children }) => {
               </Page>
             </OverflowWrapper>
           </ThemeProvider>
-        </>
-      )}
-    </myContext.Consumer>
   )
 }
 

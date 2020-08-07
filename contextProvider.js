@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import localStorageMemory from "localstorage-memory"
 
-export const myContext = React.createContext()
+export const ThemeContext = React.createContext()
 
 const Provider = props => {
 
@@ -21,23 +21,20 @@ const Provider = props => {
   //if either are true, set the initial theme to dark
   const initialTheme = darkThemeIsSet || systemTheme
 
-  const [isDark, setTheme] = useState(initialTheme)
-  const [settingsOpen, toggleSettings] = useState(false)
+  const [isDark, setTheme] = useState(true)
 
   return (
-    <myContext.Provider
+    <ThemeContext.Provider
       value={{
         isDark,
         changeTheme: () => {
           setTheme(!isDark)
           windowGlobal.localStorage.setItem("darkTheme", !isDark)
         },
-        settingsOpen,
-        toggleSettings: () => toggleSettings(!settingsOpen),
       }}
     >
       {props.children}
-    </myContext.Provider>
+    </ThemeContext.Provider>
   )
 }
 

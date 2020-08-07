@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
 import * as d3 from "d3"
-import { myContext } from "../../contextProvider"
+import { ThemeContext } from "../../contextProvider"
 import { lightTheme, darkTheme} from "../theme/global.js"
 
 const ChartWrapper = styled.div`
@@ -70,7 +70,7 @@ const SeasonalVegChart = props => {
   })
 
   return (
-    <myContext.Consumer>
+    <ThemeContext.Consumer>
       {context => (
         <React.Fragment>
           <ChartWrapper>
@@ -121,7 +121,7 @@ const SeasonalVegChart = props => {
           </ChartWrapper>
         </React.Fragment>
       )}
-    </myContext.Consumer>
+    </ThemeContext.Consumer>
   )
 }
 

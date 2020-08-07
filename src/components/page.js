@@ -5,7 +5,7 @@ const StyledPage = styled.div`
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  transform: translateX(${props => (props.settingsOpen ? "240px" : "0")});
+  transform: translateX(${props => (props.settingsIsOpen ? "240px" : "0")});
   transition: transform 0.3s;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   overflow-x: hidden;
@@ -17,16 +17,16 @@ const ClickAwayCover = styled.div`
   top: 0;
   left: 0;
   height: 100%;
-  width: ${props => (props.settingsOpen ? "100%" : "0")};
+  width: ${props => (props.settingsIsOpen ? "100%" : "0")};
   overflow-x: hidden;
   cursor: pointer;
 `
 
-const Page = ({ context, children }) => (
-        <StyledPage settingsOpen={context.settingsOpen}>
+const Page = ({ settingsIsOpen, toggleSettings, children }) => (
+        <StyledPage settingsIsOpen={settingsIsOpen}>
           <ClickAwayCover
-            onClick={context.toggleSettings}
-            settingsOpen={context.settingsOpen}
+            onClick={() => toggleSettings(!settingsIsOpen)}
+            settingsIsOpen={settingsIsOpen}
           />
           {children}
         </StyledPage>

@@ -46,7 +46,7 @@ const StyledLi = styled.li`
   margin-left: 5px;
 `
 
-const Nav = () => {
+const Nav = ({settingsIsOpen, toggleSettings}) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -59,7 +59,7 @@ const Nav = () => {
 
   return (
     <NavWrapper>
-      <SettingsIcon />
+      <SettingsIcon settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}/>
       <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
       <StyledUL>
         <StyledLi>

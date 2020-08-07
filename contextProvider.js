@@ -21,7 +21,7 @@ const Provider = props => {
   //if either are true, set the initial theme to dark
   const initialTheme = darkThemeIsSet || systemTheme
 
-  const [isDark, setTheme] = initialTheme ? useState(initialTheme)
+  const [isDark, setTheme] = useState(initialTheme)
   const [settingsOpen, toggleSettings] = useState(false)
 
   return (

@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import { myContext } from "../../contextProvider"
 
 const easing = "cubic-bezier(0.69,-0.36,0.27,1.36)"
 

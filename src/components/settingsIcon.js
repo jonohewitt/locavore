@@ -1,8 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 
-const easing = "cubic-bezier(0.69,-0.36,0.27,1.36)"
-
 const IconWrapper = styled.div`
   position: relative;
   cursor: pointer;
@@ -15,17 +13,17 @@ const IconWrapper = styled.div`
 const Square = styled.div`
   position: relative;
   width: ${props => (props.settingsIsOpen ? 0 : "32px")};
-  height: ${props => (props.settingsIsOpen ? "25px" : "30px")};
+  height: ${props => (props.settingsIsOpen ? "30px" : "30px")};
   border: ${props => (props.settingsIsOpen ? "2px" : "3px")} solid var(--color-settingsIcon);
   border-radius: 5px;
   transform: ${props =>
     props.settingsIsOpen
-      ? "translate(14px, 3px) rotate(-45deg)"
+      ? "translate(14px, 0px) rotate(-45deg)"
       : "translate(0, 0) rotate(0)"};
   background-color: ${props =>
     props.settingsIsOpen ? "var(--color-settingsIcon)" : "rgba(0,0,0,0)"};
-  transition: width 0.3s, height 0.5s, border 0.5s, transform 0.3s,
-    background-color 0.1s ${props => (props.settingsIsOpen ? "0.4s" : "")};
+  transition: width 0.3s, height 0.3s, border 0.5s, transform 0.3s,
+    background-color 0.1s ${props => (props.settingsIsOpen ? "0.11s" : "")};
 `
 const TrackTemplate = styled.div`
   position: absolute;
@@ -43,13 +41,13 @@ const LeftTrack = styled(TrackTemplate)`
 const RightTrack = styled(TrackTemplate)`
   right: 9px;
   width: ${props => (props.settingsIsOpen ? "4px" : "2px")};
-  height: ${props => (props.settingsIsOpen ? "25px" : "17px")};
+  height: ${props => (props.settingsIsOpen ? "30px" : "17px")};
   border-radius: ${props => (props.settingsIsOpen ? "5px" : "1px")};
   transform: ${props =>
     props.settingsIsOpen
-      ? "translate(-5px, -4px) rotate(45deg)"
+      ? "translate(-5px, -7px) rotate(45deg)"
       : "translate(0,0) rotate(0)"};
-  transition: all 0.5s ${easing};
+  transition: transform 0.3s, height 0.3s, width 0.3s;
 `
 const SliderTemplate = styled.div`
   position: absolute;
@@ -57,7 +55,7 @@ const SliderTemplate = styled.div`
   height: 4px;
   background-color: var(--color-settingsIcon);
   border-radius: 1px;
-  transition: transform 0.4s ${easing},
+  transition: transform 0.4s cubic-bezier(0.69,-0.36,0.27,1.36),
     opacity ${props => (props.settingsIsOpen ? "0.1s" : "0.3s 0.2s")};
 `
 const LeftSlider = styled(SliderTemplate)`

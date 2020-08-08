@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
 import * as d3 from "d3"
-import { ThemeContext } from "../../contextProvider"
-import { lightTheme, darkTheme} from "../theme/global.js"
 
 const ChartWrapper = styled.div`
-  background-color: ${props => props.theme.graphBackground};
+  background-color: var(--color-graphBackground);
   border-radius: 5px;
   padding: 20px 20px 10px 20px;
   margin: 40px 0;
@@ -30,7 +28,7 @@ const SeasonalVegChart = props => {
       .attr("x", 0)
       .attr("y", 20)
       .attr("class", "vegetable")
-      .style("fill", "url(#chartTextColor)")
+      .style("fill", "var(--color-text)")
       .text((d, i) => d.name)
 
     const months = dataPoints
@@ -61,7 +59,7 @@ const SeasonalVegChart = props => {
           } else if (d === "end") {
             return "url(#Gradient2)"
           } else {
-            return "url(#mainChartColor)"
+            return "var(--color-altColor)"
           }
         } else {
           return "rgba(0,0,0,0)"
@@ -70,58 +68,34 @@ const SeasonalVegChart = props => {
   })
 
   return (
-    <ThemeContext.Consumer>
-      {context => (
-        <React.Fragment>
           <ChartWrapper>
             <svg width={props.width} height={props.height} ref={ref}>
               <defs>
-                <linearGradient id="chartTextColor">
-                  <stop stopColor={context.isDark ? darkTheme.text : lightTheme.text} />
-                </linearGradient>
-                <linearGradient id="mainChartColor">
-                  <stop
-                    stopColor={
-                      context.isDark ? darkTheme.altColor : lightTheme.altColor
-                    }
-                  />
-                </linearGradient>
                 <linearGradient id="Gradient1" x1="0" x2="1" y1="0" y2="0">
                   <stop
                     offset="0%"
-                    stopColor={
-                      context.isDark ? darkTheme.altColor : lightTheme.altColor
-                    }
+                    stopColor="var(--color-altColor)"
                     stopOpacity="0"
                   />
                   <stop
                     offset="100%"
-                    stopColor={
-                      context.isDark ? darkTheme.altColor : lightTheme.altColor
-                    }
+                    stopColor="var(--color-altColor)"
                   />
                 </linearGradient>
                 <linearGradient id="Gradient2" x1="0" x2="1" y1="0" y2="0">
                   <stop
                     offset="0%"
-                    stopColor={
-                      context.isDark ? darkTheme.altColor : lightTheme.altColor
-                    }
+                    stopColor="var(--color-altColor)"
                   />
                   <stop
                     offset="100%"
-                    stopColor={
-                      context.isDark ? darkTheme.altColor : lightTheme.altColor
-                    }
+                    stopColor="var(--color-altColor)"
                     stopOpacity="0"
                   />
                 </linearGradient>
               </defs>
             </svg>
           </ChartWrapper>
-        </React.Fragment>
-      )}
-    </ThemeContext.Consumer>
   )
 }
 

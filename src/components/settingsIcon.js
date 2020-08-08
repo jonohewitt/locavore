@@ -16,15 +16,14 @@ const Square = styled.div`
   position: relative;
   width: ${props => (props.settingsIsOpen ? 0 : "32px")};
   height: ${props => (props.settingsIsOpen ? "25px" : "30px")};
-  border: ${props => (props.settingsIsOpen ? "2px" : "3px")} solid
-    ${props => props.theme.settingsIcon};
+  border: ${props => (props.settingsIsOpen ? "2px" : "3px")} solid var(--color-settingsIcon);
   border-radius: 5px;
   transform: ${props =>
     props.settingsIsOpen
       ? "translate(14px, 3px) rotate(-45deg)"
       : "translate(0, 0) rotate(0)"};
   background-color: ${props =>
-    props.settingsIsOpen ? props.theme.settingsIcon : "rgba(0,0,0,0)"};
+    props.settingsIsOpen ? "var(--color-settingsIcon)" : "rgba(0,0,0,0)"};
   transition: width 0.3s, height 0.5s, border 0.5s, transform 0.3s,
     background-color 0.1s ${props => (props.settingsIsOpen ? "0.4s" : "")};
 `
@@ -32,7 +31,7 @@ const TrackTemplate = styled.div`
   position: absolute;
   width: 2px;
   height: 17px;
-  background-color: ${props => props.theme.settingsIcon};
+  background-color: var(--color-settingsIcon);
   border-radius: 1px;
   top: 7px;
 `
@@ -56,7 +55,7 @@ const SliderTemplate = styled.div`
   position: absolute;
   width: 8px;
   height: 4px;
-  background-color: ${props => props.theme.settingsIcon};
+  background-color: var(--color-settingsIcon);
   border-radius: 1px;
   transition: transform 0.4s ${easing},
     opacity ${props => (props.settingsIsOpen ? "0.1s" : "0.3s 0.2s")};
@@ -78,7 +77,7 @@ const RightSlider = styled(SliderTemplate)`
   ${IconWrapper}:focus &, ${IconWrapper}:hover & {
     transform: translateY(7px);
   }
-`
+  `
 
 const SettingsIcon = ({ settingsIsOpen, toggleSettings }) => (
         <IconWrapper

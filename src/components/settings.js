@@ -1,5 +1,6 @@
-import React from "react"
+import React, {useContext} from "react"
 import styled from "styled-components"
+import { ThemeContext } from "../context/themeContext"
 
 const SettingsWrapper = styled.div`
   position: fixed;
@@ -12,7 +13,7 @@ const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   transition: transform 0.3s;
-  background-color: ${props => props.theme.settings};
+  background-color: var(--color-settings);
 `
 const StyledUL = styled.ul`
   margin-top: 100px;
@@ -22,7 +23,8 @@ const StyledLi = styled.li`
   cursor: ${props => (props.pointer ? "pointer" : "normal")};
 `
 
-const Settings = ({ settingsIsOpen, context }) => {
+const Settings = ({ settingsIsOpen }) => {
+    const context = useContext(ThemeContext)
   return (
     <SettingsWrapper settingsIsOpen={settingsIsOpen}>
       <StyledUL>

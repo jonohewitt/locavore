@@ -4,13 +4,13 @@ import styled from "styled-components"
 import SettingsIcon from "./settingsIcon"
 
 const StyledLink = styled(Link)`
-  color: ${props => props.theme.navText};
+  color: var(--color-navText);
   text-decoration: none;
   padding: 5px 8px;
   font-weight: 700;
 
   &:hover {
-    color: ${props => props.theme.altColor};
+    color: var(--color-altColor);
   }
 `
 
@@ -27,7 +27,7 @@ const NavWrapper = styled.div`
   top: 0;
   width: 100%;
   height: 55px;
-  background-color: ${props => props.theme.nav};
+  background-color: var(--color-nav);
   display: flex;
   justify-content: space-between;
   align-items: center;

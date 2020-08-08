@@ -1,10 +1,33 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+import React from 'react'
+import { lightTheme, darkTheme } from "./src/theme/themeVariables"
 
-// You can delete this file if you're not using it
-import Provider from './contextProvider';
+const ScriptInjection = () => {
+  let codeToRunOnClient = `(function() {
+    const darkThemeIsSet = window.localStorage.getItem("darkTheme") === "true"
 
-export const wrapRootElement = Provider;
+    const systemTheme =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches &&
+      window.localStorage.getItem("darkTheme") === null
+
+    const initialTheme = darkThemeIsSet || systemTheme
+    const root = document.documentElement
+    root.setAttribute('is-dark-mode', initialTheme)
+
+    const darkTheme = ${JSON.stringify(darkTheme)}
+    const lightTheme = ${JSON.stringify(lightTheme)}
+
+    Object.entries(initialTheme ? darkTheme : lightTheme).forEach(
+      ([name, value]) => {
+        const cssVarName = \`--color-\${name}\`
+        root.style.setProperty(cssVarName, value)
+      }
+    )
+  })()`;
+  // eslint-disable-next-line react/no-danger
+  return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />
+};
+
+export const onRenderBody = ({ setPreBodyComponents }) => {
+  setPreBodyComponents(<ScriptInjection key="🔑" />);
+};

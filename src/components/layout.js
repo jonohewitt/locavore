@@ -1,16 +1,9 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
-import React, {useState, useContext} from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
 
-import { ThemeContext } from "../../contextProvider"
-import { lightTheme, darkTheme, GlobalStyles } from "../theme/global"
-import styled, { ThemeProvider } from "styled-components"
+import { GlobalStyles } from "../theme/globalStyles"
+import styled from "styled-components"
+import { ThemeProvider } from "../context/themeContext"
 
 import Page from "./page"
 import Nav from "./nav"
@@ -29,23 +22,24 @@ const OverflowWrapper = styled.div`
 `
 
 const Layout = ({ children }) => {
-  const [settingsIsOpen, toggleSettings] = useState(false);
-  const context = useContext(ThemeContext)
+  const [settingsIsOpen, toggleSettings] = useState(false)
 
   return (
-          <ThemeProvider theme={context.isDark ? darkTheme : lightTheme}>
-            <GlobalStyles />
-            <Nav settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}/>
-            <OverflowWrapper>
-              <Settings settingsIsOpen={settingsIsOpen} context={context}/>
-              <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
-                <ContentWrapper>
-                  <main>{children}</main>
-                  <Footer/>
-                </ContentWrapper>
-              </Page>
-            </OverflowWrapper>
-          </ThemeProvider>
+    <>
+      <GlobalStyles />
+      <Nav settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings} />
+      <OverflowWrapper>
+        <ThemeProvider>
+        <Settings settingsIsOpen={settingsIsOpen} />
+        </ThemeProvider>
+        <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
+          <ContentWrapper>
+            <main>{children}</main>
+            <Footer />
+          </ContentWrapper>
+        </Page>
+      </OverflowWrapper>
+    </>
   )
 }
 

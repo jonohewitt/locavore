@@ -11,8 +11,8 @@ export const lightTheme = {
 
 export const darkTheme = {
   text: "#ddd",
-  background: "hsla(234, 11%, 19%, 1)",
-  nav: "hsla(234, 11%, 25%, 0.98)",
+  background: "hsla(234, 11%, 17%, 1)",
+  nav: "hsla(234, 11%, 22%, 0.98)",
   navText: "#ddd",
   settings: "hsla(234, 11%, 15%, 1)",
   settingsIcon: "hsla(10, 48%, 63%, 1)",

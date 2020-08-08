@@ -6,6 +6,7 @@ import Image from "../components/image"
 import vegetableData from "../components/seasonalChartData"
 import SeasonalVegChart from "../components/seasonalChart"
 import SEO from "../components/seo"
+import BlogIndex from "../components/blogIndex"
 
 const ImgWrapper = styled.div`
   max-width: 300px;
@@ -23,6 +24,7 @@ const IndexPage = () => (
         </header>
         <article>
 
+          <BlogIndex/>
           <SeasonalVegChart data={vegetableData}/>
 
           <p>Bienvenue à la coloc' locale :)</p>

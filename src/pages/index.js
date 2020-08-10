@@ -7,15 +7,23 @@ import vegetableData from "../components/seasonalChartData"
 import SeasonalVegChart from "../components/seasonalChart"
 import SEO from "../components/seo"
 import BlogIndex from "../components/blogIndex"
+import ContentWrapper from "../components/contentWrapper"
+
 
 const ImgWrapper = styled.div`
   max-width: 300px;
   margin-bottom: 1.45rem;
 `
 
+const StyledLink = styled(Link)`
+  color: var(--color-altColor);
+  font-weight: 700;
+`
+
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
+    <ContentWrapper>
     <section className="main">
       <div className="content">
         <header>
@@ -35,6 +43,10 @@ const IndexPage = () => (
             personnelle, un emploi du temps plus ou moins chargé et vivant
             ensemble au centre-ville à Bruxelles.
           </p>
+
+          <ImgWrapper>
+            <Image/>
+          </ImgWrapper>
 
           <p>
             L'idée de la création d'une page nous est venue après une longue
@@ -81,14 +93,11 @@ const IndexPage = () => (
       </div>
     </section>
 
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <ImgWrapper>
-      <Image/>
-    </ImgWrapper>
-
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
+    <StyledLink to="/page-2/">Go to page 2</StyledLink>
+    <br />
+    <br />
+    <StyledLink to="/using-typescript/">Go to "Using TypeScript"</StyledLink>
+    </ContentWrapper>
   </Layout>
 )
 

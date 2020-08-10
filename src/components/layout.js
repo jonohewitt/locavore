@@ -8,17 +8,14 @@ import { ThemeProvider } from "../context/themeContext"
 import Page from "./page"
 import Nav from "./nav"
 import Settings from "./settings"
-import Footer from "./footer"
+import Footer, { footerHeight } from "./footer"
 
-const ContentWrapper = styled.div`
-  width: 70%;
-  max-width: 700px;
-  margin: 0 auto;
-  padding-top: 100px;
-`
 const OverflowWrapper = styled.div`
   width: 100vw;
   overflow-x: hidden;
+`
+const Content = styled.div`
+  padding-bottom: calc(${footerHeight} + 100px);
 `
 
 const Layout = ({ children }) => {
@@ -30,13 +27,13 @@ const Layout = ({ children }) => {
       <Nav settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings} />
       <OverflowWrapper>
         <ThemeProvider>
-        <Settings settingsIsOpen={settingsIsOpen} />
+          <Settings settingsIsOpen={settingsIsOpen} />
         </ThemeProvider>
         <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
-          <ContentWrapper>
+          <Content>
             <main>{children}</main>
             <Footer />
-          </ContentWrapper>
+          </Content>
         </Page>
       </OverflowWrapper>
     </>

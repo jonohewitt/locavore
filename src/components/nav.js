@@ -2,24 +2,18 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 import React from "react"
 import styled from "styled-components"
 import SettingsIcon from "./settingsIcon"
+import {width, maxWidth} from "./contentWrapper"
 
 const StyledLink = styled(Link)`
   color: var(--color-navText);
   text-decoration: none;
   padding: 5px 8px;
   font-weight: 700;
+  transition: color 0.2s;
 
   &:hover {
     color: var(--color-altColor);
   }
-`
-
-const PageTitle = styled(StyledLink)`
-  position: fixed;
-  padding: 10px;
-  left: calc(50% - min(35%, 350px) - 10px);
-  font-family: Yelena, Quicksand;
-  font-size: 26px;
 `
 
 const NavWrapper = styled.div`
@@ -42,8 +36,17 @@ const StyledUL = styled.ul`
   margin-right: 15px;
 `
 
+const PageTitle = styled(StyledLink)`
+  position: fixed;
+  padding: 10px;
+  left: calc(50% - min(${width / 2}%, ${maxWidth / 2}px) - 10px);
+  font-family: Yelena, Quicksand;
+  font-size: 26px;
+`
+
 const StyledLi = styled.li`
   margin-left: 5px;
+
 `
 
 const Nav = ({settingsIsOpen, toggleSettings}) => {

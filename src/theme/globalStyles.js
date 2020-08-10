@@ -13,7 +13,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
-  font-size: 64px;
+  font-size: 48px;
   margin-bottom: 24px;
   }
 

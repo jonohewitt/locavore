@@ -34,6 +34,10 @@ const BlogStyles = styled.div`
     list-style: initial;
   }
 
+  li {
+    margin: 5px 0;
+  }
+
   blockquote {
     font-style: italic;
     background-color: var(--color-graphBackground);
@@ -91,15 +95,19 @@ export default function PageTemplate({ data: { mdx } }) {
   return (
     <Layout>
       <HeaderImage headerImg={headerImgFluid} headerDesc={headerDesc}/>
-      <ContentWrapper padding="75px 0 0 0">
+      <ContentWrapper padding="50px 0 0 0">
         <BlogStyles>
+          <article>
           <header>
             <h1>{mdx.frontmatter.title}</h1>
             <p>{mdx.frontmatter.date}</p>
           </header>
+          <main>
           <MDXProvider components={shortcodes}>
             <MDXRenderer>{mdx.body}</MDXRenderer>
           </MDXProvider>
+          </main>
+          </article>
         </BlogStyles>
       </ContentWrapper>
     </Layout>

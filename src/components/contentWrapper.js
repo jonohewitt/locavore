@@ -1,12 +1,15 @@
 import React from "react"
 import styled from "styled-components"
 
+export const width = 75;
+export const maxWidth = 750;
+
 const Wrapper = styled.div`
-  width: 70%;
-  max-width: 700px;
+  width: ${width}%;
+  max-width: ${maxWidth}px;
   margin: 0 auto;
   padding: ${props => props.padding};
-  @media (max-width: 750px){
+  @media (max-width: 800px){
     width: 90%;
   }
 `

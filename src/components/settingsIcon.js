@@ -1,8 +1,11 @@
 import React from "react"
 import styled from "styled-components"
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.button`
   position: relative;
+  padding: 0;
+  border: none;
+  background-color: transparent;
   cursor: pointer;
   width: 32px;
   height: 30px;

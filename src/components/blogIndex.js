@@ -30,7 +30,7 @@ const BlogIndex = () => {
             frontmatter {
               slug
               title
-              date(formatString: "DD MMMM, YYYY", locale: "gb")
+              date(formatString: "DD MMMM, YYYY", locale: "fr-BE")
             }
           }
         }

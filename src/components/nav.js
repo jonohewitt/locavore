@@ -45,7 +45,14 @@ const PageTitle = styled(StyledLink)`
 
   @media (max-width: ${breakToMobile}px){
     position: static;
+    font-size: 21px;
+    padding: 5px;
   }
+
+  @media (max-width: 500px){
+    font-size: 16px;
+  }
+
 `
 
 const StyledLi = styled.li`

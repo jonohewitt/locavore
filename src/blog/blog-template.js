@@ -26,16 +26,40 @@ const BlogStyles = styled.div`
     margin: 30px 0 10px 0;
   }
 
+  h3 {
+    margin: 45px 0 15px 0;
+  }
+
   header {
     margin-bottom: 20px;
   }
 
   ul {
-    list-style: initial;
+    list-style: inside;
+  }
+
+  ol {
+    counter-reset: custom-counter;
   }
 
   li {
-    margin: 5px 0;
+    margin: 12px 0;
+  }
+
+  ol li {
+    counter-increment: custom-counter;
+    margin: 35px 0;
+    padding-left: 35px;
+    position: relative;
+  }
+
+  ol li::before {
+    content: counter(custom-counter);
+    font-size: 36px;
+    margin-right: 10px;
+    position: absolute;
+    left: 0;
+    top: -3px;
   }
 
   blockquote {
@@ -45,6 +69,14 @@ const BlogStyles = styled.div`
     padding: 40px 40px;
     border-radius: 5px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
   }
 `
 
@@ -65,7 +97,8 @@ const HeaderImage = ({ headerImg, headerDesc }) => {
       <Img
         style={{
           width: "100%",
-          height: "300px",
+          height: "30vmax",
+          maxHeight: "350px"
         }}
         imgStyle={{
           objectFit: "cover",

@@ -87,9 +87,11 @@ const Ingredients = ({ children }) => (
   </StyledHighlight>
 )
 
-const NoHeaderImage = styled.div`
-  height: 50px;
+const EmptyDiv = styled.div`
+  height: ${props => props.height}
 `
+
+const NoImage = ({height}) => <EmptyDiv height={height ? height : 0}/>
 
 const HeaderImage = ({ headerImg, headerDesc }) => {
   if (headerImg) {
@@ -110,7 +112,26 @@ const HeaderImage = ({ headerImg, headerDesc }) => {
       />
     )
   } else {
-    return <NoHeaderImage />
+    return <NoImage height="50px"/>
+  }
+}
+
+const FeatureImage = ({ featureImg, featureDesc }) => {
+  if (featureImg) {
+    return (
+      <Img
+        style={{
+          width: "100%",
+        }}
+        imgStyle={{
+          width: "100%",
+        }}
+        fluid={featureImg}
+        alt={featureDesc ? featureDesc : ""}
+      />
+    )
+  } else {
+    return <NoImage />
   }
 }
 
@@ -118,16 +139,22 @@ const shortcodes = { Link, Ingredients, ContentWrapper }
 
 export default function PageTemplate({ data: { mdx } }) {
   const headerIsIncluded = mdx.frontmatter.header !== null
-  const headerImgFluid = headerIsIncluded
+  const headerImg = headerIsIncluded
     ? mdx.frontmatter.header.childImageSharp.fluid
     : false
 
   const headerDescIsIncluded = mdx.frontmatter.headerDescription !== null
   const headerDesc = headerDescIsIncluded ? mdx.frontmatter.headerDescription : false
 
+  const featureIsIncluded = mdx.frontmatter.feature !== null
+  const featureImg = featureIsIncluded ? mdx.frontmatter.feature.childImageSharp.fluid : false
+
+  const featureDescIsIncluded = mdx.frontmatter.featureDescription !== null
+  const featureDesc = featureDescIsIncluded ? mdx.frontmatter.featureDescription : false
+
   return (
     <Layout>
-      <HeaderImage headerImg={headerImgFluid} headerDesc={headerDesc}/>
+      <HeaderImage headerImg={headerImg} headerDesc={headerDesc}/>
       <ContentWrapper padding="50px 0 0 0">
         <BlogStyles>
           <article>
@@ -135,6 +162,7 @@ export default function PageTemplate({ data: { mdx } }) {
             <h1>{mdx.frontmatter.title}</h1>
             <p>{mdx.frontmatter.date}</p>
           </header>
+          <FeatureImage featureImg={featureImg} featureDesc={featureDesc}/>
           <main>
           <MDXProvider components={shortcodes}>
             <MDXRenderer>{mdx.body}</MDXRenderer>
@@ -163,6 +191,14 @@ export const pageQuery = graphql`
           }
         }
         headerDescription
+        feature {
+            childImageSharp {
+              fluid(maxWidth: 800) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+        featureDescription
       }
     }
   }

@@ -25,12 +25,12 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `La Coloc' Locale`,
+        short_name: `La Coloc' Locale`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
-        display: `minimal-ui`,
+        background_color: `hsl(234, 11%, 17%)`,
+        theme_color: `hsl(234, 11%, 17%)`,
+        display: `fullscreen`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },

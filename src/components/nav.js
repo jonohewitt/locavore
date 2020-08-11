@@ -2,7 +2,7 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 import React from "react"
 import styled from "styled-components"
 import SettingsIcon from "./settingsIcon"
-import {width, maxWidth} from "./contentWrapper"
+import {width, maxWidth, breakToMobile} from "./contentWrapper"
 
 const StyledLink = styled(Link)`
   color: var(--color-navText);
@@ -40,13 +40,19 @@ const PageTitle = styled(StyledLink)`
   position: fixed;
   padding: 10px;
   left: calc(50% - min(${width / 2}%, ${maxWidth / 2}px) - 10px);
-  font-family: Yelena, Quicksand;
+  font-family: Yelena, Quicksand, sans-serif;
   font-size: 26px;
+
+  @media (max-width: ${breakToMobile}px){
+    position: static;
+  }
 `
 
 const StyledLi = styled.li`
   margin-left: 5px;
-
+  @media (max-width: ${breakToMobile}px){
+    margin-left: 0;
+  }
 `
 
 const Nav = ({settingsIsOpen, toggleSettings}) => {
@@ -72,10 +78,7 @@ const Nav = ({settingsIsOpen, toggleSettings}) => {
           <StyledLink to="/">Recipes</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/">Reviews</StyledLink>
-        </StyledLi>
-        <StyledLi>
-          <StyledLink to="/">Map</StyledLink>
+          <StyledLink to="/">Blog</StyledLink>
         </StyledLi>
       </StyledUL>
     </NavWrapper>

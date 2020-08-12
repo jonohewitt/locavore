@@ -58,9 +58,10 @@ const BlogIndex = () => {
             id
             excerpt(pruneLength: 200)
             frontmatter {
-              slug
               title
-              date(formatString: "DD MMMM, YYYY", locale: "fr-BE")
+              category
+              slug
+              date(formatString: "DD MMMM, YYYY", locale: "fr")
               header {
                 childImageSharp {
                   fluid(maxWidth: 800) {
@@ -90,7 +91,7 @@ const BlogIndex = () => {
           : false
         return (
           <li key={post.node.id}>
-            <Link to={post.node.frontmatter.slug}>
+            <Link to={`${post.node.frontmatter.category}${post.node.frontmatter.slug}`}>
               <Post>
                 <PostHeader headerImg={headerImg} headerDesc={headerDesc} />
                 <PostText>

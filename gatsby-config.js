@@ -26,12 +26,15 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `La Coloc' Locale`,
-        short_name: `La Coloc' Locale`,
+        short_name: `Coloc'Locale`,
         start_url: `/`,
         background_color: `hsl(234, 11%, 17%)`,
         theme_color: `hsl(234, 11%, 17%)`,
         display: `fullscreen`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon_options: {
+          purpose: `any maskable`,
+        },
       },
     },
     `gatsby-plugin-styled-components`,
@@ -44,6 +47,6 @@ module.exports = {
         path: `${__dirname}/src/blog/`,
       },
     },
-    `gatsby-plugin-netlify`
+    `gatsby-plugin-netlify`,
   ],
 }

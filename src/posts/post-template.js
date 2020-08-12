@@ -8,7 +8,7 @@ import styled from "styled-components"
 import ContentWrapper, { breakToMobile } from "../components/contentWrapper"
 import Img from "gatsby-image"
 import SEO from "../components/seo"
-import { BlogStyles } from "./blog-styles"
+import { BlogStyles } from "./post-styles"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -131,7 +131,7 @@ export const pageQuery = graphql`
       body
       frontmatter {
         title
-        date(formatString: "DD MMMM, YYYY", locale: "fr-BE")
+        date(formatString: "DD MMMM, YYYY", locale: "fr")
         header {
           childImageSharp {
             fluid(maxWidth: 2000) {

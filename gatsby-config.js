@@ -44,7 +44,7 @@ module.exports = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "posts",
-        path: `${__dirname}/src/blog/`,
+        path: `${__dirname}/src/posts/`,
       },
     },
     `gatsby-plugin-netlify`,

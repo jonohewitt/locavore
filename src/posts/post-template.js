@@ -16,9 +16,11 @@ const StyledHighlight = styled.div`
   padding: 10px 40px 40px 40px;
   border-radius: 5px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+
   hr {
     opacity: 0.1;
   }
+
   @media (max-width: ${breakToMobile}px) {
     margin: 30px 0;
   }
@@ -27,7 +29,7 @@ const StyledHighlight = styled.div`
 const Ingredients = ({ children }) => (
   <StyledHighlight>
     <h2>Ingredients</h2>
-    <hr/>
+    <hr />
     {children}
   </StyledHighlight>
 )
@@ -61,19 +63,28 @@ const HeaderImage = ({ headerImg, headerDesc }) => {
   }
 }
 
+const FeatureImgContainer = styled.div`
+  @media (max-width: ${breakToMobile}px) {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+  }
+`
+
 const FeatureImage = ({ featureImg, featureDesc }) => {
   if (featureImg) {
     return (
-      <Img
-        style={{
-          width: "100%",
-        }}
-        imgStyle={{
-          width: "100%",
-        }}
-        fluid={featureImg}
-        alt={featureDesc ? featureDesc : ""}
-      />
+      <FeatureImgContainer>
+        <Img
+          style={{
+            width: "100%",
+          }}
+          imgStyle={{
+            width: "100%",
+          }}
+          fluid={featureImg}
+          alt={featureDesc ? featureDesc : ""}
+        />
+      </FeatureImgContainer>
     )
   } else {
     return false
@@ -83,7 +94,6 @@ const FeatureImage = ({ featureImg, featureDesc }) => {
 const shortcodes = { Link, Ingredients }
 
 export default function PageTemplate({ data: { mdx } }) {
-
   const headerIsIncluded = mdx.frontmatter.header !== null
   const headerImg = headerIsIncluded
     ? mdx.frontmatter.header.childImageSharp.fluid

@@ -42,4 +42,11 @@ export const GlobalStyles = createGlobalStyle`
   .italic {
     font-style: italic;
   }
+
+  hr {
+    border: 0;
+    height: 2px;
+    background: var(--color-text);
+    opacity: 0.2;
+  }
 `

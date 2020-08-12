@@ -26,8 +26,11 @@ export const GlobalStyles = createGlobalStyle`
   font-size: 24px;
   }
 
+  p, li {
+  line-height: 1.4;
+  }
+
   p {
-  line-height: 1.3;
   margin-bottom: 20px;
   }
 

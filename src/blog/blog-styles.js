@@ -19,15 +19,19 @@ export const BlogStyles = styled.div`
   }
 
   ul {
-    list-style: inside;
+    list-style: outside;
   }
+
+ul li {
+  margin-left: 14px;
+}
 
   ol {
     counter-reset: custom-counter;
   }
 
   li {
-    margin: 12px 0;
+    margin: 6px 0;
   }
 
   ol li {
@@ -43,7 +47,7 @@ export const BlogStyles = styled.div`
     margin-right: 10px;
     position: absolute;
     left: 0;
-    top: -3px;
+    top: -7px;
   }
 
   blockquote {

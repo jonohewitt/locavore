@@ -7,6 +7,7 @@ import Layout from "../components/layout"
 import styled from "styled-components"
 import ContentWrapper, { breakToMobile } from "../components/contentWrapper"
 import Img from "gatsby-image"
+import SEO from "../components/seo"
 import { BlogStyles } from "./blog-styles"
 
 const StyledHighlight = styled.div`
@@ -101,6 +102,7 @@ export default function PageTemplate({ data: { mdx } }) {
 
   return (
     <Layout>
+      <SEO title={mdx.frontmatter.title} />
       <HeaderImage headerImg={headerImg} headerDesc={headerDesc} />
       <ContentWrapper padding="50px 0 0 0">
         <BlogStyles>

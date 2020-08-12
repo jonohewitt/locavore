@@ -65,14 +65,14 @@ const PostText = styled.div`
   }
 `
 
-const BlogIndexWrapper = styled.div`
+const RecipeIndexWrapper = styled.div`
   margin-top: 50px;
 `
 
-const BlogIndex = () => {
+const RecipeIndex = () => {
   const data = useStaticQuery(graphql`
-    query BlogIndexQuery {
-      allMdx(filter: {frontmatter: {category: {eq: "blog"}}}, sort: {fields: frontmatter___date, order: DESC}) {
+    query RecipeIndexQuery {
+      allMdx(filter: {frontmatter: {category: {eq: "recettes"}}}, sort: {fields: frontmatter___date, order: DESC}) {
         edges {
           node {
             id
@@ -106,9 +106,9 @@ const BlogIndex = () => {
   `)
 
   return (
-    <BlogIndexWrapper>
-    <h2>Blog Posts</h2>
-    <hr/>
+    <RecipeIndexWrapper>
+      <h2>Recettes</h2>
+      <hr/>
     <UL>
       {data.allMdx.edges.map(post => {
         const headerIsIncluded = post.node.frontmatter.header !== null
@@ -156,8 +156,8 @@ const BlogIndex = () => {
         )
       })}
     </UL>
-  </BlogIndexWrapper>
+    </RecipeIndexWrapper>
   )
 }
 
-export default BlogIndex
+export default RecipeIndex

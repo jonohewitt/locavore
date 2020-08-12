@@ -11,7 +11,7 @@ export const BlogStyles = styled.div`
   }
 
   h3 {
-    margin: 45px 0 15px 0;
+    margin: 30px 0 15px 0;
   }
 
   header {

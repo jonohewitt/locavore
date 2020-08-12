@@ -6,7 +6,6 @@ import Image from "../components/image"
 import vegetableData from "../components/seasonalChartData"
 import SeasonalVegChart from "../components/seasonalChart"
 import SEO from "../components/seo"
-import BlogIndex from "../components/blogIndex"
 import ContentWrapper from "../components/contentWrapper"
 
 
@@ -31,8 +30,6 @@ const IndexPage = () => (
           <h2 className="italic">Inspirer le changement</h2>
         </header>
         <article>
-
-          <BlogIndex/>
           <SeasonalVegChart data={vegetableData}/>
 
           <p>Bienvenue à la coloc' locale :)</p>

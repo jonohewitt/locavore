@@ -16,6 +16,9 @@ const StyledHighlight = styled.div`
   padding: 10px 40px 40px 40px;
   border-radius: 5px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  hr {
+    opacity: 0.1;
+  }
   @media (max-width: ${breakToMobile}px) {
     margin: 30px 0;
   }
@@ -24,6 +27,7 @@ const StyledHighlight = styled.div`
 const Ingredients = ({ children }) => (
   <StyledHighlight>
     <h2>Ingredients</h2>
+    <hr/>
     {children}
   </StyledHighlight>
 )

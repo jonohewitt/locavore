@@ -82,10 +82,10 @@ const Nav = ({settingsIsOpen, toggleSettings}) => {
           <StyledLink to="/">About</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/">Recettes</StyledLink>
+          <StyledLink to="/recettes">Recettes</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/">Blog</StyledLink>
+          <StyledLink to="/blog">Blog</StyledLink>
         </StyledLi>
       </StyledUL>
     </NavWrapper>

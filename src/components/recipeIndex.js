@@ -41,7 +41,7 @@ let postArray = false;
       <Img
         style={{
           width: "100%",
-          height: "100px",
+          height: "150px",
         }}
         imgStyle={{
           objectFit: "cover",

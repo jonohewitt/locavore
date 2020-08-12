@@ -10,7 +10,7 @@ const UL = styled.ul`
 const Post = styled.div`
   background-color: var(--color-graphBackground);
   margin: 20px 0;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
   overflow: hidden;
@@ -43,6 +43,10 @@ const PostHeader = ({ headerImg, headerDesc }) => {
 
 const PostText = styled.div`
   padding: 20px;
+
+  h2 {
+    margin: 0;
+  }
 `
 
 const BlogIndex = () => {

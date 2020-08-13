@@ -12,7 +12,7 @@ const StyledLink = styled(Link)`
   transition: color 0.2s;
 
   &:hover {
-    color: var(--color-altColor);
+    color: var(--color-activeLink);
   }
 `
 
@@ -79,13 +79,13 @@ const Nav = ({settingsIsOpen, toggleSettings}) => {
       <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
       <StyledUL>
         <StyledLi>
-          <StyledLink to="/">About</StyledLink>
+          <StyledLink to="/" activeStyle={{ borderBottom: "solid 1px" }}>About</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/recettes" activeStyle={{ color: "var(--color-altColor)" }}>Recettes</StyledLink>
+          <StyledLink to="/recettes" activeStyle={{ borderBottom: "solid 1px" }}>Recettes</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/blog" activeStyle={{ color: "var(--color-altColor)" }}>Blog</StyledLink>
+          <StyledLink to="/blog" activeStyle={{ borderBottom: "solid 1px", transition: "all 0.5s" }}>Blog</StyledLink>
         </StyledLi>
       </StyledUL>
     </NavWrapper>

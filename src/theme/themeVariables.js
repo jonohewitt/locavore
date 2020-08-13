@@ -17,5 +17,5 @@ export const darkTheme = {
   settings: "hsla(234, 11%, 15%, 1)",
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "hsla(154, 61%, 51%, 1)",
-  graphBackground: "hsla(0, 0%, 0%, 0.3)",
+  graphBackground: "hsla(0, 0%, 0%, 0.4)",
 }

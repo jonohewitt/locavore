@@ -2,7 +2,10 @@ import React from "react"
 import styled from "styled-components"
 
 const Container = styled.button`
-  all: unset;
+  padding: 0;
+  border: none;
+  outline-offset: 4px;
+  color: inherit;
   width: 50px;
   height: 26px;
   border-radius: 26px;

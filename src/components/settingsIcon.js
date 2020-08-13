@@ -11,7 +11,8 @@ const IconWrapper = styled.button`
   height: 30px;
   margin: 15px;
   border-radius: 5px;
-  outline: none;
+  outline-offset: 4px;
+  overflow: hidden;
 `
 const Square = styled.div`
   position: relative;

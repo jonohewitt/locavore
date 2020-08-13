@@ -80,6 +80,15 @@ const PostText = styled.div`
 
 const RecipeIndexWrapper = styled.div`
   margin-top: 50px;
+
+  h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+  }
+
+  hr {
+    background: var(--color-hr);
+  }
 `
 
 const RecipeIndex = () => {
@@ -123,7 +132,7 @@ const RecipeIndex = () => {
 
   return (
     <RecipeIndexWrapper>
-      <h2>Recettes</h2>
+      <h1>Recettes</h1>
       <hr />
       <UL>
         {data.allMdx.edges.map(post => {

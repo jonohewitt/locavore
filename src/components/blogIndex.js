@@ -67,6 +67,15 @@ const PostText = styled.div`
 
 const BlogIndexWrapper = styled.div`
   margin-top: 50px;
+
+  h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+  }
+
+  hr {
+    background: var(--color-hr);
+  }
 `
 
 const BlogIndex = () => {
@@ -107,7 +116,7 @@ const BlogIndex = () => {
 
   return (
     <BlogIndexWrapper>
-    <h2>Blog Posts</h2>
+    <h1>Blog Posts</h1>
     <hr/>
     <UL>
       {data.allMdx.edges.map(post => {

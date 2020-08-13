@@ -7,6 +7,8 @@ export const lightTheme = {
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "hsla(155, 60%, 35%, 1)",
   graphBackground: "hsla(0, 0%, 100%, 0.6)",
+  hr: "hsla(155, 60%, 35%, 1)",
+  activeLink: "hsla(10, 48%, 63%, 1)",
 }
 
 export const darkTheme = {
@@ -18,4 +20,6 @@ export const darkTheme = {
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "hsla(154, 61%, 51%, 1)",
   graphBackground: "hsla(0, 0%, 0%, 0.4)",
+  hr: "#ddd",
+  activeLink: "hsla(154, 61%, 51%, 1)",
 }

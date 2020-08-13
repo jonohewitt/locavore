@@ -82,10 +82,10 @@ const Nav = ({settingsIsOpen, toggleSettings}) => {
           <StyledLink to="/">About</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/recettes">Recettes</StyledLink>
+          <StyledLink to="/recettes" activeStyle={{ color: "var(--color-altColor)" }}>Recettes</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/blog">Blog</StyledLink>
+          <StyledLink to="/blog" activeStyle={{ color: "var(--color-altColor)" }}>Blog</StyledLink>
         </StyledLi>
       </StyledUL>
     </NavWrapper>

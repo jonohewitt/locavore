@@ -20,6 +20,7 @@ export const GlobalStyles = createGlobalStyle`
   h2 {
   font-size: 32px;
   margin-bottom: 5px;
+  line-height: 1.2;
   }
 
   h3 {

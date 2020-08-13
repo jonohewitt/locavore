@@ -20,6 +20,9 @@ const ClickAwayCover = styled.div`
   width: ${props => (props.settingsIsOpen ? "100%" : "0")};
   overflow-x: hidden;
   cursor: pointer;
+  background-color: var(--color-background);
+  opacity: ${props => (props.settingsIsOpen ? "0.5" : "0")};
+  transition: opacity 0.3s;
 `
 
 const Page = ({ settingsIsOpen, toggleSettings, children }) => (

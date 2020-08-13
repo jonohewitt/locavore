@@ -18,6 +18,10 @@ const SettingsWrapper = styled.div`
 `
 const StyledUL = styled.ul`
   margin-top: 80px;
+  hr {
+    margin: 20px 20px;
+    opacity: 0.15;
+  }
 `
 const StyledLi = styled.li`
   margin: 15px 20px;
@@ -32,10 +36,12 @@ const Settings = ({ settingsIsOpen }) => {
   return (
     <SettingsWrapper settingsIsOpen={settingsIsOpen}>
       <StyledUL>
+      <hr/>
         <StyledLi>
           Dark theme
           <ToggleSwitch state={context.isDark} setState={context.changeTheme} />
         </StyledLi>
+        <hr/>
       </StyledUL>
     </SettingsWrapper>
   )

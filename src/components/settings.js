@@ -15,6 +15,8 @@ const SettingsWrapper = styled.div`
   flex-direction: column;
   transition: transform 0.3s;
   background-color: var(--color-settings);
+  box-shadow: ${props =>
+    props.settingsIsOpen ? "5px 0 20px rgba(0, 0, 0, 0.5)" : "0"};
 `
 const StyledUL = styled.ul`
   margin-top: 80px;
@@ -36,12 +38,12 @@ const Settings = ({ settingsIsOpen }) => {
   return (
     <SettingsWrapper settingsIsOpen={settingsIsOpen}>
       <StyledUL>
-      <hr/>
+        <hr />
         <StyledLi>
           Dark theme
           <ToggleSwitch state={context.isDark} setState={context.changeTheme} />
         </StyledLi>
-        <hr/>
+        <hr />
       </StyledUL>
     </SettingsWrapper>
   )

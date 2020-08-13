@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../context/themeContext"
 import ToggleSwitch from "./toggleSwitch"
@@ -17,7 +17,7 @@ const SettingsWrapper = styled.div`
   background-color: var(--color-settings);
 `
 const StyledUL = styled.ul`
-  margin-top: 100px;
+  margin-top: 80px;
 `
 const StyledLi = styled.li`
   margin: 15px 20px;
@@ -28,18 +28,14 @@ const StyledLi = styled.li`
 `
 
 const Settings = ({ settingsIsOpen }) => {
-    const context = useContext(ThemeContext)
+  const context = useContext(ThemeContext)
   return (
     <SettingsWrapper settingsIsOpen={settingsIsOpen}>
       <StyledUL>
-        <StyledLi>Language</StyledLi>
-        <StyledLi>City</StyledLi>
-        <StyledLi pointer onClick={context.changeTheme}>
-          Dark theme <ToggleSwitch state={context.isDark} setState={context.changeTheme}/>
+        <StyledLi>
+          Dark theme
+          <ToggleSwitch state={context.isDark} setState={context.changeTheme} />
         </StyledLi>
-
-
-        <StyledLi>Units</StyledLi>
       </StyledUL>
     </SettingsWrapper>
   )

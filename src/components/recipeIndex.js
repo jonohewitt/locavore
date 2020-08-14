@@ -2,7 +2,8 @@ import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Img from "gatsby-image"
-import {breakToMobile} from "./contentWrapper"
+import { breakToMobile } from "./contentWrapper"
+import TimeIndicators from "./recipeTimeInfo"
 
 const UL = styled.ul`
   margin-top: 50px;
@@ -15,13 +16,14 @@ const UL = styled.ul`
 `
 
 const Li = styled.li`
-  height: 420px;
+  height: 440px;
   @media (max-width: 905px) {
     height: 100%;
   }
 `
 
 const Post = styled.div`
+  position: relative;
   background-color: var(--color-graphBackground);
   border-radius: 8px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
@@ -30,7 +32,6 @@ const Post = styled.div`
   @media (min-width: ${breakToMobile}px) {
     height: 100%;
   }
-
 
   &:hover {
     transform: translateY(-5px);
@@ -70,11 +71,19 @@ const PostHeader = ({ headerImg, headerDesc, featureImg, featureDesc }) => {
 }
 
 const PostText = styled.div`
-  padding: 20px;
+  padding: 10px 20px 20px 20px;
+  margin-bottom: 20px;
+
+  @media (max-width: ${breakToMobile}px) {
+    p {
+      margin-bottom: 35px;
+    }
+  }
 
   h2 {
     margin: 0;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
+    line-height: 1.1;
   }
 `
 
@@ -91,6 +100,31 @@ const RecipeIndexWrapper = styled.div`
   }
 `
 
+const Container = styled.div`
+  height: 25px;
+  border-radius: 5px;
+  border: solid 1px;
+  color: ${props =>
+    props.vegan ? "hsla(137, 51%, 77%, 1)" : "hsla(30, 86%, 71%, 1)"};
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const DairyIndicator = ({ vegan, vegetarian }) => {
+  if (vegan) {
+    return <Container vegan>Vegan</Container>
+  } else if (vegetarian && !vegan) {
+    return <Container>Vegetarian</Container>
+  } else {
+    return false
+  }
+}
+
 const RecipeIndex = () => {
   const data = useStaticQuery(graphql`
     query RecipeIndexQuery {
@@ -101,7 +135,7 @@ const RecipeIndex = () => {
         edges {
           node {
             id
-            excerpt(pruneLength: 100)
+            excerpt(pruneLength: 110)
             frontmatter {
               title
               category
@@ -123,6 +157,12 @@ const RecipeIndex = () => {
                 }
               }
               featureDescription
+              vegan
+              vegetarian
+              prepTime
+              cookTime
+              feeds
+              course
             }
           }
         }
@@ -136,6 +176,19 @@ const RecipeIndex = () => {
       <hr />
       <UL>
         {data.allMdx.edges.map(post => {
+          const frontmatterValues = [
+            "header",
+            "headerDescription",
+            "feature",
+            "featureDescription",
+            "title",
+            "excerpt",
+            "vegan",
+            "vegetarian",
+            "prepTime",
+            "cookTime",
+          ]
+
           const headerIsIncluded = post.node.frontmatter.header !== null
           const headerImg = headerIsIncluded
             ? post.node.frontmatter.header.childImageSharp.fluid
@@ -174,6 +227,14 @@ const RecipeIndex = () => {
                     <h2>{post.node.frontmatter.title}</h2>
                     <p>{post.node.excerpt}</p>
                   </PostText>
+                  <DairyIndicator
+                    vegan={post.node.frontmatter.vegan}
+                    vegetarian={post.node.frontmatter.vegetarian}
+                  />
+                  <TimeIndicators
+                    prepTime={post.node.frontmatter.prepTime}
+                    cookTime={post.node.frontmatter.cookTime}
+                  />
                 </Post>
               </Link>
             </Li>

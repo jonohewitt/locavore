@@ -79,13 +79,13 @@ const Nav = ({settingsIsOpen, toggleSettings}) => {
       <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
       <StyledUL>
         <StyledLi>
-          <StyledLink to="/" activeStyle={{ borderBottom: "solid 1px" }}>About</StyledLink>
+          <StyledLink to="/" activeStyle={{ border: "solid 1px", borderRadius: "8px" }}>About</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/recettes" activeStyle={{ borderBottom: "solid 1px" }}>Recettes</StyledLink>
+          <StyledLink to="/recettes" activeStyle={{ border: "solid 1px", borderRadius: "8px" }}>Recettes</StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink to="/blog" activeStyle={{ borderBottom: "solid 1px", transition: "all 0.5s" }}>Blog</StyledLink>
+          <StyledLink to="/blog" activeStyle={{ border: "solid 1px", borderRadius: "8px" }}>Blog</StyledLink>
         </StyledLi>
       </StyledUL>
     </NavWrapper>

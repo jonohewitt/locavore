@@ -41,7 +41,11 @@ const Settings = ({ settingsIsOpen }) => {
         <hr />
         <StyledLi>
           Dark theme
-          <ToggleSwitch state={context.isDark} setState={context.changeTheme} />
+          <ToggleSwitch
+            state={context.isDark}
+            setState={context.changeTheme}
+            notTabbable={!settingsIsOpen}
+          />
         </StyledLi>
         <hr />
       </StyledUL>

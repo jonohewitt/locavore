@@ -18,7 +18,8 @@ const Square = styled.div`
   position: relative;
   width: ${props => (props.settingsIsOpen ? 0 : "32px")};
   height: ${props => (props.settingsIsOpen ? "30px" : "30px")};
-  border: ${props => (props.settingsIsOpen ? "2px" : "3px")} solid var(--color-settingsIcon);
+  border: ${props => (props.settingsIsOpen ? "2px" : "3px")} solid
+    var(--color-settingsIcon);
   border-radius: 5px;
   transform: ${props =>
     props.settingsIsOpen
@@ -59,7 +60,7 @@ const SliderTemplate = styled.div`
   height: 4px;
   background-color: var(--color-settingsIcon);
   border-radius: 1px;
-  transition: transform 0.4s cubic-bezier(0.69,-0.36,0.27,1.36),
+  transition: transform 0.4s cubic-bezier(0.69, -0.36, 0.27, 1.36),
     opacity ${props => (props.settingsIsOpen ? "0.1s" : "0.3s 0.2s")};
 `
 const LeftSlider = styled(SliderTemplate)`
@@ -81,19 +82,20 @@ const RightSlider = styled(SliderTemplate)`
   }
   `
 
-const SettingsIcon = ({ settingsIsOpen, toggleSettings }) => (
-        <IconWrapper
-          tabIndex="0"
-          aria-label="Toggle settings menu"
-          role="button"
-          onClick={() => toggleSettings(!settingsIsOpen)}
-        >
-          <Square settingsIsOpen={settingsIsOpen} />
-          <LeftTrack settingsIsOpen={settingsIsOpen} />
-          <RightTrack settingsIsOpen={settingsIsOpen} />
-          <LeftSlider settingsIsOpen={settingsIsOpen} />
-          <RightSlider settingsIsOpen={settingsIsOpen} />
-        </IconWrapper>
-)
-
+const SettingsIcon = ({ settingsIsOpen, toggleSettings }) => {
+  return (
+    <IconWrapper
+      tabIndex="0"
+      aria-label="Toggle settings menu"
+      role="button"
+      onClick={() => toggleSettings(!settingsIsOpen)}
+    >
+      <Square settingsIsOpen={settingsIsOpen} />
+      <LeftTrack settingsIsOpen={settingsIsOpen} />
+      <RightTrack settingsIsOpen={settingsIsOpen} />
+      <LeftSlider settingsIsOpen={settingsIsOpen} />
+      <RightSlider settingsIsOpen={settingsIsOpen} />
+    </IconWrapper>
+  )
+}
 export default SettingsIcon

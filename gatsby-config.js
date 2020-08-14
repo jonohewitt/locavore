@@ -26,7 +26,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `La Coloc' Locale`,
-        short_name: `Coloc'Locale`,
+        short_name: `Coloc`,
         start_url: `/`,
         background_color: `hsl(234, 11%, 17%)`,
         theme_color: `hsl(234, 11%, 17%)`,

@@ -11,16 +11,21 @@ const TimeIconContainer = styled.div`
   bottom: 20px;
 
   h3 {
-    padding-left: 5px;
+    padding-left: 4px;
     line-height: 1;
     font-size: 18px;
   }
 `
 
+const IndicatorPair = styled.div`
+  margin-left: 12px;
+  display: flex;
+`
+
 const PrepTime = ({ prepTime }) => {
   if (prepTime) {
     return (
-      <>
+      <IndicatorPair>
         <svg
           width="25"
           height="23"
@@ -38,12 +43,48 @@ const PrepTime = ({ prepTime }) => {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M6.974 1.662c1.906 1.905 2.19 5.075 2.19 6.274 0 1.199 12.859 12.53 12.859 12.53a.876.876 0 0 1 0 1.239l-.184.183a.876.876 0 0 1-1.238 0S9.164 9.135 7.847 9.135c-1.577 0-4.221-.008-6.223-2.01C-.711 4.79-.25 2.898 1.259 1.389c1.509-1.508 3.38-2.062 5.715.273z"
-            opacity="0.9"
+            opacity="0.8"
             fill="var(--color-text)"
           />
         </svg>
-        <h3>{prepTime}m</h3>
-      </>
+        <h3 style={{paddingLeft: "3px"}}>{prepTime}m</h3>
+      </IndicatorPair>
+    )
+  } else {
+    return false
+  }
+}
+
+const CookTime = ({ cookTime }) => {
+  if (cookTime) {
+    return (
+      <IndicatorPair>
+        <svg
+          width="21"
+          height="23"
+          fill="none"
+          opacity="0.8"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M0 3a3 3 0 013-3h15a3 3 0 013 3v19a1 1 0 01-1 1H1a1 1 0 01-1-1V3zm3-1h15a1 1 0 011 1v3H2V3a1 1 0 011-1zM2 8v13h17V8H2z"
+            fill="var(--color-text)"
+          />
+          <circle cx="5" cy="4" r="1" fill="var(--color-text)" />
+          <circle cx="8" cy="4" r="1" fill="var(--color-text)" />
+          <circle cx="16" cy="4" r="1" fill="var(--color-text)" />
+          <circle cx="13" cy="4" r="1" fill="var(--color-text)" />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M5 10a1 1 0 00-1 1v7a1 1 0 001 1h11a1 1 0 001-1v-7a1 1 0 00-1-1H5zm1.5 2a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h8a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-8z"
+            fill="var(--color-text)"
+          />
+        </svg>
+        <h3>{cookTime}m</h3>
+      </IndicatorPair>
     )
   } else {
     return false
@@ -54,6 +95,7 @@ const TimeIndicators = ({ prepTime, cookTime }) => {
   return (
     <TimeIconContainer>
       <PrepTime prepTime={prepTime} />
+      <CookTime cookTime={cookTime} />
     </TimeIconContainer>
   )
 }

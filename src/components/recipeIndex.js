@@ -37,19 +37,16 @@ const Post = styled.div`
     transform: translateY(-5px);
   }
 `
-const PostHeader = ({ headerImg, headerDesc, featureImg, featureDesc }) => {
-  const header = { image: headerImg, description: headerDesc }
-  const feature = { image: featureImg, description: featureDesc }
+const PostHeader = ({ headerImg, featureImg }) => {
+  let usedImage = false
 
-  let postImage = false
-
-  if (feature.image && !header.image) {
-    postImage = feature
-  } else if (header.image) {
-    postImage = header
+  if (!headerImg.image && featureImg.image) {
+    usedImage = featureImg
+  } else if (headerImg.image) {
+    usedImage = headerImg
   }
 
-  if (postImage) {
+  if (usedImage) {
     return (
       <Img
         style={{
@@ -61,8 +58,8 @@ const PostHeader = ({ headerImg, headerDesc, featureImg, featureDesc }) => {
           width: "100%",
           height: "100%",
         }}
-        fluid={postImage.image}
-        alt={postImage.description ? postImage.description : ""}
+        fluid={usedImage.image}
+        alt={usedImage.description ? usedImage.description : ""}
       />
     )
   } else {
@@ -105,7 +102,7 @@ const Container = styled.div`
   border-radius: 5px;
   border: solid 1px;
   color: ${props =>
-    props.vegan ? "hsla(137, 51%, 77%, 1)" : "hsla(30, 86%, 71%, 1)"};
+    props.vegan ? "var(--color-vegan)" : "var(--color-vegetarian)"};
   position: absolute;
   left: 20px;
   bottom: 20px;
@@ -176,40 +173,15 @@ const RecipeIndex = () => {
       <hr />
       <UL>
         {data.allMdx.edges.map(post => {
-          const frontmatterValues = [
-            "header",
-            "headerDescription",
-            "feature",
-            "featureDescription",
-            "title",
-            "excerpt",
-            "vegan",
-            "vegetarian",
-            "prepTime",
-            "cookTime",
-          ]
+          const headerImg =
+            post.node.frontmatter.header !== null
+              ? post.node.frontmatter.header.childImageSharp.fluid
+              : false
 
-          const headerIsIncluded = post.node.frontmatter.header !== null
-          const headerImg = headerIsIncluded
-            ? post.node.frontmatter.header.childImageSharp.fluid
-            : false
-
-          const headerDescIsIncluded =
-            post.node.frontmatter.headerDescription !== null
-          const headerDesc = headerDescIsIncluded
-            ? post.node.frontmatter.headerDescription
-            : false
-
-          const featureIsIncluded = post.node.frontmatter.feature !== null
-          const featureImg = featureIsIncluded
-            ? post.node.frontmatter.feature.childImageSharp.fluid
-            : false
-
-          const featureDescIsIncluded =
-            post.node.frontmatter.featureDescription !== null
-          const featureDesc = featureDescIsIncluded
-            ? post.node.frontmatter.featureDescription
-            : false
+          const featureImg =
+            post.node.frontmatter.feature !== null
+              ? post.node.frontmatter.feature.childImageSharp.fluid
+              : false
 
           return (
             <Li key={post.node.id}>
@@ -218,10 +190,14 @@ const RecipeIndex = () => {
               >
                 <Post>
                   <PostHeader
-                    headerImg={headerImg}
-                    headerDesc={headerDesc}
-                    featureImg={featureImg}
-                    featureDesc={featureDesc}
+                    headerImg={{
+                      image: headerImg,
+                      description: post.node.frontmatter.headerDescription,
+                    }}
+                    featureImg={{
+                      image: featureImg,
+                      description: post.node.frontmatter.featureDescription,
+                    }}
                   />
                   <PostText>
                     <h2>{post.node.frontmatter.title}</h2>

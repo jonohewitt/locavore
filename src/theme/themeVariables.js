@@ -9,6 +9,8 @@ export const lightTheme = {
   graphBackground: "hsla(0, 0%, 100%, 0.6)",
   hr: "hsla(155, 60%, 35%, 1)",
   activeLink: "hsla(10, 48%, 63%, 1)",
+  vegan: "hsla(136, 87%, 24%, 1)",
+  vegetarian: "hsla(19, 98%, 34%, 1)"
 }
 
 export const darkTheme = {
@@ -22,4 +24,6 @@ export const darkTheme = {
   graphBackground: "hsla(0, 0%, 0%, 0.4)",
   hr: "#ddd",
   activeLink: "hsla(154, 61%, 51%, 1)",
+  vegan: "hsla(137, 51%, 77%, 1)",
+  vegetarian: "hsla(30, 86%, 71%, 1)"
 }

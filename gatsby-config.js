@@ -30,7 +30,7 @@ module.exports = {
         start_url: `/`,
         background_color: `hsl(234, 11%, 17%)`,
         theme_color: `hsl(234, 11%, 17%)`,
-        display: `fullscreen`,
+        display: `standalone`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
         icon_options: {
           purpose: `any maskable`,

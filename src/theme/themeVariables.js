@@ -9,7 +9,7 @@ export const lightTheme = {
   graphBackground: "hsla(0, 0%, 100%, 0.6)",
   hr: "hsla(155, 60%, 35%, 1)",
   activeLink: "hsla(10, 48%, 63%, 1)",
-  vegan: "hsla(136, 87%, 24%, 1)",
+  vegan: "hsl(154, 46%, 33%)",
   vegetarian: "hsla(19, 98%, 34%, 1)"
 }
 

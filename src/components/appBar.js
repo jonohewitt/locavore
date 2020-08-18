@@ -23,11 +23,11 @@ const shops = (
 )
 
 const tabArray = [
-  ["home", home],
-  ["recipes", recipes],
-  ["resources", resources],
-  ["blog", blog],
-  ["shops", shops],
+  ["Home", home, "/"],
+  ["Recipes", recipes, "/recettes"],
+  ["Resources", resources, "/"],
+  ["Blog", blog, "/blog"],
+  ["Shops", shops, "/"],
 ]
 
 const BarWrapper = styled.ul`
@@ -71,7 +71,7 @@ const AppBar = () => {
     <BarWrapper>
       {tabArray.map(tab => (
         <TabListItem>
-          <StyledLink to={`/${tab[0]}`}>
+          <StyledLink to={tab[2]} activeStyle={{color: "hsl(201, 60%, 63%)"}}>
             {tab[1]}
             <h6>{tab[0]}</h6>
           </StyledLink>

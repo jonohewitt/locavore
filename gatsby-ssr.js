@@ -1,5 +1,6 @@
-import React from 'react'
+import React from "react"
 import { lightTheme, darkTheme } from "./src/theme/themeVariables"
+import Layout from "./src/components/layout"
 
 const ScriptInjection = () => {
   let codeToRunOnClient = `(function() {
@@ -31,3 +32,7 @@ const ScriptInjection = () => {
 export const onRenderBody = ({ setPreBodyComponents }) => {
   setPreBodyComponents(<ScriptInjection key="🔑" />);
 };
+
+export const wrapPageElement = ({ element, props }) => {
+  return <Layout {...props}>{element}</Layout>
+}

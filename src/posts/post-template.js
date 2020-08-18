@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
-import Layout from "../components/layout"
+// import Layout from "../components/layout"
 import styled from "styled-components"
 import ContentWrapper, { breakToMobile } from "../components/contentWrapper"
 import Img from "gatsby-image"
@@ -115,7 +115,7 @@ export default function PageTemplate({ data: { mdx } }) {
     : false
 
   return (
-    <Layout>
+    <>
       <SEO title={mdx.frontmatter.title} />
       <HeaderImage headerImg={headerImg} headerDesc={headerDesc} />
       <ContentWrapper padding="50px 0 0 0">
@@ -134,7 +134,7 @@ export default function PageTemplate({ data: { mdx } }) {
           </article>
         </BlogStyles>
       </ContentWrapper>
-    </Layout>
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import Layout from "../components/layout"
+// import Layout from "../components/layout"
 import Image from "../components/image"
 import vegetableData from "../components/seasonalChartData"
 import SeasonalVegChart from "../components/seasonalChart"
@@ -20,7 +20,7 @@ const StyledLink = styled(Link)`
 `
 
 const IndexPage = () => (
-  <Layout>
+  <>
     <SEO title="Home" />
     <ContentWrapper>
     <section className="main">
@@ -95,7 +95,7 @@ const IndexPage = () => (
     <br />
     <StyledLink to="/using-typescript/">Go to "Using TypeScript"</StyledLink>
     </ContentWrapper>
-  </Layout>
+  </>
 )
 
 export default IndexPage

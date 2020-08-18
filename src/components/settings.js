@@ -19,13 +19,13 @@ const SettingsWrapper = styled.div`
     props.settingsIsOpen ? "5px 0 20px rgba(0, 0, 0, 0.5)" : "0"};
 `
 const StyledUL = styled.ul`
-  margin-top: 80px;
   hr {
     margin: 20px 20px;
     opacity: 0.15;
   }
 `
-const StyledLi = styled.li`
+
+const ToggleContainer = styled.div`
   margin: 15px 20px;
   cursor: ${props => (props.pointer ? "pointer" : "normal")};
   display: flex;
@@ -33,21 +33,28 @@ const StyledLi = styled.li`
   align-items: center;
 `
 
+const InitialHR = styled.hr`
+  margin: 100px 20px 3px 20px;
+`
+
 const Settings = ({ settingsIsOpen }) => {
   const context = useContext(ThemeContext)
   return (
     <SettingsWrapper settingsIsOpen={settingsIsOpen}>
+      <InitialHR />
       <StyledUL>
-        <hr />
-        <StyledLi>
-          Dark theme
-          <ToggleSwitch
-            state={context.isDark}
-            setState={context.changeTheme}
-            notTabbable={!settingsIsOpen}
-          />
-        </StyledLi>
-        <hr />
+        <li>
+          <ToggleContainer>
+            Dark theme
+            <ToggleSwitch
+              name="Toggle darkmode"
+              state={context.isDark}
+              setState={context.changeTheme}
+              notTabbable={!settingsIsOpen}
+            />
+          </ToggleContainer>
+          <hr />
+        </li>
       </StyledUL>
     </SettingsWrapper>
   )

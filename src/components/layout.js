@@ -65,7 +65,13 @@ const Layout = ({ children }) => {
       <Nav />
       <OverflowWrapper>
         <ThemeProvider>
-          <Settings settingsIsOpen={settingsIsOpen} />
+          <Settings
+            settingsIsOpen={settingsIsOpen}
+            appInterface={launchedAsStandalone}
+            setAppInterface={() =>
+              setLaunchedAsStandalone(!launchedAsStandalone)
+            }
+          />
         </ThemeProvider>
         <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
           <Content>

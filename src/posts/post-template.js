@@ -148,7 +148,7 @@ export const pageQuery = graphql`
         date(formatString: "DD MMMM, YYYY", locale: "fr")
         header {
           childImageSharp {
-            fluid(maxWidth: 2000) {
+            fluid(maxWidth: 1500) {
               ...GatsbyImageSharpFluid_withWebp
             }
           }

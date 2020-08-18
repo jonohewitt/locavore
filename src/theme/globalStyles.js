@@ -5,7 +5,7 @@ const reset = `html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,block
 export const GlobalStyles = createGlobalStyle`
   ${reset}
 
-  html, body {
+  html, body, button {
     font-family: Quicksand, -apple-system, sans-serif;
     font-weight: 500;
     background: var(--color-background);

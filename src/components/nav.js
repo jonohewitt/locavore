@@ -62,7 +62,7 @@ const StyledLi = styled.li`
   }
 `
 
-const Nav = ({settingsIsOpen, toggleSettings}) => {
+const DesktopNav = ({settingsIsOpen, toggleSettings}) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -92,4 +92,4 @@ const Nav = ({settingsIsOpen, toggleSettings}) => {
   )
 }
 
-export default Nav
+export default DesktopNav

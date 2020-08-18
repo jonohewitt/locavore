@@ -29,7 +29,7 @@ module.exports = {
         short_name: `Coloc`,
         start_url: `/`,
         background_color: `hsl(234, 11%, 17%)`,
-        theme_color: `hsl(234, 11%, 17%)`,
+        theme_color: `hsla(234, 11%, 22%, 0.98)`,
         display: `standalone`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
         icon_options: {

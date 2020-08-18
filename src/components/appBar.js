@@ -59,10 +59,23 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: flex-end;
   cursor: pointer;
+  svg {
+    scale: 0.8;
+    opacity: 0.5;
+  }
   h6 {
     margin: 3px 0;
     font-size: 12px;
     text-transform: capitalize;
+  }
+
+  &.active {
+    border-bottom: solid 3px;
+    box-shadow: 0 0 15px hsla(0, 0%, 10%, 0.5);
+    border-radius: 14px 14px 0 0;
+    svg {
+      opacity: 1;
+      }
   }
 `
 
@@ -71,7 +84,7 @@ const AppBar = () => {
     <BarWrapper>
       {tabArray.map(tab => (
         <TabListItem>
-          <StyledLink to={tab[2]} activeStyle={{color: "hsl(201, 60%, 63%)"}}>
+          <StyledLink to={tab[2]} activeClassName="active" partiallyActive={tab[2] === "/" ? false : true}>
             {tab[1]}
             <h6>{tab[0]}</h6>
           </StyledLink>

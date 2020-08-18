@@ -37,7 +37,7 @@ const InitialHR = styled.hr`
   margin: 100px 20px 3px 20px;
 `
 
-const Settings = ({ settingsIsOpen }) => {
+const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
   const context = useContext(ThemeContext)
   return (
     <SettingsWrapper settingsIsOpen={settingsIsOpen}>
@@ -53,6 +53,16 @@ const Settings = ({ settingsIsOpen }) => {
               notTabbable={!settingsIsOpen}
             />
           </ToggleContainer>
+          <ToggleContainer>
+            App interface
+            <ToggleSwitch
+              name="Toggle app interface"
+              state={appInterface}
+              setState={setAppInterface}
+              notTabbable={!settingsIsOpen}
+            />
+          </ToggleContainer>
+
           <hr />
         </li>
       </StyledUL>

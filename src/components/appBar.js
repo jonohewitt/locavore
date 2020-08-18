@@ -23,11 +23,11 @@ const shops = (
 )
 
 const tabArray = [
-  ["Home", home],
-  ["Recipes", recipes],
-  ["Resources", resources],
-  ["Blog", blog],
-  ["Shops", shops],
+  ["home", home],
+  ["recipes", recipes],
+  ["resources", resources],
+  ["blog", blog],
+  ["shops", shops],
 ]
 
 const BarWrapper = styled.ul`
@@ -62,6 +62,7 @@ const StyledLink = styled(Link)`
   h6 {
     margin: 3px 0;
     font-size: 12px;
+    text-transform: capitalize;
   }
 `
 
@@ -70,7 +71,7 @@ const AppBar = () => {
     <BarWrapper>
       {tabArray.map(tab => (
         <TabListItem>
-          <StyledLink to="/">
+          <StyledLink to={`/${tab[0]}`}>
             {tab[1]}
             <h6>{tab[0]}</h6>
           </StyledLink>

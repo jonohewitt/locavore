@@ -25,9 +25,9 @@ const shops = (
 const tabArray = [
   ["Home", home, "/"],
   ["Recipes", recipes, "/recettes"],
-  ["Resources", resources, "/"],
+  ["Resources", resources, "/resources"],
   ["Blog", blog, "/blog"],
-  ["Shops", shops, "/"],
+  ["Shops", shops, "/shops"],
 ]
 
 const BarWrapper = styled.ul`

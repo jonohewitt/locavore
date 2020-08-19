@@ -20,17 +20,18 @@ const Content = styled.div`
 `
 
 const Layout = ({ children }) => {
+
   const [settingsIsOpen, toggleSettings] = useState(false)
+  const [appInterface, setAppInterface] = useState(false)
 
-  const [width, setWidth] = useState(undefined)
-  const [launchedAsStandalone, setLaunchedAsStandalone] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth)
-    window.addEventListener("resize", handleResize)
-    handleResize()
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  // const [width, setWidth] = useState(undefined)
+  //
+  // useEffect(() => {
+  //   const handleResize = () => setWidth(window.innerWidth)
+  //   window.addEventListener("resize", handleResize)
+  //   handleResize()
+  //   return () => window.removeEventListener("resize", handleResize)
+  // }, [])
 
   useEffect(() => {
     const handleDOMLoad = () => {
@@ -38,7 +39,7 @@ const Layout = ({ children }) => {
         navigator.standalone ||
         window.matchMedia("(display-mode: standalone)").matches
       ) {
-        setLaunchedAsStandalone(true)
+        setAppInterface(true)
       }
     }
     window.addEventListener("DOMContentLoaded", handleDOMLoad)
@@ -46,37 +47,31 @@ const Layout = ({ children }) => {
     return () => window.removeEventListener("DOMContentLoaded", handleDOMLoad)
   }, [])
 
-  const Nav = () => {
-    if (launchedAsStandalone) {
-      return <AppBar />
-    } else {
-      return (
+  return (
+    <>
+      <GlobalStyles />
+      {appInterface ? (
+        <AppBar />
+      ) : (
         <DesktopNav
           settingsIsOpen={settingsIsOpen}
           toggleSettings={toggleSettings}
         />
-      )
-    }
-  }
-
-  return (
-    <>
-      <GlobalStyles />
-      <Nav />
+      )}
       <OverflowWrapper>
         <ThemeProvider>
           <Settings
             settingsIsOpen={settingsIsOpen}
-            appInterface={launchedAsStandalone}
+            appInterface={appInterface}
             setAppInterface={() =>
-              setLaunchedAsStandalone(!launchedAsStandalone)
+              setAppInterface(!appInterface)
             }
           />
         </ThemeProvider>
         <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
           <Content>
             <main>{children}</main>
-            <Footer />
+            {!appInterface && <Footer />}
           </Content>
         </Page>
       </OverflowWrapper>

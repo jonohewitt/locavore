@@ -53,6 +53,8 @@ const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
               notTabbable={!settingsIsOpen}
             />
           </ToggleContainer>
+        </li>
+        <li>
           <ToggleContainer>
             App interface
             <ToggleSwitch
@@ -62,7 +64,6 @@ const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
               notTabbable={!settingsIsOpen}
             />
           </ToggleContainer>
-
           <hr />
         </li>
       </StyledUL>

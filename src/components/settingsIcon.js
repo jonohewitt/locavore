@@ -85,9 +85,7 @@ const RightSlider = styled(SliderTemplate)`
 const SettingsIcon = ({ settingsIsOpen, toggleSettings }) => {
   return (
     <IconWrapper
-      tabIndex="0"
       aria-label="Toggle settings menu"
-      role="button"
       onClick={() => toggleSettings(!settingsIsOpen)}
     >
       <Square settingsIsOpen={settingsIsOpen} />

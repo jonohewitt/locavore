@@ -33,6 +33,6 @@ export const onRenderBody = ({ setPreBodyComponents }) => {
   setPreBodyComponents(<ScriptInjection key="🔑" />);
 };
 
-export const wrapPageElement = ({ element, props }) => {
-  return <Layout {...props}>{element}</Layout>
+export const wrapPageElement = ({ element }) => {
+  return <Layout>{element}</Layout>
 }

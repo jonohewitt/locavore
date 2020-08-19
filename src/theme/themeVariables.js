@@ -10,7 +10,9 @@ export const lightTheme = {
   hr: "hsla(155, 60%, 35%, 1)",
   activeLink: "hsla(10, 48%, 63%, 1)",
   vegan: "hsl(154, 46%, 33%)",
-  vegetarian: "hsla(19, 98%, 34%, 1)"
+  vegetarian: "hsla(19, 98%, 34%, 1)",
+  appBar: "hsla(71, 50%, 90%, 1)",
+  activeAppTab: "hsla(71, 50%, 93%, 1)",
 }
 
 export const darkTheme = {
@@ -25,5 +27,7 @@ export const darkTheme = {
   hr: "#ddd",
   activeLink: "hsla(154, 61%, 51%, 1)",
   vegan: "hsla(137, 51%, 77%, 1)",
-  vegetarian: "hsla(30, 86%, 71%, 1)"
+  vegetarian: "hsla(30, 86%, 71%, 1)",
+  appBar: "hsla(234, 11%, 19%, 1)",
+  activeAppTab: "hsla(234, 11%, 22%, 1)",
 }

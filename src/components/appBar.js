@@ -118,14 +118,12 @@ const TabListItem = styled.li`
 
   :first-child {
     a {
-      padding-left: 30px;
       border-radius: 0 14px 0 0;
     }
   }
 
   :last-child {
     a {
-      padding-right: 30px;
       border-radius: 14px 0 0 0;
     }
   }
@@ -141,15 +139,18 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: flex-end;
   cursor: pointer;
+  transition: all 0.3s;
   svg {
     scale: 0.8;
     opacity: 0.5;
+    transition: all 0.3s;
   }
   h6 {
     opacity: 0.7;
     margin: 3px 0;
     font-size: 12px;
     text-transform: capitalize;
+    transition: all 0.3s;
   }
 
   &.active {

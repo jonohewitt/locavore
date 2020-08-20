@@ -3,11 +3,11 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Img from "gatsby-image"
 
-const UL = styled.ul`
+const ListOfBlogPosts = styled.ul`
   margin-top: 50px;
 `
 
-const Post = styled.div`
+const BlogCard = styled.div`
   background-color: var(--color-graphBackground);
   margin: 20px 0;
   border-radius: 8px;
@@ -19,24 +19,16 @@ const Post = styled.div`
     transform: translateY(-5px);
   }
 `
-const PostHeader = ({
-  headerImg,
-  headerDesc,
-  featureImg,
-  featureDesc,
-}) => {
-  const headerArray = [headerImg, headerDesc]
-  const featureArray = [featureImg, featureDesc]
+const CardImage = ({ headerImg, featureImg }) => {
+  let usedImage = false
 
-let postArray = false;
-
-  if (featureArray[0] && !headerArray[0]){
-     postArray = featureArray;
-  } else if (headerArray[0]) {
-     postArray = headerArray
+  if (!headerImg.image && featureImg.image) {
+    usedImage = featureImg
+  } else if (headerImg.image) {
+    usedImage = headerImg
   }
 
-  if (postArray) {
+  if (usedImage) {
     return (
       <Img
         style={{
@@ -48,8 +40,8 @@ let postArray = false;
           width: "100%",
           height: "100%",
         }}
-        fluid={postArray[0]}
-        alt={postArray[1] ? postArray[1] : ""}
+        fluid={usedImage.image}
+        alt={usedImage.description ? usedImage.description : ""}
       />
     )
   } else {
@@ -57,7 +49,7 @@ let postArray = false;
   }
 }
 
-const PostText = styled.div`
+const CardText = styled.div`
   padding: 20px;
 
   h2 {
@@ -81,33 +73,34 @@ const BlogIndexWrapper = styled.div`
 const BlogIndex = () => {
   const data = useStaticQuery(graphql`
     query BlogIndexQuery {
-      allMdx(filter: {frontmatter: {category: {eq: "blog"}}}, sort: {fields: frontmatter___date, order: DESC}) {
-        edges {
-          node {
-            id
-            excerpt(pruneLength: 200)
-            frontmatter {
-              title
-              category
-              slug
-              date(formatString: "DD MMMM, YYYY", locale: "fr")
-              header {
-                childImageSharp {
-                  fluid(maxWidth: 800) {
-                    ...GatsbyImageSharpFluid_withWebp
-                  }
+      allMdx(
+        filter: { frontmatter: { category: { eq: "blog" } } }
+        sort: { fields: frontmatter___date, order: DESC }
+      ) {
+        nodes {
+          id
+          excerpt(pruneLength: 200)
+          frontmatter {
+            title
+            category
+            slug
+            date(formatString: "DD MMMM, YYYY", locale: "fr")
+            header {
+              childImageSharp {
+                fluid(maxWidth: 800) {
+                  ...GatsbyImageSharpFluid_withWebp
                 }
               }
-              headerDescription
-              feature {
-                childImageSharp {
-                  fluid(maxWidth: 800) {
-                    ...GatsbyImageSharpFluid_withWebp
-                  }
-                }
-              }
-              featureDescription
             }
+            headerDescription
+            feature {
+              childImageSharp {
+                fluid(maxWidth: 800) {
+                  ...GatsbyImageSharpFluid_withWebp
+                }
+              }
+            }
+            featureDescription
           }
         }
       }
@@ -116,56 +109,44 @@ const BlogIndex = () => {
 
   return (
     <BlogIndexWrapper>
-    <h1>Blog Posts</h1>
-    <hr/>
-    <UL>
-      {data.allMdx.edges.map(post => {
-        const headerIsIncluded = post.node.frontmatter.header !== null
-        const headerImg = headerIsIncluded
-          ? post.node.frontmatter.header.childImageSharp.fluid
-          : false
+      <h1>Blog Posts</h1>
+      <hr />
+      <ListOfBlogPosts>
+        {data.allMdx.nodes.map(post => {
+          const fm = post.frontmatter
 
-        const headerDescIsIncluded =
-          post.node.frontmatter.headerDescription !== null
-        const headerDesc = headerDescIsIncluded
-          ? post.node.frontmatter.headerDescription
-          : false
+          const headerImg =
+            fm.header !== null ? fm.header.childImageSharp.fluid : false
 
-        const featureIsIncluded = post.node.frontmatter.feature !== null
-        const featureImg = featureIsIncluded
-          ? post.node.frontmatter.feature.childImageSharp.fluid
-          : false
+          const featureImg =
+            fm.feature !== null ? fm.feature.childImageSharp.fluid : false
 
-        const featureDescIsIncluded =
-          post.node.frontmatter.featureDescription !== null
-        const featureDesc = featureDescIsIncluded
-          ? post.node.frontmatter.featureDescription
-          : false
-
-        return (
-          <li key={post.node.id}>
-            <Link
-              to={`/${post.node.frontmatter.category}${post.node.frontmatter.slug}`}
-            >
-              <Post>
-                <PostHeader
-                  headerImg={headerImg}
-                  headerDesc={headerDesc}
-                  featureImg={featureImg}
-                  featureDesc={featureDesc}
-                />
-                <PostText>
-                  <h2>{post.node.frontmatter.title}</h2>
-                  <p>{post.node.frontmatter.date}</p>
-                  <p>{post.node.excerpt}</p>
-                </PostText>
-              </Post>
-            </Link>
-          </li>
-        )
-      })}
-    </UL>
-  </BlogIndexWrapper>
+          return (
+            <li key={post.id}>
+              <Link to={`/blog${fm.slug}`}>
+                <BlogCard>
+                  <CardImage
+                    headerImg={{
+                      image: headerImg,
+                      description: fm.headerDescription,
+                    }}
+                    featureImg={{
+                      image: featureImg,
+                      description: fm.featureDescription,
+                    }}
+                  />
+                  <CardText>
+                    <h2>{fm.title}</h2>
+                    <p>{fm.date}</p>
+                    <p>{post.excerpt}</p>
+                  </CardText>
+                </BlogCard>
+              </Link>
+            </li>
+          )
+        })}
+      </ListOfBlogPosts>
+    </BlogIndexWrapper>
   )
 }
 

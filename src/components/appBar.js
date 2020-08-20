@@ -118,14 +118,12 @@ const TabListItem = styled.li`
 
   :first-child {
     a {
-      margin-left: 15px;
       border-radius: 0 14px 0 0;
     }
   }
 
   :last-child {
     a {
-      margin-right: 15px;
       border-radius: 14px 0 0 0;
     }
   }

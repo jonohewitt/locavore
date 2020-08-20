@@ -47,7 +47,7 @@ const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
           <ToggleContainer>
             Dark theme
             <ToggleSwitch
-              name="Toggle darkmode"
+              label="Toggle darkmode"
               state={context.isDark}
               setState={context.changeTheme}
               notTabbable={!settingsIsOpen}
@@ -58,7 +58,7 @@ const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
           <ToggleContainer>
             App interface
             <ToggleSwitch
-              name="Toggle app interface"
+              label="Toggle app interface"
               state={appInterface}
               setState={setAppInterface}
               notTabbable={!settingsIsOpen}

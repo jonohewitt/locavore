@@ -66,4 +66,9 @@ ul li {
   em {
     font-style: italic;
   }
+
+  a {
+    color: var(--color-altColor);
+    font-weight: 700;
+  }
 `

@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 export const width = 75
 export const maxWidth = 750
-export const breakToMobile = 750
+export const breakToMobile = 900
 
 const Wrapper = styled.div`
   width: ${width}%;

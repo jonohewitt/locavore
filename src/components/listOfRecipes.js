@@ -8,11 +8,11 @@ import { breakToMobile } from "./contentWrapper"
 const StyledUL = styled.ul`
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 25px;
-  @media (max-width: 905px) {
+  ${'' /* @media (max-width: 905px) {
     grid-row-gap: 35px;
-  }
+  } */}
 `
 
 const RecipeCardContainer = styled.li`

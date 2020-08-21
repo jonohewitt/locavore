@@ -26,18 +26,17 @@ const Layout = ({ children }) => {
   return (
     <>
       <GlobalStyles />
-      {context.appInterface ? (
-        <AppBar />
-      ) : (
-        <DesktopNav />
-      )}
+      {context.appInterface ? <AppBar /> : <DesktopNav />}
       <OverflowWrapper>
-          <Settings
-            settingsIsOpen={context.settingsIsOpen}
-            appInterface={context.appInterface}
-            setAppInterface={context.toggleInterface}
-          />
-        <Page settingsIsOpen={context.settingsIsOpen} toggleSettings={context.toggleSettings}>
+        <Settings
+          settingsIsOpen={context.settingsIsOpen}
+          appInterface={context.appInterface}
+          setAppInterface={context.toggleInterface}
+        />
+        <Page
+          settingsIsOpen={context.settingsIsOpen}
+          toggleSettings={context.toggleSettings}
+        >
           <Content appInterface={context.appInterface}>
             <main>{children}</main>
             {!context.appInterface && <Footer />}

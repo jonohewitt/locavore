@@ -71,4 +71,8 @@ ul li {
     color: var(--color-altColor);
     font-weight: 700;
   }
+
+  article {
+    margin-top: 50px;
+  }
 `

@@ -1,24 +1,23 @@
 import React from "react"
 import styled from "styled-components"
 
-export const width = 75;
-export const maxWidth = 750;
-export const breakToMobile = 750;
+export const width = 75
+export const maxWidth = 750
+export const breakToMobile = 750
 
 const Wrapper = styled.div`
   width: ${width}%;
   max-width: ${maxWidth}px;
   margin: 0 auto;
-  padding: ${props => props.padding};
-  @media (max-width: ${breakToMobile}px){
+  @media (max-width: ${breakToMobile}px) {
     width: 90%;
   }
 `
 
-const ContentWrapper = ({children, padding}) => (
-  <Wrapper padding={padding ? padding : "100px 0 0 0"}>
-    {children}
-  </Wrapper>
-)
+const ContentWrapper = ({ children }) => {
+  return (
+    <Wrapper>{children}</Wrapper>
+  )
+}
 
 export default ContentWrapper

@@ -1,14 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
-// import Layout from "../components/layout"
 import styled from "styled-components"
 import ContentWrapper, { breakToMobile } from "../components/contentWrapper"
 import Img from "gatsby-image"
 import SEO from "../components/seo"
 import { BlogStyles } from "./post-styles"
+import { GlobalState } from "../context/globalStateContext"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -40,13 +40,15 @@ const EmptyDiv = styled.div`
 
 const Spacer = ({ height }) => <EmptyDiv height={height ? height : 0} />
 
-const HeaderImage = ({ headerImg, headerDesc }) => {
-  if (headerImg) {
+const HeaderImage = ({ headerImg }) => {
+  const context = useContext(GlobalState)
+
+  if (headerImg.image) {
     return (
       <Img
         style={{
           width: "100%",
-          height: "30vmax",
+          height: context.appInterface ? "20vmax" : "30vmax",
           maxHeight: "350px",
         }}
         imgStyle={{
@@ -54,12 +56,14 @@ const HeaderImage = ({ headerImg, headerDesc }) => {
           width: "100%",
           height: "100%",
         }}
-        fluid={headerImg}
-        alt={headerDesc ? headerDesc : ""}
+        fluid={headerImg.image}
+        alt={headerImg.description ? headerImg.description : ""}
       />
     )
-  } else {
+  } else if (!context.appInterface) {
     return <Spacer height="50px" />
+  } else {
+    return false
   }
 }
 
@@ -70,8 +74,8 @@ const FeatureImgContainer = styled.div`
   }
 `
 
-const FeatureImage = ({ featureImg, featureDesc }) => {
-  if (featureImg) {
+const FeatureImage = ({ featureImg }) => {
+  if (featureImg.image) {
     return (
       <FeatureImgContainer>
         <Img
@@ -81,8 +85,8 @@ const FeatureImage = ({ featureImg, featureDesc }) => {
           imgStyle={{
             width: "100%",
           }}
-          fluid={featureImg}
-          alt={featureDesc ? featureDesc : ""}
+          fluid={featureImg.image}
+          alt={featureImg.description ? featureImg.description : ""}
         />
       </FeatureImgContainer>
     )
@@ -93,39 +97,29 @@ const FeatureImage = ({ featureImg, featureDesc }) => {
 
 const shortcodes = { Link, Ingredients }
 
-export default function PageTemplate({ data: { mdx } }) {
-  const headerIsIncluded = mdx.frontmatter.header !== null
-  const headerImg = headerIsIncluded
-    ? mdx.frontmatter.header.childImageSharp.fluid
+export default function PostTemplate({ data: { mdx } }) {
+  const fm = mdx.frontmatter;
+
+  const headerImg = fm.header !== null
+    ? fm.header.childImageSharp.fluid
     : false
 
-  const headerDescIsIncluded = mdx.frontmatter.headerDescription !== null
-  const headerDesc = headerDescIsIncluded
-    ? mdx.frontmatter.headerDescription
-    : false
-
-  const featureIsIncluded = mdx.frontmatter.feature !== null
-  const featureImg = featureIsIncluded
-    ? mdx.frontmatter.feature.childImageSharp.fluid
-    : false
-
-  const featureDescIsIncluded = mdx.frontmatter.featureDescription !== null
-  const featureDesc = featureDescIsIncluded
-    ? mdx.frontmatter.featureDescription
+  const featureImg = fm.feature !== null
+    ? fm.feature.childImageSharp.fluid
     : false
 
   return (
     <>
-      <SEO title={mdx.frontmatter.title} />
-      <HeaderImage headerImg={headerImg} headerDesc={headerDesc} />
-      <ContentWrapper padding="50px 0 0 0">
+      <SEO title={fm.title} />
+      <HeaderImage headerImg={{image: headerImg, description: fm.headerDescription}} />
+      <ContentWrapper>
         <BlogStyles>
           <article>
             <header>
-              <h1>{mdx.frontmatter.title}</h1>
-              <p>{mdx.frontmatter.date}</p>
+              <h1>{fm.title}</h1>
+              <p>{fm.date}</p>
             </header>
-            <FeatureImage featureImg={featureImg} featureDesc={featureDesc} />
+            <FeatureImage featureImg={{image: featureImg, description: fm.featureDescription}} />
             <main>
               <MDXProvider components={shortcodes}>
                 <MDXRenderer>{mdx.body}</MDXRenderer>

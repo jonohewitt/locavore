@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import ContentWrapper from "./contentWrapper"
 
-export const footerHeight = 150
+export const footerHeight = 100
 const footerHeightString = `${footerHeight}px`
 
 const FooterWrapper = styled.footer`

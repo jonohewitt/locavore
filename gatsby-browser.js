@@ -1,12 +1,9 @@
-require("typeface-quicksand");
-require("remove-focus-outline");
+import "typeface-quicksand"
+import "remove-focus-outline"
+import React from "react"
+import Layout from "./src/components/layout"
+import Provider from "./src/context/globalStateContext"
 
-const React = require("react")
-const Layout = require("./src/components/layout").default
-const Provider = require("./src/context/globalStateContext").default
+export const wrapRootElement = Provider
 
-exports.wrapRootElement = Provider;
-
-exports.wrapPageElement = ({ element }) => {
-  return <Layout>{element}</Layout>
-}
+export const wrapPageElement = ({ element }) => <Layout>{element}</Layout>

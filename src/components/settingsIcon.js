@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
+import { GlobalState } from "../context/globalStateContext"
 
 const IconWrapper = styled.button`
   position: relative;
@@ -82,17 +83,18 @@ const RightSlider = styled(SliderTemplate)`
   }
   `
 
-const SettingsIcon = ({ settingsIsOpen, toggleSettings }) => {
+const SettingsIcon = () => {
+  const context = useContext(GlobalState)
   return (
     <IconWrapper
       aria-label="Toggle settings menu"
-      onClick={() => toggleSettings(!settingsIsOpen)}
+      onClick={context.toggleSettings}
     >
-      <Square settingsIsOpen={settingsIsOpen} />
-      <LeftTrack settingsIsOpen={settingsIsOpen} />
-      <RightTrack settingsIsOpen={settingsIsOpen} />
-      <LeftSlider settingsIsOpen={settingsIsOpen} />
-      <RightSlider settingsIsOpen={settingsIsOpen} />
+      <Square settingsIsOpen={context.settingsIsOpen} />
+      <LeftTrack settingsIsOpen={context.settingsIsOpen} />
+      <RightTrack settingsIsOpen={context.settingsIsOpen} />
+      <LeftSlider settingsIsOpen={context.settingsIsOpen} />
+      <RightSlider settingsIsOpen={context.settingsIsOpen} />
     </IconWrapper>
   )
 }

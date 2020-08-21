@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import { ThemeContext } from "../context/themeContext"
+import { GlobalState } from "../context/globalStateContext"
 import ToggleSwitch from "./toggleSwitch"
 
 const SettingsWrapper = styled.div`
@@ -37,10 +37,10 @@ const InitialHR = styled.hr`
   margin: 100px 20px 3px 20px;
 `
 
-const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
-  const context = useContext(ThemeContext)
+const Settings = () => {
+  const context = useContext(GlobalState)
   return (
-    <SettingsWrapper settingsIsOpen={settingsIsOpen}>
+    <SettingsWrapper settingsIsOpen={context.settingsIsOpen}>
       <InitialHR />
       <StyledUL>
         <li>
@@ -49,8 +49,8 @@ const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
             <ToggleSwitch
               label="Toggle darkmode"
               state={context.isDark}
-              setState={context.changeTheme}
-              notTabbable={!settingsIsOpen}
+              setState={context.toggleTheme}
+              notTabbable={!context.settingsIsOpen}
             />
           </ToggleContainer>
         </li>
@@ -59,9 +59,9 @@ const Settings = ({ settingsIsOpen, appInterface, setAppInterface }) => {
             App interface
             <ToggleSwitch
               label="Toggle app interface"
-              state={appInterface}
-              setState={setAppInterface}
-              notTabbable={!settingsIsOpen}
+              state={context.appInterface}
+              setState={context.toggleInterface}
+              notTabbable={!context.settingsIsOpen}
             />
           </ToggleContainer>
           <hr />

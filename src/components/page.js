@@ -25,13 +25,10 @@ const ClickAwayCover = styled.div`
 `
 
 const Page = ({ settingsIsOpen, toggleSettings, children }) => (
-        <StyledPage settingsIsOpen={settingsIsOpen}>
-          <ClickAwayCover
-            onClick={() => toggleSettings(!settingsIsOpen)}
-            settingsIsOpen={settingsIsOpen}
-          />
-          {children}
-        </StyledPage>
+  <StyledPage settingsIsOpen={settingsIsOpen}>
+    <ClickAwayCover onClick={toggleSettings} settingsIsOpen={settingsIsOpen} />
+    {children}
+  </StyledPage>
 )
 
 export default Page

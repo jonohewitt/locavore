@@ -2,11 +2,12 @@ import React from "react"
 import styled from "styled-components"
 import ContentWrapper from "./contentWrapper"
 
-export const footerHeight = "150px"
+export const footerHeight = 150
+const footerHeightString = `${footerHeight}px`
 
 const FooterWrapper = styled.div`
   background-color: var(--color-graphBackground);
-  height: ${footerHeight};
+  height: ${footerHeightString};
   position: absolute;
   bottom: 0;
   width: 100%;

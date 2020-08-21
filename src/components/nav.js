@@ -75,7 +75,7 @@ const DesktopNav = ({settingsIsOpen, toggleSettings}) => {
 
   return (
     <NavWrapper>
-      <SettingsIcon settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}/>
+      <SettingsIcon />
       <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
       <StyledUL>
         <StyledLi>

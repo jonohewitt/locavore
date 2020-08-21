@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useContext } from "react"
 import PropTypes from "prop-types"
 
 import { GlobalStyles } from "../theme/globalStyles"
 import styled from "styled-components"
-import { ThemeProvider } from "../context/themeContext"
+import { GlobalState } from "../context/globalStateContext"
 
 import Page from "./page"
 import DesktopNav from "./nav"
@@ -15,63 +15,32 @@ const OverflowWrapper = styled.div`
   width: 100vw;
   overflow-x: hidden;
 `
+const footerPadding = `${footerHeight + 100}px`
+
 const Content = styled.div`
-  padding-bottom: calc(${footerHeight} + 100px);
+  padding-bottom: ${props => (props.appInterface ? "100px" : footerPadding)};
 `
 
 const Layout = ({ children }) => {
-
-  const [settingsIsOpen, toggleSettings] = useState(false)
-  const [appInterface, setAppInterface] = useState(false)
-
-  // const [width, setWidth] = useState(undefined)
-  //
-  // useEffect(() => {
-  //   const handleResize = () => setWidth(window.innerWidth)
-  //   window.addEventListener("resize", handleResize)
-  //   handleResize()
-  //   return () => window.removeEventListener("resize", handleResize)
-  // }, [])
-
-  useEffect(() => {
-    const handleDOMLoad = () => {
-      if (
-        navigator.standalone ||
-        window.matchMedia("(display-mode: standalone)").matches
-      ) {
-        setAppInterface(true)
-      }
-    }
-    window.addEventListener("DOMContentLoaded", handleDOMLoad)
-    handleDOMLoad()
-    return () => window.removeEventListener("DOMContentLoaded", handleDOMLoad)
-  }, [])
-
+  const context = useContext(GlobalState)
   return (
     <>
       <GlobalStyles />
-      {appInterface ? (
+      {context.appInterface ? (
         <AppBar />
       ) : (
-        <DesktopNav
-          settingsIsOpen={settingsIsOpen}
-          toggleSettings={toggleSettings}
-        />
+        <DesktopNav />
       )}
       <OverflowWrapper>
-        <ThemeProvider>
           <Settings
-            settingsIsOpen={settingsIsOpen}
-            appInterface={appInterface}
-            setAppInterface={() =>
-              setAppInterface(!appInterface)
-            }
+            settingsIsOpen={context.settingsIsOpen}
+            appInterface={context.appInterface}
+            setAppInterface={context.toggleInterface}
           />
-        </ThemeProvider>
-        <Page settingsIsOpen={settingsIsOpen} toggleSettings={toggleSettings}>
-          <Content>
+        <Page settingsIsOpen={context.settingsIsOpen} toggleSettings={context.toggleSettings}>
+          <Content appInterface={context.appInterface}>
             <main>{children}</main>
-            {!appInterface && <Footer />}
+            {!context.appInterface && <Footer />}
           </Content>
         </Page>
       </OverflowWrapper>

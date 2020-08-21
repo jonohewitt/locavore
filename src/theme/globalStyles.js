@@ -41,6 +41,10 @@ export const GlobalStyles = createGlobalStyle`
     -webkit-tap-highlight-color: transparent;
   }
 
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .italic {
     font-style: italic;
   }

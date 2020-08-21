@@ -42,6 +42,7 @@ const PageTitle = styled(StyledLink)`
   left: calc(50% - min(${width / 2}%, ${maxWidth / 2}px) - 10px);
   font-family: Yelena, Quicksand, sans-serif;
   font-size: 26px;
+  color: var(--color-navTitle);
 
   @media (max-width: ${breakToMobile}px){
     position: static;

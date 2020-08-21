@@ -82,7 +82,7 @@ const FilterButton = styled.button`
   color: ${props => (props.selected ? "var(--color-background)" : props.color)};
   cursor: pointer;
   box-shadow: ${props =>
-    props.selected ? "0 4px 7px rgba(0, 0, 0, 0.2)" : ""};
+    props.selected ? "0 4px 7px rgba(0, 0, 0, 0.2)" : ""} !important;
   text-transform: capitalize;
 `
 

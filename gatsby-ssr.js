@@ -1,6 +1,7 @@
 import React from "react"
 import { lightTheme, darkTheme } from "./src/theme/themeVariables"
 import Layout from "./src/components/layout"
+import Provider from "./src/context/globalStateContext"
 
 const ScriptInjection = () => {
   let codeToRunOnClient = `(function() {
@@ -24,14 +25,16 @@ const ScriptInjection = () => {
         root.style.setProperty(cssVarName, value)
       }
     )
-  })()`;
+  })()`
   // eslint-disable-next-line react/no-danger
   return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />
-};
+}
 
 export const onRenderBody = ({ setPreBodyComponents }) => {
-  setPreBodyComponents(<ScriptInjection key="🔑" />);
-};
+  setPreBodyComponents(<ScriptInjection key="🔑" />)
+}
+
+export const wrapRootElement = Provider
 
 export const wrapPageElement = ({ element }) => {
   return <Layout>{element}</Layout>

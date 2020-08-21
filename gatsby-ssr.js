@@ -36,6 +36,4 @@ export const onRenderBody = ({ setPreBodyComponents }) => {
 
 export const wrapRootElement = Provider
 
-export const wrapPageElement = ({ element }) => {
-  return <Layout>{element}</Layout>
-}
+export const wrapPageElement = ({ element }) => <Layout>{element}</Layout>

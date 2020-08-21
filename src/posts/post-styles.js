@@ -48,6 +48,7 @@ ul li {
     position: absolute;
     left: 0;
     top: -7px;
+    color: var(--color-settingsIcon);
   }
 
   blockquote {

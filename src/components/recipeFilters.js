@@ -31,7 +31,7 @@ export const ShowFilters = ({ filtersAreShown, setShowFilter }) => {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M9 18A9 9 0 109 0a9 9 0 000 18zm6-9a1 1 0 00-1-1H4a1 1 0 100 2h10a1 1 0 001-1z"
-            fill="var(--color-text)"
+            fill="var(--color-settingsIcon)"
           />
         </svg>
       </SelectFiltersButton>
@@ -51,7 +51,7 @@ export const ShowFilters = ({ filtersAreShown, setShowFilter }) => {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M18 9C18 13.9706 13.9706 18 9 18C4.02945 18 0 13.9706 0 9C0 4.02943 4.02945 0 9 0C13.9706 0 18 4.02943 18 9ZM8 4C8 3.44772 8.44772 3 9 3C9.55228 3 10 3.44772 10 4V8H14C14.5523 8 15 8.44772 15 9C15 9.55228 14.5523 10 14 10H10V14C10 14.5523 9.55228 15 9 15C8.44772 15 8 14.5523 8 14V10H4C3.44772 10 3 9.55228 3 9C3 8.44772 3.44772 8 4 8H8V4Z"
-            fill="var(--color-text)"
+            fill="var(--color-settingsIcon)"
           />
         </svg>
       </SelectFiltersButton>

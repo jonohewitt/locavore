@@ -9,7 +9,6 @@ const Provider = ({ children }) => {
   const [isDark, setTheme] = useState(undefined)
 
   useEffect(() => {
-    // const handleDOMLoad = () => {
       if (
         !(
           navigator.standalone ||
@@ -18,12 +17,6 @@ const Provider = ({ children }) => {
       ) {
         setAppInterface(false)
       }
-// }
-// window.addEventListener("DOMContentLoaded", handleDOMLoad)
-
-    // handleDOMLoad()
-
-    ///
 
     const initialTheme =
       window.document.documentElement.attributes["is-dark-mode"].value ===

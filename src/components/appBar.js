@@ -157,7 +157,7 @@ const StyledLink = styled(Link)`
 
   &.active {
     border-bottom: solid 3px;
-    box-shadow: 0 8px 15px hsla(0, 0%, 10%, 0.6);
+    box-shadow: 0 8px 15px hsla(0, 0%, 10%, 0.6) !important;
     border-radius: 14px 14px 0 0;
     background-color: var(--color-activeAppTab);
     svg {

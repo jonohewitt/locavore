@@ -26,7 +26,9 @@ const Layout = ({ children }) => {
   return (
     <>
       <GlobalStyles />
-      {context.appInterface ? <AppBar /> : <DesktopNav />}
+      {context.appInterface && <AppBar />}
+      {context.appInterface === false && <DesktopNav />}
+
       <OverflowWrapper>
         <Settings
           settingsIsOpen={context.settingsIsOpen}

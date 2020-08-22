@@ -4,19 +4,15 @@ import { lightTheme, darkTheme } from "../theme/themeVariables"
 export const GlobalState = React.createContext()
 
 const Provider = ({ children }) => {
-  const [appInterface, setAppInterface] = useState(true)
+  const [appInterface, setAppInterface] = useState(undefined)
   const [settingsIsOpen, setSettingsIsOpen] = useState(false)
   const [isDark, setTheme] = useState(undefined)
 
   useEffect(() => {
-      if (
-        !(
-          navigator.standalone ||
-          window.matchMedia("(display-mode: standalone)").matches
-        )
-      ) {
-        setAppInterface(false)
-      }
+    setAppInterface(
+      navigator.standalone ||
+        window.matchMedia("(display-mode: standalone)").matches
+    )
 
     const initialTheme =
       window.document.documentElement.attributes["is-dark-mode"].value ===

@@ -3,21 +3,17 @@ import { Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
 import TimeIndicators from "./recipeTimeInfo"
-import { breakToMobile } from "./contentWrapper"
 
 const StyledUL = styled.ul`
   margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 25px;
-  ${'' /* @media (max-width: 905px) {
-    grid-row-gap: 35px;
-  } */}
 `
 
 const RecipeCardContainer = styled.li`
   height: 400px;
-  @media (max-width: 905px) {
+  @media (max-width: 900px) {
     height: 100%;
   }
 `
@@ -29,7 +25,7 @@ const RecipeCard = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
   overflow: hidden;
-  @media (min-width: ${breakToMobile}px) {
+  @media (min-width: ${600}px) {
     height: 100%;
   }
 

@@ -106,61 +106,61 @@ const RecipeText = styled.div`
 
 const ListOfRecipes = ({ recipeList, filterList }) => (
   <StyledUL>
-    {recipeList.map(post => {
-      const fm = post.frontmatter
+    {recipeList
+      .filter(recipe => {
+        if (filterList) {
+          let recipeShouldBeIncluded = true
 
-      const headerImg =
-        fm.header !== null ? fm.header.childImageSharp.fluid : false
+          Object.entries(filterList).forEach(([filter, filterIsApplied]) => {
+            const recipePassesFilters =
+              !filterIsApplied || recipe.frontmatter[filter] === filterIsApplied
+            if (!recipePassesFilters) {
+              recipeShouldBeIncluded = false
+            }
+          })
 
-      const featureImg =
-        fm.feature !== null ? fm.feature.childImageSharp.fluid : false
-
-      const recipeMatch = () => (
-        <RecipeCardContainer key={post.id}>
-          <Link to={`/${fm.category}${fm.slug}`}>
-            <RecipeCard>
-              <RecipeImage
-                headerImg={{
-                  image: headerImg,
-                  description: fm.headerDescription,
-                }}
-                featureImg={{
-                  image: featureImg,
-                  description: fm.featureDescription,
-                }}
-              />
-              <RecipeText>
-                <h2>{fm.title}</h2>
-                <hr />
-                <p>{`${fm.course} • ${fm.feeds} people`}</p>
-              </RecipeText>
-              <DairyIndicator vegan={fm.vegan} vegetarian={fm.vegetarian} />
-              <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
-            </RecipeCard>
-          </Link>
-        </RecipeCardContainer>
-      )
-
-      if (filterList) {
-        let recipeShouldBeIncluded = true
-
-        Object.entries(filterList).forEach(([filter, filterIsApplied]) => {
-          const recipePassesFilters =
-            fm[filter] || fm[filter] === filterIsApplied
-          if (!recipePassesFilters) {
-            recipeShouldBeIncluded = false
-          }
-        })
-
-        if (recipeShouldBeIncluded) {
-          return recipeMatch()
+          return recipeShouldBeIncluded
         } else {
-          return false
+          return true
         }
-      } else {
-        return recipeMatch()
-      }
-    })}
+      })
+      .map(recipe => {
+        const fm = recipe.frontmatter
+
+        const headerImg =
+          fm.header !== null ? fm.header.childImageSharp.fluid : false
+        const featureImg =
+          fm.feature !== null ? fm.feature.childImageSharp.fluid : false
+
+        return (
+          <RecipeCardContainer key={recipe.id}>
+            <Link to={`/${fm.category}${fm.slug}`}>
+              <RecipeCard>
+                <RecipeImage
+                  headerImg={{
+                    image: headerImg,
+                    description: fm.headerDescription,
+                  }}
+                  featureImg={{
+                    image: featureImg,
+                    description: fm.featureDescription,
+                  }}
+                />
+                <RecipeText>
+                  <h2>{fm.title}</h2>
+                  <hr />
+                  <p>
+                    {fm.course}
+                    {fm.feeds && ` • ${fm.feeds} people`}
+                  </p>
+                </RecipeText>
+                <DairyIndicator vegan={fm.vegan} vegetarian={fm.vegetarian} />
+                <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
+              </RecipeCard>
+            </Link>
+          </RecipeCardContainer>
+        )
+      })}
   </StyledUL>
 )
 

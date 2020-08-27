@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
 
-const home = (
+const homeSVG = (
   <svg width="30" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
@@ -23,7 +23,7 @@ const home = (
   </svg>
 )
 
-const recipes = (
+const recipesSVG = (
   <svg width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
@@ -50,7 +50,7 @@ const recipes = (
   </svg>
 )
 
-const resources = (
+const resourcesSVG = (
   <svg width="29" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
@@ -65,7 +65,7 @@ const resources = (
   </svg>
 )
 
-const blog = (
+const blogSVG = (
   <svg width="22" height="25" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M16.398 2.559l3.115 3.204-7.734 7.955a.88.88 0 01-.251.18l-3.502 1.68c-.745.358-1.518-.437-1.17-1.204l1.632-3.602a.906.906 0 01.176-.258l7.734-7.955zM18.627.265a.864.864 0 011.246 0l1.869 1.923a.925.925 0 010 1.282l-1.516 1.56-3.115-3.205 1.516-1.56z"
@@ -80,7 +80,7 @@ const blog = (
   </svg>
 )
 
-const shops = (
+const shopsSVG = (
   <svg width="32" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
@@ -92,24 +92,47 @@ const shops = (
 )
 
 const tabArray = [
-  ["Home", home, "/"],
-  ["Recipes", recipes, "/recettes"],
-  ["Resources", resources, "/resources"],
-  ["Blog", blog, "/blog"],
-  ["Shops", shops, "/shops"],
+  {
+    name: "Home",
+    icon: homeSVG,
+    link: "/",
+  },
+  {
+    name: "Recipes",
+    icon: recipesSVG,
+    link: "/recettes",
+  },
+  {
+    name: "Resources",
+    icon: resourcesSVG,
+    link: "/resources",
+  },
+  {
+    name: "Blog",
+    icon: blogSVG,
+    link: "/blog",
+  },
+  {
+    name: "Shops",
+    icon: shopsSVG,
+    link: "/shops",
+  },
 ]
 
-const BarWrapper = styled.ul`
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 55px;
-  background-color: var(--color-appBar);
+const BarWrapper = styled.nav`
+position: fixed;
+bottom: 0;
+width: 100%;
+height: 55px;
+background-color: var(--color-appBar);
+box-shadow: 0 -10px 10px hsla(0, 0%, 10%, 0.1);
+transition: all 0.3s;
+z-index: 3;
+`
+
+const TabList = styled.ul`
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr;
-  z-index: 3;
-  box-shadow: 0 -10px 10px hsla(0, 0%, 10%, 0.1);
-  transition: all 0.3s;
 `
 
 const TabListItem = styled.li`
@@ -169,22 +192,24 @@ const StyledLink = styled(Link)`
   }
 `
 
-const AppBar = ({settingsIsOpen, toggleSettings}) => {
+const AppBar = ({ settingsIsOpen, toggleSettings }) => {
   return (
-      <BarWrapper>
-        {tabArray.map(tab => (
-          <TabListItem key={tab[0]}>
-            <StyledLink
-              to={tab[2]}
-              activeClassName="active"
-              partiallyActive={tab[2] === "/" ? false : true}
-            >
-              {tab[1]}
-              <h6>{tab[0]}</h6>
-            </StyledLink>
-          </TabListItem>
-        ))}
-      </BarWrapper>
+    <BarWrapper>
+      <TabList>
+      {tabArray.map(tab => (
+        <TabListItem key={tab.name}>
+          <StyledLink
+            to={tab.link}
+            activeClassName="active"
+            partiallyActive={tab.link === "/" ? false : true}
+          >
+            {tab.icon}
+            <h6>{tab.name}</h6>
+          </StyledLink>
+        </TabListItem>
+      ))}
+      </TabList>
+    </BarWrapper>
   )
 }
 

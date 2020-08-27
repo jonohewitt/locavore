@@ -47,7 +47,7 @@ const PrepTime = ({ prepTime }) => {
             fill="currentColor"
           />
         </svg>
-        <h3 style={{paddingLeft: "3px"}}>{prepTime}m</h3>
+        <h3 style={{paddingLeft: "3px"}}>{prepTime < 60 ? `${prepTime}m` : `${Math.round(prepTime / 6)/10}h`}</h3>
       </IndicatorPair>
     )
   } else {
@@ -83,7 +83,7 @@ const CookTime = ({ cookTime }) => {
             fill="var(--color-text)"
           />
         </svg>
-        <h3>{cookTime}m</h3>
+        <h3>{cookTime < 60 ? `${cookTime}m` : `${Math.round(cookTime / 6)/10}h`}</h3>
       </IndicatorPair>
     )
   } else {

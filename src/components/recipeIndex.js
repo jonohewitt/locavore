@@ -29,7 +29,7 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
     query RecipeIndexQuery {
       allMdx(
         filter: { frontmatter: { category: { eq: "recettes" } } }
-        sort: { fields: frontmatter___date, order: DESC }
+        sort: { fields: frontmatter___title, order: ASC }
       ) {
         nodes {
           id

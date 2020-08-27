@@ -126,13 +126,13 @@ width: 100%;
 height: 55px;
 background-color: var(--color-appBar);
 box-shadow: 0 -10px 10px hsla(0, 0%, 10%, 0.1);
-transition: all 0.3s;
 z-index: 3;
 `
 
 const TabList = styled.ul`
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr;
+  height: 100%;
 `
 
 const TabListItem = styled.li`
@@ -164,7 +164,8 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: flex-end;
   cursor: pointer;
-  transition: all 0.3s;
+  box-shadow: none;
+  transition: box-shadow 0.3s;
   svg {
     scale: 0.8;
     opacity: 0.5;
@@ -175,7 +176,6 @@ const StyledLink = styled(Link)`
     margin: 3px 0;
     font-size: 12px;
     text-transform: capitalize;
-    transition: all 0.3s;
   }
 
   &.active {

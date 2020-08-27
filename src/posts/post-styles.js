@@ -37,7 +37,7 @@ ul li {
   ol li {
     counter-increment: custom-counter;
     margin: 35px 0;
-    padding-left: 35px;
+    padding-left: 45px;
     position: relative;
   }
 

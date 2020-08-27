@@ -65,10 +65,13 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
     }
   `)
 
-  const toggleFilter = filter => {
+  const toggleFilter = filterName => {
     setFilterList(prevState => {
-      let newState = { ...prevState }
-      newState[filter] = !prevState[filter]
+      const newState = [...prevState]
+      const filterIndex = newState.findIndex(
+        filter => filter.name === filterName
+      )
+      newState[filterIndex].isApplied = !newState[filterIndex].isApplied
       return newState
     })
   }
@@ -92,8 +95,7 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
         toggleFilter={toggleFilter}
       />
 
-      <ListOfRecipes recipeList={data.allMdx.nodes} filterList={filterList}/>
-
+      <ListOfRecipes recipeList={data.allMdx.nodes} filterList={filterList} />
     </RecipeIndexWrapper>
   )
 }

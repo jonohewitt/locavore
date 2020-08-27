@@ -98,19 +98,21 @@ export const Filters = ({ filterList, filtersAreShown, toggleFilter }) => {
   if (filtersAreShown) {
     return (
       <ListOfFilters>
-        {Object.entries(filterList).map(([filterName, filterValue]) => (
+        {filterList.map((filter) => {
+          const buttonColor = filter.name === "vegan" ? `var(--color-${filter.name})` : `var(--color-text)`
+          return (
           <FilterButtonContainer
-            key={filterName}
-            onClick={() => toggleFilter(filterName)}
+            key={filter.name}
+            onClick={() => toggleFilter(filter.name)}
           >
             <FilterButton
-              color={`var(--color-${filterName})`}
-              selected={filterValue}
+              color={buttonColor}
+              selected={filter.isApplied}
             >
-              {filterName}
+              {filter.name}
             </FilterButton>
             <CrossSVG
-              selected={filterValue}
+              selected={filter.isApplied}
               width="36"
               height="36"
               fill="none"
@@ -121,20 +123,20 @@ export const Filters = ({ filterList, filtersAreShown, toggleFilter }) => {
                 cy="18"
                 r="8"
                 fill="var(--color-background)"
-                stroke={`var(--color-${filterName})`}
+                stroke={buttonColor}
                 strokeWidth="2"
               />
               <path
                 d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
-                fill={`var(--color-${filterName})`}
+                fill={buttonColor}
               />
               <path
                 d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
-                fill={`var(--color-${filterName})`}
+                fill={buttonColor}
               />
             </CrossSVG>
           </FilterButtonContainer>
-        ))}
+        )})}
       </ListOfFilters>
     )
   } else {

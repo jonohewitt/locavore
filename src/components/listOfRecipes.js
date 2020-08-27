@@ -109,17 +109,9 @@ const ListOfRecipes = ({ recipeList, filterList }) => (
     {recipeList
       .filter(recipe => {
         if (filterList) {
-          let recipeShouldBeIncluded = true
-
-          Object.entries(filterList).forEach(([filter, filterIsApplied]) => {
-            const recipePassesFilters =
-              !filterIsApplied || recipe.frontmatter[filter] === filterIsApplied
-            if (!recipePassesFilters) {
-              recipeShouldBeIncluded = false
-            }
-          })
-
-          return recipeShouldBeIncluded
+          return filterList.every(
+            filter => !filter.isApplied || filter.logic(recipe.frontmatter)
+          )
         } else {
           return true
         }

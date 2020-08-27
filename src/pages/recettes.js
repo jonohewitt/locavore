@@ -11,10 +11,36 @@ const Main = styled.div`
 
 const Recettes = () => {
   const context = useContext(GlobalState)
-  const [filterList, setFilterList] = useState({
-    vegan: false,
-    vegetarian: false,
-  })
+  const [filterList, setFilterList] = useState([
+    {
+      name: "vegan",
+      logic(fm) {
+        return fm["vegan"] === true
+      },
+      isApplied: false,
+    },
+    {
+      name: "mains",
+      logic(fm) {
+        return fm["course"] === "Main"
+      },
+      isApplied: false,
+    },
+    {
+      name: "desserts",
+      logic(fm) {
+        return fm["course"] === "Dessert"
+      },
+      isApplied: false,
+    },
+    {
+      name: "sides",
+      logic(fm) {
+        return fm["course"] === "Side"
+      },
+      isApplied: false,
+    },
+  ])
   return (
     <>
       <SEO title="Recettes" />

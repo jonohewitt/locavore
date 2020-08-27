@@ -98,45 +98,43 @@ export const Filters = ({ filterList, filtersAreShown, toggleFilter }) => {
   if (filtersAreShown) {
     return (
       <ListOfFilters>
-        {Object.entries(filterList).map(filter => {
-          return (
-            <FilterButtonContainer
-              key={filter[0]}
-              onClick={() => toggleFilter(filter[0])}
+        {Object.entries(filterList).map(([filterName, filterValue]) => (
+          <FilterButtonContainer
+            key={filterName}
+            onClick={() => toggleFilter(filterName)}
+          >
+            <FilterButton
+              color={`var(--color-${filterName})`}
+              selected={filterValue}
             >
-              <FilterButton
-                color={`var(--color-${filter[0]})`}
-                selected={filter[1]}
-              >
-                {filter[0]}
-              </FilterButton>
-              <CrossSVG
-                selected={filter[1]}
-                width="36"
-                height="36"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="18"
-                  cy="18"
-                  r="8"
-                  fill="var(--color-background)"
-                  stroke={`var(--color-${filter[0]})`}
-                  strokeWidth="2"
-                />
-                <path
-                  d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
-                  fill={`var(--color-${filter[0]})`}
-                />
-                <path
-                  d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
-                  fill={`var(--color-${filter[0]})`}
-                />
-              </CrossSVG>
-            </FilterButtonContainer>
-          )
-        })}
+              {filterName}
+            </FilterButton>
+            <CrossSVG
+              selected={filterValue}
+              width="36"
+              height="36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="18"
+                cy="18"
+                r="8"
+                fill="var(--color-background)"
+                stroke={`var(--color-${filterName})`}
+                strokeWidth="2"
+              />
+              <path
+                d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
+                fill={`var(--color-${filterName})`}
+              />
+              <path
+                d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
+                fill={`var(--color-${filterName})`}
+              />
+            </CrossSVG>
+          </FilterButtonContainer>
+        ))}
       </ListOfFilters>
     )
   } else {

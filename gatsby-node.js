@@ -7,15 +7,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const result = await graphql(`
     query {
       allMdx {
-        edges {
-          node {
-            id
-            frontmatter {
-              title
-              slug
-              category
-              ingredients
-            }
+        nodes {
+          id
+          fields {
+               source
+           }
+          frontmatter {
+            title
+            customSlug
+            ingredients
           }
         }
       }
@@ -26,15 +26,16 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  const posts = result.data.allMdx.edges
+  const posts = result.data.allMdx.nodes
 
   let ingredientArray = []
 
-  posts.forEach(({ node }, index) => {
-    const categoryIsIncluded = node.frontmatter.category !== null
-    const category = categoryIsIncluded ? node.frontmatter.category : "blog"
+  posts.forEach(node => {
+    const slug = node.frontmatter.customSlug
+      ? node.frontmatter.customSlug
+      : `/${slugify(node.frontmatter.title, { lower: true, strict: true })}`
 
-    if (node.frontmatter.ingredients !== null) {
+    if (node.frontmatter.ingredients) {
       node.frontmatter.ingredients.forEach(ingredient => {
         if (!ingredientArray.includes(ingredient)) {
           ingredientArray.push(ingredient)
@@ -43,7 +44,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     }
 
     createPage({
-      path: `${category}${node.frontmatter.slug}`,
+      path: `${node.fields.source}${slug}`,
 
       component: path.resolve(`./src/posts/post-template.js`),
 

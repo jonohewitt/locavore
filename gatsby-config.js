@@ -40,11 +40,19 @@ module.exports = {
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-offline`,
     `gatsby-plugin-mdx`,
+    `gatsby-plugin-mdx-source-name`,
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        name: "posts",
-        path: `${__dirname}/src/posts/`,
+        name: "recettes",
+        path: `${__dirname}/src/posts/recipes`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "blog",
+        path: `${__dirname}/src/posts/blog`,
       },
     },
     `gatsby-plugin-netlify`,

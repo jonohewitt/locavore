@@ -2,6 +2,7 @@ import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Img from "gatsby-image"
+import slugify from "slugify"
 
 const ListOfBlogPosts = styled.ul`
   margin-top: 50px;
@@ -74,7 +75,7 @@ const BlogIndex = () => {
   const data = useStaticQuery(graphql`
     query BlogIndexQuery {
       allMdx(
-        filter: { frontmatter: { category: { eq: "blog" } } }
+        filter: { fields: { source: { eq: "blog" } } }
         sort: { fields: frontmatter___date, order: DESC }
       ) {
         nodes {
@@ -82,8 +83,7 @@ const BlogIndex = () => {
           excerpt(pruneLength: 200)
           frontmatter {
             title
-            category
-            slug
+            customSlug
             date(formatString: "DD MMMM, YYYY", locale: "fr")
             header {
               childImageSharp {
@@ -114,24 +114,19 @@ const BlogIndex = () => {
       <ListOfBlogPosts>
         {data.allMdx.nodes.map(post => {
           const fm = post.frontmatter
-
-          const headerImg =
-            fm.header !== null ? fm.header.childImageSharp.fluid : false
-
-          const featureImg =
-            fm.feature !== null ? fm.feature.childImageSharp.fluid : false
+          const slug = fm.customSlug ? fm.customSlug : `/${slugify(fm.title, { lower: true, strict: true })}`
 
           return (
             <li key={post.id}>
-              <Link to={`/blog${fm.slug}`}>
+              <Link to={`/blog${slug}`}>
                 <BlogCard>
                   <CardImage
                     headerImg={{
-                      image: headerImg,
+                      image: fm.header ? fm.header.childImageSharp.fluid : false,
                       description: fm.headerDescription,
                     }}
                     featureImg={{
-                      image: featureImg,
+                      image: fm.feature ? fm.feature.childImageSharp.fluid : false,
                       description: fm.featureDescription,
                     }}
                   />

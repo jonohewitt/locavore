@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
+import slugify from "slugify"
 import TimeIndicators from "./recipeTimeInfo"
 
 const StyledUL = styled.ul`
@@ -118,23 +119,22 @@ const ListOfRecipes = ({ recipeList, filterList }) => (
       })
       .map(recipe => {
         const fm = recipe.frontmatter
-
-        const headerImg =
-          fm.header !== null ? fm.header.childImageSharp.fluid : false
-        const featureImg =
-          fm.feature !== null ? fm.feature.childImageSharp.fluid : false
-
+        const slug = fm.customSlug ? fm.customSlug : `/${slugify(fm.title, { lower: true, strict: true })}`
         return (
           <RecipeCardContainer key={recipe.id}>
-            <Link to={`/${fm.category}${fm.slug}`}>
+            <Link
+              to={`/recettes${slug}`}
+            >
               <RecipeCard>
                 <RecipeImage
                   headerImg={{
-                    image: headerImg,
+                    image: fm.header ? fm.header.childImageSharp.fluid : false,
                     description: fm.headerDescription,
                   }}
                   featureImg={{
-                    image: featureImg,
+                    image: fm.feature
+                      ? fm.feature.childImageSharp.fluid
+                      : false,
                     description: fm.featureDescription,
                   }}
                 />

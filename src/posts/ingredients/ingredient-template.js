@@ -50,14 +50,12 @@ export const pageQuery = graphql`
   query RecipesIncludingIngredient($name: [String]) {
     allMdx(
       filter: { frontmatter: { ingredients: { in: $name } } }
-      sort: { fields: frontmatter___date, order: DESC }
+      sort: { fields: frontmatter___title, order: ASC }
     ) {
       nodes {
         id
         frontmatter {
           title
-          category
-          slug
           header {
             childImageSharp {
               fluid(maxWidth: 800) {

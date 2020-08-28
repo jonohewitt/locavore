@@ -28,15 +28,14 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
   const data = useStaticQuery(graphql`
     query RecipeIndexQuery {
       allMdx(
-        filter: { frontmatter: { category: { eq: "recettes" } } }
+        filter: { fields: { source: { eq: "recettes" } } }
         sort: { fields: frontmatter___title, order: ASC }
       ) {
         nodes {
           id
           frontmatter {
             title
-            category
-            slug
+            customSlug
             header {
               childImageSharp {
                 fluid(maxWidth: 800) {

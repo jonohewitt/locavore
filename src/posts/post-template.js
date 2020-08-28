@@ -98,20 +98,17 @@ const FeatureImage = ({ featureImg }) => {
 const shortcodes = { Link, Ingredients }
 
 export default function PostTemplate({ data: { mdx } }) {
-  const fm = mdx.frontmatter;
+  const fm = mdx.frontmatter
 
-  const headerImg = fm.header !== null
-    ? fm.header.childImageSharp.fluid
-    : false
-
-  const featureImg = fm.feature !== null
-    ? fm.feature.childImageSharp.fluid
-    : false
+  const headerImg = fm.header ? fm.header.childImageSharp.fluid : false
+  const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
 
   return (
     <>
       <SEO title={fm.title} />
-      <HeaderImage headerImg={{image: headerImg, description: fm.headerDescription}} />
+      <HeaderImage
+        headerImg={{ image: headerImg, description: fm.headerDescription }}
+      />
       <ContentWrapper>
         <BlogStyles>
           <article>
@@ -119,7 +116,12 @@ export default function PostTemplate({ data: { mdx } }) {
               <h1>{fm.title}</h1>
               <p>{fm.date}</p>
             </header>
-            <FeatureImage featureImg={{image: featureImg, description: fm.featureDescription}} />
+            <FeatureImage
+              featureImg={{
+                image: featureImg,
+                description: fm.featureDescription,
+              }}
+            />
             <main>
               <MDXProvider components={shortcodes}>
                 <MDXRenderer>{mdx.body}</MDXRenderer>

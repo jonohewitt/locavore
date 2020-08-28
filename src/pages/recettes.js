@@ -13,30 +13,30 @@ const Recettes = () => {
   const context = useContext(GlobalState)
   const [filterList, setFilterList] = useState([
     {
-      name: "vegan",
+      name: "Vegan",
       logic(fm) {
         return fm["vegan"] === true
       },
       isApplied: false,
     },
     {
-      name: "mains",
+      name: "Les basiques",
       logic(fm) {
-        return fm["course"] === "Main"
+        return fm["course"] === "Les basiques"
       },
       isApplied: false,
     },
     {
-      name: "desserts",
+      name: "Desserts",
       logic(fm) {
         return fm["course"] === "Dessert"
       },
       isApplied: false,
     },
     {
-      name: "sides",
+      name: "Apéros",
       logic(fm) {
-        return fm["course"] === "Side"
+        return fm["course"] === "Apéros"
       },
       isApplied: false,
     },

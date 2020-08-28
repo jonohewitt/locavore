@@ -83,7 +83,6 @@ const FilterButton = styled.button`
   cursor: pointer;
   box-shadow: ${props =>
     props.selected ? "0 4px 7px rgba(0, 0, 0, 0.2)" : ""} !important;
-  text-transform: capitalize;
 `
 
 const CrossSVG = styled.svg`
@@ -99,7 +98,7 @@ export const Filters = ({ filterList, filtersAreShown, toggleFilter }) => {
     return (
       <ListOfFilters>
         {filterList.map((filter) => {
-          const buttonColor = filter.name === "vegan" ? `var(--color-${filter.name})` : `var(--color-text)`
+          const buttonColor = filter.name === "Vegan" ? `var(--color-vegan)` : `var(--color-text)`
           return (
           <FilterButtonContainer
             key={filter.name}

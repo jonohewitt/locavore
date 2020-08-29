@@ -94,6 +94,7 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
       <Header>
         <h1>Recettes</h1>
         <ShowFilters
+          anyAppliedFilters={filterList.some(filter => filter.isApplied === true)}
           filtersAreShown={filtersAreShown}
           setShowFilter={setShowFilter}
         />

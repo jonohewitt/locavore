@@ -16,11 +16,15 @@ const SelectFiltersButton = styled.button`
   }
 `
 
-export const ShowFilters = ({ filtersAreShown, setShowFilter }) => {
+export const ShowFilters = ({
+  filtersAreShown,
+  setShowFilter,
+  anyAppliedFilters,
+}) => {
   if (filtersAreShown) {
     return (
       <SelectFiltersButton onClick={() => setShowFilter(!filtersAreShown)}>
-        Hide filters
+        Cacher filtres
         <svg
           width="18"
           height="18"
@@ -39,7 +43,7 @@ export const ShowFilters = ({ filtersAreShown, setShowFilter }) => {
   } else {
     return (
       <SelectFiltersButton onClick={() => setShowFilter(!filtersAreShown)}>
-        Select filters
+        {anyAppliedFilters ? "Changer" : "Sélectionner"} filtres
         <svg
           width="18"
           height="18"
@@ -99,45 +103,44 @@ export const Filters = ({ filterList, filtersAreShown, toggleFilter }) => {
   if (filtersAreShown) {
     return (
       <ListOfFilters>
-        {filterList.map((filter) => {
-          const buttonColor = filter.name === "Vegan" ? `var(--color-vegan)` : `var(--color-text)`
+        {filterList.map(filter => {
+          const buttonColor =
+            filter.name === "Vegan" ? `var(--color-vegan)` : `var(--color-text)`
           return (
-          <FilterButtonContainer
-            key={filter.name}
-            onClick={() => toggleFilter(filter.name)}
-          >
-            <FilterButton
-              color={buttonColor}
-              selected={filter.isApplied}
+            <FilterButtonContainer
+              key={filter.name}
+              onClick={() => toggleFilter(filter.name)}
             >
-              {filter.name}
-            </FilterButton>
-            <CrossSVG
-              selected={filter.isApplied}
-              width="36"
-              height="36"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="18"
-                cy="18"
-                r="8"
-                fill="var(--color-background)"
-                stroke={buttonColor}
-                strokeWidth="2"
-              />
-              <path
-                d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
-                fill={buttonColor}
-              />
-              <path
-                d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
-                fill={buttonColor}
-              />
-            </CrossSVG>
-          </FilterButtonContainer>
-        )})}
+              <FilterButton color={buttonColor} selected={filter.isApplied}>
+                {filter.name}
+              </FilterButton>
+              <CrossSVG
+                selected={filter.isApplied}
+                width="36"
+                height="36"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="8"
+                  fill="var(--color-background)"
+                  stroke={buttonColor}
+                  strokeWidth="2"
+                />
+                <path
+                  d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
+                  fill={buttonColor}
+                />
+                <path
+                  d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
+                  fill={buttonColor}
+                />
+              </CrossSVG>
+            </FilterButtonContainer>
+          )
+        })}
       </ListOfFilters>
     )
   } else {

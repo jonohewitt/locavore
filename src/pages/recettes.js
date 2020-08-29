@@ -20,23 +20,34 @@ const Recettes = () => {
       isApplied: false,
     },
     {
-      name: "Les basiques",
+      name: "Les bases",
+      group: "course",
       logic(fm) {
-        return fm["course"] === "Les basiques"
+        return fm["course"] === "Les bases"
       },
       isApplied: false,
     },
     {
-      name: "Desserts",
+      name: "Plat principal",
+      group: "course",
+      logic(fm) {
+        return fm["course"] === "Plat principal"
+      },
+      isApplied: false,
+    },
+    {
+      name: "Dessert",
+      group: "course",
       logic(fm) {
         return fm["course"] === "Dessert"
       },
       isApplied: false,
     },
     {
-      name: "Apéros",
+      name: "Apéro",
+      group: "course",
       logic(fm) {
-        return fm["course"] === "Apéros"
+        return fm["course"] === "Apéro"
       },
       isApplied: false,
     },

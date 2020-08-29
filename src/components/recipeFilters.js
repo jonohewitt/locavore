@@ -65,11 +65,13 @@ const ListOfFilters = styled.ul`
   position: relative;
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: 12px;
 `
 
 const FilterButtonContainer = styled.li`
   position: relative;
-  margin: 0 5px 0 2px;
+  margin: 0 5px 8px 3px;
 `
 
 const FilterButton = styled.button`

@@ -6,7 +6,7 @@ import slugify from "slugify"
 import TimeIndicators from "./recipeTimeInfo"
 
 const StyledUL = styled.ul`
-  margin-top: 40px;
+  margin-top: 25px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 25px;

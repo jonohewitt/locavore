@@ -73,6 +73,7 @@ export const pageQuery = graphql`
           }
           featureDescription
           vegan
+          veganOption
           vegetarian
           prepTime
           cookTime

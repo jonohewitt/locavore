@@ -53,6 +53,7 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
             }
             featureDescription
             vegan
+            veganOption
             vegetarian
             prepTime
             cookTime

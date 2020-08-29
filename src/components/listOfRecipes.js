@@ -39,8 +39,15 @@ const DairyLabel = styled.div`
   height: 25px;
   border-radius: 5px;
   border: solid 1px;
-  color: ${props =>
-    props.vegan ? "var(--color-vegan)" : "var(--color-vegetarian)"};
+  color: ${props => {
+    if (props.vegan) {
+      return "var(--color-vegan)"
+    } else if (props.veganOption) {
+      return "var(--color-veganOption)"
+    } else {
+      return "var(--color-vegetarian)"
+    }
+  }};
   position: absolute;
   left: 20px;
   bottom: 20px;
@@ -50,11 +57,13 @@ const DairyLabel = styled.div`
   align-items: center;
 `
 
-const DairyIndicator = ({ vegan, vegetarian }) => {
+const DairyIndicator = ({ vegan, veganOption, vegetarian }) => {
   if (vegan) {
-    return <DairyLabel vegan>Vegan</DairyLabel>
-  } else if (vegetarian && !vegan) {
-    return <DairyLabel>Vegetarian</DairyLabel>
+    return <DairyLabel vegan>Végan</DairyLabel>
+  } else if (veganOption) {
+    return <DairyLabel veganOption>Option végan</DairyLabel>
+  } else if (vegetarian) {
+    return <DairyLabel>Végétarien</DairyLabel>
   } else {
     return false
   }
@@ -119,12 +128,12 @@ const ListOfRecipes = ({ recipeList, filterList }) => (
       })
       .map(recipe => {
         const fm = recipe.frontmatter
-        const slug = fm.customSlug ? fm.customSlug : `/${slugify(fm.title, { lower: true, strict: true })}`
+        const slug = fm.customSlug
+          ? fm.customSlug
+          : `/${slugify(fm.title, { lower: true, strict: true })}`
         return (
           <RecipeCardContainer key={recipe.id}>
-            <Link
-              to={`/recettes${slug}`}
-            >
+            <Link to={`/recettes${slug}`}>
               <RecipeCard>
                 <RecipeImage
                   headerImg={{
@@ -146,7 +155,11 @@ const ListOfRecipes = ({ recipeList, filterList }) => (
                     {fm.feeds && ` • ${fm.feeds} people`}
                   </p>
                 </RecipeText>
-                <DairyIndicator vegan={fm.vegan} vegetarian={fm.vegetarian} />
+                <DairyIndicator
+                  vegan={fm.vegan}
+                  veganOption={fm.veganOption}
+                  vegetarian={fm.vegetarian}
+                />
                 <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
               </RecipeCard>
             </Link>

@@ -70,6 +70,18 @@ const RecipeIndex = ({ filterList, setFilterList }) => {
       const filterIndex = newState.findIndex(
         filter => filter.name === filterName
       )
+
+      if (newState[filterIndex].group) {
+        newState.forEach(filter => {
+          if (
+            filter !== newState[filterIndex] &&
+            filter.group === newState[filterIndex].group
+          ) {
+            filter.isApplied = false
+          }
+        })
+      }
+
       newState[filterIndex].isApplied = !newState[filterIndex].isApplied
       return newState
     })

@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `La Coloc' Locale`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+    description: `A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably. Content focuses around recipes 🥗, blog posts 👩‍💻, information resources 📚 and data visualisations 📊.`,
     author: `La Coloc' Locale`,
   },
   plugins: [
@@ -38,7 +38,12 @@ module.exports = {
       },
     },
     `gatsby-plugin-styled-components`,
-    `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-offline`,
+      options: {
+        precachePages: [`/recettes/*`, `/ingredients/*`],
+      },
+    },
     `gatsby-plugin-mdx`,
     `gatsby-plugin-mdx-source-name`,
     {

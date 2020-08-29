@@ -69,7 +69,7 @@ const ListOfFilters = styled.ul`
 
 const FilterButtonContainer = styled.li`
   position: relative;
-  margin-right: 3px;
+  margin: 0 5px 0 2px;
 `
 
 const FilterButton = styled.button`
@@ -78,7 +78,7 @@ const FilterButton = styled.button`
   border: solid 1px ${props => props.color};
   border-radius: 10px;
   padding: 4px 7px;
-  margin: 0 0 0 10px;
+
   color: ${props => (props.selected ? "var(--color-background)" : props.color)};
   cursor: pointer;
   box-shadow: ${props =>

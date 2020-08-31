@@ -1,17 +1,19 @@
 const path = require("path")
 const slugify = require("slugify")
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
-  const { createPage } = actions
-
+exports.createPages = async ({
+  graphql,
+  actions: { createPage },
+  reporter,
+}) => {
   const result = await graphql(`
     query {
       allMdx {
         nodes {
           id
           fields {
-               source
-           }
+            source
+          }
           frontmatter {
             title
             customSlug

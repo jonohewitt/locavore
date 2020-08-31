@@ -152,7 +152,7 @@ const ListOfRecipes = ({ recipeList, filterList }) => (
                   <hr />
                   <p>
                     {fm.course}
-                    {fm.feeds && ` • ${fm.feeds} people`}
+                    {fm.feeds && ` • ${fm.feeds} personnes`}
                   </p>
                 </RecipeText>
                 <DairyIndicator

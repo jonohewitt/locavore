@@ -26,7 +26,7 @@ const Header = styled.header`
 
 const RecipeIndex = ({ filterList, setFilterList }) => {
   const data = useStaticQuery(graphql`
-    query RecipeIndexQuery {
+    query {
       allMdx(
         filter: { fields: { source: { eq: "recettes" } } }
         sort: { fields: frontmatter___title, order: ASC }

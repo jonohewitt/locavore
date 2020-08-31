@@ -37,7 +37,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
           <hr />
         </header>
         <main>
-          <h2>Featured recipes</h2>
+          <h2>Recettes proposées</h2>
           <hr />
           <ListOfRecipes recipeList={data.allMdx.nodes} />
         </main>

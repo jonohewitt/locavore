@@ -5,6 +5,7 @@ import slugify from "slugify"
 import SEO from "../components/seo"
 import ContentWrapper from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
+import ingredientsData from "../posts/ingredients/ingredientsData"
 
 const Styles = styled.div`
   h1 {
@@ -23,7 +24,52 @@ const Styles = styled.div`
   header {
     margin-top: ${props => (props.appInterface ? "50px" : "120px")};
   }
+
+  a {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  h2 {
+    margin-top: 40px;
+  }
 `
+
+const filteredList = (data, filter, currentMonth) => {
+  return data
+    .filter(ingredient => {
+      const ingredientObject = ingredientsData.find(
+        element => element.name === ingredient
+      )
+      if (filter === "current") {
+        return (
+          ingredientObject &&
+          ingredientObject.months[currentMonth] &&
+          ingredientObject.months.some(month => !month)
+        )
+      } else if (filter === "always") {
+        return (
+          ingredientObject &&
+          ingredientObject.months[currentMonth] &&
+          ingredientObject.months.every(month => month)
+        )
+      } else if (filter === "out") {
+        return ingredientObject && !ingredientObject.months[currentMonth]
+      } else if (filter === "noData") {
+        return !ingredientObject
+      } else {
+        return true
+      }
+    })
+    .sort(new Intl.Collator("fr").compare)
+    .map(ingredient => (
+      <li key={ingredient}>
+        <Link to={`/ingredients/${slugify(ingredient, { lower: true })}`}>
+          {ingredient}
+        </Link>
+      </li>
+    ))
+}
 
 const Ingredients = ({ filterList, setFilterList }) => {
   const context = useContext(GlobalState)
@@ -52,6 +98,7 @@ const Ingredients = ({ filterList, setFilterList }) => {
       })
     }
   })
+
   return (
     <>
       <SEO title="Ingredients" />
@@ -61,19 +108,27 @@ const Ingredients = ({ filterList, setFilterList }) => {
             <h1>Ingredients</h1>
             <hr />
           </header>
+          <h2>En saison</h2>
+          <hr />
           <ul>
-            {ingredientArray
-              .sort(new Intl.Collator("fr").compare)
-              .map(ingredient => (
-                <li key={ingredient}>
-                  <Link
-                    to={`/ingredients/${slugify(ingredient, { lower: true })}`}
-                  >
-                    {ingredient}
-                  </Link>
-                </li>
-              ))}
+            {filteredList(ingredientArray, "current", context.currentMonth)}
           </ul>
+          <h2>Disponible toute l'année</h2>
+          <hr />
+          <ul>
+            {filteredList(ingredientArray, "always", context.currentMonth)}
+          </ul>
+          <h2>Hors saison</h2>
+          <hr />
+          <ul>{filteredList(ingredientArray, "out", context.currentMonth)}</ul>
+          {filteredList(ingredientArray, "noData", context.currentMonth)
+            .length > 0 && (
+            <>
+              <h2>Pas encore d'information</h2>
+              <hr />
+              <ul>{filteredList(ingredientArray, "noData")}</ul>
+            </>
+          )}
         </Styles>
       </ContentWrapper>
     </>

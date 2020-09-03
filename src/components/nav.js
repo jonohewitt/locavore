@@ -86,6 +86,9 @@ const DesktopNav = ({settingsIsOpen, toggleSettings}) => {
           <StyledLink to="/recettes" activeStyle={{ border: "solid 1px", borderRadius: "8px" }}>Recettes</StyledLink>
         </StyledLi>
         <StyledLi>
+          <StyledLink to="/ingredients" activeStyle={{ border: "solid 1px", borderRadius: "8px" }}>Ingredients</StyledLink>
+        </StyledLi>
+        <StyledLi>
           <StyledLink to="/blog" activeStyle={{ border: "solid 1px", borderRadius: "8px" }}>Blog</StyledLink>
         </StyledLi>
       </StyledUL>

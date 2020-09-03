@@ -7,6 +7,7 @@ const Provider = ({ children }) => {
   const [appInterface, setAppInterface] = useState(undefined)
   const [settingsIsOpen, setSettingsIsOpen] = useState(false)
   const [isDark, setTheme] = useState(undefined)
+  const [currentMonth, setMonth] = useState(new Date().getMonth())
 
   useEffect(() => {
     setAppInterface(
@@ -19,6 +20,7 @@ const Provider = ({ children }) => {
       "true"
     setTheme(initialTheme)
 
+    setMonth(new Date().getMonth())
     ///
 
     // useEffect(() => {
@@ -53,6 +55,7 @@ const Provider = ({ children }) => {
         toggleSettings: () => setSettingsIsOpen(!settingsIsOpen),
         isDark,
         toggleTheme: toggleTheme,
+        currentMonth,
       }}
     >
       {children}

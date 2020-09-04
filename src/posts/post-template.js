@@ -9,6 +9,9 @@ import Img from "gatsby-image"
 import SEO from "../components/seo"
 import { BlogStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
+import { tickSVG, crossSVG } from "../components/icons"
+import slugify from "slugify"
+import ingredientsData from "./ingredients/ingredientsData"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -95,7 +98,41 @@ const FeatureImage = ({ featureImg }) => {
   }
 }
 
-const shortcodes = { Link, Ingredients }
+const IngredientLink = styled(Link)`
+  color: ${props => props.color} !important;
+  svg {
+    scale: 0.8;
+    vertical-align: text-bottom;
+    margin-left: 2px;
+  }
+`
+
+const Ing = ({ id, children }) => {
+  const context = useContext(GlobalState)
+  const ingredient = ingredientsData.find(ingredient => ingredient.name === id)
+  let color
+  let icon
+  let scaledIcon
+  if (ingredient && ingredient.months[context.currentMonth]) {
+    icon = tickSVG
+    color = "hsla(116, 37%, 60%, 1)"
+  } else if (ingredient && !ingredient.months[context.currentMonth]) {
+    icon = crossSVG
+    color = "hsla(0, 52%, 58%, 1)"
+  } else {
+    color = "var(--color-text)"
+  }
+  return (
+    <IngredientLink
+      color={color}
+      to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
+    >
+      {children}{icon}
+    </IngredientLink>
+  )
+}
+
+const shortcodes = { Link, Ing, Ingredients }
 
 export default function PostTemplate({ data: { mdx } }) {
   const fm = mdx.frontmatter

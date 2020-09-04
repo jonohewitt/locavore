@@ -18,8 +18,8 @@ const IngredientStyles = styled.div`
   h2 {
     font-size: 24px;
     svg {
-      scale: 1.5;
-      margin-left: 3px;
+      transform: scale(1.5);
+      margin-left: 6px;
     }
   }
 

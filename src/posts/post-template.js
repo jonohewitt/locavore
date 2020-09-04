@@ -101,7 +101,7 @@ const FeatureImage = ({ featureImg }) => {
 const IngredientLink = styled(Link)`
   color: ${props => props.color} !important;
   svg {
-    scale: 0.8;
+    transform: scale(0.8);
     vertical-align: text-bottom;
     margin-left: 2px;
   }

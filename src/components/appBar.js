@@ -17,7 +17,7 @@ const tabArray = [
   {
     name: "Resources",
     icon: resourcesSVG,
-    link: "/resources",
+    link: "/ingredients",
   },
   {
     name: "Blog",

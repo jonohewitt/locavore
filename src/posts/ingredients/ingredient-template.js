@@ -7,6 +7,7 @@ import ListOfRecipes from "../../components/listOfRecipes"
 import { GlobalState } from "../../context/globalStateContext"
 import ingredientsData from "./ingredientsData"
 import IndividualSeasonalChart from "../../components/individualSeasonalChart"
+import { tickSVG, crossSVG } from "../../components/icons"
 
 const IngredientStyles = styled.div`
   h1 {
@@ -16,6 +17,10 @@ const IngredientStyles = styled.div`
 
   h2 {
     font-size: 24px;
+    svg {
+      scale: 1.5;
+      margin-left: 3px;
+    }
   }
 
   main {
@@ -38,13 +43,14 @@ const IngredientTemplate = ({ pageContext, data }) => {
   }
 
   let seasonalIndicator
+  let icon
   if (currentlyInSeason !== null) {
     if (ingredientObject.months.some(month => !month)) {
-      seasonalIndicator = currentlyInSeason
-        ? "En saison"
-        : "Hors saison"
+      seasonalIndicator = currentlyInSeason ? "En saison" : "Hors saison"
+      icon = currentlyInSeason ? tickSVG : crossSVG
     } else {
       seasonalIndicator = "Disponible toute l'année"
+      icon = tickSVG
     }
   } else {
     seasonalIndicator = "Pas encore d'information"
@@ -55,18 +61,16 @@ const IngredientTemplate = ({ pageContext, data }) => {
       <SEO title={pageContext.name} />
       <ContentWrapper>
         <header>
-          <h1>
-            {pageContext.name}
-          </h1>
+          <h1>{pageContext.name}</h1>
           <hr />
         </header>
         <main>
           {ingredientObject && (
             <>
-            <h2>{seasonalIndicator}</h2>
-            <hr />
-            <IndividualSeasonalChart data={ingredientObject} />
-          </>
+              <h2>{seasonalIndicator} {icon}</h2>
+              <hr />
+              <IndividualSeasonalChart data={ingredientObject} />
+            </>
           )}
           <h2>Recettes proposées</h2>
           <hr />

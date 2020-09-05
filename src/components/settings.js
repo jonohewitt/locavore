@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import ToggleSwitch from "./toggleSwitch"
 
-const SettingsWrapper = styled.div`
+const SettingsWrapper = styled.section`
   position: fixed;
   top: 0;
   left: 0;
@@ -40,7 +40,7 @@ const InitialHR = styled.hr`
 const Settings = () => {
   const context = useContext(GlobalState)
   return (
-    <SettingsWrapper settingsIsOpen={context.settingsIsOpen}>
+    <SettingsWrapper aria-label="Settings" settingsIsOpen={context.settingsIsOpen}>
       <InitialHR />
       <StyledUL>
         <li>

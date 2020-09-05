@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const BlogStyles = styled.div`
+export const BlogStyles = styled.main`
   h1 {
     margin-bottom: 10px;
   }

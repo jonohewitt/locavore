@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
           toggleSettings={context.toggleSettings}
         >
           <Content appInterface={context.appInterface}>
-            <main>{children}</main>
+            {children}
             {!context.appInterface && <Footer />}
           </Content>
         </Page>

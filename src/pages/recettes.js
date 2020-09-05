@@ -5,7 +5,7 @@ import ContentWrapper from "../components/contentWrapper"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 
-const Main = styled.div`
+const Main = styled.main`
   margin-top: ${props => (props.appInterface ? "" : "120px")};
 `
 

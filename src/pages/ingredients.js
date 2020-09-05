@@ -8,7 +8,7 @@ import { GlobalState } from "../context/globalStateContext"
 import ingredientsData from "../posts/ingredients/ingredientsData"
 import { tickSVG, crossSVG } from "../components/icons"
 
-const Styles = styled.div`
+const Styles = styled.main`
   h1 {
     font-size: 32px;
     margin-bottom: 5px;

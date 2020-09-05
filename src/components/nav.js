@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
   }
 `
 
-const NavWrapper = styled.div`
+const NavWrapper = styled.nav`
   position: fixed;
   top: 0;
   width: 100%;

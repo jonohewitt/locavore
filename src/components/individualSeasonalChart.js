@@ -4,7 +4,7 @@ import styled from "styled-components"
 const ChartWrapper = styled.div`
   background-color: var(--color-graphBackground);
   border-radius: 5px;
-  padding: 20px 15px;
+  padding: 20px 15px 15px 15px;
   margin: 25px 0 30px 0;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 `
@@ -19,7 +19,7 @@ const StyledLi = styled.li``
 
 const LabelContainer = styled.div`
   height: 30px;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 `
 
 const MonthLabel = styled.h3`
@@ -34,11 +34,11 @@ const MonthLabel = styled.h3`
 
 const MonthRect = styled.div`
   background-color: ${props =>
-    props.value ? "hsla(100, 86%, 74%, 1)" : "hsla(0, 39%, 27%, 1)"};
-  height: ${props => (props.value ? "20px" : "14px")};
+    props.value ? "var(--color-positive)" : "hsl(0, 29.5%, 41.2%)"};
+  height: ${props => (props.value ? "20px" : "10px")};
   border-radius: 2px;
   position: relative;
-  top: ${props => (props.value ? "-3px" : "")};
+  ${props => props.value && "top: -5px;"}
 `
 
 const monthParser = index => {
@@ -98,7 +98,7 @@ const Month = ({ value, index, date }) => {
   return (
     <StyledLi>
       <MonthLabelContainer index={index} currentMonth={currentMonth} />
-      <MonthRect role="img" alt={altText} value={value} />
+      <MonthRect role="img" aria-label={altText} value={value} />
     </StyledLi>
   )
 }

@@ -112,13 +112,12 @@ const Ing = ({ id, children }) => {
   const ingredient = ingredientsData.find(ingredient => ingredient.name === id)
   let color
   let icon
-  let scaledIcon
   if (ingredient && ingredient.months[context.currentMonth]) {
     icon = tickSVG
-    color = "hsla(116, 37%, 60%, 1)"
+    color = "var(--color-positive)"
   } else if (ingredient && !ingredient.months[context.currentMonth]) {
     icon = crossSVG
-    color = "hsla(0, 52%, 58%, 1)"
+    color = "var(--color-negative)"
   } else {
     color = "var(--color-text)"
   }
@@ -159,11 +158,9 @@ export default function PostTemplate({ data: { mdx } }) {
                 description: fm.featureDescription,
               }}
             />
-            <main>
               <MDXProvider components={shortcodes}>
                 <MDXRenderer>{mdx.body}</MDXRenderer>
               </MDXProvider>
-            </main>
           </article>
         </BlogStyles>
       </ContentWrapper>

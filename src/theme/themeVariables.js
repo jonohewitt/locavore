@@ -1,7 +1,7 @@
 export const lightTheme = {
   text: "#0c1635",
   background: "#e6edc3",
-  nav: "#eef2d9",
+  nav: "hsla(68, 62%, 91%, 1)",
   navTitle: "#059d7a",
   navText: "#107b71",
   settings: "hsla(17, 40%, 57%, 1)",
@@ -28,7 +28,7 @@ export const darkTheme = {
   settings: "hsla(234, 11%, 15%, 1)",
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "hsl(168.4, 65.4%, 46.5%)",
-  graphBackground: "hsla(0, 0%, 0%, 0.4)",
+  graphBackground: "hsla(0, 0%, 0%, 0.6)",
   hr: "#ddd",
   activeLink: "hsl(153.9, 64.5%, 60.2%)",
   vegan: "hsla(137, 51%, 77%, 1)",

@@ -5,7 +5,7 @@ import Img from "gatsby-image"
 import slugify from "slugify"
 
 const ListOfBlogPosts = styled.ul`
-  margin-top: 50px;
+  margin-top: 25px;
 `
 
 const BlogCard = styled.div`

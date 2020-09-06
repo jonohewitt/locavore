@@ -1,17 +1,11 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import Image from "../components/image"
 import vegetableData from "../components/seasonalChartData"
 import SeasonalVegChart from "../components/seasonalChart"
 import SEO from "../components/seo"
 import ContentWrapper from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import SettingsIcon from "../components/settingsIcon"
-
-const ImgWrapper = styled.div`
-  max-width: 300px;
-  margin-bottom: 1.45rem;
-`
 
 const Header = styled.header`
   margin-top: ${props => (props.appInterface ? "60px" : "120px")};
@@ -35,8 +29,8 @@ const IndexPage = () => {
       )}
       <ContentWrapper>
         <Header appInterface={context.appInterface}>
-          <h1>Un petit mot sur notre démarche</h1>
-          <h2 className="italic">Inspirer le changement</h2>
+          <h1>Placeholder title for the front page</h1>
+          <h2 className="italic">Optional subtitle</h2>
         </Header>
         <article>
           <SeasonalVegChart data={vegetableData} />
@@ -49,10 +43,6 @@ const IndexPage = () => {
             personnelle, un emploi du temps plus ou moins chargé et vivant
             ensemble au centre-ville à Bruxelles.
           </p>
-
-          <ImgWrapper>
-            <Image />
-          </ImgWrapper>
 
           <p>
             L'idée de la création d'une page nous est venue après une longue

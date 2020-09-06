@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useLayoutEffect } from "react"
 import { lightTheme, darkTheme } from "../theme/themeVariables"
 
 export const GlobalState = React.createContext()
@@ -9,7 +9,7 @@ const Provider = ({ children }) => {
   const [isDark, setTheme] = useState(undefined)
   const [currentMonth, setMonth] = useState(new Date().getMonth())
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setAppInterface(
       navigator.standalone ||
         window.matchMedia("(display-mode: standalone)").matches
@@ -19,18 +19,7 @@ const Provider = ({ children }) => {
       window.document.documentElement.attributes["is-dark-mode"].value ===
       "true"
     setTheme(initialTheme)
-
     setMonth(new Date().getMonth())
-    ///
-
-    // useEffect(() => {
-    //   const handleResize = () => setWidth(window.innerWidth)
-    //   window.addEventListener("resize", handleResize)
-    //   handleResize()
-    //   return () => window.removeEventListener("resize", handleResize)
-    // }, [])
-
-    // return () => window.removeEventListener("DOMContentLoaded", handleDOMLoad)
   }, [])
 
   const toggleTheme = () => {

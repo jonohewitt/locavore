@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `La Coloc' Locale`,
+    title: `LOCAVORE`,
     description: `A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably. Content focuses around recipes 🥗, blog posts 👩‍💻, information resources 📚 and data visualisations 📊.`,
     author: `La Coloc' Locale`,
   },

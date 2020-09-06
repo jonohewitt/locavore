@@ -20,6 +20,10 @@ const Styles = styled.main`
       transform: scale(1.5);
       margin-left: 6px;
     }
+
+    span {
+      white-space: nowrap;
+    }
   }
 
   hr {
@@ -119,7 +123,7 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <ul>
             {filteredList(ingredientArray, "current", context.currentMonth)}
           </ul>
-          <h2>Disponible toute l'année {tickSVG}</h2>
+          <h2>Disponible toute <span>l'année {tickSVG}</span></h2>
           <hr />
           <ul>
             {filteredList(ingredientArray, "always", context.currentMonth)}

@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
+import { useWindowWidth } from "./customHooks"
 
 const SelectFiltersButton = styled.button`
   display: flex;
@@ -22,19 +23,28 @@ export const ShowFilters = ({
   setShowFilter,
   anyAppliedFilters,
 }) => {
+  const windowWidth = useWindowWidth()
+  let buttonContent
+
   if (filtersAreShown) {
-    return (
-      <SelectFiltersButton onClick={() => setShowFilter(!filtersAreShown)}>
-        Cacher filtres {minusSVG}
-      </SelectFiltersButton>
+    buttonContent = (
+      <>
+        {windowWidth > 400 ? "Cacher filtres" : "Filtres"} {minusSVG}
+      </>
     )
   } else {
-    return (
-      <SelectFiltersButton onClick={() => setShowFilter(!filtersAreShown)}>
-        {anyAppliedFilters ? "Changer" : "Sélectionner"} filtres {plusSVG}
-      </SelectFiltersButton>
+    buttonContent = (
+      <>
+        {windowWidth > 400 ? "Sélectionner filtres" : "Filtres"} {plusSVG}
+      </>
     )
   }
+
+  return (
+    <SelectFiltersButton onClick={() => setShowFilter(!filtersAreShown)}>
+      {buttonContent}
+    </SelectFiltersButton>
+  )
 }
 
 ///

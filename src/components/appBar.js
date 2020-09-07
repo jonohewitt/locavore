@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import {homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG} from "./icons"
+import { homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG } from "./icons"
 
 const tabArray = [
   {
@@ -32,13 +32,13 @@ const tabArray = [
 ]
 
 const BarWrapper = styled.nav`
-position: fixed;
-bottom: 0;
-width: 100%;
-height: 55px;
-background-color: var(--color-appBar);
-box-shadow: 0 -10px 10px hsla(0, 0%, 10%, 0.1);
-z-index: 3;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 55px;
+  background-color: var(--color-appBar);
+  box-shadow: 0 -10px 10px hsla(0, 0%, 10%, 0.1);
+  z-index: 3;
 `
 
 const TabList = styled.ul`
@@ -108,21 +108,21 @@ const AppBar = ({ settingsIsOpen, toggleSettings }) => {
   return (
     <BarWrapper>
       <TabList>
-      {tabArray.map(tab => (
-        <TabListItem key={tab.name}>
-          <StyledLink
-            to={tab.link}
-            activeClassName="active"
-            partiallyActive={tab.link === "/" ? false : true}
-          >
-            {tab.icon}
-            <h6>{tab.name}</h6>
-          </StyledLink>
-        </TabListItem>
-      ))}
+        {tabArray.map(tab => (
+          <TabListItem key={tab.name}>
+            <StyledLink
+              to={tab.link}
+              activeClassName="active"
+              partiallyActive={tab.link === "/" ? false : true}
+            >
+              {tab.icon}
+              <h6>{tab.name}</h6>
+            </StyledLink>
+          </TabListItem>
+        ))}
       </TabList>
     </BarWrapper>
   )
 }
 
-export default AppBar
+export { AppBar }

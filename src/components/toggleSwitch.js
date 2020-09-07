@@ -28,12 +28,10 @@ const Slider = styled.div`
   box-shadow: 0 3px 3px hsla(0, 0%, 10%, 0.1);
 `
 
-const ToggleSwitch = ({ state, setState, notTabbable, label }) => {
+export const ToggleSwitch = ({ state, setState, notTabbable, label }) => {
   return (
     <Container aria-label={label} tabIndex={notTabbable ? "-1" : "0"} onClick={setState} state={state}>
       <Slider state={state} />
     </Container>
   )
 }
-
-export default ToggleSwitch

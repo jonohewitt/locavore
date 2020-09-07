@@ -1,12 +1,12 @@
 import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
-import SEO from "../../components/seo"
-import ContentWrapper from "../../components/contentWrapper"
-import ListOfRecipes from "../../components/listOfRecipes"
+import { SEO } from "../../components/seo"
+import { ContentWrapper } from "../../components/contentWrapper"
+import { ListOfRecipes } from "../../components/listOfRecipes"
 import { GlobalState } from "../../context/globalStateContext"
 import ingredientsData from "./ingredientsData"
-import IndividualSeasonalChart from "../../components/individualSeasonalChart"
+import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
 
 const IngredientStyles = styled.div`
@@ -25,10 +25,6 @@ const IngredientStyles = styled.div`
 
   main {
     margin-top: 50px;
-  }
-
-  header {
-    margin-top: ${props => (props.appInterface ? "50px" : "120px")};
   }
 `
 
@@ -57,7 +53,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
   }
 
   return (
-    <IngredientStyles appInterface={context.appInterface}>
+    <IngredientStyles>
       <SEO title={pageContext.name} />
       <ContentWrapper>
         <header>
@@ -67,7 +63,9 @@ const IngredientTemplate = ({ pageContext, data }) => {
         <main>
           {ingredientObject && (
             <>
-              <h2>{seasonalIndicator} {icon}</h2>
+              <h2>
+                {seasonalIndicator} {icon}
+              </h2>
               <hr />
               <IndividualSeasonalChart data={ingredientObject} />
             </>

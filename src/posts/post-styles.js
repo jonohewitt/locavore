@@ -1,12 +1,11 @@
 import styled from "styled-components"
 
-export const BlogStyles = styled.main`
+export const PostStyles = styled.main`
   h1 {
     margin-bottom: 10px;
   }
 
   h2 {
-
     margin: 30px 0 10px 0;
   }
 
@@ -71,9 +70,5 @@ ul li {
   a {
     color: var(--color-altColor);
     font-weight: 700;
-  }
-
-  article {
-    margin-top: 50px;
   }
 `

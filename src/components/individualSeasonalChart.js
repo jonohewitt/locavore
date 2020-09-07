@@ -103,7 +103,7 @@ const Month = ({ value, index, date }) => {
   )
 }
 
-const IndividualSeasonalChart = ({ data }) => {
+export const IndividualSeasonalChart = ({ data }) => {
   const date = new Date().getMonth()
   return (
     <ChartWrapper>
@@ -115,5 +115,3 @@ const IndividualSeasonalChart = ({ data }) => {
     </ChartWrapper>
   )
 }
-
-export default IndividualSeasonalChart

@@ -1,6 +1,6 @@
 import React from "react"
 import { lightTheme, darkTheme } from "./src/theme/themeVariables"
-import Layout from "./src/components/layout"
+import { Layout } from "./src/components/layout"
 import Provider from "./src/context/globalStateContext"
 
 const ScriptInjection = () => {

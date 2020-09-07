@@ -45,7 +45,7 @@ const TimePair = ({ icon, value }) => {
   )
 }
 
-const TimeIndicators = ({ prepTime, cookTime }) => {
+export const TimeIndicators = ({ prepTime, cookTime }) => {
   return (
     <IndicatorContainer>
       {prepTime && <TimePair icon={prepTimeSVG} value={prepTime} />}
@@ -53,5 +53,3 @@ const TimeIndicators = ({ prepTime, cookTime }) => {
     </IndicatorContainer>
   )
 }
-
-export default TimeIndicators

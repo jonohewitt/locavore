@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
 import slugify from "slugify"
-import TimeIndicators from "./recipeTimeInfo"
+import { TimeIndicators } from "./recipeTimeInfo"
 
 const StyledUL = styled.ul`
   margin-top: 25px;
@@ -108,13 +108,13 @@ const RecipeText = styled.div`
   }
 
   h2 {
-    margin: 0;
-    padding-bottom: 8px;
+    font-size: 28px;
+    padding-bottom: 4px;
     line-height: 1.1;
   }
 `
 
-const ListOfRecipes = ({ recipeList, filterList }) => (
+export const ListOfRecipes = ({ recipeList, filterList }) => (
   <StyledUL>
     {recipeList
       .filter(recipe => {
@@ -168,5 +168,3 @@ const ListOfRecipes = ({ recipeList, filterList }) => (
       })}
   </StyledUL>
 )
-
-export default ListOfRecipes

@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
-import ToggleSwitch from "./toggleSwitch"
+import { ToggleSwitch } from "./toggleSwitch"
 
 const SettingsWrapper = styled.section`
   position: fixed;
@@ -17,11 +17,14 @@ const SettingsWrapper = styled.section`
   background-color: var(--color-settings);
   box-shadow: ${props =>
     props.settingsIsOpen ? "5px 0 20px rgba(0, 0, 0, 0.5)" : "0"};
+    hr {
+      background: var(--color-text);
+      opacity: 0.2;
+    }
 `
 const StyledUL = styled.ul`
   hr {
     margin: 20px 20px;
-    opacity: 0.15;
   }
 `
 
@@ -37,10 +40,13 @@ const InitialHR = styled.hr`
   margin: 100px 20px 3px 20px;
 `
 
-const Settings = () => {
+export const Settings = () => {
   const context = useContext(GlobalState)
   return (
-    <SettingsWrapper aria-label="Settings" settingsIsOpen={context.settingsIsOpen}>
+    <SettingsWrapper
+      aria-label="Settings"
+      settingsIsOpen={context.settingsIsOpen}
+    >
       <InitialHR />
       <StyledUL>
         <li>
@@ -70,5 +76,3 @@ const Settings = () => {
     </SettingsWrapper>
   )
 }
-
-export default Settings

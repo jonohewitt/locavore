@@ -29,7 +29,7 @@ const Square = styled.div`
   background-color: ${props =>
     props.settingsIsOpen ? "var(--color-settingsIcon)" : "rgba(0,0,0,0)"};
   transition: width 0.3s, height 0.3s, border 0.5s, transform 0.3s,
-    background-color 0.1s ${props => (props.settingsIsOpen ? "0.11s" : "")};
+    background-color 0.1s ${props => props.settingsIsOpen && "0.11s"};
 `
 const TrackTemplate = styled.div`
   position: absolute;
@@ -81,9 +81,9 @@ const RightSlider = styled(SliderTemplate)`
   ${IconWrapper}:focus &, ${IconWrapper}:hover & {
     transform: translateY(7px);
   }
-  `
+`
 
-const SettingsIcon = () => {
+export const SettingsIcon = () => {
   const context = useContext(GlobalState)
   return (
     <IconWrapper
@@ -98,4 +98,3 @@ const SettingsIcon = () => {
     </IconWrapper>
   )
 }
-export default SettingsIcon

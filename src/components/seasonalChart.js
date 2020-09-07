@@ -10,7 +10,7 @@ const ChartWrapper = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 `
 
-const SeasonalVegChart = props => {
+export const SeasonalVegChart = props => {
   const ref = useRef(null)
   useEffect(() => {
     const svg = d3.select(ref.current)
@@ -98,5 +98,3 @@ const SeasonalVegChart = props => {
           </ChartWrapper>
   )
 }
-
-export default SeasonalVegChart

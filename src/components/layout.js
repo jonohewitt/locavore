@@ -5,11 +5,11 @@ import { GlobalStyles } from "../theme/globalStyles"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 
-import Page from "./page"
-import DesktopNav from "./nav"
-import Settings from "./settings"
-import Footer, { footerHeight } from "./footer"
-import AppBar from "./appBar"
+import { Page } from "./page"
+import { DesktopNav } from "./desktop-nav"
+import { Settings } from "./settings"
+import { Footer, footerHeight } from "./footer"
+import { AppBar } from "./appBar"
 
 const OverflowWrapper = styled.div`
   width: 100vw;
@@ -21,7 +21,7 @@ const Content = styled.div`
   padding-bottom: ${props => (props.appInterface ? "100px" : footerPadding)};
 `
 
-const Layout = ({ children }) => {
+export const Layout = ({ children }) => {
   const context = useContext(GlobalState)
   return (
     <>
@@ -52,5 +52,3 @@ const Layout = ({ children }) => {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 }
-
-export default Layout

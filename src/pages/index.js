@@ -1,15 +1,11 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import vegetableData from "../components/seasonalChartData"
-import SeasonalVegChart from "../components/seasonalChart"
-import SEO from "../components/seo"
-import ContentWrapper from "../components/contentWrapper"
+import { vegetableData } from "../components/seasonalChartData"
+import { SeasonalVegChart } from "../components/seasonalChart"
+import { SEO } from "../components/seo"
+import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
-import SettingsIcon from "../components/settingsIcon"
-
-const Header = styled.header`
-  margin-top: ${props => (props.appInterface ? "60px" : "120px")};
-`
+import { SettingsIcon } from "../components/settingsIcon"
 
 const SettingsIconContainer = styled.div`
   position: absolute;
@@ -28,10 +24,10 @@ const IndexPage = () => {
         </SettingsIconContainer>
       )}
       <ContentWrapper>
-        <Header appInterface={context.appInterface}>
-          <h1>Placeholder title for the front page</h1>
-          <h2 className="italic">Optional subtitle</h2>
-        </Header>
+        <header>
+          <h1>Placeholder title</h1>
+          <hr />
+        </header>
         <article>
           <SeasonalVegChart data={vegetableData} />
 

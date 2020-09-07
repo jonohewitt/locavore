@@ -4,10 +4,10 @@ import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import ContentWrapper, { breakToMobile } from "../components/contentWrapper"
+import { ContentWrapper, breakToMobile } from "../components/contentWrapper"
 import Img from "gatsby-image"
-import SEO from "../components/seo"
-import { BlogStyles } from "./post-styles"
+import { SEO } from "../components/seo"
+import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
 import { tickSVG, crossSVG } from "../components/icons"
 import slugify from "slugify"
@@ -16,13 +16,9 @@ import ingredientsData from "./ingredients/ingredientsData"
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
   margin: 40px 0;
-  padding: 10px 40px 40px 40px;
+  padding: 10px 30px 30px 30px;
   border-radius: 5px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-
-  hr {
-    opacity: 0.1;
-  }
 
   @media (max-width: ${breakToMobile}px) {
     margin: 30px 0;
@@ -36,12 +32,6 @@ const Ingredients = ({ children }) => (
     {children}
   </StyledHighlight>
 )
-
-const EmptyDiv = styled.div`
-  height: ${props => props.height};
-`
-
-const Spacer = ({ height }) => <EmptyDiv height={height ? height : 0} />
 
 const HeaderImage = ({ headerImg }) => {
   const context = useContext(GlobalState)
@@ -63,8 +53,6 @@ const HeaderImage = ({ headerImg }) => {
         alt={headerImg.description ? headerImg.description : ""}
       />
     )
-  } else if (!context.appInterface) {
-    return <Spacer height="50px" />
   } else {
     return false
   }
@@ -105,6 +93,7 @@ const IngredientLink = styled(Link)`
     vertical-align: text-bottom;
     margin-left: 2px;
   }
+  white-space: nowrap;
 `
 
 const Ing = ({ id, children }) => {
@@ -126,7 +115,8 @@ const Ing = ({ id, children }) => {
       color={color}
       to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
     >
-      {children}{icon}
+      {children}
+      {icon}
     </IngredientLink>
   )
 }
@@ -145,12 +135,13 @@ export default function PostTemplate({ data: { mdx } }) {
       <HeaderImage
         headerImg={{ image: headerImg, description: fm.headerDescription }}
       />
-      <ContentWrapper>
-        <BlogStyles>
+      <ContentWrapper headerImg={headerImg}>
+        <PostStyles>
           <article>
             <header>
               <h1>{fm.title}</h1>
-              <p>{fm.date}</p>
+              <hr />
+              {fm.date && <p>{fm.date}</p>}
             </header>
             <FeatureImage
               featureImg={{
@@ -158,11 +149,11 @@ export default function PostTemplate({ data: { mdx } }) {
                 description: fm.featureDescription,
               }}
             />
-              <MDXProvider components={shortcodes}>
-                <MDXRenderer>{mdx.body}</MDXRenderer>
-              </MDXProvider>
+            <MDXProvider components={shortcodes}>
+              <MDXRenderer>{mdx.body}</MDXRenderer>
+            </MDXProvider>
           </article>
-        </BlogStyles>
+        </PostStyles>
       </ContentWrapper>
     </>
   )

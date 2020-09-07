@@ -1,4 +1,4 @@
-const vegetableData = [
+export const vegetableData = [
   {
     name: "Carrot",
     months: [
@@ -136,5 +136,3 @@ const vegetableData = [
     ],
   },
 ]
-
-export default vegetableData

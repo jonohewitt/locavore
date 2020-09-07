@@ -2,25 +2,19 @@ import React, { useContext } from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import styled from "styled-components"
 import slugify from "slugify"
-import SEO from "../components/seo"
-import ContentWrapper from "../components/contentWrapper"
+import { SEO } from "../components/seo"
+import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import ingredientsData from "../posts/ingredients/ingredientsData"
 import { tickSVG, crossSVG } from "../components/icons"
 
 const Styles = styled.main`
-  h1 {
-    font-size: 32px;
-    margin-bottom: 5px;
-  }
-
   h2 {
-    font-size: 24px;
+    margin-top: 40px;
     svg {
       transform: scale(1.5);
       margin-left: 6px;
     }
-
     span {
       white-space: nowrap;
     }
@@ -30,18 +24,10 @@ const Styles = styled.main`
     margin-bottom: 25px;
   }
 
-  header {
-    margin-top: ${props => (props.appInterface ? "50px" : "120px")};
-  }
-
   a {
     font-size: 18px;
     line-height: 1.8;
     font-weight: 700;
-  }
-
-  h2 {
-    margin-top: 40px;
   }
 `
 
@@ -113,7 +99,7 @@ const Ingredients = ({ filterList, setFilterList }) => {
     <>
       <SEO title="Ingredients" />
       <ContentWrapper>
-        <Styles appInterface={context.appInterface}>
+        <Styles>
           <header>
             <h1>Ingredients</h1>
             <hr />
@@ -123,7 +109,9 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <ul>
             {filteredList(ingredientArray, "current", context.currentMonth)}
           </ul>
-          <h2>Disponible toute <span>l'année {tickSVG}</span></h2>
+          <h2>
+            Disponible toute <span>l'année {tickSVG}</span>
+          </h2>
           <hr />
           <ul>
             {filteredList(ingredientArray, "always", context.currentMonth)}

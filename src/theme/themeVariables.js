@@ -8,7 +8,7 @@ export const lightTheme = {
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "#02799d",
   graphBackground: "hsla(0, 0%, 100%, 0.6)",
-  hr: "hsla(10, 48%, 63%, 1)",
+  hr: "hsla(7.6, 52.3%, 61.4%, 0.5)",
   activeLink: "hsla(10, 48%, 63%, 1)",
   vegan: "hsl(154, 46%, 33%)",
   veganOption: "hsla(192, 46%, 32%, 1)",
@@ -17,6 +17,7 @@ export const lightTheme = {
   activeAppTab: "hsla(71, 50%, 93%, 1)",
   positive: "hsl(116.3, 37.3%, 43.1%)",
   negative: "hsla(0, 52%, 58%, 1)",
+  footer: "hsla(8.6, 35.4%, 69%, 0.5)",
 }
 
 export const darkTheme = {
@@ -29,7 +30,7 @@ export const darkTheme = {
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "hsl(168.4, 65.4%, 46.5%)",
   graphBackground: "hsla(0, 0%, 0%, 0.6)",
-  hr: "#ddd",
+  hr: "hsla(0, 0%, 86%, 0.3)",
   activeLink: "hsl(153.9, 64.5%, 60.2%)",
   vegan: "hsla(137, 51%, 77%, 1)",
   veganOption: "hsla(188, 50%, 76%, 1)",
@@ -38,4 +39,5 @@ export const darkTheme = {
   activeAppTab: "hsla(234, 11%, 22%, 1)",
   positive: "hsla(115, 55%, 68%, 1)",
   negative: "hsla(0, 52%, 58%, 1)",
+  footer: "hsla(0, 0%, 0%, 0.2)",
 }

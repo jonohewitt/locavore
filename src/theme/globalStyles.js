@@ -13,14 +13,11 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
-  font-size: 48px;
-  margin-bottom: 24px;
+  font-size: 32px;
   }
 
   h2 {
-  font-size: 32px;
-  margin-bottom: 5px;
-  line-height: 1.2;
+  font-size: 24px;
   }
 
   h3 {
@@ -52,7 +49,6 @@ export const GlobalStyles = createGlobalStyle`
   hr {
     border: 0;
     height: 2px;
-    background: var(--color-text);
-    opacity: 0.2;
+    background: var(--color-hr);
   }
 `

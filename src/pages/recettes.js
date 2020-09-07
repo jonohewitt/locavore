@@ -1,16 +1,26 @@
-import React, { useState, useContext } from "react"
-import SEO from "../components/seo"
-import RecipeIndex from "../components/recipeIndex"
-import ContentWrapper from "../components/contentWrapper"
+import React, { useState } from "react"
+import { useStaticQuery, graphql } from "gatsby"
+import { SEO } from "../components/seo"
+import { ContentWrapper } from "../components/contentWrapper"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
+import { ShowFilters, Filters } from "../components/recipeFilters"
+import { ListOfRecipes } from "../components/listOfRecipes"
 
-const Main = styled.main`
-  margin-top: ${props => (props.appInterface ? "" : "120px")};
+const RecipeIndexWrapper = styled.div`
+  hr {
+    background: var(--color-hr);
+  }
+`
+
+const HeaderContent = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 `
 
 const Recettes = () => {
-  const context = useContext(GlobalState)
+  const [filtersAreShown, setShowFilter] = useState(false)
   const [filterList, setFilterList] = useState([
     {
       name: "Vegan",
@@ -52,13 +62,77 @@ const Recettes = () => {
       isApplied: false,
     },
   ])
+
+  const data = useStaticQuery(graphql`
+    query {
+      allMdx(
+        filter: { fields: { source: { eq: "recettes" } } }
+        sort: { fields: frontmatter___title, order: ASC }
+      ) {
+        nodes {
+          id
+          frontmatter {
+            title
+            customSlug
+            header {
+              childImageSharp {
+                fluid(maxWidth: 800) {
+                  ...GatsbyImageSharpFluid_withWebp
+                }
+              }
+            }
+            headerDescription
+            feature {
+              childImageSharp {
+                fluid(maxWidth: 800) {
+                  ...GatsbyImageSharpFluid_withWebp
+                }
+              }
+            }
+            featureDescription
+            vegan
+            veganOption
+            vegetarian
+            prepTime
+            cookTime
+            feeds
+            course
+          }
+        }
+      }
+    }
+  `)
+
   return (
     <>
       <SEO title="Recettes" />
       <ContentWrapper>
-        <Main appInterface={context.appInterface}>
-          <RecipeIndex filterList={filterList} setFilterList={setFilterList} />
-        </Main>
+        <RecipeIndexWrapper>
+          <header>
+            <HeaderContent>
+              <h1>Recettes</h1>
+              <ShowFilters
+                anyAppliedFilters={filterList.some(
+                  filter => filter.isApplied === true
+                )}
+                filtersAreShown={filtersAreShown}
+                setShowFilter={setShowFilter}
+              />
+            </HeaderContent>
+            <hr />
+          </header>
+
+          <Filters
+            filterList={filterList}
+            setFilterList={setFilterList}
+            filtersAreShown={filtersAreShown}
+          />
+
+          <ListOfRecipes
+            recipeList={data.allMdx.nodes}
+            filterList={filterList}
+          />
+        </RecipeIndexWrapper>
       </ContentWrapper>
     </>
   )

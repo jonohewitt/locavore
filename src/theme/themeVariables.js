@@ -18,6 +18,8 @@ export const lightTheme = {
   positive: "hsl(116.3, 37.3%, 43.1%)",
   negative: "hsla(0, 52%, 58%, 1)",
   footer: "hsla(8.6, 35.4%, 69%, 0.5)",
+  navDropDown: "hsla(22, 52.6%, 73.5%, 0.99)",
+  navDropDownHover: "hsl(5.7, 47.4%, 30.6%)",
 }
 
 export const darkTheme = {
@@ -40,4 +42,6 @@ export const darkTheme = {
   positive: "hsla(115, 55%, 68%, 1)",
   negative: "hsla(0, 52%, 58%, 1)",
   footer: "hsla(0, 0%, 0%, 0.2)",
+  navDropDown: "hsla(250, 10%, 11%, 0.99)",
+  navDropDownHover: "hsl(153.9, 64.5%, 60.2%)",
 }

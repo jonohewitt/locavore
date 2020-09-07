@@ -42,6 +42,7 @@ const Provider = ({ children }) => {
         toggleInterface: () => setAppInterface(!appInterface),
         settingsIsOpen,
         toggleSettings: () => setSettingsIsOpen(!settingsIsOpen),
+        setSettingsIsOpen: setSettingsIsOpen,
         isDark,
         toggleTheme: toggleTheme,
         currentMonth,

@@ -157,7 +157,7 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
     return (
       <HorizontalNavList>
         {navOptions.map(element => (
-          <li>
+          <li key={element.name}>
             <Link to={element.link} activeStyle={activeStyle}>
               {element.name}
             </Link>
@@ -172,11 +172,12 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
   const context = useContext(GlobalState)
   return (
     <>
-      <DropDownOptions open={dropDownIsOpen && windowWidth < 700}>
+      <DropDownOptions aria-label="Navigation options" open={dropDownIsOpen && windowWidth < 700}>
         <ul>
           {navOptions.map((element, index) => (
             <li key={element.name}>
               <Link
+                tabIndex={dropDownIsOpen ? "0" : "-1"}
                 onClick={() => setDropDownIsOpen(!dropDownIsOpen)}
                 to={element.link}
               >
@@ -194,6 +195,7 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
           <HorizontalNav />
         ) : (
           <MenuButton
+            aria-label="Toggle navigation menu"
             onClick={() => {
               setDropDownIsOpen(!dropDownIsOpen)
               context.setSettingsIsOpen(false)

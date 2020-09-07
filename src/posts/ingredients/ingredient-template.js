@@ -5,7 +5,7 @@ import { SEO } from "../../components/seo"
 import { ContentWrapper } from "../../components/contentWrapper"
 import { ListOfRecipes } from "../../components/listOfRecipes"
 import { GlobalState } from "../../context/globalStateContext"
-import ingredientsData from "./ingredientsData"
+import { ingredientsData } from "./ingredientsData"
 import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
 

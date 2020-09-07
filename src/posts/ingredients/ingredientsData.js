@@ -1,4 +1,4 @@
-const ingredientsData = [
+export const ingredientsData = [
   {
     name: "Ail",
     months: [
@@ -493,5 +493,3 @@ const ingredientsData = [
     ],
   },
 ]
-
-export default ingredientsData

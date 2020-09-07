@@ -11,7 +11,7 @@ import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
 import { tickSVG, crossSVG } from "../components/icons"
 import slugify from "slugify"
-import ingredientsData from "./ingredients/ingredientsData"
+import { ingredientsData } from "./ingredients/ingredientsData"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);

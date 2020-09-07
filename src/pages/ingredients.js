@@ -5,7 +5,7 @@ import slugify from "slugify"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
-import ingredientsData from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../posts/ingredients/ingredientsData"
 import { tickSVG, crossSVG } from "../components/icons"
 
 const Styles = styled.main`

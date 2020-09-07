@@ -1,9 +1,10 @@
 import { Link, useStaticQuery, graphql } from "gatsby"
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import styled from "styled-components"
 import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { useWindowWidth } from "./customHooks"
+import { GlobalState } from "../context/globalStateContext"
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -24,6 +25,9 @@ const MenuButton = styled.button`
   font-weight: 700;
   padding: 10px;
   margin-right: 10px;
+  &:hover {
+    color: var(--color-activeLink);
+  }
 `
 
 const HorizontalNavList = styled.ul`
@@ -77,16 +81,16 @@ const DropDownOptions = styled.section`
   position: fixed;
   z-index: 2;
   text-align: center;
-  background-color: hsla(250, 10%, 11%, 0.99);
+  background-color: var(--color-navDropDown);
   padding: 25px;
   padding-top: 80px;
   border-radius: 0 0 20px 20px;
-  box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.1);
+  box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.2);
   li {
     margin: 0 20%;
   }
   a {
-    color: var(--color-navText);
+    color: var(--color-text);
     display: inline-block;
     font-size: 18px;
     font-weight: 700;
@@ -94,8 +98,12 @@ const DropDownOptions = styled.section`
     padding: 8px;
     width: 80%;
     &:hover {
-      color: var(--color-activeLink);
+      color: var(--color-navDropDownHover);
     }
+  }
+  hr {
+    background-color: var(--color-text);
+    opacity: 0.4;
   }
   transform: ${props => (props.open ? "translateY(0)" : "translateY(-100%)")};
   transition: transform 0.4s;
@@ -148,25 +156,38 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
 
   const windowWidth = useWindowWidth()
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
+  const context = useContext(GlobalState)
   return (
     <>
       <DropDownOptions open={dropDownIsOpen}>
         <ul>
           {navOptions.map((element, index) => (
-            <li>
-              <Link onClick={() => setDropDownIsOpen(!dropDownIsOpen)} to={element.link}>{element.name}</Link>
+            <li key={element.name}>
+              <Link
+                onClick={() => setDropDownIsOpen(!dropDownIsOpen)}
+                to={element.link}
+              >
+                {element.name}
+              </Link>
               {index < navOptions.length - 1 && <hr />}
             </li>
           ))}
         </ul>
       </DropDownOptions>
       <NavWrapper>
-        <SettingsIcon />
+        <SettingsIcon setDropDownIsOpen={setDropDownIsOpen} />
         <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
         {windowWidth > 700 ? (
           <HorizontalNav />
         ) : (
-          <MenuButton onClick={() => setDropDownIsOpen(!dropDownIsOpen)}>Menu</MenuButton>
+          <MenuButton
+            onClick={() => {
+              setDropDownIsOpen(!dropDownIsOpen)
+              context.setSettingsIsOpen(false)
+            }}
+          >
+            Menu
+          </MenuButton>
         )}
       </NavWrapper>
     </>

@@ -83,7 +83,30 @@ const CrossSVG = styled.svg`
   cursor: pointer;
 `
 
-export const Filters = ({ filterList, filtersAreShown, toggleFilter }) => {
+export const Filters = ({ filterList, setFilterList, filtersAreShown }) => {
+  const toggleFilter = filterName => {
+    setFilterList(prevState => {
+      const newState = [...prevState]
+      const filterIndex = newState.findIndex(
+        filter => filter.name === filterName
+      )
+
+      if (newState[filterIndex].group) {
+        newState.forEach(filter => {
+          if (
+            filter !== newState[filterIndex] &&
+            filter.group === newState[filterIndex].group
+          ) {
+            filter.isApplied = false
+          }
+        })
+      }
+
+      newState[filterIndex].isApplied = !newState[filterIndex].isApplied
+      return newState
+    })
+  }
+
   if (filtersAreShown) {
     return (
       <ListOfFilters>

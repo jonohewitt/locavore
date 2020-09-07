@@ -83,12 +83,15 @@ const RightSlider = styled(SliderTemplate)`
   }
 `
 
-export const SettingsIcon = () => {
+export const SettingsIcon = ({ setDropDownIsOpen }) => {
   const context = useContext(GlobalState)
   return (
     <IconWrapper
       aria-label="Toggle settings menu"
-      onClick={context.toggleSettings}
+      onClick={() => {
+        context.toggleSettings()
+        setDropDownIsOpen(false)
+      }}
     >
       <Square settingsIsOpen={context.settingsIsOpen} />
       <LeftTrack settingsIsOpen={context.settingsIsOpen} />

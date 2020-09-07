@@ -40,6 +40,9 @@ export const GlobalStyles = createGlobalStyle`
 
   button {
     -webkit-tap-highlight-color: transparent;
+    border: none;
+    background: transparent;
+    cursor: pointer;
   }
 
   .italic {

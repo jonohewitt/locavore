@@ -1,8 +1,8 @@
 import { Link, useStaticQuery, graphql } from "gatsby"
 import React from "react"
 import styled from "styled-components"
-import SettingsIcon from "./settingsIcon"
-import { width, maxWidth, breakToMobile } from "./contentWrapper"
+import { SettingsIcon } from "./settingsIcon"
+import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { useWindowWidth } from "./customHooks"
 
 const StyledLink = styled(Link)`
@@ -40,11 +40,12 @@ const StyledUL = styled.ul`
 const PageTitle = styled(StyledLink)`
   position: fixed;
   padding: 10px;
-  left: calc(50% - min(${width / 2}%, ${maxWidth / 2}px) - 10px);
+  left: calc(50% - min(${widthPercent / 2}%, ${maxWidth / 2}px) - 10px);
   font-family: Quicksand, sans-serif;
   font-size: 24px;
   color: var(--color-navTitle);
   letter-spacing: 2px;
+  text-transform: uppercase;
 
   @media (max-width: ${breakToMobile}px) {
     position: static;
@@ -59,7 +60,7 @@ const StyledLi = styled.li`
   }
 `
 
-const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
+export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -125,5 +126,3 @@ const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
     </>
   )
 }
-
-export default DesktopNav

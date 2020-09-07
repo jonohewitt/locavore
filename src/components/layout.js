@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 
 import { Page } from "./page"
-import { DesktopNav } from "./desktop-nav"
+import { DesktopNav } from "./desktopNav"
 import { Settings } from "./settings"
 import { Footer, footerHeight } from "./footer"
 import { AppBar } from "./appBar"

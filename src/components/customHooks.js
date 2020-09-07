@@ -1,14 +1,14 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from "react"
 
 export const useWindowWidth = () => {
-  const [width, setWidth] = useState(undefined);
+  const [width, setWidth] = useState(undefined)
   useLayoutEffect(() => {
     const updateWidth = () => {
-      setWidth(window.innerWidth);
+      setWidth(window.innerWidth)
     }
-    window.addEventListener('resize', updateWidth);
-    updateWidth();
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
-  return width;
+    window.addEventListener("resize", updateWidth)
+    updateWidth()
+    return () => window.removeEventListener("resize", updateWidth)
+  }, [])
+  return width
 }

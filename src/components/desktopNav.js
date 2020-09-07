@@ -159,7 +159,7 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
   const context = useContext(GlobalState)
   return (
     <>
-      <DropDownOptions open={dropDownIsOpen}>
+      <DropDownOptions open={dropDownIsOpen && windowWidth < 700}>
         <ul>
           {navOptions.map((element, index) => (
             <li key={element.name}>

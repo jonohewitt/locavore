@@ -140,7 +140,7 @@ export default function PostTemplate({ data: { mdx } }) {
           <article>
             <header>
               <h1>{fm.title}</h1>
-              <hr />
+              {!featureImg && <hr />}
               {fm.date && <p>{fm.date}</p>}
             </header>
             <FeatureImage

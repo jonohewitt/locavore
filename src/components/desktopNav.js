@@ -5,6 +5,7 @@ import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { useWindowWidth } from "./customHooks"
 import { GlobalState } from "../context/globalStateContext"
+import { dropDownSVG, pullUpSVG } from "./icons"
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -25,8 +26,19 @@ const MenuButton = styled.button`
   font-weight: 700;
   padding: 10px;
   margin-right: 10px;
+  white-space: nowrap;
+
+  svg {
+    transform: scale(0.9);
+    vertical-align: text-bottom;
+  }
+
   &:hover {
     color: var(--color-activeLink);
+
+    path {
+      fill: var(--color-activeLink);
+    }
   }
 `
 
@@ -77,14 +89,15 @@ const PageTitle = styled(Link)`
 `
 
 const DropDownOptions = styled.section`
-  width: 100%;
+  width: 96%;
+  margin-left: 2%;
   position: fixed;
   z-index: 2;
   text-align: center;
   background-color: var(--color-navDropDown);
   padding: 25px;
   padding-top: 80px;
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 15px 15px;
   box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.2);
   li {
     margin: 0 20%;
@@ -186,7 +199,7 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
               context.setSettingsIsOpen(false)
             }}
           >
-            Menu
+            Menu {dropDownIsOpen ? pullUpSVG : dropDownSVG}
           </MenuButton>
         )}
       </NavWrapper>

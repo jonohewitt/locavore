@@ -15,7 +15,7 @@ const Container = styled.button`
   align-items: center;
   position: relative;
   cursor: pointer;
-  box-shadow: 0 5px 5px hsla(0, 0%, 10%, 0.1);
+  box-shadow: 0 5px 5px hsla(0, 0%, 10%, 0.1) !important;
 `
 const Slider = styled.div`
   width: 22px;

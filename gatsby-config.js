@@ -41,7 +41,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-offline`,
       options: {
-        precachePages: [`/recettes/*`, `/ingredients/*`],
+        precachePages: [`/recettes`, `/ingredients`, `/recettes/*`, `/ingredients/*`],
       },
     },
     `gatsby-plugin-mdx`,

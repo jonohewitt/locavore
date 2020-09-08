@@ -37,31 +37,37 @@ const BarWrapper = styled.nav`
   width: 100%;
   height: 55px;
   background-color: var(--color-appBar);
-  box-shadow: 0 -10px 10px hsla(0, 0%, 10%, 0.1);
+  box-shadow: 0 -4px 10px hsla(0, 0%, 10%, 0.2);
   z-index: 3;
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    height: 75px;
+    padding-bottom: 20px;
+  }
 `
 
 const TabList = styled.ul`
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr;
+  grid-template-columns: repeat(5, 1fr);
   height: 100%;
+  overflow: hidden;
 `
 
 const TabListItem = styled.li`
   width: 100%;
   height: 100%;
 
-  :first-child {
+  :first-child, :last-child {
     a {
       padding-left: 15px;
-      border-radius: 0 14px 0 0;
+      border-radius: 0 6px 0 0;
     }
   }
 
   :last-child {
     a {
       padding-right: 15px;
-      border-radius: 14px 0 0 0;
+      border-radius: 6px 0 0 0;
     }
   }
 `
@@ -76,11 +82,9 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: flex-end;
   cursor: pointer;
-  box-shadow: none;
-  transition: box-shadow 0.3s;
   svg {
     scale: 0.8;
-    opacity: 0.5;
+    opacity: 0.4;
     transition: all 0.3s;
   }
   h6 {
@@ -91,10 +95,14 @@ const StyledLink = styled(Link)`
   }
 
   &.active {
-    border-bottom: solid 3px;
-    box-shadow: 0 8px 15px hsla(0, 0%, 10%, 0.6) !important;
-    border-radius: 14px 14px 0 0;
-    background-color: var(--color-activeAppTab);
+    border-top: solid var(--color-appBarHighlight) 3px;
+    box-shadow: 0 -15px 15px var(--color-appBarDropShadow) !important;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(
+      var(--color-activeAppTab),
+      30%,
+      var(--color-appBar)
+    );
     svg {
       opacity: 1;
     }

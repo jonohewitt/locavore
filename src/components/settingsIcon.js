@@ -90,7 +90,9 @@ export const SettingsIcon = ({ setDropDownIsOpen }) => {
       aria-label="Toggle settings menu"
       onClick={() => {
         context.toggleSettings()
-        setDropDownIsOpen(false)
+        if (!context.appInterface) {
+          setDropDownIsOpen(false)
+        }
       }}
     >
       <Square settingsIsOpen={context.settingsIsOpen} />

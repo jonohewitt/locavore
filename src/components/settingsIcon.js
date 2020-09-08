@@ -10,7 +10,7 @@ const IconWrapper = styled.button`
   cursor: pointer;
   width: 32px;
   height: 30px;
-  margin: 15px 45px 15px 15px;
+  margin: 15px 25px 15px 15px;
   border-radius: 5px;
   outline-offset: 4px;
   overflow: hidden;

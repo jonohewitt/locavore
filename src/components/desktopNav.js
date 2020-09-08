@@ -25,8 +25,8 @@ const MenuButton = styled.button`
   font-size: 16px;
   font-weight: 700;
   padding: 10px;
-  margin-right: 10px;
   white-space: nowrap;
+  margin-left: -15px;
 
   svg {
     transform: scale(0.9);

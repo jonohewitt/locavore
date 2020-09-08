@@ -172,7 +172,10 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
   const context = useContext(GlobalState)
   return (
     <>
-      <DropDownOptions aria-label="Navigation options" open={dropDownIsOpen && windowWidth < 700}>
+      <DropDownOptions
+        aria-label="Navigation options"
+        open={dropDownIsOpen && windowWidth < 700}
+      >
         <ul>
           {navOptions.map((element, index) => (
             <li key={element.name}>

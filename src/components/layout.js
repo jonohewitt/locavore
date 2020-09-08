@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import { GlobalStyles } from "../theme/globalStyles"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
-
+import { Helmet } from "react-helmet"
 import { Page } from "./page"
 import { DesktopNav } from "./desktopNav"
 import { Settings } from "./settings"
@@ -25,6 +25,15 @@ export const Layout = ({ children }) => {
   const context = useContext(GlobalState)
   return (
     <>
+      <Helmet
+        meta={[
+          {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1, viewport-fit=cover",
+          },
+        ]}
+      />
+
       <GlobalStyles />
       {context.appInterface && <AppBar />}
       {context.appInterface === false && <DesktopNav />}

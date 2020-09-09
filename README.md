@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-  La Coloc' Locale
+  Locavore
 </h1>
 
 A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably.

@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Locavore`,
     description: `A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably. Content focuses around recipes 🥗, blog posts 👩‍💻, information resources 📚 and data visualisations 📊.`,
-    author: `La Coloc' Locale`,
+    author: `Locavore`,
   },
   plugins: [
     {
@@ -25,13 +25,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `La Coloc' Locale`,
-        short_name: `Coloc`,
+        name: `Locavore`,
+        short_name: `Locavore`,
         start_url: `/`,
         background_color: `hsl(234, 11%, 17%)`,
         theme_color: `hsla(234, 11%, 22%, 0.98)`,
         display: `standalone`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/pear-icon.png`, // This path is relative to the root of the site.
         icon_options: {
           purpose: `any maskable`,
         },

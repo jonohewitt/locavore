@@ -26,6 +26,6 @@ const FooterWrapper = styled.footer`
 
 export const Footer = ({ siteTitle }) => (
   <FooterWrapper>
-    <p>© {new Date().getFullYear()}, La Coloc' Locale</p>
+    <p>© {new Date().getFullYear()}, locavore.menu</p>
   </FooterWrapper>
 )

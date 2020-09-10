@@ -6,11 +6,11 @@
   Locavore
 </h1>
 
-A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably.
+A website and PWA for helping people enjoy eating locally, seasonally and sustainably, starting with a focus in Brussels 🇧🇪
 
-Content focuses around recipes 🥗, blog posts 👩‍💻, information resources 📚 and data visualisations 📊.
+Content focuses around recipes 🥗, information resources 📚, blog posts 👩‍💻, and data visualisations 📊.
 
-Built using GatsbyJS, React, GraphQL, Styled-Components, D3 and MDX.
+Built using Gatsby, React, GraphQL, Styled-Components, MDX and D3.
 
 _We'd love to collaborate! Please get in touch if you'd like to share any data, ideas or give feedback about the site._
 

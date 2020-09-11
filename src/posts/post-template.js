@@ -9,9 +9,7 @@ import Img from "gatsby-image"
 import { SEO } from "../components/seo"
 import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
-import { tickSVG, crossSVG } from "../components/icons"
-import slugify from "slugify"
-import { ingredientsData } from "./ingredients/ingredientsData"
+import { Ing } from "../components/ingredientLink"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -19,6 +17,9 @@ const StyledHighlight = styled.div`
   padding: 10px 30px 30px 30px;
   border-radius: 5px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  hr {
+    margin-bottom: 15px;
+  }
 
   @media (max-width: ${breakToMobile}px) {
     margin: 30px 0;
@@ -84,41 +85,6 @@ const FeatureImage = ({ featureImg }) => {
   } else {
     return false
   }
-}
-
-const IngredientLink = styled(Link)`
-  color: ${props => props.color} !important;
-  svg {
-    transform: scale(0.8);
-    vertical-align: text-bottom;
-    margin-left: 2px;
-  }
-  white-space: nowrap;
-`
-
-const Ing = ({ id, children }) => {
-  const context = useContext(GlobalState)
-  const ingredient = ingredientsData.find(ingredient => ingredient.name === id)
-  let color
-  let icon
-  if (ingredient && ingredient.months[context.currentMonth]) {
-    icon = tickSVG
-    color = "var(--color-positive)"
-  } else if (ingredient && !ingredient.months[context.currentMonth]) {
-    icon = crossSVG
-    color = "var(--color-negative)"
-  } else {
-    color = "var(--color-text)"
-  }
-  return (
-    <IngredientLink
-      color={color}
-      to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
-    >
-      {children}
-      {icon}
-    </IngredientLink>
-  )
 }
 
 const shortcodes = { Link, Ing, Ingredients }

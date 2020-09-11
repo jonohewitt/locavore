@@ -29,6 +29,13 @@ const Styles = styled.main`
     line-height: 1.8;
     font-weight: 700;
   }
+
+  header {
+    position: relative;
+    hr {
+      margin-top: 4px;
+    }
+  }
 `
 
 const filteredList = (data, filter, currentMonth) => {
@@ -101,7 +108,7 @@ const Ingredients = ({ filterList, setFilterList }) => {
       <ContentWrapper>
         <Styles>
           <header>
-            <h1>Ingredients</h1>
+              <h1>Ingredients</h1>
             <hr />
           </header>
           <h2>En saison {tickSVG}</h2>

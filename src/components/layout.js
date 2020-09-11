@@ -12,7 +12,7 @@ import { Footer, footerHeight } from "./footer"
 import { AppBar } from "./appBar"
 
 const OverflowWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   overflow-x: hidden;
 `
 const footerPadding = `${footerHeight + 100}px`

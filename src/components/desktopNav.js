@@ -5,7 +5,8 @@ import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { useWindowWidth } from "./customHooks"
 import { GlobalState } from "../context/globalStateContext"
-import { dropDownSVG, pullUpSVG } from "./icons"
+import { dropDownSVG, pullUpSVG, searchSVG } from "./icons"
+import { Search } from "./search"
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -26,7 +27,6 @@ const MenuButton = styled.button`
   font-weight: 700;
   padding: 10px;
   white-space: nowrap;
-  margin-left: -15px;
 
   svg {
     transform: scale(0.9);
@@ -45,7 +45,9 @@ const MenuButton = styled.button`
 const HorizontalNavList = styled.ul`
   display: flex;
   justify-content: flex-end;
-  margin-right: 15px;
+  margin-right: 50px;
+  align-items: center;
+  ${props => props.hidden && "visibility: hidden;"}
 
   li {
     margin-left: 5px;
@@ -86,40 +88,95 @@ const PageTitle = styled(Link)`
     position: static;
     font-size: 21px;
   }
+
+  @media (max-width: 700px) {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 21px;
+  }
 `
 
 const DropDownOptions = styled.section`
-  width: 96%;
-  margin-left: 2%;
+  width: 100%;
+  height: 100%;
   position: fixed;
   z-index: 2;
-  text-align: center;
   background-color: var(--color-navDropDown);
-  padding: 25px;
+  padding: 8%;
   padding-top: 80px;
   border-radius: 0 0 15px 15px;
   box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.2);
-  li {
-    margin: 0 20%;
-  }
-  a {
-    color: var(--color-text);
-    display: inline-block;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.5;
-    padding: 8px;
-    width: 80%;
-    &:hover {
-      color: var(--color-navDropDownHover);
-    }
-  }
+
   hr {
     background-color: var(--color-text);
     opacity: 0.4;
   }
   transform: ${props => (props.open ? "translateY(0)" : "translateY(-100%)")};
   transition: transform 0.4s;
+`
+
+const DropDownLink = styled(Link)`
+  color: var(--color-text);
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 8px;
+  width: 80%;
+  &:hover {
+    color: var(--color-navDropDownHover);
+  }
+`
+
+const DropDownListItem = styled.li`
+  margin: 0 10%;
+`
+
+const SearchContainer = styled.div`
+  position: fixed;
+  z-index: 5;
+  top: 10px;
+  right: 55px;
+  width: 350px;
+`
+
+const MobileSearchContainer = styled.div`
+  position: relative;
+  z-index: 5;
+`
+
+const ListOfDropDownOptions = styled.ul`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+`
+
+const SearchButton = styled.button`
+  position: absolute;
+  right: 15px;
+  padding: 10px;
+  svg {
+    transform: scale(1.3);
+    position: relative;
+    top: 2.5px;
+
+    circle,
+    line {
+      transition: stroke 0.2s;
+    }
+  }
+  :hover {
+    svg {
+      circle,
+      line {
+        stroke: var(--color-altColor);
+      }
+    }
+  }
 `
 
 export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
@@ -155,41 +212,66 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
   const HorizontalNav = () => {
     const activeStyle = { border: "solid 1px", borderRadius: "8px" }
     return (
-      <HorizontalNavList>
-        {navOptions.map(element => (
-          <li key={element.name}>
-            <Link to={element.link} activeStyle={activeStyle}>
-              {element.name}
-            </Link>
-          </li>
-        ))}
-      </HorizontalNavList>
+      <>
+        <HorizontalNavList hidden={searchIsActive}>
+          {navOptions.map(element => (
+            <li key={element.name}>
+              <Link to={element.link} activeStyle={activeStyle}>
+                {element.name}
+              </Link>
+            </li>
+          ))}
+        </HorizontalNavList>
+        <SearchButton onClick={() => setSearchIsActive(!searchIsActive)}>
+          {searchSVG}
+        </SearchButton>
+      </>
     )
   }
 
   const windowWidth = useWindowWidth()
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
   const context = useContext(GlobalState)
+  const [searchIsActive, setSearchIsActive] = useState(false)
+  const [typedInput, setTypedInput] = useState("")
+  const [value, setValue] = useState("")
+  const [list, setList] = useState([])
+  const [indexHighlighted, setIndex] = useState(0)
+
   return (
     <>
       <DropDownOptions
         aria-label="Navigation options"
         open={dropDownIsOpen && windowWidth < 700}
       >
-        <ul>
+        <MobileSearchContainer>
+          <Search
+            value={value}
+            setValue={setValue}
+            list={list}
+            setList={setList}
+            indexHighlighted={indexHighlighted}
+            setIndex={setIndex}
+            typedInput={typedInput}
+            setTypedInput={setTypedInput}
+            setSearchIsActive={setSearchIsActive}
+            setDropDownIsOpen={setDropDownIsOpen}
+          />
+        </MobileSearchContainer>
+        <ListOfDropDownOptions>
           {navOptions.map((element, index) => (
-            <li key={element.name}>
-              <Link
+            <DropDownListItem key={element.name}>
+              <DropDownLink
                 tabIndex={dropDownIsOpen ? "0" : "-1"}
                 onClick={() => setDropDownIsOpen(!dropDownIsOpen)}
                 to={element.link}
               >
                 {element.name}
-              </Link>
+              </DropDownLink>
               {index < navOptions.length - 1 && <hr />}
-            </li>
+            </DropDownListItem>
           ))}
-        </ul>
+        </ListOfDropDownOptions>
       </DropDownOptions>
       <NavWrapper>
         <SettingsIcon setDropDownIsOpen={setDropDownIsOpen} />
@@ -200,6 +282,8 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
           <MenuButton
             aria-label="Toggle navigation menu"
             onClick={() => {
+              setList([])
+              setValue("")
               setDropDownIsOpen(!dropDownIsOpen)
               context.setSettingsIsOpen(false)
             }}
@@ -208,6 +292,26 @@ export const DesktopNav = ({ settingsIsOpen, toggleSettings }) => {
           </MenuButton>
         )}
       </NavWrapper>
+      {searchIsActive && (
+        <SearchContainer>
+          <Search
+            shouldHandleBlur
+            value={value}
+            setValue={setValue}
+            list={list}
+            setList={setList}
+            indexHighlighted={indexHighlighted}
+            setIndex={setIndex}
+            typedInput={typedInput}
+            setTypedInput={setTypedInput}
+            setSearchIsActive={setSearchIsActive}
+            setDropDownIsOpen={setDropDownIsOpen}
+            // Autofocus only happens after search button is pressed therefore focus is expected
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+          />
+        </SearchContainer>
+      )}
     </>
   )
 }

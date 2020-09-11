@@ -244,3 +244,31 @@ export const dropDownSVG = (
     />
   </svg>
 )
+
+export const searchSVG = (
+  <svg
+    width="12"
+    height="13"
+    viewBox="0 0 12 13"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      r="3.6"
+      transform="matrix(-1 0 0 1 4.5 4.5)"
+      stroke="var(--color-navText)"
+      strokeWidth="1.8"
+    />
+    <line
+      x1="0.9"
+      y1="-0.9"
+      x2="6.17107"
+      y2="-0.9"
+      transform="matrix(0.707107 0.707107 0.707107 -0.707107 7 6)"
+      stroke="var(--color-navText)"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)

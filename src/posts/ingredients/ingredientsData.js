@@ -272,23 +272,6 @@ export const ingredientsData = [
     ],
   },
   {
-    name: "Levure",
-    months: [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-    ],
-  },
-  {
     name: "Miel",
     months: [
       true,

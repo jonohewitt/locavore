@@ -1,5 +1,5 @@
 import { Link, useStaticQuery, graphql } from "gatsby"
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import styled from "styled-components"
 import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
@@ -152,7 +152,7 @@ const MobileSearchContainer = styled.div`
 
 const DropDownNavList = styled.ul`
   position: absolute;
-  top: 50%;
+  top: ${props => props.halfDeviceHeight};
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
@@ -191,6 +191,10 @@ const SearchButton = styled.button`
 `
 
 export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
+  const [halfDeviceHeight, setHalfDeviceHeight] = useState("50%")
+  useEffect(() => {
+    setHalfDeviceHeight(`${window.innerHeight / 2}px`)
+  }, [])
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -277,6 +281,7 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
         </MobileSearchContainer>
         <DropDownNavList
           className={`clearResultsList ${mobileSearchIsActive && "hidden"}`}
+          halfDeviceHeight={halfDeviceHeight}
         >
           {navOptions.map((element, index) => (
             <DropDownListItem key={element.name}>

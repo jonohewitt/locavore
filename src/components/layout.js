@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import { Helmet } from "react-helmet"
 import { Page } from "./page"
-import { DesktopNav } from "./desktopNav"
+import { BrowserNav } from "./browserNav"
 import { Settings } from "./settings"
 import { Footer, footerHeight } from "./footer"
 import { AppBar } from "./appBar"
@@ -36,7 +36,7 @@ export const Layout = ({ children }) => {
 
       <GlobalStyles />
       {context.appInterface && <AppBar />}
-      {context.appInterface === false && <DesktopNav />}
+      {context.appInterface === false && <BrowserNav />}
 
       <OverflowWrapper>
         <Settings

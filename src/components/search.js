@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 import { Ing } from "./ingredientLink"
@@ -18,7 +18,7 @@ const InputContainer = styled.div`
   z-index: 3;
   display: flex;
   align-items: center;
-  box-shadow: 0 1px 5px 0 hsla(0, 0%, 100%, 0.1);
+  box-shadow: 0 1px 5px 0 var(--color-searchShadow);
   width: 100%;
 
   svg {
@@ -54,8 +54,8 @@ const SearchResultListContainer = styled.div`
   right: 0;
   width: 100%;
   border-radius: 20px;
-  border: 2px solid var(--color-hr);
-  box-shadow: 0 5px 10px hsla(0, 0%, 100%, 0.2);
+  ${props => props.outline && "border: 2px solid var(--color-hr);"}
+  box-shadow: 0 4px 14px var(--color-searchShadow);
   background-color: var(--color-searchBackground);
   padding: 15px 0;
   overflow: hidden;
@@ -139,14 +139,10 @@ export const Search = ({
   setValue,
   list,
   setList,
-  indexHighlighted,
-  setIndex,
-  typedInput,
-  setTypedInput,
   setSearchIsActive,
   setDropDownIsOpen,
-  autoFocus,
-  shouldHandleBlur,
+  setMobileSearchIsActive,
+  mobile,
 }) => {
   const data = useStaticQuery(graphql`
     query {
@@ -163,6 +159,9 @@ export const Search = ({
       }
     }
   `)
+
+  const [indexHighlighted, setIndex] = useState(0)
+  const [typedInput, setTypedInput] = useState("")
 
   let otherPageTitles = []
 
@@ -241,10 +240,11 @@ export const Search = ({
     }
   }
 
-  const handleSearchOptionClick = event => {
+  const handleSearchOptionClick = () => {
     setList([])
     setValue("")
     setSearchIsActive(false)
+    setMobileSearchIsActive(false)
     setDropDownIsOpen(false)
   }
 
@@ -256,18 +256,22 @@ export const Search = ({
           <SearchInput
             // Autofocus only happens after search button is pressed therefore focus is expected
             // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus={autoFocus}
+            autoFocus={!mobile}
             placeholder="Search..."
             type="text"
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            onBlur={(event) => shouldHandleBlur && handleBlur(event)}
-            onFocus={handleChange}
+            onBlur={event => !mobile && handleBlur(event)
+            }
+            onFocus={event => {
+              mobile && setMobileSearchIsActive(true)
+              handleChange(event)
+            }}
           />
         </InputContainer>
         {list && list.length > 0 && (
-          <SearchResultListContainer>
+          <SearchResultListContainer outline={mobile}>
             <SearchResultList>
               {list.map((element, index) => (
                 <SearchResult

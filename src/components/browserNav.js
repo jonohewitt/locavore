@@ -152,7 +152,7 @@ const MobileSearchContainer = styled.div`
 
 const DropDownNavList = styled.ul`
   position: absolute;
-  top: ${() => (window ? window.innerHeight / 2 + "px;" : "50%;")}
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;

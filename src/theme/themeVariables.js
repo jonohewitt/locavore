@@ -4,7 +4,7 @@ export const lightTheme = {
   nav: "hsla(68, 62%, 95%, 1)",
   navTitle: "#059d7a",
   navText: "#107b71",
-  settings: "hsla(17, 40%, 57%, 1)",
+  settings: "hsla(11.6, 49.7%, 67.3%, 1)",
   settingsIcon: "hsla(10, 48%, 63%, 1)",
   altColor: "#02799d",
   graphBackground: "hsla(69, 70%, 94%, 1)",
@@ -20,11 +20,12 @@ export const lightTheme = {
   positive: "hsl(116.3, 37.3%, 43.1%)",
   negative: "hsla(0, 52%, 58%, 1)",
   footer: "hsla(8.6, 35.4%, 69%, 0.5)",
-  navDropDown: "hsla(22, 52.6%, 73.5%, 0.99)",
+  navDropDown: "hsla(11.6, 49.7%, 67.3%, 1)",
   navDropDownHover: "hsl(5.7, 47.4%, 30.6%)",
   searchBackground: "hsla(68, 62%, 99%, 1)",
   searchListSelected: "hsla(10.9, 100%, 89.2%, 0.4)",
   searchListHover: "hsla(10.9, 100%, 89.2%, 0.7)",
+  searchShadow: "hsla(0, 0%, 0%, 0.3)",
 }
 
 export const darkTheme = {
@@ -49,9 +50,10 @@ export const darkTheme = {
   positive: "hsla(115, 55%, 68%, 1)",
   negative: "hsla(0, 92%, 69%, 1)",
   footer: "hsla(0, 0%, 0%, 0.2)",
-  navDropDown: "hsla(250, 10%, 11%, 0.99)",
+  navDropDown: "hsla(250, 7.5%, 15.7%, 1)",
   navDropDownHover: "hsl(153.9, 64.5%, 60.2%)",
   searchBackground: "hsla(231, 10%, 10%, 1)",
   searchListSelected: "hsla(218, 22%, 23%, 0.4)",
   searchListHover: "hsla(218, 22%, 23%, 0.7)",
+  searchShadow: "hsla(0, 0%, 100%, 0.2)",
 }

@@ -18,7 +18,8 @@ const InputContainer = styled.div`
   z-index: 3;
   display: flex;
   align-items: center;
-  box-shadow: 0 1px 5px 0 var(--color-searchShadow);
+  ${props =>
+    props.shadow ? "box-shadow: 0 2px 8px 0 var(--color-searchShadow);" : "box-shadow: 0 1px 2px 0 hsla(0, 0%, 10%, 0.4);"}
   width: 100%;
 
   svg {
@@ -141,7 +142,9 @@ export const Search = ({
   setList,
   setSearchIsActive,
   setDropDownIsOpen,
+  dropDownIsOpen,
   setMobileSearchIsActive,
+  mobileSearchIsActive,
   mobile,
 }) => {
   const data = useStaticQuery(graphql`
@@ -251,7 +254,9 @@ export const Search = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <InputContainer>
+        <InputContainer
+          shadow={!(dropDownIsOpen && mobileSearchIsActive === false)}
+        >
           {searchSVG}
           <SearchInput
             // Autofocus only happens after search button is pressed therefore focus is expected
@@ -262,8 +267,7 @@ export const Search = ({
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            onBlur={event => !mobile && handleBlur(event)
-            }
+            onBlur={event => !mobile && handleBlur(event)}
             onFocus={event => {
               mobile && setMobileSearchIsActive(true)
               handleChange(event)

@@ -99,13 +99,12 @@ const PageTitle = styled(Link)`
 
 const DropDownMenu = styled.section`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: fixed;
   z-index: 2;
   background-color: var(--color-navDropDown);
   padding: 8%;
   padding-top: 80px;
-  border-radius: 0 0 15px 15px;
   box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.2);
 
   hr {
@@ -115,6 +114,10 @@ const DropDownMenu = styled.section`
   transform: ${props => (props.open ? "translateY(0)" : "translateY(-100%)")};
   opacity: ${props => (props.open ? "1" : "0")};
   transition: transform 0.5s, opacity 0.2s;
+  ul {
+    opacity: ${props => (props.open ? "1" : "0")};
+    ${props => !props.open && "transition: opacity 0s;"}
+  }
 `
 
 const DropDownLink = styled(Link)`
@@ -149,7 +152,7 @@ const MobileSearchContainer = styled.div`
 
 const DropDownNavList = styled.ul`
   position: absolute;
-  top: 50vh;
+  top: ${() => (window ? window.innerHeight / 2 + "px;" : "50%;")}
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
@@ -159,6 +162,7 @@ const DropDownNavList = styled.ul`
   &.hidden {
     pointer-events: none;
     opacity: 0;
+    transition: opacity 0.5s;
   }
 `
 
@@ -264,8 +268,10 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
             setValue={setValue}
             list={list}
             setList={setList}
+            mobileSearchIsActive={mobileSearchIsActive}
             setMobileSearchIsActive={setMobileSearchIsActive}
             setSearchIsActive={setSearchIsActive}
+            dropDownIsOpen={dropDownIsOpen}
             setDropDownIsOpen={setDropDownIsOpen}
           />
         </MobileSearchContainer>

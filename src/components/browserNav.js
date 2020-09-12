@@ -113,7 +113,8 @@ const DropDownMenu = styled.section`
     opacity: 0.4;
   }
   transform: ${props => (props.open ? "translateY(0)" : "translateY(-100%)")};
-  transition: transform 0.4s;
+  opacity: ${props => (props.open ? "1" : "0")};
+  transition: transform 0.5s, opacity 0.2s;
 `
 
 const DropDownLink = styled(Link)`
@@ -148,7 +149,7 @@ const MobileSearchContainer = styled.div`
 
 const DropDownNavList = styled.ul`
   position: absolute;
-  top: 50%;
+  top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;

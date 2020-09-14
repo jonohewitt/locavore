@@ -30,7 +30,7 @@ exports.createPages = async ({
 
   const posts = result.data.allMdx.nodes
 
-  let ingredientArray = []
+  const ingredientSet = new Set()
 
   posts.forEach(node => {
     const slug = node.frontmatter.customSlug
@@ -39,27 +39,21 @@ exports.createPages = async ({
 
     if (node.frontmatter.ingredients) {
       node.frontmatter.ingredients.forEach(ingredient => {
-        if (!ingredientArray.includes(ingredient)) {
-          ingredientArray.push(ingredient)
-        }
+        ingredientSet.add(ingredient)
       })
     }
 
     createPage({
       path: `${node.fields.source}${slug}`,
-
       component: path.resolve(`./src/posts/post-template.js`),
-
       context: { id: node.id },
     })
   })
 
-  ingredientArray.forEach(ingredient =>
+  ingredientSet.forEach(ingredient =>
     createPage({
       path: `ingredients/${slugify(ingredient, { lower: true })}`,
-
       component: path.resolve(`./src/posts/ingredients/ingredient-template.js`),
-
       context: { name: ingredient },
     })
   )

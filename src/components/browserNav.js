@@ -336,8 +336,6 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
             list={list}
             setList={setList}
             setNavBarSearchIsActive={setNavBarSearchIsActive}
-            // Autofocus only happens after search button is pressed therefore focus is expected
-            // eslint-disable-next-line jsx-a11y/no-autofocus
           />
         </SearchContainer>
       )}

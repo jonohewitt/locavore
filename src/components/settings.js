@@ -7,6 +7,7 @@ const SettingsWrapper = styled.section`
   position: fixed;
   top: 0;
   left: 0;
+  will-change: transform;
   transform: translateX(${props => (props.settingsIsOpen ? "0" : "-100%")});
   width: 280px;
   height: 100vh;

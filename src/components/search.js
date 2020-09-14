@@ -19,7 +19,9 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   ${props =>
-    props.shadow ? "box-shadow: 0 2px 8px 0 var(--color-searchShadow);" : "box-shadow: 0 1px 2px 0 hsla(0, 0%, 10%, 0.4);"}
+    props.shadow
+      ? "box-shadow: 0 2px 8px 0 var(--color-searchShadow);"
+      : "box-shadow: 0 1px 2px 0 hsla(0, 0%, 10%, 0.4);"}
   width: 100%;
 
   svg {

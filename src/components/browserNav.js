@@ -225,19 +225,23 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
   ]
 
   const HorizontalNav = () => {
-    const activeStyle = { border: "solid 1px", borderRadius: "8px" }
     return (
       <>
-        <HorizontalNavList hidden={searchIsActive}>
+        <HorizontalNavList hidden={navBarSearchIsActive}>
           {navOptions.map(element => (
             <li key={element.name}>
-              <Link to={element.link} activeStyle={activeStyle}>
+              <Link
+                to={element.link}
+                activeStyle={{ border: "solid 1px", borderRadius: "8px" }}
+              >
                 {element.name}
               </Link>
             </li>
           ))}
         </HorizontalNavList>
-        <SearchButton onClick={() => setSearchIsActive(!searchIsActive)}>
+        <SearchButton
+          onClick={() => setNavBarSearchIsActive(!navBarSearchIsActive)}
+        >
           {searchSVG}
         </SearchButton>
       </>
@@ -247,7 +251,7 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
   const windowWidth = useWindowWidth()
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
   const context = useContext(GlobalState)
-  const [searchIsActive, setSearchIsActive] = useState(false)
+  const [navBarSearchIsActive, setNavBarSearchIsActive] = useState(false)
   const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
   const [value, setValue] = useState("")
   const [list, setList] = useState([])
@@ -274,7 +278,6 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
             setList={setList}
             mobileSearchIsActive={mobileSearchIsActive}
             setMobileSearchIsActive={setMobileSearchIsActive}
-            setSearchIsActive={setSearchIsActive}
             dropDownIsOpen={dropDownIsOpen}
             setDropDownIsOpen={setDropDownIsOpen}
           />
@@ -324,15 +327,15 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
         )}
       </NavWrapper>
 
-      {searchIsActive && (
+      {navBarSearchIsActive && (
         <SearchContainer>
           <Search
+            navBar
             value={value}
             setValue={setValue}
             list={list}
             setList={setList}
-            setSearchIsActive={setSearchIsActive}
-            setDropDownIsOpen={setDropDownIsOpen}
+            setNavBarSearchIsActive={setNavBarSearchIsActive}
             // Autofocus only happens after search button is pressed therefore focus is expected
             // eslint-disable-next-line jsx-a11y/no-autofocus
           />

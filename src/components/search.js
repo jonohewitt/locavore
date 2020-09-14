@@ -19,7 +19,9 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   ${props =>
-    props.shadow ? "box-shadow: 0 2px 8px 0 var(--color-searchShadow);" : "box-shadow: 0 1px 2px 0 hsla(0, 0%, 10%, 0.4);"}
+    props.shadow
+      ? "box-shadow: 0 2px 8px 0 var(--color-searchShadow);"
+      : "box-shadow: 0 1px 2px 0 hsla(0, 0%, 10%, 0.4);"}
   width: 100%;
 
   svg {
@@ -140,12 +142,13 @@ export const Search = ({
   setValue,
   list,
   setList,
-  setSearchIsActive,
+  setNavBarSearchIsActive,
   setDropDownIsOpen,
   dropDownIsOpen,
   setMobileSearchIsActive,
   mobileSearchIsActive,
   mobile,
+  navBar,
 }) => {
   const data = useStaticQuery(graphql`
     query {
@@ -191,8 +194,16 @@ export const Search = ({
     }
   }
 
+  const handleSearchOptionClick = () => {
+    setList([])
+    setValue("")
+    mobile && setMobileSearchIsActive(false)
+    mobile && setDropDownIsOpen(false)
+    navBar && setNavBarSearchIsActive(false)
+  }
+
   const handleSubmit = event => {
-    list.length &&
+    if (list.length) {
       navigate(
         `/${
           list[indexHighlighted].type
@@ -203,8 +214,9 @@ export const Search = ({
           strict: true,
         })}`
       )
-    setSearchIsActive(false)
-    event.preventDefault()
+      navBar && setNavBarSearchIsActive(false)
+      event.preventDefault()
+    }
   }
 
   const handleKeyDown = event => {
@@ -226,37 +238,36 @@ export const Search = ({
     } else if (event.which === 27) {
       setList([])
       setValue("")
-      setSearchIsActive(false)
+      navBar && setNavBarSearchIsActive(false)
     }
   }
 
   const handleBlur = event => {
-    if (
-      !(
-        event.relatedTarget &&
-        event.relatedTarget.classList.contains("dropDownOption")
-      )
-    ) {
-      setList([])
-      setValue("")
-      setSearchIsActive(false)
+    if (mobile) {
+      setMobileSearchIsActive(false)
+    } else {
+      if (
+        !(
+          event.relatedTarget &&
+          event.relatedTarget.classList.contains("searchResult")
+        )
+      ) {
+        setList([])
+        setValue("")
+        navBar && setNavBarSearchIsActive(false)
+      }
     }
   }
 
-  const handleSearchOptionClick = () => {
-    setList([])
-    setValue("")
-    setSearchIsActive(false)
-    setMobileSearchIsActive(false)
-    setDropDownIsOpen(false)
+  const handleFocus = event => {
+    mobile && setMobileSearchIsActive(true)
+    handleChange(event)
   }
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <InputContainer
-          shadow={!(dropDownIsOpen && mobileSearchIsActive === false)}
-        >
+        <InputContainer shadow={!(mobile && mobileSearchIsActive === false)}>
           {searchSVG}
           <SearchInput
             // Autofocus only happens after search button is pressed therefore focus is expected
@@ -267,11 +278,8 @@ export const Search = ({
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            onBlur={event => !mobile && handleBlur(event)}
-            onFocus={event => {
-              mobile && setMobileSearchIsActive(true)
-              handleChange(event)
-            }}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
           />
         </InputContainer>
         {list && list.length > 0 && (
@@ -287,7 +295,7 @@ export const Search = ({
                       <CategoryLabel>Ingredient</CategoryLabel>
                       <Ing
                         onClick={handleSearchOptionClick}
-                        className="dropDownOption"
+                        className="searchResult"
                         id={element.name}
                       >
                         {element.name}
@@ -300,7 +308,7 @@ export const Search = ({
                       </CategoryLabel>
                       <Link
                         onClick={handleSearchOptionClick}
-                        className="dropDownOption"
+                        className="searchResult"
                         to={`/${element.type}${
                           element.customSlug
                             ? element.customSlug

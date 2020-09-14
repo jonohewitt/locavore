@@ -1,26 +1,50 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import styled from "styled-components"
 import { vegetableData } from "../components/seasonalChartData"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import { SettingsIcon } from "../components/settingsIcon"
+import { Search } from "../components/search"
 
-const SettingsIconContainer = styled.div`
+const SearchAndSettingsContainer = styled.div`
   position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   top: 0;
   left: 0;
+  width: 100%;
+`
+const SearchContainer = styled.div`
+  width: 70%;
+  margin-right: 15px;
+  position: relative;
 `
 
 const IndexPage = () => {
   const context = useContext(GlobalState)
+  const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
+  const [value, setValue] = useState("")
+  const [list, setList] = useState([])
   return (
     <>
       <SEO title="Home" />
       {context.appInterface && (
-        <SettingsIconContainer>
+        <SearchAndSettingsContainer>
           <SettingsIcon />
-        </SettingsIconContainer>
+          <SearchContainer>
+            <Search
+              mobile
+              value={value}
+              setValue={setValue}
+              list={list}
+              setList={setList}
+              mobileSearchIsActive={mobileSearchIsActive}
+              setMobileSearchIsActive={setMobileSearchIsActive}
+            />
+          </SearchContainer>
+        </SearchAndSettingsContainer>
       )}
       <ContentWrapper>
         <header>

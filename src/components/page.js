@@ -5,6 +5,7 @@ const StyledPage = styled.div`
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  will-change: transform;
   transform: translateX(${props => (props.settingsIsOpen ? "280px" : "0")});
   transition: transform 0.3s;
   overflow-x: hidden;

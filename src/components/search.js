@@ -78,13 +78,15 @@ const CategoryLabel = styled.p`
         return "#ADA1FC"
       case "recettes":
         return "#F39973"
-      case "Sorry!":
+      case "Error":
         return "var(--color-negative)"
       default:
         return "var(--color-text)"
     }
   }};
 `
+
+const ErrorMessage = styled.p``
 
 const SearchResult = styled.li`
   ${props =>
@@ -108,13 +110,15 @@ const SearchResult = styled.li`
     height: 1px;
   }
 
-  a {
+  a,
+  ${ErrorMessage} {
     padding: 20px 15px 0 0;
     padding-left: 5%;
     font-size: 16px;
     font-weight: 700;
     width: 100%;
     align-self: center;
+    margin: 0;
   }
 
   :hover {
@@ -194,8 +198,10 @@ export const Search = ({
       if (results.length) {
         setList(results)
       } else {
-        setList([{ name: "No results found", type: "Sorry!", customSlug: "#" }])
+        setList([{ type: "Error" }])
       }
+    } else {
+      setList([])
     }
   }
 
@@ -208,7 +214,7 @@ export const Search = ({
   }
 
   const handleSubmit = event => {
-    if (list.length && list[0].type !== "Sorry!") {
+    if (list.length && list[0].type !== "Error") {
       navigate(
         `/${
           list[indexHighlighted].type
@@ -223,7 +229,7 @@ export const Search = ({
       setList([])
       setValue("")
     } else if (value.length) {
-      setList([{ name: "No results found", type: "Sorry!", customSlug: "#" }])
+      setList([{ type: "Error" }])
     }
     event.preventDefault()
   }
@@ -273,6 +279,47 @@ export const Search = ({
     handleChange(event)
   }
 
+  const IngredientSearchResult = ({ element }) => (
+    <>
+      <CategoryLabel>Ingredients</CategoryLabel>
+      <Ing
+        onClick={handleSearchResultClick}
+        className="searchResult"
+        id={element.name}
+      >
+        {element.name}
+      </Ing>
+    </>
+  )
+
+  const OtherPageSearchResult = ({ element }) => (
+    <>
+      <CategoryLabel type={element.type}>{element.type}</CategoryLabel>
+      <Link
+        onClick={handleSearchResultClick}
+        className="searchResult"
+        to={`/${element.type}${
+          element.customSlug
+            ? element.customSlug
+            : "/" +
+              slugify(element.name, {
+                lower: true,
+                strict: true,
+              })
+        }`}
+      >
+        {element.name}
+      </Link>
+    </>
+  )
+
+  const NoResultsFound = ({ element }) => (
+    <>
+      <CategoryLabel type={element.type}>Désolé !</CategoryLabel>
+      <ErrorMessage>Aucun résultat trouvé</ErrorMessage>
+    </>
+  )
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -298,42 +345,14 @@ export const Search = ({
               {list.map((element, index) => (
                 <SearchResult
                   selected={index === indexHighlighted}
-                  key={element.name}
+                  key={element.name ? element.name : "Error"}
                 >
                   {element.months ? (
-                    <>
-                      <CategoryLabel>Ingredients</CategoryLabel>
-                      <Ing
-                        onClick={handleSearchResultClick}
-                        className="searchResult"
-                        id={element.name}
-                      >
-                        {element.name}
-                      </Ing>
-                    </>
+                    <IngredientSearchResult element={element} />
+                  ) : element.type !== "Error" ? (
+                    <OtherPageSearchResult element={element} />
                   ) : (
-                    <>
-                      <CategoryLabel type={element.type}>
-                        {element.type}
-                      </CategoryLabel>
-                      <Link
-                        onClick={handleSearchResultClick}
-                        className="searchResult"
-                        to={`${
-                          element.type !== "Sorry!" ? "/" + element.type : ""
-                        }${
-                          element.customSlug
-                            ? element.customSlug
-                            : "/" +
-                              slugify(element.name, {
-                                lower: true,
-                                strict: true,
-                              })
-                        }`}
-                      >
-                        {element.name}
-                      </Link>
-                    </>
+                    <NoResultsFound element={element} />
                   )}
                   <hr />
                 </SearchResult>

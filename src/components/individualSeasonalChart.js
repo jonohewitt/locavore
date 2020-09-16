@@ -1,10 +1,12 @@
-import React from "react"
+import React, { useContext, useState } from "react"
 import styled from "styled-components"
+import { GlobalState } from "../context/globalStateContext"
+import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 
 const ChartWrapper = styled.div`
   background-color: var(--color-graphBackground);
   border-radius: 5px;
-  padding: 20px 15px 15px 15px;
+  padding: 15px;
   margin: 25px 0 30px 0;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 `
@@ -15,16 +17,57 @@ const MonthList = styled.ul`
   grid-template-columns: repeat(12, 1fr);
 `
 
-const StyledLi = styled.li``
+const MonthContainer = styled.li`
+  text-align: center;
+  padding-top: 5px;
+`
 
 const LabelContainer = styled.div`
   height: 30px;
   margin-bottom: 5px;
+  position: relative;
 `
 
-const MonthLabel = styled.h3`
+const ToolTip = styled.div`
+  width: 130px;
+  position: absolute;
+  bottom: 55px;
+  background-color: var(--color-graphBackground);
+  padding: 5px;
+  border-radius: 8px;
+  border: solid 1px var(--color-hr);
+  box-shadow: 0 0 8px 0 hsla(0, 0%, 10%, 0.2);
+  pointer-events: none;
+  opacity: ${props => (props.toolTipShowing ? "1" : "0")};
+  transition: opacity 0.5s;
+
+${'' /* Move tooltip to center above month initial letter.
+-50% gets tooltip center above left edge. The following calc gets the content width,
+then minuses the padding on the ChartWrapper, and the gap between each MonthRect * 11,
+divides by 12 to get each MonthRect width, and divides by 2 to get half*/}
+  transform: translateX(
+    calc(-50% + (min(${widthPercent}vw, ${maxWidth}px) - 30px - 11 * 3px) / 12 / 2)
+  );
+
+  p {
+    text-align: center;
+    margin: 0;
+  }
+
+  @media (max-width: ${breakToMobile}px) {
+    padding: 5px;
+    width: 80px;
+
+    p {
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+`
+
+const MonthInitial = styled.h3`
   ${props =>
-    props.currentMonth && "border: 2px solid; border-radius: 5px; top: -2px;"}
+    props.isCurrentMonth && "border: 2px solid; border-radius: 5px; top: -2px;"}
   padding: 0 4px;
   text-align: center;
   line-height: 1.2;
@@ -41,75 +84,119 @@ const MonthRect = styled.div`
   ${props => props.value && "top: -5px;"}
 `
 
-const monthParser = index => {
+const monthIndexToName = index => {
   switch (index) {
     case 0:
-    case 5:
-    case 6:
-      return "J"
+      return "janvier"
     case 1:
-      return "F"
+      return "février"
     case 2:
-    case 4:
-      return "M"
+      return "mars"
     case 3:
+      return "avril"
+    case 4:
+      return "mai"
+    case 5:
+      return "juin"
+    case 6:
+      return "juillet"
     case 7:
-      return "A"
+      return "août"
     case 8:
-      return "S"
+      return "septembre"
     case 9:
-      return "O"
+      return "octobre"
     case 10:
-      return "N"
+      return "novembre"
     case 11:
-      return "D"
+      return "décembre"
     default:
       return false
   }
 }
 
-const MonthLabelContainer = ({ index, currentMonth }) => {
-  return (
-    <LabelContainer>
-      <MonthLabel currentMonth={currentMonth}>{monthParser(index)}</MonthLabel>
-    </LabelContainer>
-  )
-}
-
-const Month = ({ value, index, date }) => {
-  const currentMonth = index === date
-  let altText
+const Month = ({ value, index, monthIndex }) => {
+  const [toolTipShowing, setToolTipShowing] = useState(false)
+  const isCurrentMonth = index === monthIndex
+  let description
   switch (value) {
     case "start":
-      altText = `La saison commence habituellement en month ${index + 1}`
+      description = `La saison commence ${
+        isCurrentMonth ? "ce mois-ci" : "en " + monthIndexToName(index)
+      }`
       break
     case true:
-      altText = `En saison en month ${index + 1}`
+      description = `En saison ${
+        isCurrentMonth ? "ce mois-ci" : "en " + monthIndexToName(index)
+      }`
       break
     case "end":
-      altText = `La saison ce termine habituellement après month ${index + 1}`
+      description = `La saison se termine ${
+        isCurrentMonth ? "ce mois-ci" : "après " + monthIndexToName(index)
+      }`
       break
     case false:
-      altText = `Pas en saison en month ${index + 1}`
+      description = `Pas en saison ${
+        isCurrentMonth ? "ce mois-ci" : "en " + monthIndexToName(index)
+      }`
       break
     default:
-      altText = `Pas d'information pour month ${index + 1}`
+      description = `Pas d'information ${
+        isCurrentMonth ? "ce mois-ci" : "pour " + monthIndexToName(index)
+      }`
   }
+
+  let toolTipTimer
+
+  const fadeToolTipInOut = () => {
+    setToolTipShowing(true)
+    toolTipTimer = setTimeout(() => {
+      setToolTipShowing(false)
+    }, 4000)
+    return () => clearTimeout(toolTipTimer)
+  }
+
+  const handleMouseLeave = () => {
+    clearTimeout(toolTipTimer)
+    setToolTipShowing(false)
+  }
+
   return (
-    <StyledLi>
-      <MonthLabelContainer index={index} currentMonth={currentMonth} />
-      <MonthRect role="img" aria-label={altText} value={value} />
-    </StyledLi>
+    <MonthContainer
+      onClick={fadeToolTipInOut}
+      onMouseEnter={fadeToolTipInOut}
+      onMouseLeave={handleMouseLeave}
+    >
+      <LabelContainer>
+        <ToolTip toolTipShowing={toolTipShowing}>
+          <p>{description}</p>
+        </ToolTip>
+        <MonthInitial isCurrentMonth={isCurrentMonth}>
+          {monthIndexToName(index).charAt(0).toUpperCase()}
+        </MonthInitial>
+      </LabelContainer>
+      <MonthRect
+        role="img"
+        aria-label={value ? "En saison" : "Pas en saison"}
+        value={value}
+      />
+    </MonthContainer>
   )
 }
 
 export const IndividualSeasonalChart = ({ data }) => {
-  const date = new Date().getMonth()
+  const context = useContext(GlobalState)
+  const monthIndex = context.currentMonth
   return (
     <ChartWrapper>
       <MonthList>
         {data.months.map((month, index) => (
-          <Month index={index} value={month} date={date} key={index}/>
+          <Month
+            key={index}
+            index={index}
+            value={month}
+            monthIndex={monthIndex}
+          />
         ))}
       </MonthList>
     </ChartWrapper>

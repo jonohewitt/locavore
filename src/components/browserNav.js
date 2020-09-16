@@ -233,6 +233,7 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
               <Link
                 to={element.link}
                 activeStyle={{ border: "solid 1px", borderRadius: "8px" }}
+                partiallyActive={element.link === "/" ? false : true}
               >
                 {element.name}
               </Link>

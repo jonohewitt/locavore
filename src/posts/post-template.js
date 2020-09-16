@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
@@ -80,36 +80,7 @@ const FeatureImage = ({ featureImg }) => {
 
 const shortcodes = { Link, Ing, Ingredients }
 
-const PostTemplate = () => {
-  const data = useStaticQuery(graphql`
-    query($id: String) {
-      mdx(id: { eq: $id }) {
-        id
-        body
-        frontmatter {
-          title
-          date(formatString: "DD MMMM, YYYY", locale: "fr")
-          header {
-            childImageSharp {
-              fluid(maxWidth: 1500) {
-                ...GatsbyImageSharpFluid_withWebp
-              }
-            }
-          }
-          headerDescription
-          feature {
-            childImageSharp {
-              fluid(maxWidth: 800) {
-                ...GatsbyImageSharpFluid_withWebp
-              }
-            }
-          }
-          featureDescription
-        }
-      }
-    }
-  `)
-
+const PostTemplate = ({ data }) => {
   const fm = data.mdx.frontmatter
   const headerImg = fm.header ? fm.header.childImageSharp.fluid : false
   const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
@@ -147,5 +118,34 @@ const PostTemplate = () => {
     </>
   )
 }
+
+export const pageQuery = graphql`
+  query BlogPostQuery($id: String) {
+    mdx(id: { eq: $id }) {
+      id
+      body
+      frontmatter {
+        title
+        date(formatString: "DD MMMM, YYYY", locale: "fr")
+        header {
+          childImageSharp {
+            fluid(maxWidth: 1500) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+        headerDescription
+        feature {
+          childImageSharp {
+            fluid(maxWidth: 800) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+        featureDescription
+      }
+    }
+  }
+`
 
 export default PostTemplate

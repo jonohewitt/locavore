@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { graphql } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
@@ -36,27 +36,22 @@ const Ingredients = ({ children }) => (
 
 const HeaderImage = ({ headerImg }) => {
   const context = useContext(GlobalState)
-
-  if (headerImg.image) {
-    return (
-      <Img
-        style={{
-          width: "100%",
-          height: context.appInterface ? "20vmax" : "30vmax",
-          maxHeight: "350px",
-        }}
-        imgStyle={{
-          objectFit: "cover",
-          width: "100%",
-          height: "100%",
-        }}
-        fluid={headerImg.image}
-        alt={headerImg.description ? headerImg.description : ""}
-      />
-    )
-  } else {
-    return false
-  }
+  return (
+    <Img
+      style={{
+        width: "100%",
+        height: context.appInterface ? "20vmax" : "30vmax",
+        maxHeight: "350px",
+      }}
+      imgStyle={{
+        objectFit: "cover",
+        width: "100%",
+        height: "100%",
+      }}
+      fluid={headerImg.image}
+      alt={headerImg.description ? headerImg.description : ""}
+    />
+  )
 }
 
 const FeatureImgContainer = styled.div`
@@ -67,40 +62,66 @@ const FeatureImgContainer = styled.div`
 `
 
 const FeatureImage = ({ featureImg }) => {
-  if (featureImg.image) {
-    return (
-      <FeatureImgContainer>
-        <Img
-          style={{
-            width: "100%",
-          }}
-          imgStyle={{
-            width: "100%",
-          }}
-          fluid={featureImg.image}
-          alt={featureImg.description ? featureImg.description : ""}
-        />
-      </FeatureImgContainer>
-    )
-  } else {
-    return false
-  }
+  return (
+    <FeatureImgContainer>
+      <Img
+        style={{
+          width: "100%",
+        }}
+        imgStyle={{
+          width: "100%",
+        }}
+        fluid={featureImg.image}
+        alt={featureImg.description ? featureImg.description : ""}
+      />
+    </FeatureImgContainer>
+  )
 }
 
 const shortcodes = { Link, Ing, Ingredients }
 
-export default function PostTemplate({ data: { mdx } }) {
-  const fm = mdx.frontmatter
+const PostTemplate = () => {
+  const data = useStaticQuery(graphql`
+    query($id: String) {
+      mdx(id: { eq: $id }) {
+        id
+        body
+        frontmatter {
+          title
+          date(formatString: "DD MMMM, YYYY", locale: "fr")
+          header {
+            childImageSharp {
+              fluid(maxWidth: 1500) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
+            }
+          }
+          headerDescription
+          feature {
+            childImageSharp {
+              fluid(maxWidth: 800) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
+            }
+          }
+          featureDescription
+        }
+      }
+    }
+  `)
 
+  const fm = data.mdx.frontmatter
   const headerImg = fm.header ? fm.header.childImageSharp.fluid : false
   const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
 
   return (
     <>
       <SEO title={fm.title} />
-      <HeaderImage
-        headerImg={{ image: headerImg, description: fm.headerDescription }}
-      />
+      {headerImg && (
+        <HeaderImage
+          headerImg={{ image: headerImg, description: fm.headerDescription }}
+        />
+      )}
       <ContentWrapper headerImg={headerImg}>
         <PostStyles>
           <article>
@@ -109,14 +130,16 @@ export default function PostTemplate({ data: { mdx } }) {
               {!featureImg && <hr />}
               {fm.date && <p>{fm.date}</p>}
             </header>
-            <FeatureImage
-              featureImg={{
-                image: featureImg,
-                description: fm.featureDescription,
-              }}
-            />
+            {featureImg && (
+              <FeatureImage
+                featureImg={{
+                  image: featureImg,
+                  description: fm.featureDescription,
+                }}
+              />
+            )}
             <MDXProvider components={shortcodes}>
-              <MDXRenderer>{mdx.body}</MDXRenderer>
+              <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </MDXProvider>
           </article>
         </PostStyles>
@@ -125,31 +148,4 @@ export default function PostTemplate({ data: { mdx } }) {
   )
 }
 
-export const pageQuery = graphql`
-  query BlogPostQuery($id: String) {
-    mdx(id: { eq: $id }) {
-      id
-      body
-      frontmatter {
-        title
-        date(formatString: "DD MMMM, YYYY", locale: "fr")
-        header {
-          childImageSharp {
-            fluid(maxWidth: 1500) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
-          }
-        }
-        headerDescription
-        feature {
-          childImageSharp {
-            fluid(maxWidth: 800) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
-          }
-        }
-        featureDescription
-      }
-    }
-  }
-`
+export default PostTemplate

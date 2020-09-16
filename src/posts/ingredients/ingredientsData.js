@@ -15,6 +15,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Bette",
@@ -32,6 +36,10 @@ export const ingredientsData = [
       "end",
       false,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Betterave",
@@ -49,6 +57,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Beurre",
@@ -66,6 +78,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Brocoli",
@@ -83,6 +99,10 @@ export const ingredientsData = [
       true,
       "end",
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Champignon",
@@ -100,6 +120,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Chapelure",
@@ -117,6 +141,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Coriandre",
@@ -134,6 +162,10 @@ export const ingredientsData = [
       false,
       false,
     ],
+    source: {
+      name: "jardiner-malin.fr",
+      link: `https://www.jardiner-malin.fr/fiche/coriandre.html`,
+    },
   },
   {
     name: "Crème",
@@ -151,6 +183,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Farine",
@@ -168,6 +204,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Avoine",
@@ -185,6 +225,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Fromage",
@@ -202,6 +246,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Groseilles",
@@ -219,6 +267,10 @@ export const ingredientsData = [
       false,
       false,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Huile végétale",
@@ -236,6 +288,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Lait",
@@ -253,6 +309,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Lentilles",
@@ -270,6 +330,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Miel",
@@ -287,6 +351,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Œuf",
@@ -304,6 +372,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Oignon",
@@ -321,6 +393,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Orge",
@@ -338,6 +414,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Ortie",
@@ -355,6 +435,10 @@ export const ingredientsData = [
       false,
       false,
     ],
+    source: {
+      name: "medadvicees.com",
+      link: `https://medadvicees.com/fr/pages/13103`,
+    },
   },
   {
     name: "Patate",
@@ -372,6 +456,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Pomme",
@@ -389,6 +477,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Quinoa",
@@ -406,6 +498,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Rhubarbe",
@@ -423,6 +519,10 @@ export const ingredientsData = [
       false,
       false,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Sarriette",
@@ -440,6 +540,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Sucre",
@@ -457,6 +561,10 @@ export const ingredientsData = [
       true,
       true,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
   {
     name: "Tomate",
@@ -474,5 +582,9 @@ export const ingredientsData = [
       false,
       false,
     ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
   },
 ]

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
@@ -7,7 +7,7 @@ const ChartWrapper = styled.div`
   background-color: var(--color-graphBackground);
   border-radius: 5px;
   padding: 15px;
-  margin: 25px 0 30px 0;
+  margin: 25px 0 5px 0;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 `
 
@@ -41,7 +41,7 @@ const ToolTip = styled.div`
   opacity: ${props => (props.toolTipShowing ? "1" : "0")};
   transition: opacity 0.5s;
 
-${'' /* Move tooltip to center above month initial letter.
+  ${"" /* Move tooltip to center above month initial letter.
 -50% gets tooltip center above left edge. The following calc gets the content width,
 then minuses the padding on the ChartWrapper, and the gap between each MonthRect * 11,
 divides by 12 to get each MonthRect width, and divides by 2 to get half*/}
@@ -84,6 +84,17 @@ const MonthRect = styled.div`
   ${props => props.value && "top: -5px;"}
 `
 
+const SourceText = styled.p`
+  margin-bottom: 25px;
+  padding-top: 10px;
+  font-size: 14px;
+  text-align: right;
+
+  a {
+    font-weight: 700;
+  }
+`
+
 const monthIndexToName = index => {
   switch (index) {
     case 0:
@@ -116,6 +127,15 @@ const monthIndexToName = index => {
 }
 
 const Month = ({ value, index, monthIndex }) => {
+  const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToolTipsCanShow(true)
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
+
   const [toolTipShowing, setToolTipShowing] = useState(false)
   const isCurrentMonth = index === monthIndex
   let description
@@ -149,11 +169,13 @@ const Month = ({ value, index, monthIndex }) => {
   let toolTipTimer
 
   const fadeToolTipInOut = () => {
-    setToolTipShowing(true)
-    toolTipTimer = setTimeout(() => {
-      setToolTipShowing(false)
-    }, 4000)
-    return () => clearTimeout(toolTipTimer)
+    if (toolTipsCanShow) {
+      setToolTipShowing(true)
+      toolTipTimer = setTimeout(() => {
+        setToolTipShowing(false)
+      }, 4000)
+      return () => clearTimeout(toolTipTimer)
+    }
   }
 
   const handleMouseLeave = () => {
@@ -188,17 +210,27 @@ export const IndividualSeasonalChart = ({ data }) => {
   const context = useContext(GlobalState)
   const monthIndex = context.currentMonth
   return (
-    <ChartWrapper>
-      <MonthList>
-        {data.months.map((month, index) => (
-          <Month
-            key={index}
-            index={index}
-            value={month}
-            monthIndex={monthIndex}
-          />
-        ))}
-      </MonthList>
-    </ChartWrapper>
+    <>
+      <ChartWrapper>
+        <MonthList>
+          {data.months.map((month, index) => (
+            <Month
+              key={index}
+              index={index}
+              value={month}
+              monthIndex={monthIndex}
+            />
+          ))}
+        </MonthList>
+      </ChartWrapper>
+      {data.source && (
+        <SourceText>
+          Source:{" "}
+          <a href={data.source.link} rel="noreferrer noopener external" target="_blank">
+            {data.source.name}
+          </a>
+        </SourceText>
+      )}
+    </>
   )
 }

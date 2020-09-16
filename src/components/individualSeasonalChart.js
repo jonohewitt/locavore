@@ -129,11 +129,16 @@ const monthIndexToName = index => {
 const Month = ({ value, index, monthIndex }) => {
   const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  let toolTipTimer
+
+  useEffect(toolTipTimer => {
+    const toolTipDelayAfterPageLoad = setTimeout(() => {
       setToolTipsCanShow(true)
     }, 100)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(toolTipTimer)
+      clearTimeout(toolTipDelayAfterPageLoad)
+    }
   }, [])
 
   const [toolTipShowing, setToolTipShowing] = useState(false)
@@ -165,8 +170,6 @@ const Month = ({ value, index, monthIndex }) => {
         isCurrentMonth ? "ce mois-ci" : "pour " + monthIndexToName(index)
       }`
   }
-
-  let toolTipTimer
 
   const fadeToolTipInOut = () => {
     if (toolTipsCanShow) {
@@ -226,7 +229,11 @@ export const IndividualSeasonalChart = ({ data }) => {
       {data.source && (
         <SourceText>
           Source:{" "}
-          <a href={data.source.link} rel="noreferrer noopener external" target="_blank">
+          <a
+            href={data.source.link}
+            rel="noreferrer noopener external"
+            target="_blank"
+          >
             {data.source.name}
           </a>
         </SourceText>

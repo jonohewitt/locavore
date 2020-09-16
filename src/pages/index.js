@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react"
 import styled from "styled-components"
-import { vegetableData } from "../components/seasonalChartData"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"

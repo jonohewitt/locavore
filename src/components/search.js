@@ -67,19 +67,21 @@ const SearchResultListContainer = styled.div`
 const CategoryLabel = styled.p`
   position: absolute;
   pointer-events: none;
+  text-transform: capitalize;
   top: 8px;
   left: 5%;
   font-size: 12px;
   font-weight: 700;
   color: ${props => {
-    if (props.type) {
-      if (props.type === "blog") {
+    switch (props.type) {
+      case "blog":
         return "#ADA1FC"
-      } else if (props.type === "recettes") {
+      case "recettes":
         return "#F39973"
-      }
-    } else {
-      return "var(--color-text)"
+      case "Sorry!":
+        return "var(--color-negative)"
+      default:
+        return "var(--color-text)"
     }
   }};
 `
@@ -123,7 +125,7 @@ const SearchResult = styled.li`
   }
 `
 
-const searchIngredients = (searchText, otherPageTitles) => {
+const getSearchResults = (searchText, otherPageTitles) => {
   const safeSearchText = slugify(searchText, { strict: true, replacement: " " })
   const regex = new RegExp(`^${safeSearchText}|\\s${safeSearchText}`, "gi")
   const ingredientMatchList = ingredientsData.filter(ingredient =>
@@ -187,14 +189,17 @@ export const Search = ({
     setIndex(0)
     setValue(event.target.value)
     setTypedInput(event.target.value)
-    if (event.target.value.length > 0) {
-      setList(searchIngredients(event.target.value, otherPageTitles))
-    } else {
-      setList([])
+    if (event.target.value.length) {
+      const results = getSearchResults(event.target.value, otherPageTitles)
+      if (results.length) {
+        setList(results)
+      } else {
+        setList([{ name: "No results found", type: "Sorry!", customSlug: "#" }])
+      }
     }
   }
 
-  const handleSearchOptionClick = () => {
+  const handleSearchResultClick = () => {
     setList([])
     setValue("")
     mobile && setMobileSearchIsActive(false)
@@ -203,7 +208,7 @@ export const Search = ({
   }
 
   const handleSubmit = event => {
-    if (list.length) {
+    if (list.length && list[0].type !== "Sorry!") {
       navigate(
         `/${
           list[indexHighlighted].type
@@ -215,8 +220,12 @@ export const Search = ({
         })}`
       )
       navBar && setNavBarSearchIsActive(false)
-      event.preventDefault()
+      setList([])
+      setValue("")
+    } else if (value.length) {
+      setList([{ name: "No results found", type: "Sorry!", customSlug: "#" }])
     }
+    event.preventDefault()
   }
 
   const handleKeyDown = event => {
@@ -273,7 +282,8 @@ export const Search = ({
             // Autofocus only happens after search button is pressed therefore focus is expected
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={!mobile}
-            placeholder="Search..."
+            aria-label="Search"
+            placeholder="Ingredients, recettes, blog posts..."
             type="text"
             value={value}
             onChange={handleChange}
@@ -292,9 +302,9 @@ export const Search = ({
                 >
                   {element.months ? (
                     <>
-                      <CategoryLabel>Ingredient</CategoryLabel>
+                      <CategoryLabel>Ingredients</CategoryLabel>
                       <Ing
-                        onClick={handleSearchOptionClick}
+                        onClick={handleSearchResultClick}
                         className="searchResult"
                         id={element.name}
                       >
@@ -304,12 +314,14 @@ export const Search = ({
                   ) : (
                     <>
                       <CategoryLabel type={element.type}>
-                        {element.type === "recettes" ? "Recette" : "Blog"}
+                        {element.type}
                       </CategoryLabel>
                       <Link
-                        onClick={handleSearchOptionClick}
+                        onClick={handleSearchResultClick}
                         className="searchResult"
-                        to={`/${element.type}${
+                        to={`${
+                          element.type !== "Sorry!" ? "/" + element.type : ""
+                        }${
                           element.customSlug
                             ? element.customSlug
                             : "/" +

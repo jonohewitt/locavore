@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
-import { useWindowWidth } from "./customHooks"
+import { useWindowWidth } from "./smallReusableFunctions"
 
 const SelectFiltersButton = styled.button`
   display: flex;
@@ -55,6 +55,25 @@ const ListOfFilters = styled.ul`
   justify-content: flex-end;
   flex-wrap: wrap;
   margin-top: 12px;
+  span {
+    display: inline-flex;
+  }
+  @media (max-width: 650px) {
+    span {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 470px) {
+    button {
+      font-size: 16px;
+    }
+    span {
+      margin-bottom: 8px;
+    }
+  }
 `
 
 const FilterButtonContainer = styled.li`
@@ -91,7 +110,9 @@ export const Filters = ({ filterList, setFilterList, filtersAreShown }) => {
         filter => filter.name === filterName
       )
 
-      if (newState[filterIndex].group) {
+      const listOfExclusiveGroups = ["course"]
+
+      if (listOfExclusiveGroups.includes(newState[filterIndex].group)) {
         newState.forEach(filter => {
           if (
             filter !== newState[filterIndex] &&
@@ -107,47 +128,63 @@ export const Filters = ({ filterList, setFilterList, filtersAreShown }) => {
     })
   }
 
+  const ButtonComponent = ({ filter }) => {
+    const buttonColor =
+      filter.group === "green" ? `var(--color-vegan)` : `var(--color-text)`
+
+    return (
+      <FilterButtonContainer
+        key={filter.name}
+        onClick={() => toggleFilter(filter.name)}
+      >
+        <FilterButton color={buttonColor} selected={filter.isApplied}>
+          {filter.name}
+        </FilterButton>
+        <CrossSVG
+          selected={filter.isApplied}
+          width="36"
+          height="36"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="18"
+            cy="18"
+            r="8"
+            fill="var(--color-background)"
+            stroke={buttonColor}
+            strokeWidth="2"
+          />
+          <path
+            d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
+            fill={buttonColor}
+          />
+          <path
+            d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
+            fill={buttonColor}
+          />
+        </CrossSVG>
+      </FilterButtonContainer>
+    )
+  }
+
   if (filtersAreShown) {
     return (
       <ListOfFilters>
-        {filterList.map(filter => {
-          const buttonColor =
-            filter.name === "Vegan" ? `var(--color-vegan)` : `var(--color-text)`
-          return (
-            <FilterButtonContainer
-              key={filter.name}
-              onClick={() => toggleFilter(filter.name)}
-            >
-              <FilterButton color={buttonColor} selected={filter.isApplied}>
-                {filter.name}
-              </FilterButton>
-              <CrossSVG
-                selected={filter.isApplied}
-                width="36"
-                height="36"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="18"
-                  cy="18"
-                  r="8"
-                  fill="var(--color-background)"
-                  stroke={buttonColor}
-                  strokeWidth="2"
-                />
-                <path
-                  d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
-                  fill={buttonColor}
-                />
-                <path
-                  d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
-                  fill={buttonColor}
-                />
-              </CrossSVG>
-            </FilterButtonContainer>
-          )
-        })}
+        <span>
+          {filterList
+            .filter(filter => filter.group === "green")
+            .map(filter => {
+              return <ButtonComponent key={filter.name} filter={filter} />
+            })}
+        </span>
+        <span>
+          {filterList
+            .filter(filter => filter.group === "course")
+            .map(filter => {
+              return <ButtonComponent key={filter.name} filter={filter} />
+            })}
+        </span>
       </ListOfFilters>
     )
   } else {

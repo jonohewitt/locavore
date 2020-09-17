@@ -126,22 +126,9 @@ const monthIndexToName = index => {
   }
 }
 
-const Month = ({ value, index, monthIndex }) => {
-  const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
-
-  let toolTipTimer
-
-  useEffect(toolTipTimer => {
-    const toolTipDelayAfterPageLoad = setTimeout(() => {
-      setToolTipsCanShow(true)
-    }, 100)
-    return () => {
-      clearTimeout(toolTipTimer)
-      clearTimeout(toolTipDelayAfterPageLoad)
-    }
-  }, [])
-
+const Month = ({ value, index, monthIndex, toolTipsCanShow }) => {
   const [toolTipShowing, setToolTipShowing] = useState(false)
+
   const isCurrentMonth = index === monthIndex
   let description
   switch (value) {
@@ -171,18 +158,20 @@ const Month = ({ value, index, monthIndex }) => {
       }`
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToolTipShowing(false)
+    }, 4000)
+    return () => clearTimeout(timer)
+  }, [toolTipShowing])
+
   const fadeToolTipInOut = () => {
     if (toolTipsCanShow) {
       setToolTipShowing(true)
-      toolTipTimer = setTimeout(() => {
-        setToolTipShowing(false)
-      }, 4000)
-      return () => clearTimeout(toolTipTimer)
     }
   }
 
   const handleMouseLeave = () => {
-    clearTimeout(toolTipTimer)
     setToolTipShowing(false)
   }
 
@@ -210,6 +199,17 @@ const Month = ({ value, index, monthIndex }) => {
 }
 
 export const IndividualSeasonalChart = ({ data }) => {
+  const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
+
+  useEffect(() => {
+    const toolTipDelayAfterPageLoad = setTimeout(() => {
+      setToolTipsCanShow(true)
+    }, 100)
+    return () => {
+      clearTimeout(toolTipDelayAfterPageLoad)
+    }
+  }, [])
+
   const context = useContext(GlobalState)
   const monthIndex = context.currentMonth
   return (
@@ -218,6 +218,7 @@ export const IndividualSeasonalChart = ({ data }) => {
         <MonthList>
           {data.months.map((month, index) => (
             <Month
+              toolTipsCanShow={toolTipsCanShow}
               key={index}
               index={index}
               value={month}

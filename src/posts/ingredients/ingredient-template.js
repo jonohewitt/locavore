@@ -8,6 +8,7 @@ import { GlobalState } from "../../context/globalStateContext"
 import { ingredientsData } from "./ingredientsData"
 import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
+import { monthIndexToName } from "../../components/smallReusableFunctions"
 
 const IngredientStyles = styled.div`
   h1 {
@@ -42,7 +43,9 @@ const IngredientTemplate = ({ pageContext, data }) => {
   let icon
   if (currentlyInSeason !== null) {
     if (ingredientObject.months.some(month => !month)) {
-      seasonalIndicator = currentlyInSeason ? "En saison" : "Hors saison"
+      seasonalIndicator = currentlyInSeason
+        ? `En saison en ${monthIndexToName(context.currentMonth)}`
+        : `Hors saison en ${monthIndexToName(context.currentMonth)}`
       icon = currentlyInSeason ? tickSVG : crossSVG
     } else {
       seasonalIndicator = "Disponible toute l'année"
@@ -67,7 +70,10 @@ const IngredientTemplate = ({ pageContext, data }) => {
                 {seasonalIndicator} {icon}
               </h2>
               <hr />
-              <IndividualSeasonalChart data={ingredientObject} />
+              <IndividualSeasonalChart
+                data={ingredientObject}
+                monthIndexToName={monthIndexToName}
+              />
             </>
           )}
           <h2>Recettes proposées</h2>

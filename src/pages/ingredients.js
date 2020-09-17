@@ -7,6 +7,7 @@ import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 import { tickSVG, crossSVG } from "../components/icons"
+import { monthIndexToName } from "../components/smallReusableFunctions"
 
 const Styles = styled.main`
   h2 {
@@ -28,13 +29,6 @@ const Styles = styled.main`
     font-size: 18px;
     line-height: 1.8;
     font-weight: 700;
-  }
-
-  header {
-    position: relative;
-    hr {
-      margin-top: 4px;
-    }
   }
 `
 
@@ -108,10 +102,12 @@ const Ingredients = ({ filterList, setFilterList }) => {
       <ContentWrapper>
         <Styles>
           <header>
-              <h1>Ingredients</h1>
+            <h1>Ingredients</h1>
             <hr />
           </header>
-          <h2>En saison {tickSVG}</h2>
+          <h2>
+            En saison en {monthIndexToName(context.currentMonth)} {tickSVG}
+          </h2>
           <hr />
           <ul>
             {filteredList(ingredientArray, "current", context.currentMonth)}
@@ -123,7 +119,9 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <ul>
             {filteredList(ingredientArray, "always", context.currentMonth)}
           </ul>
-          <h2>Hors saison {crossSVG}</h2>
+          <h2>
+            Hors saison en {monthIndexToName(context.currentMonth)} {crossSVG}
+          </h2>
           <hr />
           <ul>{filteredList(ingredientArray, "out", context.currentMonth)}</ul>
           {filteredList(ingredientArray, "noData", context.currentMonth)

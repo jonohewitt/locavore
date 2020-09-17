@@ -91,7 +91,7 @@ const Recettes = () => {
             setFilterList={context.setFilterList}
             filtersAreShown={filtersAreShown}
           />
-          <hr />
+          {filtersAreShown && <hr />}
 
           <ListOfRecipes
             recipeList={data.allMdx.nodes}

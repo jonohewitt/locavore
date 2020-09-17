@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
 import PropTypes from "prop-types"
-
 import { GlobalStyles } from "../theme/globalStyles"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"

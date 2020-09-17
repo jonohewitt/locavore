@@ -119,9 +119,21 @@ export const ListOfRecipes = ({ recipeList, filterList }) => (
     {recipeList
       .filter(recipe => {
         if (filterList) {
-          return filterList.every(
-            filter => !filter.isApplied || filter.logic(recipe.frontmatter)
-          )
+          return filterList.every(filter => {
+            if (recipe.frontmatter.linkedRecipes) {
+              return (
+                !filter.isApplied ||
+                recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
+                  const linkedRecipePost = recipeList.find(
+                    element => element.frontmatter.title === linkedRecipe
+                  )
+                  return filter.logic(linkedRecipePost.frontmatter)
+                })
+              )
+            } else {
+              return !filter.isApplied || filter.logic(recipe.frontmatter)
+            }
+          })
         } else {
           return true
         }

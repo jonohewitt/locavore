@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 import slugify from "slugify"
 import { GlobalState } from "../context/globalStateContext"
@@ -23,6 +23,7 @@ export const Ing = ({ id, children, className, onClick }) => {
   const ingredient = ingredientsData.find(ingredient => ingredient.name === id)
   let color
   let icon
+
   if (ingredient && ingredient.months[context.currentMonth]) {
     icon = tickSVG
     color = "var(--color-positive)"
@@ -41,6 +42,66 @@ export const Ing = ({ id, children, className, onClick }) => {
     >
       {children}
       {icon}
+    </IngredientLink>
+  )
+}
+
+export const LinkedRecipe = ({ id, children }) => {
+  const context = useContext(GlobalState)
+  const data = useStaticQuery(graphql`
+    query {
+      allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
+        nodes {
+          frontmatter {
+            title
+            ingredients
+            customSlug
+          }
+        }
+      }
+    }
+  `)
+
+  const recipeToCheck = data.allMdx.nodes.find(
+    recipe => recipe.frontmatter.title === id
+  )
+
+  let allInSeason
+
+  if (recipeToCheck) {
+    allInSeason = recipeToCheck.frontmatter.ingredients.every(
+      ingredientName =>
+        ingredientsData.find(
+          ingredientObject => ingredientObject.name === ingredientName
+        ).months[context.currentMonth]
+    )
+  }
+
+  let color
+  let icon
+
+  if (allInSeason !== undefined) {
+    if (allInSeason) {
+      icon = tickSVG
+      color = "var(--color-positive)"
+    } else {
+      icon = crossSVG
+      color = "var(--color-negative)"
+    }
+  } else {
+    color = "var(--color-text)"
+  }
+
+  return (
+    <IngredientLink
+      color={color}
+      to={`/recettes${
+        recipeToCheck.frontmatter.customSlug
+          ? recipeToCheck.frontmatter.customSlug
+          : "/" + slugify(id, { lower: true, strict: true })
+      }`}
+    >
+      {children} {icon}
     </IngredientLink>
   )
 }

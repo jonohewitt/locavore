@@ -9,7 +9,7 @@ import Img from "gatsby-image"
 import { SEO } from "../components/seo"
 import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
-import { Ing } from "../components/ingredientLink"
+import { Ing, LinkedRecipe } from "../components/ingredientLink"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -78,7 +78,7 @@ const FeatureImage = ({ featureImg }) => {
   )
 }
 
-const shortcodes = { Link, Ing, Ingredients }
+const shortcodes = { Link, Ing, Ingredients, LinkedRecipe }
 
 const PostTemplate = ({ data }) => {
   const fm = data.mdx.frontmatter

@@ -1,14 +1,16 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import styled from "styled-components"
 import { ShowFilters, Filters } from "../components/recipeFilters"
 import { ListOfRecipes } from "../components/listOfRecipes"
+import { GlobalState } from "../context/globalStateContext"
 
 const RecipeIndexWrapper = styled.div`
   hr {
     background: var(--color-hr);
+    margin-bottom: 15px;
   }
 `
 
@@ -20,48 +22,8 @@ const HeaderContent = styled.div`
 `
 
 const Recettes = () => {
-  const [filtersAreShown, setShowFilter] = useState(false)
-  const [filterList, setFilterList] = useState([
-    {
-      name: "Vegan",
-      logic(fm) {
-        return fm["vegan"] === true
-      },
-      isApplied: false,
-    },
-    {
-      name: "Les bases",
-      group: "course",
-      logic(fm) {
-        return fm["course"] === "Les bases"
-      },
-      isApplied: false,
-    },
-    {
-      name: "Plat principal",
-      group: "course",
-      logic(fm) {
-        return fm["course"] === "Plat principal"
-      },
-      isApplied: false,
-    },
-    {
-      name: "Dessert",
-      group: "course",
-      logic(fm) {
-        return fm["course"] === "Dessert"
-      },
-      isApplied: false,
-    },
-    {
-      name: "Apéro",
-      group: "course",
-      logic(fm) {
-        return fm["course"] === "Apéro"
-      },
-      isApplied: false,
-    },
-  ])
+  const context = useContext(GlobalState)
+  const [filtersAreShown, setShowFilter] = useState(true)
 
   const data = useStaticQuery(graphql`
     query {
@@ -97,6 +59,8 @@ const Recettes = () => {
             cookTime
             feeds
             course
+            ingredients
+            linkedRecipes
           }
         }
       }
@@ -112,7 +76,7 @@ const Recettes = () => {
             <HeaderContent>
               <h1>Recettes</h1>
               <ShowFilters
-                anyAppliedFilters={filterList.some(
+                anyAppliedFilters={context.filterList.some(
                   filter => filter.isApplied === true
                 )}
                 filtersAreShown={filtersAreShown}
@@ -123,14 +87,14 @@ const Recettes = () => {
           </header>
 
           <Filters
-            filterList={filterList}
-            setFilterList={setFilterList}
+            filterList={context.filterList}
+            setFilterList={context.setFilterList}
             filtersAreShown={filtersAreShown}
           />
 
           <ListOfRecipes
             recipeList={data.allMdx.nodes}
-            filterList={filterList}
+            filterList={context.filterList}
           />
         </RecipeIndexWrapper>
       </ContentWrapper>

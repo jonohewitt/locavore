@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect } from "react"
 import { lightTheme, darkTheme } from "../theme/themeVariables"
+import { ingredientsData } from "../posts/ingredients/ingredientsData"
 
 export const GlobalState = React.createContext()
 
@@ -8,6 +9,61 @@ const Provider = ({ children }) => {
   const [settingsIsOpen, setSettingsIsOpen] = useState(false)
   const [isDark, setTheme] = useState(undefined)
   const [currentMonth, setMonth] = useState(new Date().getMonth())
+  const [filterList, setFilterList] = useState([
+    {
+      name: "En saison",
+      group: "green",
+      logic(fm) {
+        return fm.ingredients.every(
+          ingredientName =>
+            ingredientsData.find(
+              ingredientObject => ingredientObject.name === ingredientName
+            ).months[currentMonth]
+        )
+      },
+      isApplied: true,
+    },
+    {
+      name: "Vegan",
+      group: "green",
+      logic(fm) {
+        return fm.vegan === true
+      },
+      isApplied: false,
+    },
+    {
+      name: "Plat principal",
+      group: "course",
+      logic(fm) {
+        return fm.course === "Plat principal"
+      },
+      isApplied: false,
+    },
+    {
+      name: "Dessert",
+      group: "course",
+      logic(fm) {
+        return fm.course === "Dessert"
+      },
+      isApplied: false,
+    },
+    {
+      name: "Apéro",
+      group: "course",
+      logic(fm) {
+        return fm.course === "Apéro"
+      },
+      isApplied: false,
+    },
+    {
+      name: "Les bases",
+      group: "course",
+      logic(fm) {
+        return fm.course === "Les bases"
+      },
+      isApplied: false,
+    },
+  ])
 
   useLayoutEffect(() => {
     setAppInterface(
@@ -42,10 +98,12 @@ const Provider = ({ children }) => {
         toggleInterface: () => setAppInterface(!appInterface),
         settingsIsOpen,
         toggleSettings: () => setSettingsIsOpen(!settingsIsOpen),
-        setSettingsIsOpen: setSettingsIsOpen,
+        setSettingsIsOpen,
         isDark,
-        toggleTheme: toggleTheme,
+        toggleTheme,
         currentMonth,
+        filterList,
+        setFilterList,
       }}
     >
       {children}

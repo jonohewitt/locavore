@@ -67,18 +67,36 @@ const ListOfFilters = styled.ul`
   }
 
   @media (max-width: 470px) {
-    button {
-      font-size: 16px;
-    }
+
     span {
       margin-bottom: 8px;
+      li {
+        margin: 0 2px 8px 2px;
+        button {
+          font-size: 16px;
+          padding: 4px 5px;
+        }
+        svg {
+          right: -12px;
+          top: -18px;
+        }
+      }
     }
+  }
+
+  @media (max-width: 390px) {
+    margin-left: calc(-50vw + 50% + 15px);
+    margin-right: calc(-50vw + 50% + 15px);
   }
 `
 
 const FilterButtonContainer = styled.li`
   position: relative;
   margin: 0 5px 8px 3px;
+
+  @media (max-width: 470px) {
+    margin: 0 1px 8px 1px;
+  }
 `
 
 const FilterButton = styled.button`

@@ -10,6 +10,10 @@ const ChartWrapper = styled.div`
   padding: 15px;
   margin: 25px 0 5px 0;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s, transform 0.8s;
+  ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
 `
 
 const MonthList = styled.ul`
@@ -174,9 +178,11 @@ const Month = ({
 }
 
 export const IndividualSeasonalChart = ({ data }) => {
+  const [fadedIn, setFadedIn] = useState(false)
   const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
 
   useEffect(() => {
+    setFadedIn(true)
     const toolTipDelayAfterPageLoad = setTimeout(() => {
       setToolTipsCanShow(true)
     }, 100)
@@ -189,7 +195,7 @@ export const IndividualSeasonalChart = ({ data }) => {
   const monthIndex = context.currentMonth
   return (
     <>
-      <ChartWrapper>
+      <ChartWrapper fadedIn={fadedIn}>
         <MonthList>
           {data.months.map((month, index) => (
             <Month

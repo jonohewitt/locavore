@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
@@ -10,6 +10,10 @@ const StyledUL = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 25px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s, transform 0.8s;
+  ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
 `
 
 const RecipeCardContainer = styled.li`
@@ -114,69 +118,80 @@ const RecipeText = styled.div`
   }
 `
 
-export const ListOfRecipes = ({ recipeList, filterList }) => (
-  <StyledUL>
-    {recipeList
-      .filter(recipe => {
-        if (filterList) {
-          return filterList.every(filter => {
-            if (recipe.frontmatter.linkedRecipes) {
-              return (
-                !filter.isApplied ||
-                recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
-                  const linkedRecipePost = recipeList.find(
-                    element => element.frontmatter.title === linkedRecipe
-                  )
-                  return filter.logic(linkedRecipePost.frontmatter)
-                })
-              )
-            } else {
-              return !filter.isApplied || filter.logic(recipe.frontmatter)
-            }
-          })
-        } else {
-          return true
-        }
-      })
-      .map(recipe => {
-        const fm = recipe.frontmatter
-        const slug = fm.customSlug
-          ? fm.customSlug
-          : `/${slugify(fm.title, { lower: true, strict: true })}`
-        return (
-          <RecipeCardContainer key={recipe.id}>
-            <Link to={`/recettes${slug}`}>
-              <RecipeCard>
-                <RecipeImage
-                  headerImg={{
-                    image: fm.header ? fm.header.childImageSharp.fluid : false,
-                    description: fm.headerDescription,
-                  }}
-                  featureImg={{
-                    image: fm.feature
-                      ? fm.feature.childImageSharp.fluid
-                      : false,
-                    description: fm.featureDescription,
-                  }}
-                />
-                <RecipeText>
-                  <h2>{fm.title}</h2>
-                  <hr />
-                  <p>
-                    {fm.course}
-                    {fm.feeds && ` • ${fm.feeds} personnes`}
-                  </p>
-                </RecipeText>
-                <DairyIndicator
-                  vegan={fm.vegan}
-                  veganOption={fm.veganOption}
-                  vegetarian={fm.vegetarian}
-                />
-                <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
-              </RecipeCard>
-            </Link>
-          </RecipeCardContainer>
-        )
-      })}
-  </StyledUL>
-)
+export const ListOfRecipes = ({ recipeList, filterList }) => {
+  const [fadedIn, setFadedIn] = useState(false)
+
+  useEffect(() => setFadedIn(true), [])
+
+  return (
+    <StyledUL fadedIn={fadedIn}>
+      {recipeList
+        .filter(recipe => {
+          if (filterList) {
+            return filterList.every(filter => {
+              if (recipe.frontmatter.linkedRecipes) {
+                return (
+                  !filter.isApplied ||
+                  recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
+                    const linkedRecipePost = recipeList.find(
+                      element => element.frontmatter.title === linkedRecipe
+                    )
+                    return filter.logic(linkedRecipePost.frontmatter)
+                  })
+                )
+              } else {
+                return !filter.isApplied || filter.logic(recipe.frontmatter)
+              }
+            })
+          } else {
+            return true
+          }
+        })
+        .map(recipe => {
+          const fm = recipe.frontmatter
+          const slug = fm.customSlug
+            ? fm.customSlug
+            : `/${slugify(fm.title, { lower: true, strict: true })}`
+          return (
+            <RecipeCardContainer key={recipe.id}>
+              <Link to={`/recettes${slug}`}>
+                <RecipeCard>
+                  <RecipeImage
+                    headerImg={{
+                      image: fm.header
+                        ? fm.header.childImageSharp.fluid
+                        : false,
+                      description: fm.headerDescription,
+                    }}
+                    featureImg={{
+                      image: fm.feature
+                        ? fm.feature.childImageSharp.fluid
+                        : false,
+                      description: fm.featureDescription,
+                    }}
+                  />
+                  <RecipeText>
+                    <h2>{fm.title}</h2>
+                    <hr />
+                    <p>
+                      {fm.course}
+                      {fm.feeds && ` • ${fm.feeds} personnes`}
+                    </p>
+                  </RecipeText>
+                  <DairyIndicator
+                    vegan={fm.vegan}
+                    veganOption={fm.veganOption}
+                    vegetarian={fm.vegetarian}
+                  />
+                  <TimeIndicators
+                    prepTime={fm.prepTime}
+                    cookTime={fm.cookTime}
+                  />
+                </RecipeCard>
+              </Link>
+            </RecipeCardContainer>
+          )
+        })}
+    </StyledUL>
+  )
+}

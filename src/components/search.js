@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 import { Ing } from "./ingredientLink"
@@ -90,10 +90,12 @@ const ErrorMessage = styled.p``
 
 const SearchResult = styled.li`
   ${props =>
-    props.selected && "background-color: var(--color-searchListSelected);"}
+    props.selected &&
+    "background-color: var(--color-searchListSelected);"}
   display: flex;
   position: relative;
   height: 55px;
+  margin-top: 1px;
 
   :last-child {
     hr {
@@ -148,6 +150,7 @@ export const Search = ({
   setValue,
   list,
   setList,
+  navBarSearchIsActive,
   setNavBarSearchIsActive,
   setDropDownIsOpen,
   dropDownIsOpen,
@@ -189,6 +192,20 @@ export const Search = ({
     }
   })
 
+  useEffect(() => {
+    if (!navBarSearchIsActive) {
+      setList([])
+      setValue("")
+    }
+  }, [setList, setValue, navBarSearchIsActive])
+
+  useEffect(() => {
+    if (!mobileSearchIsActive) {
+      setList([])
+      setValue("")
+    }
+  }, [setList, setValue, mobileSearchIsActive])
+
   const handleChange = event => {
     setIndex(0)
     setValue(event.target.value)
@@ -206,16 +223,15 @@ export const Search = ({
   }
 
   const handleSearchResultClick = () => {
-    setList([])
-    setValue("")
     mobile && setMobileSearchIsActive(false)
     mobile && setDropDownIsOpen(false)
     navBar && setNavBarSearchIsActive(false)
   }
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
+    event.preventDefault()
     if (list.length && list[0].type !== "Error") {
-      navigate(
+      await navigate(
         `/${
           list[indexHighlighted].type
             ? list[indexHighlighted].type
@@ -226,12 +242,9 @@ export const Search = ({
         })}`
       )
       navBar && setNavBarSearchIsActive(false)
-      setList([])
-      setValue("")
     } else if (value.length) {
       setList([{ type: "Error" }])
     }
-    event.preventDefault()
   }
 
   const handleKeyDown = event => {
@@ -251,8 +264,6 @@ export const Search = ({
       }
       //if escape is pressed
     } else if (event.which === 27) {
-      setList([])
-      setValue("")
       navBar && setNavBarSearchIsActive(false)
     }
   }
@@ -260,17 +271,6 @@ export const Search = ({
   const handleBlur = event => {
     if (mobile) {
       setMobileSearchIsActive(false)
-    } else {
-      if (
-        !(
-          event.relatedTarget &&
-          event.relatedTarget.classList.contains("searchResult")
-        )
-      ) {
-        setList([])
-        setValue("")
-        navBar && setNavBarSearchIsActive(false)
-      }
     }
   }
 

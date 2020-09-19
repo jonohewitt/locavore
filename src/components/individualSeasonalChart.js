@@ -100,12 +100,7 @@ const SourceText = styled.p`
   }
 `
 
-const Month = ({
-  value,
-  index,
-  monthIndex,
-  toolTipsCanShow,
-}) => {
+const Month = ({ value, index, monthIndex, toolTipsCanShow }) => {
   const [toolTipShowing, setToolTipShowing] = useState(false)
 
   const isCurrentMonth = index === monthIndex

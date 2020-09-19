@@ -15,7 +15,7 @@ const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
   margin: 40px 0;
   padding: 10px 30px 30px 30px;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   hr {
     margin-bottom: 15px;

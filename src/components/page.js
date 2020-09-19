@@ -25,8 +25,8 @@ const ClickAwayCover = styled.div`
   transition: opacity 0.3s;
 `
 
-export const Page = ({ settingsIsOpen, toggleSettings, children }) => (
-  <StyledPage settingsIsOpen={settingsIsOpen}>
+export const Page = ({ settingsIsOpen, toggleSettings, children, onClick }) => (
+  <StyledPage settingsIsOpen={settingsIsOpen} onClick={onClick}>
     <ClickAwayCover onClick={toggleSettings} settingsIsOpen={settingsIsOpen} />
     {children}
   </StyledPage>

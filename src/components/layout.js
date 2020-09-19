@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import PropTypes from "prop-types"
 import { GlobalStyles } from "../theme/globalStyles"
 import styled from "styled-components"
@@ -21,6 +21,7 @@ const Content = styled.div`
 `
 
 export const Layout = ({ children }) => {
+  const [navBarSearchIsActive, setNavBarSearchIsActive] = useState(false)
   const context = useContext(GlobalState)
   return (
     <>
@@ -43,7 +44,12 @@ export const Layout = ({ children }) => {
 
       <GlobalStyles />
       {context.appInterface && <AppBar />}
-      {context.appInterface === false && <BrowserNav />}
+      {context.appInterface === false && (
+        <BrowserNav
+          navBarSearchIsActive={navBarSearchIsActive}
+          setNavBarSearchIsActive={setNavBarSearchIsActive}
+        />
+      )}
 
       <OverflowWrapper>
         <Settings
@@ -52,6 +58,11 @@ export const Layout = ({ children }) => {
           setAppInterface={context.toggleInterface}
         />
         <Page
+          onClick={event => {
+            if (navBarSearchIsActive){
+              setNavBarSearchIsActive(false)
+            }
+          }}
           settingsIsOpen={context.settingsIsOpen}
           toggleSettings={context.toggleSettings}
         >

@@ -7,6 +7,7 @@ import { useWindowWidth } from "./smallReusableFunctions"
 import { GlobalState } from "../context/globalStateContext"
 import { dropDownSVG, pullUpSVG, searchSVG } from "./icons"
 import { Search } from "./search"
+import { CSSTransition } from "react-transition-group"
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -20,6 +21,9 @@ const NavWrapper = styled.nav`
   box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.1);
   transition: all 0.3s;
   align-items: center;
+  opacity: 0;
+  transition: opacity 0.8s;
+  ${props => props.fadedIn && "opacity: 1;"}
 `
 
 const MenuButton = styled.button`
@@ -41,13 +45,34 @@ const MenuButton = styled.button`
     }
   }
 `
+const SearchContainer = styled.div`
+  position: fixed;
+  z-index: 5;
+  top: 10px;
+  right: 55px;
+  width: 350px;
+
+  &.fade-enter {
+    opacity: 0;
+  }
+  &.fade-enter-active {
+    opacity: 1;
+    transition: opacity 0.2s 0.2s;
+  }
+  &.fade-exit {
+    opacity: 1;
+  }
+  &.fade-exit-active {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+`
 
 const HorizontalNavList = styled.ul`
   display: flex;
   justify-content: flex-end;
   margin-right: 50px;
   align-items: center;
-  ${props => props.hidden && "visibility: hidden;"}
 
   li {
     margin-left: 5px;
@@ -65,6 +90,24 @@ const HorizontalNavList = styled.ul`
     &:hover {
       color: var(--color-activeLink);
     }
+  }
+
+  &.fade-enter {
+    opacity: 0;
+  }
+  &.fade-enter-active {
+    opacity: 1;
+    transition: opacity 0.2s 0.2s;
+  }
+  &.fade-exit {
+    opacity: 1;
+  }
+  &.fade-exit-active {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  &.fade-exit-done {
+    opacity: 0;
   }
 `
 
@@ -137,14 +180,6 @@ const DropDownListItem = styled.li`
   margin: 0 10%;
 `
 
-const SearchContainer = styled.div`
-  position: fixed;
-  z-index: 5;
-  top: 10px;
-  right: 55px;
-  width: 350px;
-`
-
 const MobileSearchContainer = styled.div`
   position: relative;
   z-index: 5;
@@ -190,11 +225,21 @@ const SearchButton = styled.button`
   }
 `
 
-export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
+export const BrowserNav = ({
+  settingsIsOpen,
+  toggleSettings,
+  navBarSearchIsActive,
+  setNavBarSearchIsActive,
+}) => {
   const [halfDeviceHeight, setHalfDeviceHeight] = useState("50%")
-  useEffect(() => {
-    setHalfDeviceHeight(`${window.innerHeight / 2}px`)
-  }, [])
+  const windowWidth = useWindowWidth()
+  const [navFadedIn, setNavFadedIn] = useState(false)
+  const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
+  const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
+  const [value, setValue] = useState("")
+  const [list, setList] = useState([])
+  const context = useContext(GlobalState)
+
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -204,6 +249,11 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
       }
     }
   `)
+
+  useEffect(() => {
+    setNavFadedIn(true)
+    setHalfDeviceHeight(`${window.innerHeight / 2}px`)
+  }, [])
 
   const navOptions = [
     {
@@ -223,39 +273,6 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
       link: "/blog",
     },
   ]
-
-  const HorizontalNav = () => {
-    return (
-      <>
-        <HorizontalNavList hidden={navBarSearchIsActive}>
-          {navOptions.map(element => (
-            <li key={element.name}>
-              <Link
-                to={element.link}
-                activeStyle={{ border: "solid 1px", borderRadius: "8px" }}
-                partiallyActive={element.link === "/" ? false : true}
-              >
-                {element.name}
-              </Link>
-            </li>
-          ))}
-        </HorizontalNavList>
-        <SearchButton
-          onClick={() => setNavBarSearchIsActive(!navBarSearchIsActive)}
-        >
-          {searchSVG}
-        </SearchButton>
-      </>
-    )
-  }
-
-  const windowWidth = useWindowWidth()
-  const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
-  const context = useContext(GlobalState)
-  const [navBarSearchIsActive, setNavBarSearchIsActive] = useState(false)
-  const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
-  const [value, setValue] = useState("")
-  const [list, setList] = useState([])
 
   return (
     <>
@@ -302,7 +319,7 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
         </DropDownNavList>
       </DropDownMenu>
 
-      <NavWrapper>
+      <NavWrapper fadedIn={navFadedIn}>
         <SettingsIcon
           clickFunctions={() => {
             setMobileSearchIsActive(false)
@@ -311,7 +328,34 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
         />
         <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
         {windowWidth > 700 ? (
-          <HorizontalNav />
+          <>
+            <CSSTransition
+              in={!navBarSearchIsActive}
+              timeout={{ enter: 400, exit: 200 }}
+              classNames="fade"
+            >
+              <HorizontalNavList>
+                {navOptions.map(element => (
+                  <li key={element.name}>
+                    <Link
+                      to={element.link}
+                      activeStyle={{ border: "solid 1px", borderRadius: "8px" }}
+                      partiallyActive={element.link === "/" ? false : true}
+                    >
+                      {element.name}
+                    </Link>
+                  </li>
+                ))}
+              </HorizontalNavList>
+            </CSSTransition>
+
+            <SearchButton
+              className="searchButton"
+              onClick={() => setNavBarSearchIsActive(!navBarSearchIsActive)}
+            >
+              {searchSVG}
+            </SearchButton>
+          </>
         ) : (
           <MenuButton
             aria-label="Toggle navigation menu"
@@ -328,7 +372,12 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
         )}
       </NavWrapper>
 
-      {navBarSearchIsActive && (
+      <CSSTransition
+        in={navBarSearchIsActive}
+        timeout={{ enter: 200, exit: 400 }}
+        classNames="fade"
+        unmountOnExit
+      >
         <SearchContainer>
           <Search
             navBar
@@ -336,10 +385,11 @@ export const BrowserNav = ({ settingsIsOpen, toggleSettings }) => {
             setValue={setValue}
             list={list}
             setList={setList}
+            navBarSearchIsActive={navBarSearchIsActive}
             setNavBarSearchIsActive={setNavBarSearchIsActive}
           />
         </SearchContainer>
-      )}
+      </CSSTransition>
     </>
   )
 }

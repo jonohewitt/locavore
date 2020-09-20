@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useState, useLayoutEffect } from "react"
 import styled from "styled-components"
-import {arrowSVG} from "./icons"
+import { arrowSVG } from "./icons"
 
 const Button = styled.button`
   padding: 5px;
@@ -14,10 +14,12 @@ const Button = styled.button`
 `
 
 export const BackButton = () => {
-  if (window.history.state) {
-    return (
-      <Button onClick={() => window.history.back()}>{arrowSVG}</Button>
-    )
+  const [history, setHistory] = useState(false)
+  useLayoutEffect(() => {
+    setHistory(window.history.state)
+  }, [])
+  if (history) {
+    return <Button onClick={() => window.history.back()}>{arrowSVG}</Button>
   } else {
     return null
   }

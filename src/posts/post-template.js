@@ -10,13 +10,14 @@ import { SEO } from "../components/seo"
 import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
 import { Ing, LinkedRecipe } from "../components/ingredientLink"
+import { BackButton } from "../components/backButton"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
   margin: 40px 0;
   padding: 10px 30px 30px 30px;
   border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   hr {
     margin-bottom: 15px;
   }
@@ -78,6 +79,18 @@ const FeatureImage = ({ featureImg }) => {
   )
 }
 
+const Header = styled.header`
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-bottom: 0;
+  }
+`
+
+const HeaderText = styled.div`
+  width: 100%;
+`
+
 const shortcodes = { Link, Ing, Ingredients, LinkedRecipe }
 
 const PostTemplate = ({ data }) => {
@@ -96,11 +109,14 @@ const PostTemplate = ({ data }) => {
       <ContentWrapper headerImg={headerImg}>
         <PostStyles>
           <article>
-            <header>
-              <h1>{fm.title}</h1>
-              {!featureImg && <hr />}
-              {fm.date && <p>{fm.date}</p>}
-            </header>
+            <Header>
+              <BackButton />
+              <HeaderText>
+                <h1>{fm.title}</h1>
+                {fm.date && <p>{fm.date}</p>}
+                {!featureImg && <hr />}
+              </HeaderText>
+            </Header>
             {featureImg && (
               <FeatureImage
                 featureImg={{

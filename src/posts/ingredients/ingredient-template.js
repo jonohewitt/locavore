@@ -9,6 +9,7 @@ import { ingredientsData } from "./ingredientsData"
 import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
 import { monthIndexToName } from "../../components/smallReusableFunctions"
+import { BackButton } from "../../components/backButton"
 
 const IngredientStyles = styled.div`
   h1 {
@@ -27,6 +28,18 @@ const IngredientStyles = styled.div`
   main {
     margin-top: 50px;
   }
+`
+
+const Header = styled.header`
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-bottom: 0;
+  }
+`
+
+const HeaderText = styled.div`
+  width: 100%;
 `
 
 const IngredientTemplate = ({ pageContext, data }) => {
@@ -59,10 +72,13 @@ const IngredientTemplate = ({ pageContext, data }) => {
     <IngredientStyles>
       <SEO title={pageContext.name} />
       <ContentWrapper>
-        <header>
-          <h1>{pageContext.name}</h1>
-          <hr />
-        </header>
+        <Header>
+          <BackButton />
+          <HeaderText>
+            <h1>{pageContext.name}</h1>
+            <hr />
+          </HeaderText>
+        </Header>
         <main>
           {ingredientObject && (
             <>

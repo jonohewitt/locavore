@@ -1,14 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import {
-  homeSVG,
-  recipesSVG,
-  resourcesSVG,
-  blogSVG,
-  shopsSVG,
-  arrowSVG,
-} from "./icons"
+import { homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG } from "./icons"
 
 const BarWrapper = styled.nav`
   position: fixed;
@@ -92,21 +85,6 @@ const StyledLink = styled(Link)`
   }
 `
 
-const BackButton = styled.button`
-  position: absolute;
-  top: 15px;
-  left: 5%;
-  padding: 5px;
-  margin: 0;
-  z-index: 2;
-  svg {
-    transform: rotate(90deg) scale(1.6);
-    path {
-      fill: var(--color-settingsIcon);
-    }
-  }
-`
-
 const mainLinks = [
   {
     name: "Home",
@@ -137,29 +115,22 @@ const mainLinks = [
 
 const AppUI = ({ settingsIsOpen, toggleSettings }) => {
   return (
-    <>
-      {!mainLinks.some(tab => tab.link === window.location.pathname) && (
-        <BackButton onClick={() => window.history.back()}>
-          {arrowSVG}
-        </BackButton>
-      )}
-      <BarWrapper>
-        <TabList>
-          {mainLinks.map(tab => (
-            <TabListItem key={tab.name}>
-              <StyledLink
-                to={tab.link}
-                activeClassName="active"
-                partiallyActive={tab.link === "/" ? false : true}
-              >
-                {tab.icon}
-                <h6>{tab.name}</h6>
-              </StyledLink>
-            </TabListItem>
-          ))}
-        </TabList>
-      </BarWrapper>
-    </>
+    <BarWrapper>
+      <TabList>
+        {mainLinks.map(tab => (
+          <TabListItem key={tab.name}>
+            <StyledLink
+              to={tab.link}
+              activeClassName="active"
+              partiallyActive={tab.link === "/" ? false : true}
+            >
+              {tab.icon}
+              <h6>{tab.name}</h6>
+            </StyledLink>
+          </TabListItem>
+        ))}
+      </TabList>
+    </BarWrapper>
   )
 }
 

@@ -13,6 +13,7 @@ const SelectFiltersButton = styled.button`
   margin-bottom: 0;
   line-height: 1.2;
   cursor: pointer;
+  padding: 10px 0 0 0;
   svg {
     margin-left: 8px;
   }
@@ -58,6 +59,7 @@ const ListOfFilters = styled.ul`
   span {
     display: inline-flex;
   }
+
   @media (max-width: 650px) {
     span {
       display: flex;
@@ -84,8 +86,8 @@ const ListOfFilters = styled.ul`
   }
 
   @media (max-width: 405px) {
-    margin-left: calc(-50vw + 50% + 15px);
-    margin-right: calc(-50vw + 50% + 15px);
+    margin-left: calc(-50vw + 50% + 10px);
+    margin-right: calc(-50vw + 50% + 10px);
     span {
       li {
         margin: 0 2px 8px 2px;

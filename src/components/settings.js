@@ -5,6 +5,7 @@ import { ToggleSwitch } from "./toggleSwitch"
 
 const SettingsWrapper = styled.section`
   position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
   will-change: transform;

@@ -268,12 +268,6 @@ export const Search = ({
     }
   }
 
-  const handleBlur = event => {
-    if (mobile) {
-      setMobileSearchIsActive(false)
-    }
-  }
-
   const handleFocus = event => {
     mobile && setMobileSearchIsActive(true)
     handleChange(event)
@@ -335,7 +329,6 @@ export const Search = ({
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            onBlur={handleBlur}
             onFocus={handleFocus}
           />
         </InputContainer>

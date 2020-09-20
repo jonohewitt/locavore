@@ -1,35 +1,14 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import { homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG } from "./icons"
-
-const tabArray = [
-  {
-    name: "Home",
-    icon: homeSVG,
-    link: "/",
-  },
-  {
-    name: "Recipes",
-    icon: recipesSVG,
-    link: "/recettes",
-  },
-  {
-    name: "Resources",
-    icon: resourcesSVG,
-    link: "/ingredients",
-  },
-  {
-    name: "Blog",
-    icon: blogSVG,
-    link: "/blog",
-  },
-  {
-    name: "Shops",
-    icon: shopsSVG,
-    link: "/shops",
-  },
-]
+import {
+  homeSVG,
+  recipesSVG,
+  resourcesSVG,
+  blogSVG,
+  shopsSVG,
+  arrowSVG,
+} from "./icons"
 
 const BarWrapper = styled.nav`
   position: fixed;
@@ -57,7 +36,8 @@ const TabListItem = styled.li`
   width: 100%;
   height: 100%;
 
-  :first-child, :last-child {
+  :first-child,
+  :last-child {
     a {
       padding-left: 15px;
       border-radius: 0 6px 0 0;
@@ -112,25 +92,75 @@ const StyledLink = styled(Link)`
   }
 `
 
-const AppBar = ({ settingsIsOpen, toggleSettings }) => {
+const BackButton = styled.button`
+  position: absolute;
+  top: 15px;
+  left: 5%;
+  padding: 5px;
+  margin: 0;
+  z-index: 2;
+  svg {
+    transform: rotate(90deg) scale(1.6);
+    path {
+      fill: var(--color-settingsIcon);
+    }
+  }
+`
+
+const mainLinks = [
+  {
+    name: "Home",
+    icon: homeSVG,
+    link: "/",
+  },
+  {
+    name: "Recipes",
+    icon: recipesSVG,
+    link: "/recettes",
+  },
+  {
+    name: "Resources",
+    icon: resourcesSVG,
+    link: "/ingredients",
+  },
+  {
+    name: "Blog",
+    icon: blogSVG,
+    link: "/blog",
+  },
+  {
+    name: "Shops",
+    icon: shopsSVG,
+    link: "/shops",
+  },
+]
+
+const AppUI = ({ settingsIsOpen, toggleSettings }) => {
   return (
-    <BarWrapper>
-      <TabList>
-        {tabArray.map(tab => (
-          <TabListItem key={tab.name}>
-            <StyledLink
-              to={tab.link}
-              activeClassName="active"
-              partiallyActive={tab.link === "/" ? false : true}
-            >
-              {tab.icon}
-              <h6>{tab.name}</h6>
-            </StyledLink>
-          </TabListItem>
-        ))}
-      </TabList>
-    </BarWrapper>
+    <>
+      {!mainLinks.some(tab => tab.link === window.location.pathname) && (
+        <BackButton onClick={() => window.history.back()}>
+          {arrowSVG}
+        </BackButton>
+      )}
+      <BarWrapper>
+        <TabList>
+          {mainLinks.map(tab => (
+            <TabListItem key={tab.name}>
+              <StyledLink
+                to={tab.link}
+                activeClassName="active"
+                partiallyActive={tab.link === "/" ? false : true}
+              >
+                {tab.icon}
+                <h6>{tab.name}</h6>
+              </StyledLink>
+            </TabListItem>
+          ))}
+        </TabList>
+      </BarWrapper>
+    </>
   )
 }
 
-export { AppBar }
+export { AppUI }

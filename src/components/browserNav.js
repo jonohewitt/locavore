@@ -217,6 +217,7 @@ const SearchButton = styled.button`
       transition: stroke 0.2s;
     }
     path {
+      transition: fill 0.2s;
       fill: var(--color-text);
     }
   }

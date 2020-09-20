@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const PostStyles = styled.main`
   h1 {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   h2 {

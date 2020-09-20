@@ -36,7 +36,7 @@ const Blog = () => {
       ) {
         nodes {
           id
-          excerpt(pruneLength: 200)
+          excerpt(pruneLength: 150)
           frontmatter {
             title
             customSlug

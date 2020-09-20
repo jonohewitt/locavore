@@ -8,7 +8,7 @@ import { Page } from "./page"
 import { BrowserNav } from "./browserNav"
 import { Settings } from "./settings"
 import { Footer, footerHeight } from "./footer"
-import { AppBar } from "./appBar"
+import { AppUI } from "./appUI"
 
 const OverflowWrapper = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ export const Layout = ({ children }) => {
       />
 
       <GlobalStyles />
-      {context.appInterface && <AppBar />}
+      {context.appInterface && <AppUI />}
       {context.appInterface === false && (
         <BrowserNav
           navBarSearchIsActive={navBarSearchIsActive}

@@ -10,7 +10,7 @@ export const breakToMobile = 900
 const Wrapper = styled.div`
   width: ${widthPercent}%;
   max-width: ${maxWidth}px;
-  margin: ${props => (props.appInterface || props.headerImg ? "50px" : "100px")}
+  margin: ${props => (props.appInterface || props.headerImg ? "60px" : "100px")}
     auto 0 auto;
   @media (max-width: ${breakToMobile}px) {
     width: ${mobileWidthPercent}%;

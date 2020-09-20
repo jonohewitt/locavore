@@ -5,7 +5,7 @@ import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { useWindowWidth } from "./smallReusableFunctions"
 import { GlobalState } from "../context/globalStateContext"
-import { dropDownSVG, pullUpSVG, searchSVG } from "./icons"
+import { searchSVG, crossSVG, arrowSVG } from "./icons"
 import { Search } from "./search"
 import { CSSTransition } from "react-transition-group"
 
@@ -33,7 +33,9 @@ const MenuButton = styled.button`
   white-space: nowrap;
 
   svg {
-    transform: scale(0.9);
+    transition: transform 0.5s;
+    transform: scale(0.9)
+      rotate(${props => (props.SVGrotation ? props.SVGrotation : 0)}deg);
     vertical-align: text-bottom;
   }
 
@@ -214,12 +216,18 @@ const SearchButton = styled.button`
     line {
       transition: stroke 0.2s;
     }
+    path {
+      fill: var(--color-text);
+    }
   }
   :hover {
     svg {
       circle,
       line {
         stroke: var(--color-altColor);
+      }
+      path {
+        fill: var(--color-altColor);
       }
     }
   }
@@ -281,7 +289,6 @@ export const BrowserNav = ({
         onClick={event => {
           if (event.target.classList.contains("clearResultsList")) {
             setMobileSearchIsActive(false)
-            setList([])
           }
         }}
         aria-label="Navigation options"
@@ -350,24 +357,24 @@ export const BrowserNav = ({
             </CSSTransition>
 
             <SearchButton
+              navBarSearchIsActive={navBarSearchIsActive}
               className="searchButton"
               onClick={() => setNavBarSearchIsActive(!navBarSearchIsActive)}
             >
-              {searchSVG}
+              {navBarSearchIsActive ? crossSVG : searchSVG}
             </SearchButton>
           </>
         ) : (
           <MenuButton
+            SVGrotation={dropDownIsOpen && "180"}
             aria-label="Toggle navigation menu"
             onClick={() => {
               setMobileSearchIsActive(false)
-              setList([])
-              setValue("")
               setDropDownIsOpen(!dropDownIsOpen)
               context.setSettingsIsOpen(false)
             }}
           >
-            Menu {dropDownIsOpen ? pullUpSVG : dropDownSVG}
+            Menu {arrowSVG}
           </MenuButton>
         )}
       </NavWrapper>

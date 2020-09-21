@@ -124,6 +124,20 @@ const PageTitle = styled(Link)`
   text-transform: uppercase;
   font-weight: 700;
   transition: color 0.2s;
+  white-space: nowrap;
+
+  span {
+    color: var(--color-settingsIcon);
+    border: solid 1px;
+    border-radius: 8px;
+    padding: 0 6px;
+  }
+
+  @media (max-width: 500px) {
+    span {
+      display: none;
+    }
+  }
 
   &:hover {
     color: var(--color-activeLink);
@@ -334,7 +348,7 @@ export const BrowserNav = ({
             setDropDownIsOpen(false)
           }}
         />
-        <PageTitle to="/">{data.site.siteMetadata.title}</PageTitle>
+        <PageTitle to="/">{data.site.siteMetadata.title} <span>BXL</span></PageTitle>
         {windowWidth > 700 ? (
           <>
             <CSSTransition

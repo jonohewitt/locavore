@@ -11,17 +11,14 @@ const InputContainer = styled.div`
   border-radius: 20px;
   background-color: var(--color-searchBackground);
   padding: 8px 13px;
-  width: 350px;
   height: 37px;
   margin-bottom: 0;
   position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
-  ${props =>
-    props.shadow
-      ? "box-shadow: 0 2px 8px 0 var(--color-searchShadow);"
-      : "box-shadow: 0 1px 2px 0 hsla(0, 0%, 10%, 0.4);"}
+  box-shadow: 0 1px 2px hsla(0, 0%, 10%, 0.2);
+  ${props => props.shadow && "box-shadow: 0 2px 6px hsla(var(--color-searchShadow), 0.2);"}
   width: 100%;
 
   svg {
@@ -48,6 +45,7 @@ const SearchInput = styled.input`
 const SearchResultList = styled.ul`
   max-height: 60vh;
   overflow-y: auto;
+  margin-right: 5%;
   scrollbar-color: var(--color-hr) var(--color-searchBackground);
 `
 
@@ -58,7 +56,7 @@ const SearchResultListContainer = styled.div`
   width: 100%;
   border-radius: 20px;
   ${props => props.outline && "border: 2px solid var(--color-hr);"}
-  box-shadow: 0 4px 14px var(--color-searchShadow);
+  box-shadow: 0 4px 14px hsla(var(--color-searchShadow),0.3);
   background-color: var(--color-searchBackground);
   padding: 15px 0;
   overflow: hidden;
@@ -91,7 +89,7 @@ const ErrorMessage = styled.p``
 const SearchResult = styled.li`
   ${props =>
     props.selected &&
-    "background-color: var(--color-searchListSelected);"}
+    " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "}
   display: flex;
   position: relative;
   height: 55px;
@@ -105,9 +103,9 @@ const SearchResult = styled.li`
 
   hr {
     position: absolute;
-    width: 90%;
+    width: 95%;
     top: 55px;
-    margin: 0 5%;
+    margin: 0 0 0 5%;
     padding: 0;
     height: 1px;
   }
@@ -124,10 +122,10 @@ const SearchResult = styled.li`
   }
 
   :hover {
-    background-color: ${props =>
+    ${props =>
       props.selected
-        ? "var(--color-searchListSelected)"
-        : "var(--color-searchListHover)"};
+        ? " background: var(--color-searchListHover);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListHover) 100%); "
+        : " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "};
   }
 `
 

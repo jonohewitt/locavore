@@ -241,6 +241,7 @@ export const Search = ({
           strict: true,
         })}`
       )
+      mobile && setDropDownIsOpen(false)
       navBar && setNavBarSearchIsActive(false)
     } else if (value.length) {
       setList([{ type: "Error" }])

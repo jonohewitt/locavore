@@ -1,16 +1,17 @@
 import React, { useContext } from "react"
-import { useStaticQuery, graphql, Link } from "gatsby"
 import styled from "styled-components"
 import slugify from "slugify"
+import { Link } from "gatsby"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
 import { tickSVG, crossSVG } from "../components/icons"
 import { monthIndexToName } from "../components/smallReusableFunctions"
+import { listOfIngredients } from "../components/listOfIngredients"
 
 const Styles = styled.main`
   h2 {
+    line-height: 1.2;
     margin-top: 40px;
     svg {
       transform: scale(1.5);
@@ -32,69 +33,46 @@ const Styles = styled.main`
   }
 `
 
-const filteredList = (data, filter, currentMonth) => {
-  return data
-    .filter(ingredient => {
-      const ingredientObject = ingredientsData.find(
-        element => element.name === ingredient
+const MappedIngredients = ({ filter, sort, monthIndex }) => {
+  const processedList = listOfIngredients({
+    filter: filter,
+    sort: sort,
+    monthIndex: monthIndex,
+  })
+  const mapList = list => (
+    <ul>
+      {list.map(ingredient => (
+        <li key={ingredient.name}>
+          <Link
+            to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}
+          >
+            {ingredient.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+  if (filter === "noData") {
+    if (processedList.length) {
+      return (
+        <>
+          <h2>Pas encore d'information</h2>
+          <hr />
+          {mapList(processedList)}
+        </>
       )
-      if (filter === "current") {
-        return (
-          ingredientObject &&
-          ingredientObject.months[currentMonth] &&
-          ingredientObject.months.some(month => !month)
-        )
-      } else if (filter === "always") {
-        return (
-          ingredientObject &&
-          ingredientObject.months[currentMonth] &&
-          ingredientObject.months.every(month => month)
-        )
-      } else if (filter === "out") {
-        return ingredientObject && !ingredientObject.months[currentMonth]
-      } else if (filter === "noData") {
-        return !ingredientObject
-      } else {
-        return true
-      }
-    })
-    .sort(new Intl.Collator("fr").compare)
-    .map(ingredient => (
-      <li key={ingredient}>
-        <Link to={`/ingredients/${slugify(ingredient, { lower: true })}`}>
-          {ingredient}
-        </Link>
-      </li>
-    ))
+    } else {
+      return null
+    }
+  } else if (processedList.length) {
+    return mapList(processedList)
+  } else {
+    return <p>No data</p>
+  }
 }
 
 const Ingredients = ({ filterList, setFilterList }) => {
   const context = useContext(GlobalState)
-  const data = useStaticQuery(graphql`
-    query {
-      allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
-        nodes {
-          frontmatter {
-            ingredients
-          }
-        }
-      }
-    }
-  `)
-
-  const recipes = data.allMdx.nodes
-
-  let ingredientArray = []
-
-  recipes.forEach(recipe => {
-    if (recipe.frontmatter.ingredients) {
-      recipe.frontmatter.ingredients.forEach(ingredient => {
-        if (!ingredientArray.includes(ingredient)) {
-          ingredientArray.push(ingredient)
-        }
-      })
-    }
-  })
 
   return (
     <>
@@ -106,32 +84,33 @@ const Ingredients = ({ filterList, setFilterList }) => {
             <hr />
           </header>
           <h2>
-            En saison en {monthIndexToName(context.currentMonth)} {tickSVG}
+            En saison en{" "}
+            <span>
+              {monthIndexToName(context.currentMonth)} {tickSVG}
+            </span>
           </h2>
           <hr />
-          <ul>
-            {filteredList(ingredientArray, "current", context.currentMonth)}
-          </ul>
+          <MappedIngredients
+            filter="currentlyInSeason"
+            monthIndex={context.currentMonth}
+          />
           <h2>
             Disponible toute <span>l'année {tickSVG}</span>
           </h2>
           <hr />
-          <ul>
-            {filteredList(ingredientArray, "always", context.currentMonth)}
-          </ul>
+          <MappedIngredients filter="alwaysInSeason" />
           <h2>
-            Hors saison en {monthIndexToName(context.currentMonth)} {crossSVG}
+            Hors saison en{" "}
+            <span>
+              {monthIndexToName(context.currentMonth)} {crossSVG}
+            </span>
           </h2>
           <hr />
-          <ul>{filteredList(ingredientArray, "out", context.currentMonth)}</ul>
-          {filteredList(ingredientArray, "noData", context.currentMonth)
-            .length > 0 && (
-            <>
-              <h2>Pas encore d'information</h2>
-              <hr />
-              <ul>{filteredList(ingredientArray, "noData")}</ul>
-            </>
-          )}
+          <MappedIngredients
+            filter="outOfSeason"
+            monthIndex={context.currentMonth}
+          />
+          <MappedIngredients filter="noData" />
         </Styles>
       </ContentWrapper>
     </>

@@ -125,12 +125,16 @@ const PageTitle = styled(Link)`
   font-weight: 700;
   transition: color 0.2s;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
 
   span {
     color: var(--color-settingsIcon);
     border: solid 1px;
-    border-radius: 8px;
-    padding: 0 6px;
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-size: 18px;
+    margin-left: 8px;
   }
 
   @media (max-width: 500px) {
@@ -348,7 +352,9 @@ export const BrowserNav = ({
             setDropDownIsOpen(false)
           }}
         />
-        <PageTitle to="/">{data.site.siteMetadata.title} <span>BXL</span></PageTitle>
+        <PageTitle to="/">
+          {data.site.siteMetadata.title} <span>BXL</span>
+        </PageTitle>
         {windowWidth > 700 ? (
           <>
             <CSSTransition

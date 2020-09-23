@@ -105,7 +105,6 @@ export const pageQuery = graphql`
   query($name: [String]) {
     allMdx(
       filter: { frontmatter: { ingredients: { in: $name } } }
-      sort: { fields: frontmatter___title, order: ASC }
     ) {
       nodes {
         id
@@ -134,6 +133,8 @@ export const pageQuery = graphql`
           cookTime
           feeds
           course
+          ingredients
+          linkedRecipes
         }
       }
     }

@@ -274,13 +274,17 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
                   const linkedRecipePost = recipeList.find(
                     element => element.frontmatter.title === linkedRecipe
                   )
-                  return linkedRecipePost.frontmatter.ingredients.every(
-                    ingredientName =>
-                      ingredientsData.find(
-                        ingredientObject =>
-                          ingredientObject.name === ingredientName
-                      ).months[context.currentMonth]
-                  )
+                  if (linkedRecipePost) {
+                    return linkedRecipePost.frontmatter.ingredients.every(
+                      ingredientName =>
+                        ingredientsData.find(
+                          ingredientObject =>
+                            ingredientObject.name === ingredientName
+                        ).months[context.currentMonth]
+                    )
+                  } else {
+                    return true // if the linked recipe isnt found, include it anyway
+                  }
                 }
               )
               return recipeIngredientsInSeason && linkedIngredientsInSeason

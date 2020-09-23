@@ -127,15 +127,19 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
   useEffect(() => setFadedIn(true), [])
 
   const mostRecentStart = recipe => {
-    let mostRecent = 100 //arbitrary high number
+    let mostRecent = 100 //arbitrary high number for always in season
     const findMostRecentStart = recipeToTest => {
       recipeToTest.frontmatter.ingredients.forEach(ingredient => {
         const ingredientObj = ingredientsData.find(
           object => object.name === ingredient
         )
 
-        if (ingredientObj.months.includes("start")) {
-          let value = context.currentMonth - ingredientObj.months.indexOf("start")
+        if (
+          ingredientObj.months.includes("start") &&
+          ingredientObj.months[context.currentMonth]
+        ) {
+          let value =
+            context.currentMonth - ingredientObj.months.indexOf("start")
           if (value < 0) {
             value += 12
           }
@@ -190,38 +194,38 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
     return soonest
   }
 
-  const soonestStart = recipe => {
-    let soonest = 0
-    const findSoonestStart = recipeToTest => {
-      recipeToTest.frontmatter.ingredients.forEach(ingredient => {
-        const ingredientObj = ingredientsData.find(
-          object => object.name === ingredient
-        )
-
-        if (ingredientObj.months.includes("start")) {
-          let value =
-            ingredientObj.months.indexOf("start") - context.currentMonth
-          if (value < 0) {
-            value += 12
-          }
-          if (value > soonest) {
-            soonest = value
-          }
-        }
-      })
-    }
-    findSoonestStart(recipe)
-
-    if (recipe.frontmatter.linkedRecipes) {
-      recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-        const linkedRecipePost = recipeList.find(
-          element => element.frontmatter.title === linkedRecipe
-        )
-        findSoonestStart(linkedRecipePost)
-      })
-    }
-    return soonest
-  }
+  // const soonestStart = recipe => {
+  //   let soonest = 0
+  //   const findSoonestStart = recipeToTest => {
+  //     recipeToTest.frontmatter.ingredients.forEach(ingredient => {
+  //       const ingredientObj = ingredientsData.find(
+  //         object => object.name === ingredient
+  //       )
+  //
+  //       if (ingredientObj.months.includes("start")) {
+  //         let value =
+  //           ingredientObj.months.indexOf("start") - context.currentMonth
+  //         if (value < 0) {
+  //           value += 12
+  //         }
+  //         if (value > soonest) {
+  //           soonest = value
+  //         }
+  //       }
+  //     })
+  //   }
+  //   findSoonestStart(recipe)
+  //
+  //   if (recipe.frontmatter.linkedRecipes) {
+  //     recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
+  //       const linkedRecipePost = recipeList.find(
+  //         element => element.frontmatter.title === linkedRecipe
+  //       )
+  //       findSoonestStart(linkedRecipePost)
+  //     })
+  //   }
+  //   return soonest
+  // }
 
   return (
     <StyledUL fadedIn={fadedIn}>
@@ -254,26 +258,62 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
           }
         })
         .sort((a, b) => {
-          let sortValue
+          let sortValue = 0
 
-          switch (sort) {
-            case "newest":
-              sortValue = mostRecentStart(a) - mostRecentStart(b)
-              break
-            case "endingSoonest":
-              sortValue = soonestEnd(a) - soonestEnd(b)
-              break
-            case "startingSoonest":
-              sortValue = soonestStart(a) - soonestStart(b)
-              break
-            default:
-              //alphabetical in french, catches special characters e.g œ
-              sortValue = new Intl.Collator("fr").compare(
-                a.frontmatter.title,
-                b.frontmatter.title
+          const allInSeason = recipeToTest => {
+            const recipeIngredientsInSeason = recipeToTest.frontmatter.ingredients.every(
+              ingredientName =>
+                ingredientsData.find(
+                  ingredientObject => ingredientObject.name === ingredientName
+                ).months[context.currentMonth]
+            )
+
+            if (recipeToTest.frontmatter.linkedRecipes) {
+              const linkedIngredientsInSeason = recipeToTest.frontmatter.linkedRecipes.every(
+                linkedRecipe => {
+                  const linkedRecipePost = recipeList.find(
+                    element => element.frontmatter.title === linkedRecipe
+                  )
+                  return linkedRecipePost.frontmatter.ingredients.every(
+                    ingredientName =>
+                      ingredientsData.find(
+                        ingredientObject =>
+                          ingredientObject.name === ingredientName
+                      ).months[context.currentMonth]
+                  )
+                }
               )
-              break
+              return recipeIngredientsInSeason && linkedIngredientsInSeason
+            } else {
+              return recipeIngredientsInSeason
+            }
           }
+
+          if (allInSeason(a) && allInSeason(b)) {
+            switch (sort) {
+              case "newest":
+                sortValue = mostRecentStart(a) - mostRecentStart(b)
+                break
+              case "endingSoonest":
+                sortValue = soonestEnd(a) - soonestEnd(b)
+                break
+              // case "startingSoonest":
+              //   sortValue = soonestStart(a) - soonestStart(b)
+              //   break
+              default:
+                //alphabetical in french, catches special characters e.g œ
+                sortValue = new Intl.Collator("fr").compare(
+                  a.frontmatter.title,
+                  b.frontmatter.title
+                )
+                break
+            }
+          } else if (allInSeason(a) && !allInSeason(b)) {
+            sortValue = -1
+          } else if (!allInSeason(a) && allInSeason(b)) {
+            sortValue = 1
+          }
+
           // sort by french alphabetical if sort function returns a tie
           if (sortValue !== 0) {
             return sortValue

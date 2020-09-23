@@ -14,6 +14,9 @@ const IngredientLink = styled(Link)`
     transform: scale(0.8);
     vertical-align: text-bottom;
     margin-left: 2px;
+    path {
+      fill: ${props => props.color};
+    }
   }
   white-space: nowrap;
 `

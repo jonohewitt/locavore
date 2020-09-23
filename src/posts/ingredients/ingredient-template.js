@@ -73,7 +73,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
       <SEO title={pageContext.name} />
       <ContentWrapper>
         <Header>
-          <BackButton />
+          <BackButton link="/ingredients"/>
           <HeaderText>
             <h1>{pageContext.name}</h1>
             <hr />

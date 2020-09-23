@@ -110,7 +110,7 @@ const PostTemplate = ({ data }) => {
         <PostStyles>
           <article>
             <Header>
-              <BackButton />
+              <BackButton link={`/${data.mdx.fields.source}`}/>
               <HeaderText>
                 <h1>{fm.title}</h1>
                 {fm.date && <p>{fm.date}</p>}
@@ -138,6 +138,9 @@ const PostTemplate = ({ data }) => {
 export const pageQuery = graphql`
   query BlogPostQuery($id: String) {
     mdx(id: { eq: $id }) {
+      fields {
+        source
+      }
       id
       body
       frontmatter {

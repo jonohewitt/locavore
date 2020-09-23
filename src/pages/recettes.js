@@ -29,7 +29,6 @@ const Recettes = () => {
     query {
       allMdx(
         filter: { fields: { source: { eq: "recettes" } } }
-        sort: { fields: frontmatter___title, order: ASC }
       ) {
         nodes {
           id
@@ -96,6 +95,7 @@ const Recettes = () => {
           <ListOfRecipes
             recipeList={data.allMdx.nodes}
             filterList={context.filterList}
+            sort="newest"
           />
         </RecipeIndexWrapper>
       </ContentWrapper>

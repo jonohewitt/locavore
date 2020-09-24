@@ -105,6 +105,27 @@ export const ingredientsData = [
     },
   },
   {
+    name: "Carotte",
+    months: [
+      true,
+      true,
+      "end",
+      false,
+      false,
+      "start",
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+    ],
+    source: {
+      name: "Bruxelles Environnement IBGE",
+      link: `https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf`,
+    },
+  },
+  {
     name: "Champignon",
     months: [
       true,

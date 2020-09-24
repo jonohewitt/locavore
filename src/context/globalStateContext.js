@@ -14,12 +14,21 @@ const Provider = ({ children }) => {
       name: "En saison",
       group: "green",
       logic(fm) {
-        return fm.ingredients.every(
-          ingredientName =>
-            ingredientsData.find(
-              ingredientObject => ingredientObject.name === ingredientName
-            ).months[currentMonth]
-        )
+        return fm.ingredients.every(ingredientName => {
+          const foundIngredient = ingredientsData.find(
+            ingredientObject => ingredientObject.name === ingredientName
+          )
+          if (
+            foundIngredient &&
+            foundIngredient.months &&
+            foundIngredient.months.length === 12
+          ) {
+            return foundIngredient.months[currentMonth]
+          } else {
+            console.log(ingredientName + " not found or has insufficient data!")
+            return true
+          }
+        })
       },
       isApplied: true,
     },

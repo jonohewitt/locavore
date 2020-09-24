@@ -127,28 +127,37 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
   useEffect(() => setFadedIn(true), [])
 
   const mostRecentStart = recipe => {
-    let mostRecent = 100 //arbitrary high number for always in season
+    let mostRecent = 100 // arbitrary high number for always in season
+
     const findMostRecentStart = recipeToTest => {
       recipeToTest.frontmatter.ingredients.forEach(ingredient => {
         const ingredientObj = ingredientsData.find(
           object => object.name === ingredient
         )
-
         if (
-          ingredientObj.months.includes("start") &&
-          ingredientObj.months[context.currentMonth]
+          ingredientObj &&
+          ingredientObj.months &&
+          ingredientObj.months.length === 12
         ) {
-          let value =
-            context.currentMonth - ingredientObj.months.indexOf("start")
-          if (value < 0) {
-            value += 12
+          if (
+            ingredientObj.months.includes("start") && // filter out permanently in season
+            ingredientObj.months[context.currentMonth]
+          ) {
+            let value =
+              context.currentMonth - ingredientObj.months.indexOf("start")
+            if (value < 0) {
+              value += 12
+            }
+            if (value < mostRecent) {
+              mostRecent = value
+            }
           }
-          if (value < mostRecent) {
-            mostRecent = value
-          }
+        } else {
+          console.log(ingredient + " not found or has insufficient data!")
         }
       })
     }
+
     findMostRecentStart(recipe)
 
     if (recipe.frontmatter.linkedRecipes) {
@@ -258,14 +267,14 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
           }
         })
         .sort((a, b) => {
-          let sortValue = 0
 
           const allInSeason = recipeToTest => {
-            const recipeIngredientsInSeason = recipeToTest.frontmatter.ingredients.every(
-              ingredientName =>
-                ingredientsData.find(
-                  ingredientObject => ingredientObject.name === ingredientName
-                ).months[context.currentMonth]
+            const inSeasonCheck = context.filterList.find(
+              filter => filter.name === "En saison"
+            ).logic
+
+            const recipeIngredientsInSeason = inSeasonCheck(
+              recipeToTest.frontmatter
             )
 
             if (recipeToTest.frontmatter.linkedRecipes) {
@@ -275,15 +284,10 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
                     element => element.frontmatter.title === linkedRecipe
                   )
                   if (linkedRecipePost) {
-                    return linkedRecipePost.frontmatter.ingredients.every(
-                      ingredientName =>
-                        ingredientsData.find(
-                          ingredientObject =>
-                            ingredientObject.name === ingredientName
-                        ).months[context.currentMonth]
-                    )
+                    return inSeasonCheck(linkedRecipePost.frontmatter)
                   } else {
-                    return true // if the linked recipe isnt found, include it anyway
+                    console.log(linkedRecipe + " not found!")
+                    return false // if the linked recipe isnt found, don't include
                   }
                 }
               )
@@ -292,6 +296,8 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
               return recipeIngredientsInSeason
             }
           }
+
+          let sortValue = 0
 
           if (allInSeason(a) && allInSeason(b)) {
             switch (sort) {

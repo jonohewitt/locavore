@@ -7,6 +7,8 @@ import { GlobalState } from "../context/globalStateContext"
 const ButtonLink = styled(Link)`
   padding: 5px;
   margin: 0 18px 0 0;
+  position: relative;
+  top: -1px;
   svg {
     transform: rotate(90deg) scale(1.5);
     path {
@@ -18,6 +20,8 @@ const ButtonLink = styled(Link)`
 const Button = styled.button`
   padding: 5px;
   margin: 0 18px 0 0;
+  position: relative;
+  top: -1px;
   svg {
     transform: rotate(90deg) scale(1.5);
     path {

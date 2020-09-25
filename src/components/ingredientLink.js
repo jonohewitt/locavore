@@ -8,8 +8,6 @@ import { tickSVG, crossSVG } from "./icons"
 
 const IngredientLink = styled(Link)`
   color: ${props => props.color} !important;
-  display: inline-flex;
-  align-items: center;
   svg {
     transform: scale(0.8);
     vertical-align: text-bottom;
@@ -18,7 +16,9 @@ const IngredientLink = styled(Link)`
       fill: ${props => props.color};
     }
   }
-  white-space: nowrap;
+  span {
+    white-space: nowrap;
+  }
 `
 
 export const Ing = ({ id, children, className, onClick }) => {
@@ -95,6 +95,19 @@ export const LinkedRecipe = ({ id, children }) => {
     color = "var(--color-text)"
   }
 
+  const childrenWords = children.split(" ")
+
+  let startingWords = []
+  let finalWord
+
+  if (childrenWords.length > 1) {
+    for (let i = 0; i < childrenWords.length - 1; i++) {
+      startingWords.push(childrenWords[i])
+    }
+    startingWords = startingWords.join(" ")
+    finalWord = childrenWords[childrenWords.length - 1]
+  }
+
   return (
     <IngredientLink
       color={color}
@@ -104,7 +117,19 @@ export const LinkedRecipe = ({ id, children }) => {
           : "/" + slugify(id, { lower: true, strict: true })
       }`}
     >
-      {children} {icon}
+      {childrenWords.length > 1 ? (
+        <>
+          {startingWords}{" "}
+          <span>
+            {finalWord}
+            {icon}
+          </span>
+        </>
+      ) : (
+        <span>
+          {children} {icon}
+        </span>
+      )}
     </IngredientLink>
   )
 }

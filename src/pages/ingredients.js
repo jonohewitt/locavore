@@ -28,7 +28,7 @@ const Styles = styled.main`
   }
 
   a {
-    font-size: 18px;
+    font-size: 15px;
     line-height: 1.8;
     font-weight: 700;
   }
@@ -38,15 +38,15 @@ const StyledUL = styled.ul`
   display: grid;
   grid-template-columns: ${props =>
     props.safeQuantity
-      ? "repeat(auto-fit, minmax(120px, 1fr))"
+      ? "repeat(auto-fit, minmax(100px, 1fr))"
       : "repeat(auto-fit," + props.squareWidth + "px)"};
-  grid-gap: 20px;
+  grid-gap: 16px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.8s, transform 0.8s;
   ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
   li {
-    height: 120px;
+    height: 100px;
     transition: transform 0.3s;
     &:hover {
       transform: translateY(-5px);

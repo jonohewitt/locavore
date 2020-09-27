@@ -267,64 +267,64 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
           }
         })
         .sort((a, b) => {
-
-          const allInSeason = recipeToTest => {
-            const inSeasonCheck = context.filterList.find(
-              filter => filter.name === "En saison"
-            ).logic
-
-            const recipeIngredientsInSeason = inSeasonCheck(
-              recipeToTest.frontmatter
-            )
-
-            if (recipeToTest.frontmatter.linkedRecipes) {
-              const linkedIngredientsInSeason = recipeToTest.frontmatter.linkedRecipes.every(
-                linkedRecipe => {
-                  const linkedRecipePost = recipeList.find(
-                    element => element.frontmatter.title === linkedRecipe
-                  )
-                  if (linkedRecipePost) {
-                    return inSeasonCheck(linkedRecipePost.frontmatter)
-                  } else {
-                    console.log(linkedRecipe + " not found!")
-                    return false // if the linked recipe isnt found, don't include
-                  }
-                }
-              )
-              return recipeIngredientsInSeason && linkedIngredientsInSeason
-            } else {
-              return recipeIngredientsInSeason
-            }
-          }
-
           let sortValue = 0
+          if (sort) {
+            const allInSeason = recipeToTest => {
+              const inSeasonCheck = context.filterList.find(
+                filter => filter.name === "En saison"
+              ).logic
 
-          if (allInSeason(a) && allInSeason(b)) {
-            switch (sort) {
-              case "newest":
-                sortValue = mostRecentStart(a) - mostRecentStart(b)
-                break
-              case "endingSoonest":
-                sortValue = soonestEnd(a) - soonestEnd(b)
-                break
-              // case "startingSoonest":
-              //   sortValue = soonestStart(a) - soonestStart(b)
-              //   break
-              default:
-                //alphabetical in french, catches special characters e.g œ
-                sortValue = new Intl.Collator("fr").compare(
-                  a.frontmatter.title,
-                  b.frontmatter.title
+              const recipeIngredientsInSeason = inSeasonCheck(
+                recipeToTest.frontmatter
+              )
+
+              if (recipeToTest.frontmatter.linkedRecipes) {
+                const linkedIngredientsInSeason = recipeToTest.frontmatter.linkedRecipes.every(
+                  linkedRecipe => {
+                    const linkedRecipePost = recipeList.find(
+                      element => element.frontmatter.title === linkedRecipe
+                    )
+                    if (linkedRecipePost) {
+                      return inSeasonCheck(linkedRecipePost.frontmatter)
+                    } else {
+                      console.log(linkedRecipe + " not found!")
+                      return false // if the linked recipe isnt found, don't include
+                    }
+                  }
                 )
-                break
+                return recipeIngredientsInSeason && linkedIngredientsInSeason
+              } else {
+                return recipeIngredientsInSeason
+              }
             }
-          } else if (allInSeason(a) && !allInSeason(b)) {
-            sortValue = -1
-          } else if (!allInSeason(a) && allInSeason(b)) {
-            sortValue = 1
+
+            if (allInSeason(a) && allInSeason(b)) {
+              switch (sort) {
+                case "newest":
+                  sortValue = mostRecentStart(a) - mostRecentStart(b)
+                  break
+                case "endingSoonest":
+                  sortValue = soonestEnd(a) - soonestEnd(b)
+                  break
+                // case "startingSoonest":
+                //   sortValue = soonestStart(a) - soonestStart(b)
+                //   break
+                default:
+                  //alphabetical in french, catches special characters e.g œ
+                  sortValue = new Intl.Collator("fr").compare(
+                    a.frontmatter.title,
+                    b.frontmatter.title
+                  )
+                  break
+              }
+            } else if (allInSeason(a) && !allInSeason(b)) {
+              sortValue = -1
+            } else if (!allInSeason(a) && allInSeason(b)) {
+              sortValue = 1
+            }
           }
 
-          // sort by french alphabetical if sort function returns a tie
+          // sort by french alphabetical if sort function returns a tie or no sort
           if (sortValue !== 0) {
             return sortValue
           } else {

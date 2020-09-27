@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useState, useEffect, useLayoutEffect, useContext, useRef } from "react"
 import styled from "styled-components"
 import slugify from "slugify"
 import { Link } from "gatsby"
@@ -13,6 +13,7 @@ const Styles = styled.main`
   h2 {
     line-height: 1.2;
     margin-top: 40px;
+    font-size: 28px;
     svg {
       transform: scale(1.5);
       margin-left: 6px;
@@ -33,25 +34,76 @@ const Styles = styled.main`
   }
 `
 
-const MappedIngredients = ({ filter, sort, monthIndex }) => {
+const StyledUL = styled.ul`
+  display: grid;
+  grid-template-columns: ${props =>
+    props.safeQuantity
+      ? "repeat(auto-fit, minmax(120px, 1fr))"
+      : "repeat(auto-fit," + props.squareWidth + "px)"};
+  grid-gap: 25px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s, transform 0.8s;
+  ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
+  li {
+    height: 120px;
+    transition: transform 0.3s;
+    &:hover {
+      transform: translateY(-5px);
+    }
+    a {
+      border: 1px solid;
+      border-radius: 15px;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      line-height: 1.3;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+`
+
+const MappedIngredients = ({
+  filter,
+  sort,
+  monthIndex,
+  refProp,
+  squareWidth,
+}) => {
   const processedList = listOfIngredients({
     filter: filter,
     sort: sort,
     monthIndex: monthIndex,
   })
-  const mapList = list => (
-    <ul>
-      {list.map(ingredient => (
-        <li key={ingredient.name}>
-          <Link
-            to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}
-          >
-            {ingredient.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  )
+
+  const [fadedIn, setFadedIn] = useState(false)
+  useEffect(() => setFadedIn(true), [])
+
+  const mapList = list => {
+    const safeQuantity = list.length > 4
+    return (
+      <StyledUL
+        fadedIn={fadedIn}
+        safeQuantity={safeQuantity}
+        squareWidth={squareWidth}
+      >
+        {list.map(ingredient => (
+          <li ref={safeQuantity ? refProp : null} key={ingredient.name}>
+            <Link
+              to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}
+            >
+              {ingredient.name}
+            </Link>
+          </li>
+        ))}
+      </StyledUL>
+    )
+  }
+
   if (filter === "noData") {
     if (processedList.length) {
       return (
@@ -74,6 +126,20 @@ const MappedIngredients = ({ filter, sort, monthIndex }) => {
 const Ingredients = ({ filterList, setFilterList }) => {
   const context = useContext(GlobalState)
 
+  const ref = useRef(null)
+  const [squareWidth, setSquareWidth] = useState(undefined)
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      if (ref.current) {
+        setSquareWidth(ref.current.getBoundingClientRect().width)
+      }
+    }
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
     <>
       <SEO title="Ingredients" />
@@ -93,12 +159,13 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <MappedIngredients
             filter="currentlyInSeason"
             monthIndex={context.currentMonth}
+            squareWidth={squareWidth}
           />
           <h2>
             Disponible toute <span>l'année {tickSVG}</span>
           </h2>
           <hr />
-          <MappedIngredients filter="alwaysInSeason" />
+          <MappedIngredients filter="alwaysInSeason" refProp={ref} />
           <h2>
             Hors saison en{" "}
             <span>
@@ -109,8 +176,9 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <MappedIngredients
             filter="outOfSeason"
             monthIndex={context.currentMonth}
+            squareWidth={squareWidth}
           />
-          <MappedIngredients filter="noData" />
+          <MappedIngredients filter="noData" squareWidth={squareWidth} />
         </Styles>
       </ContentWrapper>
     </>

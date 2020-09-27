@@ -40,7 +40,7 @@ const StyledUL = styled.ul`
     props.safeQuantity
       ? "repeat(auto-fit, minmax(120px, 1fr))"
       : "repeat(auto-fit," + props.squareWidth + "px)"};
-  grid-gap: 25px;
+  grid-gap: 20px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.8s, transform 0.8s;

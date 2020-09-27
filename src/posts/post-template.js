@@ -55,8 +55,12 @@ const IngredientBox = styled(StyledHighlight)`
   }
 
   @media (max-width: 430px) {
-    margin: 0 calc(-50vw + 50%) 40px calc(-50vw + 50%);
-    padding: 25px 25px 40px 25px;
+    margin: 4vw -2vw 40px -2vw;
+    padding: 20px;
+  }
+
+  @media (max-width: 350px) {
+    padding: 10px;
   }
 `
 
@@ -89,8 +93,8 @@ const IngredientsButton = styled.button`
     opacity: ${props => (props.selected ? 1 : 0.65)};
   }
 
+  ${'' /* need hover state */}
   &:hover {
-
   }
 `
 
@@ -99,7 +103,11 @@ const SeasonalityButton = styled(IngredientsButton)`
 `
 
 const ChildrenDiv = styled.div`
-  margin-left: 10px;
+  margin-top: 30px;
+  margin-left: 5px;
+  @media (max-width: 430px) {
+    margin-top: 15px;
+  }
 `
 
 const HeaderImage = ({ headerImg, appInterface }) => {

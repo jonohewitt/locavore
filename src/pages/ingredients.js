@@ -62,7 +62,6 @@ const StyledUL = styled.ul`
       width: 100%;
       height: 100%;
       line-height: 1.3;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
   }
 `

@@ -11,7 +11,7 @@ import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
 import { Ing, LinkedRecipe } from "../components/ingredientLink"
 import { BackButton } from "../components/backButton"
-import { MultipleSeasonalChart } from "../components/multipleSeasonalChart"
+import { SeveralSeasonalChart } from "../components/severalSeasonalChart"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -38,9 +38,11 @@ const StyledHighlight = styled.div`
 const IngredientBox = styled(StyledHighlight)`
   margin: 0 0 40px 0;
   border-radius: 0 0 10px 10px;
+  font-weight: 600;
 
   ul {
     margin: 0;
+    margin-bottom: 15px;
   }
 
   h2,
@@ -205,7 +207,7 @@ const PostTemplate = ({ data }) => {
         </SeasonalityButton>
       </div>
       {!ingredientsSelected && (
-        <MultipleSeasonalChart inputData={fm.ingredients} />
+        <SeveralSeasonalChart ingredients={fm.ingredients} />
       )}
       {ingredientsSelected && <ChildrenDiv>{children}</ChildrenDiv>}
     </IngredientBox>

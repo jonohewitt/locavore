@@ -10,7 +10,7 @@ export const PostStyles = styled.main`
   }
 
   h3 {
-    margin: 30px 0 15px 0;
+    margin: 30px 0 5px 0;
   }
 
   header {

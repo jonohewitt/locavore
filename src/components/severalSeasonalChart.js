@@ -24,7 +24,7 @@ const Label = styled.li`
   }
 
   a {
-    color: var(--color-text);
+    color: var(--color-text) !important;
 
     :hover {
       padding-bottom: 2px;

@@ -108,7 +108,7 @@ const ChildrenDiv = styled.div`
   margin-top: 30px;
   margin-left: 5px;
   @media (max-width: 430px) {
-    margin-top: 15px;
+    margin-top: 20px;
   }
 `
 

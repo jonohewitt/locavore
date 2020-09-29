@@ -5,12 +5,15 @@ import { GlobalState } from "../context/globalStateContext"
 // import { monthIndexToName } from "./smallReusableFunctions"
 import { ingredientsData } from "../posts/ingredients/ingredientsData.js"
 import slugify from "slugify"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 
 const IngredientNameLabels = styled.ul`
   margin-top: 37px !important;
   width: max(130px, 30%);
   list-style: none !important;
+  li:last-child {
+    margin-bottom: 0 !important;
+  }
   @media (max-width: 500px) {
     margin-top: 32px !important;
   }
@@ -49,9 +52,9 @@ const Wrapper = styled.div`
 `
 const IngredientCharts = styled.div`
   margin-top: 15px;
-  ul:last-child {
+  ${"" /* ul:last-child {
     margin-bottom: 0 !important;
-  }
+  } */}
 `
 const MonthInitialList = styled.ul`
   display: grid;
@@ -82,6 +85,10 @@ const MonthRectList = styled.ul`
   grid-template-columns: repeat(12, 1fr);
   margin-bottom: 30px !important;
   list-style: none !important;
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+  cursor: pointer;
 `
 
 const MonthRect = styled.li`
@@ -150,7 +157,13 @@ export const SeveralSeasonalChart = ({ ingredients }) => {
       )
 
       return (
-        <MonthRectList>
+        <MonthRectList
+          onClick={() =>
+            navigate(
+              `/ingredients/${slugify(ingredientObj.name, { lower: true })}`
+            )
+          }
+        >
           {ingredientObj.months.map((month, index) => {
             return (
               <MonthRect

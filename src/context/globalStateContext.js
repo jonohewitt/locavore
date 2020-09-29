@@ -73,9 +73,10 @@ const Provider = ({ children }) => {
       isApplied: false,
     },
   ])
+
   const [sortList, setSortList] = useState([
-    { name: "Most recent", isApplied: true },
-    { name: "Ending soonest", isApplied: false },
+    { name: "Nouveautés", isApplied: true },
+    { name: "Bientôt hors saison", isApplied: false },
     { name: "A-Z", isApplied: false },
   ])
 

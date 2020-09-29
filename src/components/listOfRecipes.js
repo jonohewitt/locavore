@@ -300,10 +300,10 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
             if (allInSeason(a) && allInSeason(b)) {
               switch (sort) {
-                case "Most recent":
+                case "Nouveautés":
                   sortValue = mostRecentStart(a) - mostRecentStart(b)
                   break
-                case "Ending soonest":
+                case "Bientôt hors saison":
                   sortValue = soonestEnd(a) - soonestEnd(b)
                   break
                 // case "startingSoonest":

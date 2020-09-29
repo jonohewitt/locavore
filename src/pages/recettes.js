@@ -8,8 +8,14 @@ import { ListOfRecipes } from "../components/listOfRecipes"
 import { GlobalState } from "../context/globalStateContext"
 
 const RecipeIndexWrapper = styled.div`
+  ul {
+    hr {
+      background: var(--color-hr);
+      margin-bottom: 15px;
+    }
+  }
+
   hr {
-    background: var(--color-hr);
     margin-bottom: 15px;
   }
 `

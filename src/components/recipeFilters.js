@@ -6,17 +6,17 @@ import { useWindowWidth } from "./smallReusableFunctions"
 const SelectOptionsButton = styled.button`
   display: flex;
   align-items: center;
-  background: transparent;
-  border: none;
-  color: var(--color-text);
   font-size: 16px;
-  margin-bottom: 0;
-  line-height: 1.2;
-  cursor: pointer;
   padding: 10px 0 0 0;
+  font-weight: 700;
   svg {
     margin-left: 8px;
   }
+`
+
+const OptionTitle = styled.p`
+  margin: 0 0 5px 0;
+  font-weight: 700;
 `
 
 export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
@@ -49,7 +49,6 @@ export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
 const ListOfOptions = styled.ul`
   position: relative;
   display: flex;
-  justify-content: flex-end;
   flex-wrap: wrap;
   margin-top: 12px;
   span {
@@ -60,13 +59,12 @@ const ListOfOptions = styled.ul`
     span {
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-end;
     }
   }
 
   @media (max-width: 470px) {
     span {
-      margin-bottom: 8px;
+      margin: 3px 0 5px 0;
       li {
         margin: 0 4px 8px 3px;
         button {
@@ -211,6 +209,7 @@ export const Options = ({
 
   return (
     <>
+      <OptionTitle>Filtres</OptionTitle>
       <ListOfOptions>
         <span>
           {filterList
@@ -250,7 +249,7 @@ export const Options = ({
       </ListOfOptions>
 
       <hr />
-
+      <OptionTitle>Trier par</OptionTitle>
       <ListOfOptions>
         <span>
           {sortList.map(option => (

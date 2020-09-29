@@ -3,7 +3,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import styled from "styled-components"
-import { ShowFilters, Filters } from "../components/recipeFilters"
+import { ShowOptions, Options } from "../components/recipeFilters"
 import { ListOfRecipes } from "../components/listOfRecipes"
 import { GlobalState } from "../context/globalStateContext"
 
@@ -23,13 +23,11 @@ const HeaderContent = styled.div`
 
 const Recettes = () => {
   const context = useContext(GlobalState)
-  const [filtersAreShown, setShowFilter] = useState(true)
+  const [optionsAreShown, setOptionsAreShown] = useState(true)
 
   const data = useStaticQuery(graphql`
     query {
-      allMdx(
-        filter: { fields: { source: { eq: "recettes" } } }
-      ) {
+      allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
         nodes {
           id
           frontmatter {
@@ -74,28 +72,29 @@ const Recettes = () => {
           <header>
             <HeaderContent>
               <h1>Recettes</h1>
-              <ShowFilters
-                anyAppliedFilters={context.filterList.some(
-                  filter => filter.isApplied === true
-                )}
-                filtersAreShown={filtersAreShown}
-                setShowFilter={setShowFilter}
+              <ShowOptions
+                optionsAreShown={optionsAreShown}
+                setOptionsAreShown={setOptionsAreShown}
               />
             </HeaderContent>
             <hr />
           </header>
 
-          <Filters
-            filterList={context.filterList}
-            setFilterList={context.setFilterList}
-            filtersAreShown={filtersAreShown}
-          />
-          {filtersAreShown && <hr />}
+          {optionsAreShown && (
+            <Options
+              filterList={context.filterList}
+              setFilterList={context.setFilterList}
+              sortList={context.sortList}
+              setSortList={context.setSortList}
+            />
+          )}
 
           <ListOfRecipes
             recipeList={data.allMdx.nodes}
             filterList={context.filterList}
-            sort="newest"
+            sort={
+              context.sortList.find(option => option.isApplied === true).name
+            }
           />
         </RecipeIndexWrapper>
       </ContentWrapper>

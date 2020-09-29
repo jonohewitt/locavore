@@ -73,6 +73,11 @@ const Provider = ({ children }) => {
       isApplied: false,
     },
   ])
+  const [sortList, setSortList] = useState([
+    { name: "Most recent", isApplied: true },
+    { name: "Ending soonest", isApplied: false },
+    { name: "A-Z", isApplied: false },
+  ])
 
   useLayoutEffect(() => {
     setAppInterface(
@@ -113,6 +118,8 @@ const Provider = ({ children }) => {
         currentMonth,
         filterList,
         setFilterList,
+        sortList,
+        setSortList,
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "./smallReusableFunctions"
 
-const SelectFiltersButton = styled.button`
+const SelectOptionsButton = styled.button`
   display: flex;
   align-items: center;
   background: transparent;
@@ -19,38 +19,34 @@ const SelectFiltersButton = styled.button`
   }
 `
 
-export const ShowFilters = ({
-  filtersAreShown,
-  setShowFilter,
-  anyAppliedFilters,
-}) => {
+export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
   const windowWidth = useWindowWidth()
   let buttonContent
 
-  if (filtersAreShown) {
+  if (optionsAreShown) {
     buttonContent = (
       <>
-        {windowWidth > 400 ? "Cacher filtres" : "Filtres"} {minusSVG}
+        {windowWidth > 400 ? "Cacher options" : "Options"} {minusSVG}
       </>
     )
   } else {
     buttonContent = (
       <>
-        {windowWidth > 400 ? "Sélectionner filtres" : "Filtres"} {plusSVG}
+        {windowWidth > 400 ? "Sélectionner options" : "Options"} {plusSVG}
       </>
     )
   }
 
   return (
-    <SelectFiltersButton onClick={() => setShowFilter(!filtersAreShown)}>
+    <SelectOptionsButton onClick={() => setOptionsAreShown(!optionsAreShown)}>
       {buttonContent}
-    </SelectFiltersButton>
+    </SelectOptionsButton>
   )
 }
 
 ///
 
-const ListOfFilters = styled.ul`
+const ListOfOptions = styled.ul`
   position: relative;
   display: flex;
   justify-content: flex-end;
@@ -96,12 +92,12 @@ const ListOfFilters = styled.ul`
   }
 `
 
-const FilterButtonContainer = styled.li`
+const OptionButtonContainer = styled.li`
   position: relative;
   margin: 0 5px 8px 3px;
 `
 
-const FilterButton = styled.button`
+const OptionButton = styled.button`
   background-color: ${props => (props.selected ? props.color : "transparent")};
   font-size: 18px;
   border: solid 1px ${props => props.color};
@@ -109,7 +105,7 @@ const FilterButton = styled.button`
   padding: 4px 7px;
 
   color: ${props => (props.selected ? "var(--color-background)" : props.color)};
-  cursor: pointer;
+  ${props => props.disabled && "cursor: initial !important; opacity: 0.5;"};
   box-shadow: ${props =>
     props.selected ? "0 4px 7px rgba(0, 0, 0, 0.2)" : ""} !important;
 `
@@ -122,7 +118,54 @@ const CrossSVG = styled.svg`
   cursor: pointer;
 `
 
-export const Filters = ({ filterList, setFilterList, filtersAreShown }) => {
+const ButtonComponent = ({
+  name,
+  action,
+  isApplied,
+  color,
+  cross,
+  disabled,
+}) => (
+  <OptionButtonContainer onClick={action}>
+    <OptionButton color={color} selected={isApplied} disabled={disabled}>
+      {name}
+    </OptionButton>
+    {cross && (
+      <CrossSVG
+        selected={isApplied}
+        width="36"
+        height="36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="18"
+          cy="18"
+          r="8"
+          fill="var(--color-background)"
+          stroke={color}
+          strokeWidth="2"
+        />
+        <path
+          d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
+          fill={color}
+        />
+        <path
+          d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
+          fill={color}
+        />
+      </CrossSVG>
+    )}
+  </OptionButtonContainer>
+)
+
+export const Options = ({
+  filterList,
+  setFilterList,
+  filtersAreShown,
+  sortList,
+  setSortList,
+}) => {
   const toggleFilter = filterName => {
     setFilterList(prevState => {
       const newState = [...prevState]
@@ -144,70 +187,89 @@ export const Filters = ({ filterList, setFilterList, filtersAreShown }) => {
       }
 
       newState[filterIndex].isApplied = !newState[filterIndex].isApplied
+
       return newState
     })
   }
 
-  const ButtonComponent = ({ filter }) => {
-    const buttonColor =
-      filter.group === "green" ? `var(--color-vegan)` : `var(--color-text)`
-
-    return (
-      <FilterButtonContainer
-        key={filter.name}
-        onClick={() => toggleFilter(filter.name)}
-      >
-        <FilterButton color={buttonColor} selected={filter.isApplied}>
-          {filter.name}
-        </FilterButton>
-        <CrossSVG
-          selected={filter.isApplied}
-          width="36"
-          height="36"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle
-            cx="18"
-            cy="18"
-            r="8"
-            fill="var(--color-background)"
-            stroke={buttonColor}
-            strokeWidth="2"
-          />
-          <path
-            d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
-            fill={buttonColor}
-          />
-          <path
-            d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
-            fill={buttonColor}
-          />
-        </CrossSVG>
-      </FilterButtonContainer>
-    )
+  const toggleSortOption = sortOption => {
+    setSortList(prevState => {
+      const newState = [...prevState]
+      const optionIndex = newState.findIndex(
+        option => option.name === sortOption
+      )
+      newState.forEach(option => {
+        if (option !== newState[optionIndex]) {
+          option.isApplied = false
+        } else {
+          option.isApplied = true
+        }
+      })
+      return newState
+    })
   }
 
-  if (filtersAreShown) {
-    return (
-      <ListOfFilters>
+  return (
+    <>
+      <ListOfOptions>
         <span>
           {filterList
             .filter(filter => filter.group === "green")
-            .map(filter => {
-              return <ButtonComponent key={filter.name} filter={filter} />
-            })}
+            .map(filter => (
+              <ButtonComponent
+                cross
+                key={filter.name}
+                name={filter.name}
+                action={() => {
+                  if (filter.name === "En saison") {
+                    toggleSortOption("A-Z")
+                    toggleFilter(filter.name)
+                  } else {
+                    toggleFilter(filter.name)
+                  }
+                }}
+                isApplied={filter.isApplied}
+                color="var(--color-vegan)"
+              />
+            ))}
         </span>
         <span>
           {filterList
             .filter(filter => filter.group === "course")
-            .map(filter => {
-              return <ButtonComponent key={filter.name} filter={filter} />
-            })}
+            .map(filter => (
+              <ButtonComponent
+                cross
+                key={filter.name}
+                name={filter.name}
+                action={() => toggleFilter(filter.name)}
+                isApplied={filter.isApplied}
+                color="var(--color-text)"
+              />
+            ))}
         </span>
-      </ListOfFilters>
-    )
-  } else {
-    return false
-  }
+      </ListOfOptions>
+
+      <hr />
+
+      <ListOfOptions>
+        <span>
+          {sortList.map(option => (
+            <ButtonComponent
+              key={option.name}
+              name={option.name}
+              action={() => toggleSortOption(option.name)}
+              isApplied={option.isApplied}
+              color="var(--color-text)"
+              disabled={
+                option.name !== "A-Z" &&
+                !filterList.find(filter => filter.name === "En saison")
+                  .isApplied
+              }
+            />
+          ))}
+        </span>
+      </ListOfOptions>
+      <hr />
+    </>
+  )
 }

@@ -12,6 +12,7 @@ import { GlobalState } from "../context/globalStateContext"
 import { Ing, LinkedRecipe } from "../components/ingredientLink"
 import { BackButton } from "../components/backButton"
 import { SeveralSeasonalChart } from "../components/severalSeasonalChart"
+import { infoSVG } from "../components/icons"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -40,6 +41,20 @@ const IngredientBox = styled(StyledHighlight)`
   border-radius: 0 0 10px 10px;
   font-weight: 600;
 
+  p {
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+    margin: 10px 10px 0 10px;
+    vertical-align: text-bottom;
+
+    svg {
+      position: relative;
+      top: 3px;
+      margin-right: 3px;
+    }
+  }
+
   ul {
     margin: 0;
     margin-bottom: 15px;
@@ -50,10 +65,13 @@ const IngredientBox = styled(StyledHighlight)`
     font-weight: 600;
   }
 
-  @media (max-width: ${breakToMobile}px) {
+  @media (max-width: ${breakToMobile - 200}px) {
     margin: 30px 0;
     padding: 20px;
     border-radius: 10px;
+    p {
+      margin: 15px 5px 5px 5px;
+    }
   }
 
   @media (max-width: 430px) {
@@ -68,7 +86,7 @@ const IngredientBox = styled(StyledHighlight)`
 
 const IngredientsButton = styled.button`
   height: 45px;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 600;
   color: ${props =>
     props.selected && !props.isDark && "var(--color-graphBackground)"}
@@ -93,10 +111,6 @@ const IngredientsButton = styled.button`
 
   span {
     opacity: ${props => (props.selected ? 1 : 0.65)};
-  }
-
-  ${'' /* need hover state */}
-  &:hover {
   }
 `
 
@@ -135,7 +149,7 @@ const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
-  @media (max-width: ${breakToMobile}px) {
+  @media (max-width: ${breakToMobile - 200}px) {
     box-shadow: initial;
     border-radius: 0;
     margin-left: calc(-50vw + 50%);
@@ -179,6 +193,17 @@ const HeaderText = styled.div`
   width: 100%;
 `
 
+const RecipeDataContainer = styled.div`
+  display: flex;
+`
+const RecipeMetadata = styled.div`
+  width: 100%;
+`
+
+const RecipeMainFeature = styled.div`
+  width: 100%;
+`
+
 const PostTemplate = ({ data }) => {
   const context = useContext(GlobalState)
 
@@ -189,28 +214,51 @@ const PostTemplate = ({ data }) => {
   const [ingredientsSelected, setIngredientsSelected] = useState(true)
 
   const Ingredients = ({ children }) => (
-    <IngredientBox>
-      <div>
-        <IngredientsButton
-          isDark={context.isDark}
-          selected={ingredientsSelected}
-          onClick={() => setIngredientsSelected(true)}
-        >
-          <span>Ingredients</span>
-        </IngredientsButton>
-        <SeasonalityButton
-          isDark={context.isDark}
-          selected={!ingredientsSelected}
-          onClick={() => setIngredientsSelected(false)}
-        >
-          <span>Saisonnalité</span>
-        </SeasonalityButton>
-      </div>
-      {!ingredientsSelected && (
-        <SeveralSeasonalChart ingredients={fm.ingredients} />
-      )}
-      {ingredientsSelected && <ChildrenDiv>{children}</ChildrenDiv>}
-    </IngredientBox>
+    <RecipeDataContainer>
+      <RecipeMetadata>
+        <h1>{fm.title}</h1>
+        {fm.feeds && <p>Feeds: {fm.feeds}</p>}
+        {fm.cookTime && <p>Cook time: {fm.cookTime}</p>}
+        {fm.prepTime && <p>Prep time: {fm.prepTime}</p>}
+      </RecipeMetadata>
+      <RecipeMainFeature>
+        {featureImg && (
+          <FeatureImage
+            featureImg={{
+              image: featureImg,
+              description: fm.featureDescription,
+            }}
+          />
+        )}
+        <IngredientBox>
+          <IngredientsButton
+            isDark={context.isDark}
+            selected={ingredientsSelected}
+            onClick={() => setIngredientsSelected(true)}
+          >
+            <span>Ingredients</span>
+          </IngredientsButton>
+          <SeasonalityButton
+            isDark={context.isDark}
+            selected={!ingredientsSelected}
+            onClick={() => setIngredientsSelected(false)}
+          >
+            <span>Saisonnalité</span>
+          </SeasonalityButton>
+
+          {!ingredientsSelected && (
+            <>
+              <SeveralSeasonalChart ingredients={fm.ingredients} />
+              <p>
+                {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
+                indiqués.
+              </p>
+            </>
+          )}
+          {ingredientsSelected && <ChildrenDiv>{children}</ChildrenDiv>}
+        </IngredientBox>
+      </RecipeMainFeature>
+    </RecipeDataContainer>
   )
 
   const shortcodes = { Link, Ing, Ingredients, LinkedRecipe }
@@ -281,6 +329,12 @@ export const pageQuery = graphql`
         }
         featureDescription
         ingredients
+        feeds
+        prepTime
+        cookTime
+        vegetarian
+        veganOption
+        vegan
       }
     }
   }

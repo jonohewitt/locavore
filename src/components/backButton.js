@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useContext, useState} from "react"
+import React, { useLayoutEffect, useContext, useState } from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
 import { arrowSVG } from "./icons"
@@ -41,12 +41,11 @@ export const BackButton = ({ link }) => {
   }, [])
 
   if (context.appInterface) {
-    if (history) {
-      console.log(window.history.length)
-      return <Button onClick={() => window.history.back()}>{arrowSVG}</Button>
-    } else {
-      return null
-    }
+    return (
+      history && (
+        <Button onClick={() => window.history.back()}>{arrowSVG}</Button>
+      )
+    )
   } else {
     return <ButtonLink to={link}>{arrowSVG}</ButtonLink>
   }

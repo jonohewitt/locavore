@@ -19,7 +19,7 @@ const IndicatorContainer = styled.div`
 `
 
 const IndicatorPair = styled.div`
-  margin-left: 12px;
+  margin-left: 8px;
   display: flex;
   align-items: baseline;
 `

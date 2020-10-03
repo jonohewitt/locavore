@@ -90,7 +90,7 @@ const IndexPage = () => {
           <SettingsIcon />
           <SearchContainer>
             <Search
-              mobile
+              app
               value={value}
               setValue={setValue}
               list={list}
@@ -120,15 +120,15 @@ const IndexPage = () => {
         </article>
 
         <IngredientShowCase filter="justIn" sort="newest">
-          Just in
+          Nouveautés
         </IngredientShowCase>
 
         <IngredientShowCase filter="lastChance" sort="endingSoonest">
-          Last chance
+          Dernière chance
         </IngredientShowCase>
 
         <IngredientShowCase filter="comingUp" sort="startingSoonest">
-          Coming up
+          A venir
         </IngredientShowCase>
       </ContentWrapper>
     </>

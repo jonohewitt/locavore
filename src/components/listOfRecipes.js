@@ -10,7 +10,7 @@ import { ingredientsData } from "../posts/ingredients/ingredientsData"
 const StyledUL = styled.ul`
   margin-top: 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
   grid-gap: 25px;
   opacity: 0;
   transform: translateY(8px);

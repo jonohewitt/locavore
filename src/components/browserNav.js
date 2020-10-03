@@ -29,7 +29,7 @@ const NavWrapper = styled.nav`
 const MenuButton = styled.button`
   font-size: 16px;
   font-weight: 700;
-  padding: 10px;
+  padding: 10px 15px 10px 10px;
   white-space: nowrap;
 
   svg {
@@ -77,7 +77,7 @@ const HorizontalNavList = styled.ul`
   align-items: center;
 
   li {
-    margin-left: 5px;
+    margin: 0 3px;
     @media (max-width: ${breakToMobile}px) {
       margin-left: 0;
     }
@@ -87,6 +87,7 @@ const HorizontalNavList = styled.ul`
     color: var(--color-navText);
     padding: 5px 8px;
     font-weight: 700;
+    font-size: 14px;
     transition: color 0.2s;
 
     &:hover {
@@ -176,7 +177,7 @@ const DropDownMenu = styled.section`
   }
   transform: ${props => (props.open ? "translateY(0)" : "translateY(-100%)")};
   opacity: ${props => (props.open ? "1" : "0")};
-  transition: transform 0.5s, opacity 0.2s;
+  transition: transform 0.5s, opacity 0.5s;
   ul {
     opacity: ${props => (props.open ? "1" : "0")};
     ${props => !props.open && "transition: opacity 0s;"}

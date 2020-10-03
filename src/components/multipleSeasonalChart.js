@@ -25,6 +25,8 @@ export const MultipleSeasonalChart = ({ inputData }) => {
   const ref = useRef(null)
   const [chartWidth, setChartWidth] = useState(0)
 
+  const buttonRef = useRef(null)
+
   useLayoutEffect(() => {
     const svg = d3.select(ref.current)
     svg.attr("height", `${data.length * 50}`)
@@ -36,14 +38,25 @@ export const MultipleSeasonalChart = ({ inputData }) => {
       .append("g")
       .attr("class", "data-point")
       .attr("transform", (d, i) => `translate(0, ${i * 50})`)
+
     dataPoints
-      .append("text")
-      .attr("x", 0)
-      .attr("y", 20)
-      .attr("class", "vegetable")
-      .style("fill", "var(--color-text)")
+      .append("foreignObject")
+      .attr("height", "50px")
+      .attr("width", "110px")
+      .append("xhtml:button")
+      .style("padding-top", "7px")
+      .style("color", "var(--color-text)")
       .style("font-weight", 700)
-      .text(d => d.name)
+      .style("font-size", "16px")
+      .html(d => d.name)
+
+    // dataPoints
+    //   .append("text")
+    //   .attr("x", 0)
+    //   .attr("y", 20)
+    //   .style("fill", "var(--color-text)")
+    //   .style("font-weight", 700)
+    //   .text(d => d.name)
 
     const months = dataPoints
       .append("g")
@@ -74,6 +87,8 @@ export const MultipleSeasonalChart = ({ inputData }) => {
       .attr("ry", 2)
     // only running once so no need to worry about stale references
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    console.log(buttonRef)
   }, [])
 
   useLayoutEffect(() => {

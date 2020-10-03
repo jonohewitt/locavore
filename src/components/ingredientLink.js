@@ -43,8 +43,10 @@ export const Ing = ({ id, children, className, onClick }) => {
       to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
       className={className}
     >
-      {children}
-      {icon}
+      <span>
+        {children}
+        {icon}
+      </span>
     </IngredientLink>
   )
 }

@@ -1,10 +1,16 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useRef, useLayoutEffect } from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import { ContentWrapper, breakToMobile } from "../components/contentWrapper"
+import {
+  ContentWrapper,
+  widthPercent,
+  mobileWidthPercent,
+  maxWidth,
+  breakToMobile,
+} from "../components/contentWrapper"
 import Img from "gatsby-image"
 import { SEO } from "../components/seo"
 import { PostStyles } from "./post-styles"
@@ -13,6 +19,7 @@ import { Ing, LinkedRecipe } from "../components/ingredientLink"
 import { BackButton } from "../components/backButton"
 import { SeveralSeasonalChart } from "../components/severalSeasonalChart"
 import { infoSVG } from "../components/icons"
+import { TimeIndicators, DairyIndicator } from "../components/recipeIndicators"
 
 const StyledHighlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -36,7 +43,10 @@ const StyledHighlight = styled.div`
   }
 `
 
-const IngredientBox = styled(StyledHighlight)`
+const IngredientBox = styled.div`
+  background-color: var(--color-graphBackground);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  padding: 10px 20px 30px 20px;
   margin: 0 0 40px 0;
   border-radius: 0 0 10px 10px;
   font-weight: 600;
@@ -56,7 +66,15 @@ const IngredientBox = styled(StyledHighlight)`
   }
 
   ul {
-    margin: 0;
+    margin-bottom: 15px;
+  }
+
+  li {
+    margin-top: 15px;
+    line-height: 1.5;
+  }
+
+  hr {
     margin-bottom: 15px;
   }
 
@@ -89,8 +107,7 @@ const IngredientsButton = styled.button`
   font-size: 18px;
   font-weight: 600;
   color: ${props =>
-    props.selected && !props.isDark && "var(--color-graphBackground)"}
-  }
+    props.selected && !props.isDark && "var(--color-graphBackground)"};
   background: ${props =>
     props.selected ? "#8e5a4f" : "var(--color-background)"};
   width: 50%;
@@ -118,8 +135,8 @@ const SeasonalityButton = styled(IngredientsButton)`
   border-radius: 0 10px 10px 0;
 `
 
-const ChildrenDiv = styled.div`
-  margin-top: 30px;
+const IngredientsContext = styled.div`
+  margin-top: 20px;
   margin-left: 5px;
   @media (max-width: 430px) {
     margin-top: 20px;
@@ -157,51 +174,116 @@ const FeatureImgContainer = styled.div`
   }
 `
 
-const FeatureImage = ({ featureImg }) => {
-  return (
-    <FeatureImgContainer>
-      <Img
-        style={{
-          width: "100%",
-        }}
-        imgStyle={{
-          width: "100%",
-        }}
-        fluid={featureImg.image}
-        alt={featureImg.description ? featureImg.description : ""}
-      />
-    </FeatureImgContainer>
-  )
-}
+// const FeatureImage = ({ featureImg }) => {
+//   return (
+//     <FeatureImgContainer ref={featureImgRef}>
+//       <Img
+//         style={{
+//           width: "100%",
+//         }}
+//         imgStyle={{
+//           width: "100%",
+//         }}
+//         fluid={featureImg.image}
+//         alt={featureImg.description ? featureImg.description : ""}
+//       />
+//     </FeatureImgContainer>
+//   )
+// }
+
+const RecipeDescription = styled.p`
+`
 
 const Header = styled.header`
-  display: flex;
-  align-items: baseline;
   position: relative;
-  left: -50px;
-
-  @media (max-width: ${breakToMobile}px) {
-    position: static;
-  }
 
   p {
     margin-bottom: 0;
   }
+
+  ${RecipeDescription} {
+    margin: 10px 0 30px 0;
+  }
+`
+const RecipeTitle = styled.h1`
+
+.backArrow {
+  position: absolute;
+  left: -50px;
+  top: -7px;
+}
+
+@media (max-width: ${breakToMobile}px) {
+  .backArrow {
+    position: relative;
+    left: 0px;
+    top: -2px;
+  }
+}
 `
 
 const HeaderText = styled.div`
   width: 100%;
 `
 
-const RecipeDataContainer = styled.div`
+const Preparation = styled.div``
+
+const IngredientSection = styled.div``
+
+const RecipeIndicators = styled.div`
   display: flex;
-`
-const RecipeMetadata = styled.div`
-  width: 100%;
+  justify-content: space-between;
+  padding: 5px 0;
 `
 
-const RecipeMainFeature = styled.div`
-  width: 100%;
+const StyledArticle = styled.article`
+  @media (max-width: 1000px) {
+    width: ${widthPercent}%;
+    max-width: ${maxWidth}px;
+    margin: ${props => (props.appInterface ? "30px" : "100px")} auto 0 auto;
+    @media (max-width: ${breakToMobile}px) {
+      width: ${mobileWidthPercent}%;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    display: grid;
+    column-gap: 40px;
+    margin: 100px auto 0 auto;
+    width: 84%;
+    max-width: 1300px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, min-content);
+
+    ${Header} {
+      h1 {
+        margin-bottom: 10px;
+      }
+      grid-column: 1/2;
+      grid-row: 1/2;
+    }
+
+    ${Preparation} {
+      margin-top: 20px;
+      grid-column: 2/3;
+      grid-row: 2/4;
+    }
+
+    ${IngredientSection} {
+      position: relative;
+      grid-column: 1/2;
+      grid-row: 2/3;
+      ${IngredientBox} {
+        border-radius: 10px;
+      }
+    }
+
+    ${FeatureImgContainer} {
+      grid-column: 2/2;
+      grid-row: 1/2;
+      border-radius: 10px;
+    }
+  }
 `
 
 const PostTemplate = ({ data }) => {
@@ -213,90 +295,152 @@ const PostTemplate = ({ data }) => {
 
   const [ingredientsSelected, setIngredientsSelected] = useState(true)
 
-  const Ingredients = ({ children }) => (
-    <RecipeDataContainer>
-      <RecipeMetadata>
-        <h1>{fm.title}</h1>
-        {fm.feeds && <p>Feeds: {fm.feeds}</p>}
-        {fm.cookTime && <p>Cook time: {fm.cookTime}</p>}
-        {fm.prepTime && <p>Prep time: {fm.prepTime}</p>}
-      </RecipeMetadata>
-      <RecipeMainFeature>
-        {featureImg && (
-          <FeatureImage
-            featureImg={{
-              image: featureImg,
-              description: fm.featureDescription,
-            }}
-          />
-        )}
-        <IngredientBox>
-          <IngredientsButton
-            isDark={context.isDark}
-            selected={ingredientsSelected}
-            onClick={() => setIngredientsSelected(true)}
-          >
-            <span>Ingredients</span>
-          </IngredientsButton>
-          <SeasonalityButton
-            isDark={context.isDark}
-            selected={!ingredientsSelected}
-            onClick={() => setIngredientsSelected(false)}
-          >
-            <span>Saisonnalité</span>
-          </SeasonalityButton>
+  const ingSectionRef = useRef(null)
+  const headerRef = useRef(null)
+  const featureImgRef = useRef(null)
+  
+  useLayoutEffect(() => {
+    const updateWidth = () => {
+      ingSectionRef.current.style.top = `${
+        -1 *
+        (featureImgRef.current.offsetHeight -
+          headerRef.current.offsetHeight -
+          25)
+      }px`
+    }
+    window.addEventListener("resize", updateWidth)
+    updateWidth()
+    return () => window.removeEventListener("resize", updateWidth)
+  }, [])
 
-          {!ingredientsSelected && (
-            <>
-              <SeveralSeasonalChart ingredients={fm.ingredients} />
-              <p>
-                {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
-                indiqués.
-              </p>
-            </>
-          )}
-          {ingredientsSelected && <ChildrenDiv>{children}</ChildrenDiv>}
-        </IngredientBox>
-      </RecipeMainFeature>
-    </RecipeDataContainer>
+  const Ingredients = ({ children }) => (
+    <IngredientBox>
+      <IngredientsButton
+        isDark={context.isDark}
+        selected={ingredientsSelected}
+        onClick={() => setIngredientsSelected(true)}
+      >
+        <span>Ingredients</span>
+      </IngredientsButton>
+
+      <SeasonalityButton
+        isDark={context.isDark}
+        selected={!ingredientsSelected}
+        onClick={() => setIngredientsSelected(false)}
+      >
+        <span>Saisonnalité</span>
+      </SeasonalityButton>
+
+      {!ingredientsSelected && (
+        <>
+          <SeveralSeasonalChart ingredients={fm.ingredients} />
+          <p>
+            {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
+            indiqués.
+          </p>
+        </>
+      )}
+      {ingredientsSelected && <IngredientsContext>{children}</IngredientsContext>}
+    </IngredientBox>
   )
 
-  const shortcodes = { Link, Ing, Ingredients, LinkedRecipe }
+  const shortcodes = {
+    Link,
+    Ing,
+    Ingredients,
+    LinkedRecipe,
+  }
 
   return (
     <>
       <SEO title={fm.title} />
-      {headerImg && (
-        <HeaderImage
-          appInterface={context.appInterface}
-          headerImg={{ image: headerImg, description: fm.headerDescription }}
-        />
-      )}
-      <ContentWrapper headerImg={headerImg}>
-        <PostStyles>
-          <article>
-            <Header>
-              <BackButton link={`/${data.mdx.fields.source}`} />
-              <HeaderText>
-                <h1>{fm.title}</h1>
-                {fm.date && <p>{fm.date}</p>}
-                {!featureImg && <hr />}
-              </HeaderText>
-            </Header>
-            {featureImg && (
-              <FeatureImage
-                featureImg={{
-                  image: featureImg,
-                  description: fm.featureDescription,
+      {/* <ContentWrapper headerImg={headerImg}> */}
+      <PostStyles>
+        <StyledArticle appInterface={context.appInterface}>
+          <Header>
+            <HeaderText ref={headerRef}>
+              <RecipeTitle>
+                <BackButton link={`/${data.mdx.fields.source}`} />
+                {fm.title}
+              </RecipeTitle>
+              <hr />
+              <p>
+                {fm.course}
+                {fm.feeds && ` • ${fm.feeds} personnes`}
+              </p>
+              <RecipeIndicators>
+                <DairyIndicator
+                  vegan={fm.vegan}
+                  veganOption={fm.veganOption}
+                  vegetarian={fm.vegetarian}
+                />
+                <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
+              </RecipeIndicators>
+              <hr />
+              {fm.description && <RecipeDescription>{fm.description}
+              </RecipeDescription>}
+            </HeaderText>
+          </Header>
+          {featureImg && (
+            // <FeatureImage
+            //   featureImg={{
+            //     image: featureImg,
+            //     description: fm.featureDescription,
+            //   }}
+            // />
+
+            <FeatureImgContainer ref={featureImgRef}>
+              <Img
+                style={{
+                  width: "100%",
                 }}
+                imgStyle={{
+                  width: "100%",
+                }}
+                fluid={featureImg}
+                alt={fm.featureDescription}
               />
-            )}
-            <MDXProvider components={shortcodes}>
+            </FeatureImgContainer>
+          )}
+          <IngredientSection ref={ingSectionRef}>
+            <MDXProvider
+              components={{
+                ...shortcodes,
+                wrapper: ({ children }) => {
+                  return (
+                    <>
+                      {children.filter(
+                        child => child.props.mdxType === "Ingredients"
+                      )}
+                    </>
+                  )
+                },
+              }}
+            >
               <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </MDXProvider>
-          </article>
-        </PostStyles>
-      </ContentWrapper>
+          </IngredientSection>
+          <Preparation>
+            <MDXProvider
+              components={{
+                ...shortcodes,
+                wrapper: ({ children }) => {
+                  return (
+                    <>
+                      {children.filter(
+                        child => child.props.mdxType !== "Ingredients"
+                      )}
+                    </>
+                  )
+                },
+              }}
+            >
+              <MDXRenderer>{data.mdx.body}</MDXRenderer>
+            </MDXProvider>
+          </Preparation>
+        </StyledArticle>
+      </PostStyles>
+      {/* </ContentWrapper> */}
     </>
   )
 }
@@ -311,7 +455,7 @@ export const pageQuery = graphql`
       body
       frontmatter {
         title
-        date(formatString: "DD MMMM, YYYY", locale: "fr")
+        description
         header {
           childImageSharp {
             fluid(maxWidth: 1500) {
@@ -335,6 +479,7 @@ export const pageQuery = graphql`
         vegetarian
         veganOption
         vegan
+        course
       }
     }
   }

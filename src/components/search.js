@@ -127,6 +127,10 @@ const SearchResult = styled.li`
         ? " background: var(--color-searchListHover);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListHover) 100%); "
         : " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "};
   }
+
+  a {
+    border: 0 !important;
+  }
 `
 
 const getSearchResults = (searchText, otherPageTitles) => {

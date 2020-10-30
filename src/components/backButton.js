@@ -43,10 +43,10 @@ export const BackButton = ({ link }) => {
   if (context.appInterface) {
     return (
       history && (
-        <Button onClick={() => window.history.back()}>{arrowSVG}</Button>
+        <Button className="backArrow" onClick={() => window.history.back()}>{arrowSVG}</Button>
       )
     )
   } else {
-    return <ButtonLink to={link}>{arrowSVG}</ButtonLink>
+    return <ButtonLink className="backArrow" to={link}>{arrowSVG}</ButtonLink>
   }
 }

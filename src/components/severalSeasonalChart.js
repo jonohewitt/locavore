@@ -1,14 +1,12 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
-// import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
-// import { monthIndexToName } from "./smallReusableFunctions"
 import { ingredientsData } from "../posts/ingredients/ingredientsData.js"
 import slugify from "slugify"
 import { Link, navigate } from "gatsby"
 
 const IngredientNameLabels = styled.ul`
-  margin-top: 37px !important;
+  margin-top: 32px !important;
   width: max(130px, 30%);
   list-style: none !important;
   li:last-child {
@@ -52,9 +50,6 @@ const Wrapper = styled.div`
 `
 const IngredientCharts = styled.div`
   margin-top: 15px;
-  ${"" /* ul:last-child {
-    margin-bottom: 0 !important;
-  } */}
 `
 const MonthInitialList = styled.ul`
   display: grid;
@@ -65,7 +60,7 @@ const MonthInitialList = styled.ul`
 
 const MonthInitial = styled.li`
   ${props =>
-    props.isCurrentMonth && "border: 2px solid; border-radius: 5px; top: -2px;"}
+    props.isCurrentMonth && "box-shadow: 0 0 0 2px var(--color-text); border-radius: 4px;"}
   padding: 0 4px;
   text-align: center;
   line-height: 1.2;
@@ -73,7 +68,7 @@ const MonthInitial = styled.li`
   position: relative;
   margin: 0 !important;
   @media (max-width: 500px) {
-    border: ${props => props.isCurrentMonth && "1px solid;"};
+    box-shadow: ${props => props.isCurrentMonth && "0 0 0 1px var(--color-text);"};
     font-size: 14px;
     padding: 0 1px;
   }

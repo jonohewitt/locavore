@@ -1,11 +1,10 @@
-import React, { useState, useContext, useRef, useLayoutEffect } from "react"
+import React, { useState, useContext, useLayoutEffect } from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import {
-  ContentWrapper,
   widthPercent,
   mobileWidthPercent,
   maxWidth,
@@ -21,28 +20,6 @@ import { SeveralSeasonalChart } from "../components/severalSeasonalChart"
 import { infoSVG } from "../components/icons"
 import { TimeIndicators, DairyIndicator } from "../components/recipeIndicators"
 
-const StyledHighlight = styled.div`
-  background-color: var(--color-graphBackground);
-  margin: 40px 0;
-  padding: 10px 30px 30px 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  ul {
-    margin-top: 25px;
-  }
-  li {
-    margin-top: 15px;
-    line-height: 1.5;
-  }
-  hr {
-    margin-bottom: 15px;
-  }
-
-  @media (max-width: ${breakToMobile}px) {
-    margin: 30px 0;
-  }
-`
-
 const IngredientBox = styled.div`
   background-color: var(--color-graphBackground);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
@@ -50,20 +27,6 @@ const IngredientBox = styled.div`
   margin: 0 0 40px 0;
   border-radius: 0 0 10px 10px;
   font-weight: 600;
-
-  p {
-    font-weight: 500;
-    font-size: 14px;
-    text-align: center;
-    margin: 10px 10px 0 10px;
-    vertical-align: text-bottom;
-
-    svg {
-      position: relative;
-      top: 3px;
-      margin-right: 3px;
-    }
-  }
 
   ul {
     margin-bottom: 15px;
@@ -143,24 +106,19 @@ const IngredientsContext = styled.div`
   }
 `
 
-const HeaderImage = ({ headerImg, appInterface }) => {
-  return (
-    <Img
-      style={{
-        width: "100%",
-        height: appInterface ? "20vmax" : "30vmax",
-        maxHeight: "350px",
-      }}
-      imgStyle={{
-        objectFit: "cover",
-        width: "100%",
-        height: "100%",
-      }}
-      fluid={headerImg.image}
-      alt={headerImg.description ? headerImg.description : ""}
-    />
-  )
-}
+const ChartInfo = styled.p`
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  margin: 10px 10px 0 10px;
+  vertical-align: text-bottom;
+
+  svg {
+    position: relative;
+    top: 3px;
+    margin-right: 3px;
+  }
+`
 
 const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
@@ -174,28 +132,14 @@ const FeatureImgContainer = styled.div`
   }
 `
 
-// const FeatureImage = ({ featureImg }) => {
-//   return (
-//     <FeatureImgContainer ref={featureImgRef}>
-//       <Img
-//         style={{
-//           width: "100%",
-//         }}
-//         imgStyle={{
-//           width: "100%",
-//         }}
-//         fluid={featureImg.image}
-//         alt={featureImg.description ? featureImg.description : ""}
-//       />
-//     </FeatureImgContainer>
-//   )
-// }
+const RecipeDescription = styled.p``
 
-const RecipeDescription = styled.p`
-`
-
-const Header = styled.header`
+const StyledHeader = styled.header`
   position: relative;
+
+  h1 {
+    margin-bottom: 10px;
+  }
 
   p {
     margin-bottom: 0;
@@ -206,29 +150,30 @@ const Header = styled.header`
   }
 `
 const RecipeTitle = styled.h1`
-
-.backArrow {
-  position: absolute;
-  left: -50px;
-  top: -7px;
-}
-
-@media (max-width: ${breakToMobile}px) {
   .backArrow {
-    position: relative;
-    left: 0px;
-    top: -2px;
+    position: absolute;
+    left: -50px;
+    top: -7px;
   }
-}
+
+  @media (max-width: ${breakToMobile}px) {
+    .backArrow {
+      position: relative;
+      left: 0px;
+      top: -2px;
+    }
+  }
 `
 
-const HeaderText = styled.div`
-  width: 100%;
+const CourseAndFeeds = styled.p`
+  font-weight: 600;
 `
 
-const Preparation = styled.div``
+const Preparation = styled.div`
+  margin-top: 20px;
+`
 
-const IngredientSection = styled.div``
+const IngredientsContainer = styled.div``
 
 const RecipeIndicators = styled.div`
   display: flex;
@@ -236,237 +181,211 @@ const RecipeIndicators = styled.div`
   padding: 5px 0;
 `
 
+const LeftColumn = styled.div`
+  ${IngredientBox} {
+    border-radius: 10px;
+  }
+`
+
+const RightColumn = styled.div`
+  ${FeatureImgContainer} {
+    border-radius: 10px;
+  }
+`
+
 const StyledArticle = styled.article`
-  @media (max-width: 1000px) {
-    width: ${widthPercent}%;
-    max-width: ${maxWidth}px;
-    margin: ${props => (props.appInterface ? "30px" : "100px")} auto 0 auto;
-    @media (max-width: ${breakToMobile}px) {
-      width: ${mobileWidthPercent}%;
-    }
+  width: ${widthPercent}%;
+  max-width: ${maxWidth}px;
+  margin: ${props => (props.appInterface ? "30px" : "100px")} auto 0 auto;
+
+  @media (max-width: ${breakToMobile}px) {
+    width: ${mobileWidthPercent}%;
   }
 
-  @media (min-width: 1000px) {
-    display: grid;
-    column-gap: 40px;
-    margin: 100px auto 0 auto;
-    width: 84%;
-    max-width: 1300px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, min-content);
-
-    ${Header} {
-      h1 {
-        margin-bottom: 10px;
-      }
-      grid-column: 1/2;
-      grid-row: 1/2;
-    }
-
-    ${Preparation} {
-      margin-top: 20px;
-      grid-column: 2/3;
-      grid-row: 2/4;
-    }
-
-    ${IngredientSection} {
-      position: relative;
-      grid-column: 1/2;
-      grid-row: 2/3;
-      ${IngredientBox} {
-        border-radius: 10px;
-      }
-    }
-
-    ${FeatureImgContainer} {
-      grid-column: 2/2;
-      grid-row: 1/2;
-      border-radius: 10px;
-    }
-  }
+  ${props =>
+    props.masonryLayout &&
+    "display: grid; column-gap: 40px; margin: 100px auto 0 auto; width: 85%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
 `
 
 const PostTemplate = ({ data }) => {
   const context = useContext(GlobalState)
 
   const fm = data.mdx.frontmatter
-  const headerImg = fm.header ? fm.header.childImageSharp.fluid : false
   const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
 
-  const [ingredientsSelected, setIngredientsSelected] = useState(true)
+  const [masonryLayout, setMasonryLayout] = useState(false)
 
-  const ingSectionRef = useRef(null)
-  const headerRef = useRef(null)
-  const featureImgRef = useRef(null)
-  
   useLayoutEffect(() => {
     const updateWidth = () => {
-      ingSectionRef.current.style.top = `${
-        -1 *
-        (featureImgRef.current.offsetHeight -
-          headerRef.current.offsetHeight -
-          25)
-      }px`
+      setMasonryLayout(window.innerWidth >= 1000)
     }
     window.addEventListener("resize", updateWidth)
     updateWidth()
     return () => window.removeEventListener("resize", updateWidth)
   }, [])
 
-  const Ingredients = ({ children }) => (
-    <IngredientBox>
-      <IngredientsButton
-        isDark={context.isDark}
-        selected={ingredientsSelected}
-        onClick={() => setIngredientsSelected(true)}
-      >
-        <span>Ingredients</span>
-      </IngredientsButton>
+  const Ingredients = ({ children }) => {
+    const [ingredientsSelected, setIngredientsSelected] = useState(true)
+    return (
+      <IngredientBox>
+        <IngredientsButton
+          isDark={context.isDark}
+          selected={ingredientsSelected}
+          onClick={() => setIngredientsSelected(true)}
+        >
+          <span>Ingredients</span>
+        </IngredientsButton>
 
-      <SeasonalityButton
-        isDark={context.isDark}
-        selected={!ingredientsSelected}
-        onClick={() => setIngredientsSelected(false)}
-      >
-        <span>Saisonnalité</span>
-      </SeasonalityButton>
+        <SeasonalityButton
+          isDark={context.isDark}
+          selected={!ingredientsSelected}
+          onClick={() => setIngredientsSelected(false)}
+        >
+          <span>Saisonnalité</span>
+        </SeasonalityButton>
 
-      {!ingredientsSelected && (
-        <>
-          <SeveralSeasonalChart ingredients={fm.ingredients} />
-          <p>
-            {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
-            indiqués.
-          </p>
-        </>
+        {ingredientsSelected ? (
+          <IngredientsContext>{children}</IngredientsContext>
+        ) : (
+          <>
+            <SeveralSeasonalChart ingredients={fm.ingredients} />
+            <ChartInfo>
+              {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
+              indiqués.
+            </ChartInfo>
+          </>
+        )}
+      </IngredientBox>
+    )
+  }
+
+  const Header = () => (
+    <StyledHeader>
+      <RecipeTitle>
+        <BackButton link="/recettes" />
+        {fm.title}
+      </RecipeTitle>
+      <hr />
+      <CourseAndFeeds>
+        {fm.course}
+        {fm.feeds && ` • ${fm.feeds} personnes`}
+      </CourseAndFeeds>
+      <RecipeIndicators>
+        <DairyIndicator
+          vegan={fm.vegan}
+          veganOption={fm.veganOption}
+          vegetarian={fm.vegetarian}
+        />
+        <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
+      </RecipeIndicators>
+      <hr />
+      {fm.description && (
+        <RecipeDescription>{fm.description}</RecipeDescription>
       )}
-      {ingredientsSelected && <IngredientsContext>{children}</IngredientsContext>}
-    </IngredientBox>
+    </StyledHeader>
   )
 
-  const shortcodes = {
+  const FeatureImage = () =>
+    featureImg && (
+      <FeatureImgContainer>
+        <Img
+          style={{
+            width: "100%",
+          }}
+          imgStyle={{
+            width: "100%",
+          }}
+          fluid={featureImg}
+          alt={fm.featureDescription}
+        />
+      </FeatureImgContainer>
+    )
+
+  const mdxComponents = {
     Link,
     Ing,
     Ingredients,
     LinkedRecipe,
   }
 
+  const IngredientsSection = () => (
+    <IngredientsContainer>
+      <MDXProvider
+        components={{
+          ...mdxComponents,
+          wrapper: ({ children }) => (
+            <>
+              {children.filter(child => child.props.mdxType === "Ingredients")}
+            </>
+          ),
+        }}
+      >
+        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      </MDXProvider>
+    </IngredientsContainer>
+  )
+
+  const PreperationSection = () => (
+    <Preparation>
+      <MDXProvider
+        components={{
+          ...mdxComponents,
+          wrapper: ({ children }) => (
+            <>
+              {children.filter(child => child.props.mdxType !== "Ingredients")}
+            </>
+          ),
+        }}
+      >
+        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      </MDXProvider>
+    </Preparation>
+  )
+
   return (
     <>
       <SEO title={fm.title} />
-      {/* <ContentWrapper headerImg={headerImg}> */}
       <PostStyles>
-        <StyledArticle appInterface={context.appInterface}>
-          <Header>
-            <HeaderText ref={headerRef}>
-              <RecipeTitle>
-                <BackButton link={`/${data.mdx.fields.source}`} />
-                {fm.title}
-              </RecipeTitle>
-              <hr />
-              <p>
-                {fm.course}
-                {fm.feeds && ` • ${fm.feeds} personnes`}
-              </p>
-              <RecipeIndicators>
-                <DairyIndicator
-                  vegan={fm.vegan}
-                  veganOption={fm.veganOption}
-                  vegetarian={fm.vegetarian}
-                />
-                <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
-              </RecipeIndicators>
-              <hr />
-              {fm.description && <RecipeDescription>{fm.description}
-              </RecipeDescription>}
-            </HeaderText>
-          </Header>
-          {featureImg && (
-            // <FeatureImage
-            //   featureImg={{
-            //     image: featureImg,
-            //     description: fm.featureDescription,
-            //   }}
-            // />
-
-            <FeatureImgContainer ref={featureImgRef}>
-              <Img
-                style={{
-                  width: "100%",
-                }}
-                imgStyle={{
-                  width: "100%",
-                }}
-                fluid={featureImg}
-                alt={fm.featureDescription}
-              />
-            </FeatureImgContainer>
+        <StyledArticle
+          masonryLayout={masonryLayout}
+          appInterface={context.appInterface}
+        >
+          {masonryLayout ? (
+            <>
+              <LeftColumn>
+                <Header />
+                <IngredientsSection />
+              </LeftColumn>
+              <RightColumn>
+                <FeatureImage />
+                <PreperationSection />
+              </RightColumn>
+            </>
+          ) : (
+            <>
+              <Header />
+              <FeatureImage />
+              <IngredientsSection />
+              <PreperationSection />
+            </>
           )}
-          <IngredientSection ref={ingSectionRef}>
-            <MDXProvider
-              components={{
-                ...shortcodes,
-                wrapper: ({ children }) => {
-                  return (
-                    <>
-                      {children.filter(
-                        child => child.props.mdxType === "Ingredients"
-                      )}
-                    </>
-                  )
-                },
-              }}
-            >
-              <MDXRenderer>{data.mdx.body}</MDXRenderer>
-            </MDXProvider>
-          </IngredientSection>
-          <Preparation>
-            <MDXProvider
-              components={{
-                ...shortcodes,
-                wrapper: ({ children }) => {
-                  return (
-                    <>
-                      {children.filter(
-                        child => child.props.mdxType !== "Ingredients"
-                      )}
-                    </>
-                  )
-                },
-              }}
-            >
-              <MDXRenderer>{data.mdx.body}</MDXRenderer>
-            </MDXProvider>
-          </Preparation>
         </StyledArticle>
       </PostStyles>
-      {/* </ContentWrapper> */}
     </>
   )
 }
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String) {
+  query($id: String) {
     mdx(id: { eq: $id }) {
-      fields {
-        source
-      }
       id
       body
       frontmatter {
         title
         description
-        header {
-          childImageSharp {
-            fluid(maxWidth: 1500) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
-          }
-        }
-        headerDescription
         feature {
           childImageSharp {
-            fluid(maxWidth: 800) {
+            fluid(maxWidth: 1300) {
               ...GatsbyImageSharpFluid_withWebp
             }
           }

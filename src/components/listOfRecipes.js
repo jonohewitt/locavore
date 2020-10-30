@@ -3,14 +3,14 @@ import { Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
 import slugify from "slugify"
-import { TimeIndicators } from "./recipeTimeInfo"
+import { TimeIndicators, DairyIndicator } from "./recipeIndicators"
 import { GlobalState } from "../context/globalStateContext"
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 
 const StyledUL = styled.ul`
   margin-top: 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
   grid-gap: 25px;
   opacity: 0;
   transform: translateY(8px);
@@ -39,41 +39,24 @@ const RecipeCard = styled.div`
   &:hover {
     transform: translateY(-5px);
   }
-`
 
-const DairyLabel = styled.div`
-  height: 25px;
-  border-radius: 5px;
-  border: solid 1px;
-  color: ${props => {
-    if (props.vegan) {
-      return "var(--color-vegan)"
-    } else if (props.veganOption) {
-      return "var(--color-veganOption)"
-    } else {
-      return "var(--color-vegetarian)"
-    }
-  }};
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  padding: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const DairyIndicator = ({ vegan, veganOption, vegetarian }) => {
-  if (vegan) {
-    return <DairyLabel vegan>Végan</DairyLabel>
-  } else if (veganOption) {
-    return <DairyLabel veganOption>Option végan</DairyLabel>
-  } else if (vegetarian) {
-    return <DairyLabel>Végétarien</DairyLabel>
-  } else {
-    return false
+  .dairyLabel {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    padding: 0 4px;
   }
-}
+
+  .indicatorContainer {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+`
 
 const RecipeImage = ({ headerImg, featureImg }) => {
   let usedImage = false
@@ -113,7 +96,7 @@ const RecipeText = styled.div`
     margin-bottom: 15px;
   }
 
-  h2 {
+  h3 {
     font-size: 28px;
     padding-bottom: 4px;
     line-height: 1.1;
@@ -358,7 +341,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
                     }}
                   />
                   <RecipeText>
-                    <h2>{fm.title}</h2>
+                    <h3>{fm.title}</h3>
                     <hr />
                     <p>
                       {fm.course}

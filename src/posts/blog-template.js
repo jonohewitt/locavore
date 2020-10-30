@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -11,105 +11,22 @@ import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
 import { Ing, LinkedRecipe } from "../components/ingredientLink"
 import { BackButton } from "../components/backButton"
-import { SeveralSeasonalChart } from "../components/severalSeasonalChart"
 
-const StyledHighlight = styled.div`
+const Highlight = styled.div`
   background-color: var(--color-graphBackground);
   margin: 40px 0;
   padding: 10px 30px 30px 30px;
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  ul {
-    margin-top: 25px;
-  }
-  li {
-    margin-top: 15px;
-    line-height: 1.5;
-  }
-  hr {
-    margin-bottom: 15px;
-  }
 
   @media (max-width: ${breakToMobile}px) {
     margin: 30px 0;
   }
 `
 
-const IngredientBox = styled(StyledHighlight)`
-  margin: 0 0 40px 0;
-  border-radius: 0 0 10px 10px;
-  font-weight: 600;
-
-  ul {
-    margin: 0;
-    margin-bottom: 15px;
-  }
-
-  h2,
-  h3 {
-    font-weight: 600;
-  }
-
-  @media (max-width: ${breakToMobile}px) {
-    margin: 30px 0;
-    padding: 20px;
-    border-radius: 10px;
-  }
-
-  @media (max-width: 430px) {
-    margin: 4vw -2vw 40px -2vw;
-    padding: 20px;
-  }
-
-  @media (max-width: 350px) {
-    padding: 10px;
-  }
-`
-
-const IngredientsButton = styled.button`
-  height: 45px;
-  font-size: 21px;
-  font-weight: 600;
-  color: ${props =>
-    props.selected && !props.isDark && "var(--color-graphBackground)"}
-  }
-  background: ${props =>
-    props.selected ? "#8e5a4f" : "var(--color-background)"};
-  width: 50%;
-  border-radius: 10px 0 0 10px;
-  margin: 14px 0 10px 0;
-  box-shadow: ${props => !props.selected && "inset"} 0 0 15px
-    hsla(0, 0%, 0%, 0.2);
-
-  @media (max-width: ${breakToMobile}px) {
-    margin: 5px 0;
-    font-size: 18px;
-  }
-
-  @media (max-width: 430px) {
-    margin: 0;
-    font-size: 16px;
-  }
-
-  span {
-    opacity: ${props => (props.selected ? 1 : 0.65)};
-  }
-
-  ${'' /* need hover state */}
-  &:hover {
-  }
-`
-
-const SeasonalityButton = styled(IngredientsButton)`
-  border-radius: 0 10px 10px 0;
-`
-
-const ChildrenDiv = styled.div`
-  margin-top: 30px;
-  margin-left: 5px;
-  @media (max-width: 430px) {
-    margin-top: 20px;
-  }
+const StyledArticle = styled.article`
+  max-width: 750px;
+  margin: 0 auto;
 `
 
 const HeaderImage = ({ headerImg, appInterface }) => {
@@ -135,7 +52,7 @@ const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
-  @media (max-width: ${breakToMobile}px) {
+  @media (max-width: ${breakToMobile - 200}px) {
     box-shadow: initial;
     border-radius: 0;
     margin-left: calc(-50vw + 50%);
@@ -179,41 +96,19 @@ const HeaderText = styled.div`
   width: 100%;
 `
 
-const PostTemplate = ({ data }) => {
+const BlogTemplate = ({ data }) => {
   const context = useContext(GlobalState)
 
   const fm = data.mdx.frontmatter
   const headerImg = fm.header ? fm.header.childImageSharp.fluid : false
   const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
 
-  const [ingredientsSelected, setIngredientsSelected] = useState(true)
-
-  const Ingredients = ({ children }) => (
-    <IngredientBox>
-      <div>
-        <IngredientsButton
-          isDark={context.isDark}
-          selected={ingredientsSelected}
-          onClick={() => setIngredientsSelected(true)}
-        >
-          <span>Ingredients</span>
-        </IngredientsButton>
-        <SeasonalityButton
-          isDark={context.isDark}
-          selected={!ingredientsSelected}
-          onClick={() => setIngredientsSelected(false)}
-        >
-          <span>Saisonnalité</span>
-        </SeasonalityButton>
-      </div>
-      {!ingredientsSelected && (
-        <SeveralSeasonalChart ingredients={fm.ingredients} />
-      )}
-      {ingredientsSelected && <ChildrenDiv>{children}</ChildrenDiv>}
-    </IngredientBox>
-  )
-
-  const shortcodes = { Link, Ing, Ingredients, LinkedRecipe }
+  const shortcodes = {
+    Link,
+    Ing,
+    LinkedRecipe,
+    Highlight,
+  }
 
   return (
     <>
@@ -226,9 +121,9 @@ const PostTemplate = ({ data }) => {
       )}
       <ContentWrapper headerImg={headerImg}>
         <PostStyles>
-          <article>
+          <StyledArticle>
             <Header>
-              <BackButton link={`/${data.mdx.fields.source}`} />
+              <BackButton link="/blog" />
               <HeaderText>
                 <h1>{fm.title}</h1>
                 {fm.date && <p>{fm.date}</p>}
@@ -246,7 +141,7 @@ const PostTemplate = ({ data }) => {
             <MDXProvider components={shortcodes}>
               <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </MDXProvider>
-          </article>
+          </StyledArticle>
         </PostStyles>
       </ContentWrapper>
     </>
@@ -254,11 +149,8 @@ const PostTemplate = ({ data }) => {
 }
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String) {
+  query($id: String) {
     mdx(id: { eq: $id }) {
-      fields {
-        source
-      }
       id
       body
       frontmatter {
@@ -280,10 +172,9 @@ export const pageQuery = graphql`
           }
         }
         featureDescription
-        ingredients
       }
     }
   }
 `
 
-export default PostTemplate
+export default BlogTemplate

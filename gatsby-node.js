@@ -45,7 +45,7 @@ exports.createPages = async ({
 
     createPage({
       path: `${node.fields.source}${slug}`,
-      component: path.resolve(`./src/posts/post-template.js`),
+      component: path.resolve(`./src/posts/${node.fields.source}-template.js`),
       context: { id: node.id },
     })
   })

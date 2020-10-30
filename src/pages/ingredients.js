@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useContext, useRef } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import slugify from "slugify"
 import { Link } from "gatsby"
@@ -36,10 +36,7 @@ const Styles = styled.main`
 
 const StyledUL = styled.ul`
   display: grid;
-  grid-template-columns: ${props =>
-    props.safeQuantity
-      ? "repeat(auto-fit, minmax(100px, 1fr))"
-      : "repeat(auto-fit," + props.squareWidth + "px)"};
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   grid-gap: 16px;
   opacity: 0;
   transform: translateY(8px);
@@ -91,7 +88,7 @@ const MappedIngredients = ({
         squareWidth={squareWidth}
       >
         {list.map(ingredient => (
-          <li ref={safeQuantity ? refProp : null} key={ingredient.name}>
+          <li key={ingredient.name}>
             <Link
               to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}
             >
@@ -125,20 +122,6 @@ const MappedIngredients = ({
 const Ingredients = ({ filterList, setFilterList }) => {
   const context = useContext(GlobalState)
 
-  const ref = useRef(null)
-  const [squareWidth, setSquareWidth] = useState(undefined)
-
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (ref.current) {
-        setSquareWidth(ref.current.getBoundingClientRect().width)
-      }
-    }
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
   return (
     <>
       <SEO title="Ingredients" />
@@ -158,13 +141,12 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <MappedIngredients
             filter="currentlyInSeason"
             monthIndex={context.currentMonth}
-            squareWidth={squareWidth}
           />
           <h2>
             Disponible toute <span>l'année {tickSVG}</span>
           </h2>
           <hr />
-          <MappedIngredients filter="alwaysInSeason" refProp={ref} />
+          <MappedIngredients filter="alwaysInSeason" />
           <h2>
             Hors saison en{" "}
             <span>
@@ -175,9 +157,8 @@ const Ingredients = ({ filterList, setFilterList }) => {
           <MappedIngredients
             filter="outOfSeason"
             monthIndex={context.currentMonth}
-            squareWidth={squareWidth}
           />
-          <MappedIngredients filter="noData" squareWidth={squareWidth} />
+          <MappedIngredients filter="noData" />
         </Styles>
       </ContentWrapper>
     </>

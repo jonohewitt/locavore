@@ -127,6 +127,10 @@ const SearchResult = styled.li`
         ? " background: var(--color-searchListHover);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListHover) 100%); "
         : " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "};
   }
+
+  a {
+    border: 0 !important;
+  }
 `
 
 const getSearchResults = (searchText, otherPageTitles) => {
@@ -155,6 +159,7 @@ export const Search = ({
   setMobileSearchIsActive,
   mobileSearchIsActive,
   mobile,
+  app,
   navBar,
 }) => {
   const data = useStaticQuery(graphql`
@@ -221,7 +226,7 @@ export const Search = ({
   }
 
   const handleSearchResultClick = () => {
-    mobile && setMobileSearchIsActive(false)
+    (mobile || app) && setMobileSearchIsActive(false)
     mobile && setDropDownIsOpen(false)
     navBar && setNavBarSearchIsActive(false)
   }
@@ -268,7 +273,7 @@ export const Search = ({
   }
 
   const handleFocus = event => {
-    mobile && setMobileSearchIsActive(true)
+    (mobile || app) && setMobileSearchIsActive(true)
     handleChange(event)
   }
 
@@ -316,12 +321,12 @@ export const Search = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <InputContainer shadow={!(mobile && mobileSearchIsActive === false)}>
+        <InputContainer shadow={!((mobile || app) && mobileSearchIsActive === false)}>
           {searchSVG}
           <SearchInput
             // Autofocus only happens after search button is pressed therefore focus is expected
             // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus={!mobile}
+            autoFocus={!(mobile || app)}
             aria-label="Search"
             placeholder="Ingredients, recettes, blog posts..."
             type="text"
@@ -332,7 +337,7 @@ export const Search = ({
           />
         </InputContainer>
         {list && list.length > 0 && (
-          <SearchResultListContainer outline={mobile}>
+          <SearchResultListContainer outline={mobile || app}>
             <SearchResultList>
               {list.map((element, index) => (
                 <SearchResult

@@ -19,11 +19,17 @@ const IngredientLink = styled(Link)`
   span {
     white-space: nowrap;
   }
+  
+  &:hover {
+    border-bottom: 2px solid;
+  }
 `
 
-export const Ing = ({ id, children, className, onClick }) => {
+export const Ing = ({ id, text, children, className, onClick }) => {
   const context = useContext(GlobalState)
-  const ingredient = ingredientsData.find(ingredient => ingredient.name === id)
+  const ingredient = ingredientsData.find(
+    ingredient => ingredient.name.toLowerCase() === id.toLowerCase()
+  )
   let color
   let icon
 
@@ -36,6 +42,15 @@ export const Ing = ({ id, children, className, onClick }) => {
   } else {
     color = "var(--color-text)"
   }
+
+  let linkText = id.toLowerCase()
+
+  if (children && !text) {
+    linkText = children
+  } else if (text) {
+    linkText = text
+  }
+
   return (
     <IngredientLink
       onClick={onClick && onClick}
@@ -43,8 +58,10 @@ export const Ing = ({ id, children, className, onClick }) => {
       to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
       className={className}
     >
-      {children}
-      {icon}
+      <span>
+        {linkText}
+        {icon}
+      </span>
     </IngredientLink>
   )
 }

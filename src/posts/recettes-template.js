@@ -157,6 +157,7 @@ const RecipeTitle = styled.div`
 
   @media (max-width: ${breakToMobile}px) {
     left: 0;
+    align-items: flex-start;
   }
 `
 

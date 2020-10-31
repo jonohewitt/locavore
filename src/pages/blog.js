@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { Link, useStaticQuery, graphql } from "gatsby"
@@ -8,6 +8,10 @@ import slugify from "slugify"
 
 const ListOfBlogPosts = styled.ul`
   margin-top: 25px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s, transform 0.8s;
+  ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
 `
 
 const BlogCard = styled.div`
@@ -63,6 +67,9 @@ const Blog = () => {
     }
   `)
 
+  const [fadedIn, setFadedIn] = useState(false)
+  useEffect(() => setFadedIn(true), [])
+
   const CardImage = ({ headerImg, featureImg }) => {
     let usedImage = false
 
@@ -101,7 +108,7 @@ const Blog = () => {
           <hr />
         </header>
         <main>
-          <ListOfBlogPosts>
+          <ListOfBlogPosts fadedIn={fadedIn}>
             {data.allMdx.nodes.map(post => {
               const fm = post.frontmatter
               const slug = fm.customSlug

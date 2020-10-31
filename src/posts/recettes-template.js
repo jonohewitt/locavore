@@ -98,20 +98,18 @@ const SeasonalityButton = styled(IngredientsButton)`
   border-radius: 0 10px 10px 0;
 `
 
-const IngredientsContext = styled.div`
+const IngredientsContent = styled.div`
   margin-top: 20px;
   margin-left: 5px;
-  @media (max-width: 430px) {
-    margin-top: 20px;
-  }
 `
+
+const SeasonalityContent = styled.div``
 
 const ChartInfo = styled.p`
   font-weight: 500;
   font-size: 14px;
   text-align: center;
   margin: 10px 10px 0 10px;
-  vertical-align: text-bottom;
 
   svg {
     position: relative;
@@ -132,7 +130,9 @@ const FeatureImgContainer = styled.div`
   }
 `
 
-const RecipeDescription = styled.p``
+const RecipeDescription = styled.p`
+  margin: 10px 0 30px 0;
+`
 
 const StyledHeader = styled.header`
   position: relative;
@@ -143,10 +143,6 @@ const StyledHeader = styled.header`
 
   p {
     margin-bottom: 0;
-  }
-
-  ${RecipeDescription} {
-    margin: 10px 0 30px 0;
   }
 `
 const RecipeTitle = styled.h1`
@@ -207,13 +203,31 @@ const StyledArticle = styled.article`
     "display: grid; column-gap: 40px; margin: 100px auto 0 auto; width: 85%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
 `
 
+const FeatureImage = ({ fm }) => {
+  const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
+  return (
+    featureImg && (
+      <FeatureImgContainer>
+        <Img
+          style={{
+            width: "100%",
+          }}
+          imgStyle={{
+            width: "100%",
+          }}
+          fluid={featureImg}
+          alt={fm.featureDescription}
+        />
+      </FeatureImgContainer>
+    )
+  )
+}
+
 const RecipeTemplate = ({ data }) => {
   const context = useContext(GlobalState)
+  const [masonryLayout, setMasonryLayout] = useState(false)
 
   const fm = data.mdx.frontmatter
-  const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
-
-  const [masonryLayout, setMasonryLayout] = useState(false)
 
   useLayoutEffect(() => {
     const updateWidth = () => {
@@ -224,40 +238,37 @@ const RecipeTemplate = ({ data }) => {
     return () => window.removeEventListener("resize", updateWidth)
   }, [])
 
-  const Ingredients = ({ children }) => {
-    const [ingredientsSelected, setIngredientsSelected] = useState(true)
-    return (
-      <IngredientBox>
-        <IngredientsButton
-          isDark={context.isDark}
-          selected={ingredientsSelected}
-          onClick={() => setIngredientsSelected(true)}
-        >
-          <span>Ingredients</span>
-        </IngredientsButton>
+  const [ingredientsSelected, setIngredientsSelected] = useState(true)
 
-        <SeasonalityButton
-          isDark={context.isDark}
-          selected={!ingredientsSelected}
-          onClick={() => setIngredientsSelected(false)}
-        >
-          <span>Saisonnalité</span>
-        </SeasonalityButton>
-
-        {ingredientsSelected ? (
-          <IngredientsContext>{children}</IngredientsContext>
-        ) : (
-          <>
-            <SeveralSeasonalChart ingredients={fm.ingredients} />
-            <ChartInfo>
-              {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
-              indiqués.
-            </ChartInfo>
-          </>
-        )}
-      </IngredientBox>
-    )
-  }
+  const Ingredients = ({ children }) => (
+    <IngredientBox>
+      <IngredientsButton
+        isDark={context.isDark}
+        selected={ingredientsSelected}
+        onClick={() => setIngredientsSelected(true)}
+      >
+        <span>Ingredients</span>
+      </IngredientsButton>
+      <SeasonalityButton
+        isDark={context.isDark}
+        selected={!ingredientsSelected}
+        onClick={() => setIngredientsSelected(false)}
+      >
+        <span>Saisonnalité</span>
+      </SeasonalityButton>
+      {ingredientsSelected ? (
+        <IngredientsContent>{children}</IngredientsContent>
+      ) : (
+        <SeasonalityContent>
+          <SeveralSeasonalChart ingredients={fm.ingredients} />
+          <ChartInfo>
+            {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
+            indiqués.
+          </ChartInfo>
+        </SeasonalityContent>
+      )}
+    </IngredientBox>
+  )
 
   const Header = () => (
     <StyledHeader>
@@ -284,22 +295,6 @@ const RecipeTemplate = ({ data }) => {
       )}
     </StyledHeader>
   )
-
-  const FeatureImage = () =>
-    featureImg && (
-      <FeatureImgContainer>
-        <Img
-          style={{
-            width: "100%",
-          }}
-          imgStyle={{
-            width: "100%",
-          }}
-          fluid={featureImg}
-          alt={fm.featureDescription}
-        />
-      </FeatureImgContainer>
-    )
 
   const mdxComponents = {
     Link,
@@ -357,14 +352,14 @@ const RecipeTemplate = ({ data }) => {
                 <IngredientsSection />
               </LeftColumn>
               <RightColumn>
-                <FeatureImage />
+                <FeatureImage fm={fm} />
                 <PreperationSection />
               </RightColumn>
             </>
           ) : (
             <>
               <Header />
-              <FeatureImage />
+              <FeatureImage fm={fm} />
               <IngredientsSection />
               <PreperationSection />
             </>

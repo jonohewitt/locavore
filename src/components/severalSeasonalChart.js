@@ -60,7 +60,8 @@ const MonthInitialList = styled.ul`
 
 const MonthInitial = styled.li`
   ${props =>
-    props.isCurrentMonth && "box-shadow: 0 0 0 2px var(--color-text); border-radius: 4px;"}
+    props.isCurrentMonth &&
+    "box-shadow: 0 0 0 2px var(--color-text); border-radius: 4px;"}
   padding: 0 4px;
   text-align: center;
   line-height: 1.2;
@@ -68,7 +69,8 @@ const MonthInitial = styled.li`
   position: relative;
   margin: 0 !important;
   @media (max-width: 500px) {
-    box-shadow: ${props => props.isCurrentMonth && "0 0 0 1px var(--color-text);"};
+    box-shadow: ${props =>
+      props.isCurrentMonth && "0 0 0 1px var(--color-text);"};
     font-size: 14px;
     padding: 0 1px;
   }
@@ -183,27 +185,37 @@ export const SeveralSeasonalChart = ({ ingredients }) => {
         return true
       }
     }
+
+    const filterNoData = ingredientName =>
+      ingredientsData.find(ingredient => ingredient.name === ingredientName)
+
     return (
       <Wrapper>
         {!single && (
           <IngredientNameLabels>
-            {ingredients.filter(filterYearRound).map(ingredient => (
-              <Label key={ingredient}>
-                <Link
-                  to={`/ingredients/${slugify(ingredient, { lower: true })}`}
-                >
-                  {ingredient}
-                </Link>
-              </Label>
-            ))}
+            {ingredients
+              .filter(filterNoData)
+              .filter(filterYearRound)
+              .map(ingredient => (
+                <Label key={ingredient}>
+                  <Link
+                    to={`/ingredients/${slugify(ingredient, { lower: true })}`}
+                  >
+                    {ingredient}
+                  </Link>
+                </Label>
+              ))}
           </IngredientNameLabels>
         )}
         <Chart>
           <MonthInitials />
           <IngredientCharts>
-            {ingredients.filter(filterYearRound).map(ingredient => (
-              <IngredientChart ingredientName={ingredient} key={ingredient} />
-            ))}
+            {ingredients
+              .filter(filterNoData)
+              .filter(filterYearRound)
+              .map(ingredient => (
+                <IngredientChart ingredientName={ingredient} key={ingredient} />
+              ))}
           </IngredientCharts>
         </Chart>
       </Wrapper>

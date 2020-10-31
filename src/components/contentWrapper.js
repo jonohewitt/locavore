@@ -5,7 +5,7 @@ import { GlobalState } from "../context/globalStateContext"
 export const widthPercent = 75
 export const mobileWidthPercent = 90
 export const maxWidth = 900
-export const breakToMobile = 820
+export const breakToMobile = 835
 
 const Wrapper = styled.div`
   width: ${widthPercent}%;

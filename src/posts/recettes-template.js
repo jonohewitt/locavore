@@ -145,19 +145,18 @@ const StyledHeader = styled.header`
     margin-bottom: 0;
   }
 `
-const RecipeTitle = styled.h1`
+const RecipeTitle = styled.div`
+  display: flex;
+  position: relative;
+  left: -50px;
+
   .backArrow {
-    position: absolute;
-    left: -50px;
-    top: -7px;
+    position: relative;
+    top: 3px;
   }
 
   @media (max-width: ${breakToMobile}px) {
-    .backArrow {
-      position: relative;
-      left: 0px;
-      top: -2px;
-    }
+    left: 0;
   }
 `
 
@@ -274,7 +273,7 @@ const RecipeTemplate = ({ data }) => {
     <StyledHeader>
       <RecipeTitle>
         <BackButton link="/recettes" />
-        {fm.title}
+        <h1>{fm.title}</h1>
       </RecipeTitle>
       <hr />
       <CourseAndFeeds>

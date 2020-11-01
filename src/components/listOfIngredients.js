@@ -1,6 +1,7 @@
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 
 export const listOfIngredients = ({ filter, sort, monthIndex }) => {
+
   const calcMonths = (value, target, ingredient, limit) => {
     if (ingredient.months.indexOf(target) !== -1) {
       let numOfMonths

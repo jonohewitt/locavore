@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react"
 import styled from "styled-components"
-import slugify from "slugify"
-import { Link } from "gatsby"
 import { SEO } from "../components/seo"
 import { ContentWrapper, breakToMobile } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import { SettingsIcon } from "../components/settingsIcon"
 import { Search } from "../components/search"
 import { listOfIngredients } from "../components/listOfIngredients"
+import { StyledIngredientList } from "../components/styledIngredientsList"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -23,7 +22,7 @@ const SearchContainer = styled.div`
   margin-right: 15px;
   position: relative;
 `
-const IngredientShowCaseWrapper = styled.div`
+const IngredientListWrapper = styled.div`
   background-color: var(--color-graphBackground);
   margin: 40px 0;
   padding: 10px 30px 30px 30px;
@@ -45,36 +44,53 @@ const IngredientShowCaseWrapper = styled.div`
     margin: 30px 0;
   }
 `
-const IngredientShowCase = ({ filter, sort, children }) => {
+
+const IngredientShowCase = () => {
   const context = useContext(GlobalState)
 
-  const processedList = listOfIngredients({
-    filter: filter,
+  const justInList = listOfIngredients({
+    filter: "justIn",
     monthIndex: context.currentMonth,
-    sort: sort,
+    sort: "newest",
   })
 
-  if (processedList.length) {
-    return (
-      <IngredientShowCaseWrapper>
-        <h2>{children}</h2>
-        <hr />
-        <ul>
-          {processedList.map(ingredient => (
-            <li key={ingredient.name}>
-              <Link
-                to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}
-              >
-                {ingredient.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </IngredientShowCaseWrapper>
-    )
-  } else {
-    return null
-  }
+  const lastChanceList = listOfIngredients({
+    filter: "lastChance",
+    monthIndex: context.currentMonth,
+    sort: "endingSoonest",
+  })
+
+  const comingUpList = listOfIngredients({
+    filter: "comingUp",
+    monthIndex: context.currentMonth,
+    sort: "startingSoonest",
+  })
+
+  return (
+    <>
+      {justInList.length > 0 && (
+        <IngredientListWrapper>
+          <h2>Nouveautés</h2>
+          <hr />
+          <StyledIngredientList list={justInList} />
+        </IngredientListWrapper>
+      )}
+      {lastChanceList.length > 0 && (
+        <IngredientListWrapper>
+          <h2>Dernière chance</h2>
+          <hr />
+          <StyledIngredientList list={lastChanceList} />
+        </IngredientListWrapper>
+      )}
+      {comingUpList.length > 0 && (
+        <IngredientListWrapper>
+          <h2>A venir</h2>
+          <hr />
+          <StyledIngredientList list={comingUpList} />
+        </IngredientListWrapper>
+      )}
+    </>
+  )
 }
 
 const IndexPage = () => {
@@ -119,17 +135,7 @@ const IndexPage = () => {
           </p>
         </article>
 
-        <IngredientShowCase filter="justIn" sort="newest">
-          Nouveautés
-        </IngredientShowCase>
-
-        <IngredientShowCase filter="lastChance" sort="endingSoonest">
-          Dernière chance
-        </IngredientShowCase>
-
-        <IngredientShowCase filter="comingUp" sort="startingSoonest">
-          A venir
-        </IngredientShowCase>
+        <IngredientShowCase />
       </ContentWrapper>
     </>
   )

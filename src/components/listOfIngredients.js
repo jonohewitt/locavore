@@ -1,14 +1,22 @@
 import { ingredientsData } from "../posts/ingredients/ingredientsData"
 
 export const listOfIngredients = ({ filter, sort, monthIndex }) => {
-  const monthsSince = (value, ingredient) => {
-    const numOfMonths = monthIndex - ingredient.months.indexOf(value)
-    return numOfMonths < 0 ? numOfMonths + 12 : numOfMonths
-  }
-
-  const monthsUntil = (value, ingredient) => {
-    const numOfMonths = ingredient.months.indexOf(value) - monthIndex
-    return numOfMonths < 0 ? numOfMonths + 12 : numOfMonths
+  const calcMonths = (value, target, ingredient, limit) => {
+    if (ingredient.months.indexOf(target) !== -1) {
+      let numOfMonths
+      if (value === "until") {
+        numOfMonths = ingredient.months.indexOf(target) - monthIndex
+      } else if (value === "since") {
+        numOfMonths = monthIndex - ingredient.months.indexOf(target)
+      } else {
+        console.log("calcMonths value error")
+        return false
+      }
+      const posNumOfMonths = numOfMonths < 0 ? numOfMonths + 12 : numOfMonths
+      return limit ? posNumOfMonths <= limit : posNumOfMonths
+    } else {
+      return false
+    }
   }
 
   return ingredientsData
@@ -26,16 +34,16 @@ export const listOfIngredients = ({ filter, sort, monthIndex }) => {
         case "noData":
           return !ingredient.months || ingredient.months.length !== 12
         case "lastChance":
-          return monthsUntil("end", ingredient) < 2
+          return calcMonths("until", "end", ingredient, 1)
         case "justIn":
           return (
             ingredient.months[monthIndex] &&
-            monthsSince("start", ingredient) < 2
+            calcMonths("since", "start", ingredient, 1)
           )
         case "comingUp":
           return (
             !ingredient.months[monthIndex] &&
-            monthsUntil("start", ingredient) < 2
+            calcMonths("until", "start", ingredient, 1)
           )
         case "testEmpty":
           return false
@@ -47,13 +55,16 @@ export const listOfIngredients = ({ filter, sort, monthIndex }) => {
       let sortValue
       switch (sort) {
         case "newest":
-          sortValue = monthsSince("start", a) - monthsSince("start", b)
+          sortValue =
+            calcMonths("since", "start", a) - calcMonths("since", "start", b)
           break
         case "endingSoonest":
-          sortValue = monthsUntil("end", a) - monthsUntil("end", b)
+          sortValue =
+            calcMonths("until", "end", a) - calcMonths("until", "end", b)
           break
         case "startingSoonest":
-          sortValue = monthsUntil("start", a) - monthsUntil("start", b)
+          sortValue =
+            calcMonths("until", "start", a) - calcMonths("until", "start", b)
           break
         default:
           //alphabetical in french, catches special characters e.g œ

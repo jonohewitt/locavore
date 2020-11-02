@@ -7,6 +7,23 @@ import { Link, navigate } from "gatsby"
 import { infoSVG } from "./icons"
 import { monthIndexToName } from "./smallReusableFunctions"
 
+const NoIngredientData = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+
+  svg {
+    transform: scale(1.5);
+  }
+
+  p {
+    padding: 4% 10%;
+    text-align: center;
+    margin: 0;
+  }
+`
+
 const StyledTable = styled.table`
   margin-top: 5px;
   border-collapse: separate;
@@ -27,6 +44,8 @@ const StyledTable = styled.table`
     text-align: center;
     padding: 10px 10px 0 10px;
     margin-bottom: 5px;
+    width: 75%;
+    margin: 5px auto;
 
     svg {
       position: relative;
@@ -37,6 +56,12 @@ const StyledTable = styled.table`
     @media (max-width: 500px) {
       font-size: 12px;
       padding: 0;
+      margin-bottom: 10px;
+
+      svg {
+        transform: scale(0.8);
+        margin: 0;
+      }
     }
   }
 `
@@ -118,7 +143,7 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
     }
   })
 
-  return (
+  return foundIngredients.length ? (
     <StyledTable>
       <thead>
         <MonthInitials />
@@ -148,5 +173,13 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
         indiqués.
       </caption>
     </StyledTable>
+  ) : (
+    <NoIngredientData>
+      {infoSVG}{" "}
+      <p>
+        Soit tous les ingrédients de cette recette sont disponibles toute
+        l'année, soit nous n'avons pas encore de données à leur sujet.
+      </p>
+    </NoIngredientData>
   )
 }

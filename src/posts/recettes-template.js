@@ -16,8 +16,7 @@ import { PostStyles } from "./post-styles"
 import { GlobalState } from "../context/globalStateContext"
 import { Ing, LinkedRecipe } from "../components/ingredientLink"
 import { BackButton } from "../components/backButton"
-import { SeveralSeasonalChart } from "../components/severalSeasonalChart"
-import { infoSVG } from "../components/icons"
+import { RecipeSeasonalityTable } from "../components/recipeSeasonalityTable"
 import { TimeIndicators, DairyIndicator } from "../components/recipeIndicators"
 
 const IngredientBox = styled.div`
@@ -104,19 +103,6 @@ const IngredientsContent = styled.div`
 `
 
 const SeasonalityContent = styled.div``
-
-const ChartInfo = styled.p`
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  margin: 10px 10px 0 10px;
-
-  svg {
-    position: relative;
-    top: 3px;
-    margin-right: 3px;
-  }
-`
 
 const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
@@ -260,11 +246,7 @@ const RecipeTemplate = ({ data }) => {
         <IngredientsContent>{children}</IngredientsContent>
       ) : (
         <SeasonalityContent>
-          <SeveralSeasonalChart ingredients={fm.ingredients} />
-          <ChartInfo>
-            {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
-            indiqués.
-          </ChartInfo>
+          <RecipeSeasonalityTable ingredients={fm.ingredients} />
         </SeasonalityContent>
       )}
     </IngredientBox>

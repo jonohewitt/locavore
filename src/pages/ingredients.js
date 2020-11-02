@@ -7,6 +7,8 @@ import { tickSVG, crossSVG } from "../components/icons"
 import { monthIndexToName } from "../components/smallReusableFunctions"
 import { listOfIngredients } from "../components/listOfIngredients"
 import { StyledIngredientList } from "../components/styledIngredientsList"
+import { graphql, useStaticQuery } from "gatsby"
+import { ingredientsData } from "../posts/ingredients/ingredientsData"
 
 const Styles = styled.main`
   h2 {
@@ -29,6 +31,17 @@ const Styles = styled.main`
 
 const Ingredients = () => {
   const context = useContext(GlobalState)
+  const data = useStaticQuery(graphql`
+    query {
+      allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
+        nodes {
+          frontmatter {
+            ingredients
+          }
+        }
+      }
+    }
+  `)
 
   const inSeasonList = listOfIngredients({
     filter: "currentlyInSeason",
@@ -45,10 +58,29 @@ const Ingredients = () => {
     monthIndex: context.currentMonth,
   })
 
-  const noDataList = listOfIngredients({
-    filter: "noData",
-    monthIndex: context.currentMonth,
+  const noDataSet = new Set()
+
+  data.allMdx.nodes.forEach(recipe => {
+    if (recipe.frontmatter.ingredients) {
+      recipe.frontmatter.ingredients.forEach(ingredient => {
+        if (
+          !ingredientsData.some(
+            ingredientObj => ingredientObj.name === ingredient
+          )
+        ) {
+          noDataSet.add({ name: ingredient })
+        }
+      })
+    }
   })
+
+  listOfIngredients({
+    filter: "noData",
+  }).forEach(ingredient => noDataSet.add(ingredient))
+
+  const noDataList = [...noDataSet].sort((a, b) =>
+    new Intl.Collator("fr").compare(a.name, b.name)
+  )
 
   return (
     <>

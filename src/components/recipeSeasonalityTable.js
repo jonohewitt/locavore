@@ -93,7 +93,7 @@ const MonthValues = styled.td`
   background-color: ${props =>
     props.value ? "var(--color-positive)" : "hsl(0,29.5%,41.2%)"};
   border-radius: 3px;
-  height: 20px;
+  height: ${props => (props.value ? "20px" : "10px")};
   margin: auto 0;
 `
 
@@ -108,38 +108,44 @@ const IngredientName = styled.td`
 
 const MonthInitials = () => {
   const context = useContext(GlobalState)
-  const initials = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+  const initials = []
+
+  for (let i = 0; i < 12; i++) {
+    initials.push(
+      <MonthInitial
+        key={monthIndexToName(i)}
+        isCurrentMonth={i === context.currentMonth}
+        title={i === context.currentMonth ? "ce mois-ci" : monthIndexToName(i)}
+      >
+        {monthIndexToName(i).charAt(0).toUpperCase()}
+      </MonthInitial>
+    )
+  }
+
   return (
     <tr>
       {/* eslint-disable-next-line */}
       <th></th>
-      {initials.map((initial, index) => (
-        <MonthInitial
-          key={index}
-          isCurrentMonth={index === context.currentMonth}
-          title={
-            index === context.currentMonth
-              ? "ce mois-ci"
-              : monthIndexToName(index)
-          }
-        >
-          {initial}
-        </MonthInitial>
-      ))}
+      {initials}
     </tr>
   )
 }
 
 export const RecipeSeasonalityTable = ({ ingredients }) => {
   const foundIngredients = []
+  let yearRoundIngredientFound = false
 
   ingredients.forEach(ingredient => {
     const foundIngredient = ingredientsData.find(
       ingredientObj => ingredientObj.name === ingredient
     )
 
-    if (foundIngredient && foundIngredient.months.includes(false)) {
-      foundIngredients.push(foundIngredient)
+    if (foundIngredient) {
+      if (foundIngredient.months.includes(false)) {
+        foundIngredients.push(foundIngredient)
+      } else {
+        yearRoundIngredientFound = true
+      }
     }
   })
 
@@ -168,10 +174,12 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
           </IngredientRow>
         ))}
       </tbody>
-      <caption>
-        {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
-        indiqués.
-      </caption>
+      {yearRoundIngredientFound && (
+        <caption>
+          {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
+          indiqués.
+        </caption>
+      )}
     </StyledTable>
   ) : (
     <NoIngredientData>

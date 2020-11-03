@@ -44,16 +44,20 @@ const HeaderText = styled.div`
 
 const IngredientTemplate = ({ pageContext, data }) => {
   const context = useContext(GlobalState)
+
   const ingredientObject = ingredientsData.find(
     ingredient => ingredient.name === pageContext.name
   )
+
   let currentlyInSeason = null
+
   if (ingredientObject) {
     currentlyInSeason = ingredientObject.months[context.currentMonth]
   }
 
   let seasonalIndicator
   let icon
+
   if (currentlyInSeason !== null) {
     if (ingredientObject.months.some(month => !month)) {
       seasonalIndicator = currentlyInSeason
@@ -73,12 +77,12 @@ const IngredientTemplate = ({ pageContext, data }) => {
       <SEO title={pageContext.name} />
       <ContentWrapper>
         <Header>
-          <BackButton link="/ingredients"/>
+          <BackButton link="/ingredients" />
           <HeaderText>
             <h1>{pageContext.name}</h1>
-            <hr />
           </HeaderText>
         </Header>
+        <hr />
         <main>
           {ingredientObject && (
             <>
@@ -86,10 +90,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
                 {seasonalIndicator} {icon}
               </h2>
               <hr />
-              <IndividualSeasonalChart
-                data={ingredientObject}
-                monthIndexToName={monthIndexToName}
-              />
+              <IndividualSeasonalChart data={ingredientObject} />
             </>
           )}
           <h2>Recettes proposées</h2>
@@ -103,9 +104,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
 
 export const pageQuery = graphql`
   query($name: [String]) {
-    allMdx(
-      filter: { frontmatter: { ingredients: { in: $name } } }
-    ) {
+    allMdx(filter: { frontmatter: { ingredients: { in: $name } } }) {
       nodes {
         id
         frontmatter {

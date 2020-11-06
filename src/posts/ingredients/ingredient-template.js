@@ -49,7 +49,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
     ingredient => ingredient.name === pageContext.name
   )
 
-  let currentlyInSeason = null
+  let currentlyInSeason
 
   if (ingredientObject) {
     currentlyInSeason = ingredientObject.months[context.currentMonth]
@@ -58,7 +58,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
   let seasonalIndicator
   let icon
 
-  if (currentlyInSeason !== null) {
+  if (currentlyInSeason !== undefined) {
     if (ingredientObject.months.some(month => !month)) {
       seasonalIndicator = currentlyInSeason
         ? `En saison en ${monthIndexToName(context.currentMonth)}`
@@ -71,6 +71,29 @@ const IngredientTemplate = ({ pageContext, data }) => {
   } else {
     seasonalIndicator = "Pas encore d'information"
   }
+
+  const recipeList = data.allMdx.nodes
+
+  const recipesWithIngredient = new Set(
+    recipeList.filter(recipe => {
+      if (recipe.frontmatter.linkedRecipes) {
+        return (
+          recipe.frontmatter.ingredients.includes(pageContext.name) ||
+          recipe.frontmatter.linkedRecipes.some(linkedRecipe => {
+            const foundLinkedRecipe = recipeList.find(
+              element => element.frontmatter.title === linkedRecipe
+            )
+            return (
+              foundLinkedRecipe &&
+              foundLinkedRecipe.frontmatter.ingredients.includes(
+                pageContext.name
+              )
+            )
+          })
+        )
+      } else return recipe.frontmatter.ingredients.includes(pageContext.name)
+    })
+  )
 
   return (
     <IngredientStyles>
@@ -95,7 +118,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
           )}
           <h2>Recettes proposées</h2>
           <hr />
-          <ListOfRecipes recipeList={data.allMdx.nodes} />
+          <ListOfRecipes recipeList={[...recipesWithIngredient]} />
         </main>
       </ContentWrapper>
     </IngredientStyles>
@@ -103,20 +126,12 @@ const IngredientTemplate = ({ pageContext, data }) => {
 }
 
 export const pageQuery = graphql`
-  query($name: [String]) {
-    allMdx(filter: { frontmatter: { ingredients: { in: $name } } }) {
+  query {
+    allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
       nodes {
         id
         frontmatter {
           title
-          header {
-            childImageSharp {
-              fluid(maxWidth: 800) {
-                ...GatsbyImageSharpFluid_withWebp
-              }
-            }
-          }
-          headerDescription
           feature {
             childImageSharp {
               fluid(maxWidth: 800) {

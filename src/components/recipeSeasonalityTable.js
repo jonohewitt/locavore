@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import { ingredientsData } from "../posts/ingredients/ingredientsData.js"
 import slugify from "slugify"
-import { Link, navigate } from "gatsby"
+import { navigate } from "gatsby"
 import { infoSVG } from "./icons"
 import { monthIndexToName } from "./smallReusableFunctions"
 
@@ -165,11 +165,12 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
             }
           >
             <IngredientName>{ingredient.name}</IngredientName>
-            {ingredient.months.map(month => (
+            {ingredient.months.map((month, i) => (
               <MonthValues
+                key={monthIndexToName(i)}
                 value={month}
                 aria-label={month ? "En saison" : "Pas en saison"}
-              ></MonthValues>
+              />
             ))}
           </IngredientRow>
         ))}

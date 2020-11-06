@@ -118,7 +118,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
           object => object.name === ingredient
         )
         if (
-          ingredientObj &&
+          ingredientObj && // ensure valid data exists
           ingredientObj.months &&
           ingredientObj.months.length === 12
         ) {
@@ -145,10 +145,10 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
     if (recipe.frontmatter.linkedRecipes) {
       recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-        const linkedRecipePost = recipeList.find(
+        const foundLinkedRecipe = recipeList.find(
           element => element.frontmatter.title === linkedRecipe
         )
-        findMostRecentStart(linkedRecipePost)
+        findMostRecentStart(foundLinkedRecipe)
       })
     }
     return mostRecent
@@ -177,140 +177,90 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
     if (recipe.frontmatter.linkedRecipes) {
       recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-        const linkedRecipePost = recipeList.find(
+        const foundLinkedRecipe = recipeList.find(
           element => element.frontmatter.title === linkedRecipe
         )
-        findSoonestEnd(linkedRecipePost)
+        findSoonestEnd(foundLinkedRecipe)
       })
     }
     return soonest
   }
 
-  // const soonestStart = recipe => {
-  //   let soonest = 0
-  //   const findSoonestStart = recipeToTest => {
-  //     recipeToTest.frontmatter.ingredients.forEach(ingredient => {
-  //       const ingredientObj = ingredientsData.find(
-  //         object => object.name === ingredient
-  //       )
-  //
-  //       if (ingredientObj.months.includes("start")) {
-  //         let value =
-  //           ingredientObj.months.indexOf("start") - context.currentMonth
-  //         if (value < 0) {
-  //           value += 12
-  //         }
-  //         if (value > soonest) {
-  //           soonest = value
-  //         }
-  //       }
-  //     })
-  //   }
-  //   findSoonestStart(recipe)
-  //
-  //   if (recipe.frontmatter.linkedRecipes) {
-  //     recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-  //       const linkedRecipePost = recipeList.find(
-  //         element => element.frontmatter.title === linkedRecipe
-  //       )
-  //       findSoonestStart(linkedRecipePost)
-  //     })
-  //   }
-  //   return soonest
-  // }
+  const allInSeason = recipe => {
+    const inSeasonCheck = context.filterList.find(
+      filter => filter.name === "En saison"
+    ).logic
+
+    const recipeIngredientsInSeason = inSeasonCheck(recipe.frontmatter)
+
+    if (recipe.frontmatter.linkedRecipes)
+      return (
+        inSeasonCheck(recipe.frontmatter) &&
+        recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
+          const foundLinkedRecipe = recipeList.find(
+            element => element.frontmatter.title === linkedRecipe
+          )
+          return (
+            foundLinkedRecipe && inSeasonCheck(foundLinkedRecipe.frontmatter)
+          )
+        })
+      )
+    else return recipeIngredientsInSeason
+  }
 
   return (
     <StyledUL fadedIn={fadedIn}>
       {recipeList
-        .filter(recipe => {
-          if (filterList) {
-            return filterList.every(filter => {
-              if (!filter.isApplied) {
-                return true
-              } else {
+        .filter(
+          recipe =>
+            !filterList ||
+            filterList.every(filter => {
+              if (!filter.isApplied) return true
+              else {
                 if (recipe.frontmatter.linkedRecipes) {
-                  const linkedRecipesMeetFilter = recipe.frontmatter.linkedRecipes.every(
-                    linkedRecipe => {
-                      const linkedRecipePost = recipeList.find(
+                  return (
+                    filter.logic(recipe.frontmatter) &&
+                    recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
+                      const foundLinkedRecipe = recipeList.find(
                         element => element.frontmatter.title === linkedRecipe
                       )
-                      return filter.logic(linkedRecipePost.frontmatter)
-                    }
+                      if (foundLinkedRecipe)
+                        return filter.logic(foundLinkedRecipe.frontmatter)
+                      else {
+                        console.log(
+                          "Linked recipe: " + linkedRecipe + " not found!"
+                        )
+                        return false
+                      }
+                    })
                   )
-                  return (
-                    filter.logic(recipe.frontmatter) && linkedRecipesMeetFilter
-                  )
-                } else {
-                  return filter.logic(recipe.frontmatter)
-                }
+                } else return filter.logic(recipe.frontmatter)
               }
             })
-          } else {
-            return true
-          }
-        })
+        )
         .sort((a, b) => {
-          let sortValue = 0
+          let sortValue
+
           if (sort) {
-            const allInSeason = recipeToTest => {
-              const inSeasonCheck = context.filterList.find(
-                filter => filter.name === "En saison"
-              ).logic
-
-              const recipeIngredientsInSeason = inSeasonCheck(
-                recipeToTest.frontmatter
-              )
-
-              if (recipeToTest.frontmatter.linkedRecipes) {
-                const linkedIngredientsInSeason = recipeToTest.frontmatter.linkedRecipes.every(
-                  linkedRecipe => {
-                    const linkedRecipePost = recipeList.find(
-                      element => element.frontmatter.title === linkedRecipe
-                    )
-                    if (linkedRecipePost) {
-                      return inSeasonCheck(linkedRecipePost.frontmatter)
-                    } else {
-                      console.log(linkedRecipe + " not found!")
-                      return false // if the linked recipe isnt found, don't include
-                    }
-                  }
-                )
-                return recipeIngredientsInSeason && linkedIngredientsInSeason
-              } else {
-                return recipeIngredientsInSeason
-              }
-            }
-
-            if (allInSeason(a) && allInSeason(b)) {
-              switch (sort) {
-                case "Nouveautés":
+            switch (sort) {
+              case "Nouveautés":
+                if (allInSeason(a) && allInSeason(b)) {
                   sortValue = mostRecentStart(a) - mostRecentStart(b)
-                  break
-                case "Bientôt hors saison":
+                } else sortValue = allInSeason(a) && !allInSeason(b) ? -1 : 1
+                break
+              case "Bientôt hors saison":
+                if (allInSeason(a) && allInSeason(b)) {
                   sortValue = soonestEnd(a) - soonestEnd(b)
-                  break
-                // case "startingSoonest":
-                //   sortValue = soonestStart(a) - soonestStart(b)
-                //   break
-                default:
-                  //alphabetical in french, catches special characters e.g œ
-                  sortValue = new Intl.Collator("fr").compare(
-                    a.frontmatter.title,
-                    b.frontmatter.title
-                  )
-                  break
-              }
-            } else if (allInSeason(a) && !allInSeason(b)) {
-              sortValue = -1
-            } else if (!allInSeason(a) && allInSeason(b)) {
-              sortValue = 1
+                } else sortValue = allInSeason(a) && !allInSeason(b) ? -1 : 1
+                break
+              default:
+                break
             }
           }
 
-          // sort by french alphabetical if sort function returns a tie or no sort
-          if (sortValue !== 0) {
-            return sortValue
-          } else {
+          if (sortValue) return sortValue
+          else {
+            // sort by french alphabetical if sort function returns a tie or no sort preference given
             return new Intl.Collator("fr").compare(
               a.frontmatter.title,
               b.frontmatter.title

@@ -1,27 +1,17 @@
-import React, { useLayoutEffect, useContext, useState } from "react"
+import React, { useLayoutEffect, useState } from "react"
 import styled from "styled-components"
-import { Link } from "gatsby"
+import { navigate } from "gatsby"
 import { arrowSVG } from "./icons"
-import { GlobalState } from "../context/globalStateContext"
-
-const ButtonLink = styled(Link)`
-  padding: 5px;
-  margin: 0 18px 0 0;
-  position: relative;
-  top: -1px;
-  svg {
-    transform: rotate(90deg) scale(1.5);
-    path {
-      fill: var(--color-settingsIcon);
-    }
-  }
-`
 
 const Button = styled.button`
   padding: 5px;
   margin: 0 18px 0 0;
   position: relative;
   top: -1px;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
   svg {
     transform: rotate(90deg) scale(1.5);
     path {
@@ -30,8 +20,7 @@ const Button = styled.button`
   }
 `
 
-export const BackButton = ({ link }) => {
-  const context = useContext(GlobalState)
+export const BackButton = () => {
   const [history, setHistory] = useState(false)
 
   useLayoutEffect(() => {
@@ -40,13 +29,11 @@ export const BackButton = ({ link }) => {
     }
   }, [])
 
-  if (context.appInterface) {
-    return (
-      history && (
-        <Button className="backArrow" onClick={() => window.history.back()}>{arrowSVG}</Button>
-      )
+  return (
+    history && (
+      <Button className="backArrow" onClick={() => navigate(-1)}>
+        {arrowSVG}
+      </Button>
     )
-  } else {
-    return <ButtonLink className="backArrow" to={link}>{arrowSVG}</ButtonLink>
-  }
+  )
 }

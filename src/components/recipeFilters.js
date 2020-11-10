@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "./smallReusableFunctions"
+import { GlobalState } from "../context/globalStateContext"
 
 const SelectOptionsButton = styled.button`
   display: flex;
@@ -93,15 +94,21 @@ const ListOfOptions = styled.ul`
 const OptionButtonContainer = styled.li`
   position: relative;
   margin: 0 5px 8px 3px;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.04);
+  }
 `
 
 const OptionButton = styled.button`
   background-color: ${props => (props.selected ? props.color : "transparent")};
+  ${props => props.selected && "font-weight: 600;"}
+  font-weight: 600;
   font-size: 18px;
-  border: solid 1px ${props => props.color};
+  border: solid 1.5px ${props => props.color};
+  ${props => props.isDark && "border: solid 1px;"}
   border-radius: 10px;
   padding: 4px 7px;
-
   color: ${props => (props.selected ? "var(--color-background)" : props.color)};
   ${props => props.disabled && "cursor: initial !important; opacity: 0.5;"};
   box-shadow: ${props =>
@@ -123,9 +130,15 @@ const ButtonComponent = ({
   color,
   cross,
   disabled,
+  isDark,
 }) => (
   <OptionButtonContainer onClick={action}>
-    <OptionButton color={color} selected={isApplied} disabled={disabled}>
+    <OptionButton
+      isDark={isDark}
+      color={color}
+      selected={isApplied}
+      disabled={disabled}
+    >
       {name}
     </OptionButton>
     {cross && (
@@ -164,6 +177,8 @@ export const Options = ({
   sortList,
   setSortList,
 }) => {
+  const context = useContext(GlobalState)
+
   const toggleFilter = filterName => {
     setFilterList(prevState => {
       const newState = [...prevState]
@@ -228,7 +243,8 @@ export const Options = ({
                   }
                 }}
                 isApplied={filter.isApplied}
-                color="var(--color-vegan)"
+                color="var(--color-filterSectionA)"
+                isDark={context.isDark}
               />
             ))}
         </span>
@@ -243,6 +259,7 @@ export const Options = ({
                 action={() => toggleFilter(filter.name)}
                 isApplied={filter.isApplied}
                 color="var(--color-text)"
+                isDark={context.isDark}
               />
             ))}
         </span>
@@ -264,6 +281,7 @@ export const Options = ({
                 !filterList.find(filter => filter.name === "En saison")
                   .isApplied
               }
+              isDark={context.isDark}
             />
           ))}
         </span>

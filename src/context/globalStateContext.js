@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect } from "react"
 import { lightTheme, darkTheme } from "../theme/themeVariables"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 
 export const GlobalState = React.createContext()
 
@@ -37,6 +37,19 @@ const Provider = ({ children }) => {
       group: "green",
       logic(fm) {
         return fm.vegan === true
+      },
+      isApplied: false,
+    },
+    {
+      name: "Saisonnier",
+      group: "green",
+      logic(fm) {
+        return fm.ingredients.some(ingredientName => {
+          const foundIngredient = ingredientsData.find(
+            ingredientObject => ingredientObject.name === ingredientName
+          )
+          return foundIngredient && foundIngredient.months.includes(false)
+        })
       },
       isApplied: false,
     },

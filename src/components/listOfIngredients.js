@@ -1,23 +1,26 @@
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 
 export const listOfIngredients = ({ filter, sort, monthIndex }) => {
-
   const calcMonths = (value, target, ingredient, limit) => {
-    if (ingredient.months.indexOf(target) !== -1) {
+    if (ingredient.months.includes(target)) {
       let numOfMonths
-      if (value === "until") {
-        numOfMonths = ingredient.months.indexOf(target) - monthIndex
-      } else if (value === "since") {
-        numOfMonths = monthIndex - ingredient.months.indexOf(target)
-      } else {
-        console.log("calcMonths value error")
-        return false
+      switch (value) {
+        case "until":
+          numOfMonths = ingredient.months.indexOf(target) - monthIndex
+          break
+        case "since":
+          numOfMonths = monthIndex - ingredient.months.indexOf(target)
+          break
+        default:
+          console.log("calcMonths value error")
+          return false
       }
+
       const posNumOfMonths = numOfMonths < 0 ? numOfMonths + 12 : numOfMonths
-      return limit ? posNumOfMonths <= limit : posNumOfMonths
-    } else {
-      return false
-    }
+
+      if (limit) return posNumOfMonths <= limit
+      else return posNumOfMonths
+    } else return false
   }
 
   return ingredientsData
@@ -68,15 +71,10 @@ export const listOfIngredients = ({ filter, sort, monthIndex }) => {
             calcMonths("until", "start", a) - calcMonths("until", "start", b)
           break
         default:
-          //alphabetical in french, catches special characters e.g œ
-          sortValue = new Intl.Collator("fr").compare(a.name, b.name)
           break
       }
-      // sort by french alphabetical if previous sort function returns a tie
-      if (sortValue !== 0) {
-        return sortValue
-      } else {
-        return new Intl.Collator("fr").compare(a.name, b.name)
-      }
+      // sort by french alphabetical if previous sort function returns a tie or no sort preference given
+      if (sortValue) return sortValue
+      else return new Intl.Collator("fr").compare(a.name, b.name)
     })
 }

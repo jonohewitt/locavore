@@ -160,6 +160,9 @@ const CourseAndFeeds = styled.p`
 
 const Preparation = styled.div`
   margin-top: 20px;
+  ol {
+    margin-bottom: 50px;
+  }
 `
 
 const IngredientsContainer = styled.div``

@@ -10,7 +10,7 @@ import { ingredientsData } from "../data/ingredientsData"
 const StyledUL = styled.ul`
   margin-top: 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-gap: 25px;
   opacity: 0;
   transform: translateY(8px);
@@ -20,7 +20,7 @@ const StyledUL = styled.ul`
 
 const RecipeCardContainer = styled.li`
   height: 400px;
-  @media (max-width: 900px) {
+  @media (max-width: 753px) {
     height: 100%;
   }
 `
@@ -60,6 +60,9 @@ const RecipeCard = styled.div`
 
 const RecipeText = styled.div`
   padding: 10px 20px 20px 20px;
+
+  ${props => !props.featureImg && "margin-top: 40px;"}
+
   margin-bottom: 20px;
 
   hr {
@@ -184,7 +187,6 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
             !filterList ||
             filterList.every(filter => {
               if (!filter.isApplied) return true
-
               else if (recipe.frontmatter.linkedRecipes)
                 return (
                   filter.logic(recipe.frontmatter) &&
@@ -259,7 +261,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
                       alt={fm.featureDescription}
                     />
                   )}
-                  <RecipeText>
+                  <RecipeText featureImg={fm.feature}>
                     <h3>{fm.title}</h3>
                     <hr />
                     <p>

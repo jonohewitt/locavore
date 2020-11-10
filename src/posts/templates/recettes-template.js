@@ -17,7 +17,10 @@ import { GlobalState } from "../../context/globalStateContext"
 import { Ing, LinkedRecipe } from "../../components/ingredientLink"
 import { BackButton } from "../../components/backButton"
 import { RecipeSeasonalityTable } from "../../components/recipeSeasonalityTable"
-import { TimeIndicators, DairyIndicator } from "../../components/recipeIndicators"
+import {
+  TimeIndicators,
+  DairyIndicator,
+} from "../../components/recipeIndicators"
 import { infoSVG } from "../../components/icons"
 
 const IngredientBox = styled.div`
@@ -25,8 +28,8 @@ const IngredientBox = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   padding: 10px 20px 30px 20px;
   margin: 0 0 40px 0;
-  border-radius: 0 0 10px 10px;
   font-weight: 600;
+  border-radius: ${props => (props.featureImage ? "0 0 10px 10px" : "10px")};
 
   ul {
     margin-bottom: 15px;
@@ -118,20 +121,19 @@ const FeatureImgContainer = styled.div`
 `
 
 const RecipeDescription = styled.p`
-  margin: 10px 0 30px 0;
+  margin: 20px 0 30px 0;
 `
 
 const StyledHeader = styled.header`
   position: relative;
+`
 
-  h1 {
-    margin-bottom: 10px;
-  }
-
+const Metadata = styled.div`
   p {
     margin-bottom: 0;
   }
 `
+
 const RecipeTitle = styled.div`
   ${props =>
     props.backButton &&
@@ -257,7 +259,7 @@ const RecipeTemplate = ({ data }) => {
   const [ingredientsSelected, setIngredientsSelected] = useState(true)
 
   const Ingredients = ({ children }) => (
-    <IngredientBox>
+    <IngredientBox featureImage={fm.feature}>
       <IngredientsButton
         isDark={context.isDark}
         selected={ingredientsSelected}
@@ -289,18 +291,20 @@ const RecipeTemplate = ({ data }) => {
         <h1>{fm.title}</h1>
       </RecipeTitle>
       <hr />
-      <CourseAndFeeds>
-        {fm.course}
-        {fm.feeds && ` • ${fm.feeds} personnes`}
-      </CourseAndFeeds>
-      <RecipeIndicators>
-        <DairyIndicator
-          vegan={fm.vegan}
-          veganOption={fm.veganOption}
-          vegetarian={fm.vegetarian}
-        />
-        <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
-      </RecipeIndicators>
+      <Metadata>
+        <CourseAndFeeds>
+          {fm.course}
+          {fm.feeds && ` • ${fm.feeds} personnes`}
+        </CourseAndFeeds>
+        <RecipeIndicators>
+          <DairyIndicator
+            vegan={fm.vegan}
+            veganOption={fm.veganOption}
+            vegetarian={fm.vegetarian}
+          />
+          <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
+        </RecipeIndicators>
+      </Metadata>
       <hr />
       {fm.description && (
         <RecipeDescription>{fm.description}</RecipeDescription>

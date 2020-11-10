@@ -2,10 +2,10 @@ import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 
-export const widthPercent = 75
+export const widthPercent = 80
 export const mobileWidthPercent = 90
 export const maxWidth = 900
-export const breakToMobile = 835
+export const breakToMobile = 885
 
 const Wrapper = styled.div`
   width: ${widthPercent}%;

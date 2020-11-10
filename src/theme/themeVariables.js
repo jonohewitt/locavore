@@ -20,7 +20,7 @@ export const lightTheme = {
   positive: "#4F9F5C",
   negative: "hsla(0, 52%, 58%, 1)",
   footer: "hsla(8.6, 35.4%, 69%, 0.5)",
-  navDropDown: "hsla(11.6, 49.7%, 67.3%, 1)",
+  navDropDown: "#EEE4D9",
   navDropDownHover: "hsl(5.7, 47.4%, 30.6%)",
   searchBackground: "#FFF",
   searchListSelected: "hsla(10.9, 100%, 89.2%, 1)",

@@ -28,7 +28,9 @@ const IngredientLink = styled(Link)`
 export const Ing = ({ id, text, children, className, onClick }) => {
   const context = useContext(GlobalState)
   const ingredient = ingredientsData.find(
-    ingredient => ingredient.name.toLowerCase() === id.toLowerCase()
+    ingredient =>
+      slugify(ingredient.name, { lower: true, strict: true }) ===
+      slugify(id, { lower: true, strict: true })
   )
   let color
   let icon

@@ -2,10 +2,10 @@ import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
 import { SEO } from "../../components/seo"
-import { ContentWrapper } from "../../components/contentWrapper"
+import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
 import { ListOfRecipes } from "../../components/listOfRecipes"
 import { GlobalState } from "../../context/globalStateContext"
-import { ingredientsData } from "./ingredientsData"
+import { ingredientsData } from "../../data/ingredientsData"
 import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
 import { monthIndexToName } from "../../components/smallReusableFunctions"
@@ -31,15 +31,25 @@ const IngredientStyles = styled.div`
 `
 
 const Header = styled.header`
-  display: flex;
-  align-items: baseline;
-  p {
-    margin-bottom: 0;
-  }
-`
+  position: relative;
+  left: -50px;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  align-items: start;
 
-const HeaderText = styled.div`
-  width: 100%;
+  .backArrow {
+    grid-column: 1 / 2;
+    position: relative;
+    top: 3px;
+  }
+
+  h1 {
+    grid-column: 2 / 3;
+  }
+
+  @media (max-width: ${breakToMobile}px) {
+    left: 0;
+  }
 `
 
 const IngredientTemplate = ({ pageContext, data }) => {
@@ -59,7 +69,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
   let icon
 
   if (currentlyInSeason !== undefined) {
-    if (ingredientObject.months.some(month => !month)) {
+    if (ingredientObject.months.includes(false)) {
       seasonalIndicator = currentlyInSeason
         ? `En saison en ${monthIndexToName(context.currentMonth)}`
         : `Hors saison en ${monthIndexToName(context.currentMonth)}`
@@ -83,11 +93,8 @@ const IngredientTemplate = ({ pageContext, data }) => {
             const foundLinkedRecipe = recipeList.find(
               element => element.frontmatter.title === linkedRecipe
             )
-            return (
-              foundLinkedRecipe &&
-              foundLinkedRecipe.frontmatter.ingredients.includes(
-                pageContext.name
-              )
+            return foundLinkedRecipe?.frontmatter.ingredients.includes(
+              pageContext.name
             )
           })
         )
@@ -100,10 +107,8 @@ const IngredientTemplate = ({ pageContext, data }) => {
       <SEO title={pageContext.name} />
       <ContentWrapper>
         <Header>
-          <BackButton link="/ingredients" />
-          <HeaderText>
-            <h1>{pageContext.name}</h1>
-          </HeaderText>
+          <BackButton />
+          <h1>{pageContext.name}</h1>
         </Header>
         <hr />
         <main>

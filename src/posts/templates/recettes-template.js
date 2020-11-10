@@ -9,15 +9,16 @@ import {
   mobileWidthPercent,
   maxWidth,
   breakToMobile,
-} from "../components/contentWrapper"
+} from "../../components/contentWrapper"
 import Img from "gatsby-image"
-import { SEO } from "../components/seo"
-import { PostStyles } from "./post-styles"
-import { GlobalState } from "../context/globalStateContext"
-import { Ing, LinkedRecipe } from "../components/ingredientLink"
-import { BackButton } from "../components/backButton"
-import { RecipeSeasonalityTable } from "../components/recipeSeasonalityTable"
-import { TimeIndicators, DairyIndicator } from "../components/recipeIndicators"
+import { SEO } from "../../components/seo"
+import { PostStyles } from ".././post-styles"
+import { GlobalState } from "../../context/globalStateContext"
+import { Ing, LinkedRecipe } from "../../components/ingredientLink"
+import { BackButton } from "../../components/backButton"
+import { RecipeSeasonalityTable } from "../../components/recipeSeasonalityTable"
+import { TimeIndicators, DairyIndicator } from "../../components/recipeIndicators"
+import { infoSVG } from "../../components/icons"
 
 const IngredientBox = styled.div`
   background-color: var(--color-graphBackground);
@@ -71,7 +72,7 @@ const IngredientsButton = styled.button`
   color: ${props =>
     props.selected && !props.isDark && "var(--color-graphBackground)"};
   background: ${props =>
-    props.selected ? "#8e5a4f" : "var(--color-background)"};
+    props.selected ? "#aa685b" : "var(--color-background)"};
   width: 50%;
   border-radius: 10px 0 0 10px;
   margin: 14px 0 10px 0;
@@ -132,18 +133,22 @@ const StyledHeader = styled.header`
   }
 `
 const RecipeTitle = styled.div`
-  display: flex;
-  position: relative;
-  left: -50px;
+  ${props =>
+    props.backButton &&
+    "position: relative;left: -50px;display: grid;grid-template-columns: 50px 1fr;align-items: start;"}
 
   .backArrow {
+    grid-column: 1 / 2;
     position: relative;
     top: 3px;
   }
 
+  h1 {
+    grid-column: 2 / 3;
+  }
+
   @media (max-width: ${breakToMobile}px) {
     left: 0;
-    align-items: flex-start;
   }
 `
 
@@ -188,6 +193,31 @@ const StyledArticle = styled.article`
     props.masonryLayout &&
     "display: grid; column-gap: 40px; margin: 100px auto 0 auto; width: 85%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
 `
+
+const NoteWrapper = styled.div`
+  ${"" /* background: var(--color-graphBackground); */}
+  border: 1px solid;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  padding: 15px 15px 15px 5px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  line-height: 1.4;
+  p {
+    margin-bottom: 0;
+  }
+  svg {
+    transform: scale(1.3);
+    margin: auto;
+  }
+`
+
+const Note = ({ children }) => (
+  <NoteWrapper>
+    {infoSVG}
+    <div>{children}</div>
+  </NoteWrapper>
+)
 
 const FeatureImage = ({ fm }) => {
   const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
@@ -254,7 +284,7 @@ const RecipeTemplate = ({ data }) => {
 
   const Header = () => (
     <StyledHeader>
-      <RecipeTitle>
+      <RecipeTitle backButton={BackButton()}>
         <BackButton link="/recettes" />
         <h1>{fm.title}</h1>
       </RecipeTitle>
@@ -283,6 +313,7 @@ const RecipeTemplate = ({ data }) => {
     Ing,
     Ingredients,
     LinkedRecipe,
+    Note,
   }
 
   const IngredientsSection = () => (

@@ -17,11 +17,12 @@ const SettingsWrapper = styled.section`
   flex-direction: column;
   transition: transform 0.3s;
   background-color: var(--color-settings);
+  color: #eee;
   box-shadow: ${props =>
-    props.settingsIsOpen ? "5px 0 20px rgba(0, 0, 0, 0.5)" : "0"};
+    props.settingsIsOpen ? "0 0 20px rgba(0, 0, 0, 0.3)" : "0"};
     hr {
       background: var(--color-text);
-      opacity: 0.2;
+      opacity: 0.4;
     }
 `
 const StyledUL = styled.ul`

@@ -80,9 +80,12 @@ export const TimeIndicators = ({ prepTime, cookTime }) => {
 }
 
 const DairyLabel = styled.div`
-  height: 25px;
+  height: 28px;
   border-radius: 5px;
-  border: solid 1px;
+  border: solid 1.5px;
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: 600;
   color: ${props => {
     if (props.vegan) {
       return "var(--color-vegan)"
@@ -92,7 +95,7 @@ const DairyLabel = styled.div`
       return "var(--color-vegetarian)"
     }
   }};
-  padding: 4px;
+  padding: 0px 5px;
 `
 
 export const DairyIndicator = ({ vegan, veganOption, vegetarian }) => {

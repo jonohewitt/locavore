@@ -78,6 +78,10 @@ const HorizontalNavList = styled.ul`
 
   li {
     margin: 0 3px;
+    transition: transform 0.2s;
+    &:hover {
+      transform: scale(1.05);
+    }
     @media (max-width: ${breakToMobile}px) {
       margin-left: 0;
     }
@@ -131,7 +135,7 @@ const PageTitle = styled(Link)`
 
   span {
     color: var(--color-settingsIcon);
-    border: solid 1px;
+    border: solid 1.5px;
     border-radius: 5px;
     padding: 2px 6px;
     font-size: 18px;
@@ -230,6 +234,7 @@ const SearchButton = styled.button`
     transform: scale(1.3);
     position: relative;
     top: 2.5px;
+    transition: transform 0.2s;
 
     circle,
     line {
@@ -244,11 +249,12 @@ const SearchButton = styled.button`
     svg {
       circle,
       line {
-        stroke: var(--color-altColor);
+        stroke: var(--color-activeLink);
       }
       path {
-        fill: var(--color-altColor);
+        fill: var(--color-activeLink);
       }
+      transform: scale(1.5);
     }
   }
 `
@@ -368,7 +374,10 @@ export const BrowserNav = ({
                   <li key={element.name}>
                     <Link
                       to={element.link}
-                      activeStyle={{ border: "solid 1px", borderRadius: "8px" }}
+                      activeStyle={{
+                        border: "solid 1.5px",
+                        borderRadius: "8px",
+                      }}
                       partiallyActive={element.link === "/" ? false : true}
                     >
                       {element.name}

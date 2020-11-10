@@ -5,7 +5,7 @@ import styled from "styled-components"
 import slugify from "slugify"
 import { TimeIndicators, DairyIndicator } from "./recipeIndicators"
 import { GlobalState } from "../context/globalStateContext"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 
 const StyledUL = styled.ul`
   margin-top: 25px;
@@ -58,36 +58,6 @@ const RecipeCard = styled.div`
   }
 `
 
-const RecipeImage = ({ headerImg, featureImg }) => {
-  let usedImage = false
-
-  if (!headerImg.image && featureImg.image) {
-    usedImage = featureImg
-  } else if (headerImg.image) {
-    usedImage = headerImg
-  }
-
-  if (usedImage) {
-    return (
-      <Img
-        style={{
-          width: "100%",
-          maxHeight: "200px",
-        }}
-        imgStyle={{
-          objectFit: "cover",
-          width: "100%",
-          height: "100%",
-        }}
-        fluid={usedImage.image}
-        alt={usedImage.description ? usedImage.description : ""}
-      />
-    )
-  } else {
-    return false
-  }
-}
-
 const RecipeText = styled.div`
   padding: 10px 20px 20px 20px;
   margin-bottom: 20px;
@@ -117,11 +87,9 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
         const ingredientObj = ingredientsData.find(
           object => object.name === ingredient
         )
-        if (
-          ingredientObj && // ensure valid data exists
-          ingredientObj.months &&
-          ingredientObj.months.length === 12
-        ) {
+
+        // ensure valid data exists
+        if (ingredientObj?.months?.length === 12) {
           if (
             ingredientObj.months.includes("start") && // filter out permanently in season
             ingredientObj.months[context.currentMonth]
@@ -155,7 +123,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
   }
 
   const soonestEnd = recipe => {
-    let soonest = 100
+    let soonest = 100 // arbitrary high number to compare against
     const findSoonestEnd = recipeToTest => {
       recipeToTest.frontmatter.ingredients.forEach(ingredient => {
         const ingredientObj = ingredientsData.find(
@@ -216,26 +184,26 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
             !filterList ||
             filterList.every(filter => {
               if (!filter.isApplied) return true
-              else {
-                if (recipe.frontmatter.linkedRecipes) {
-                  return (
-                    filter.logic(recipe.frontmatter) &&
-                    recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
-                      const foundLinkedRecipe = recipeList.find(
-                        element => element.frontmatter.title === linkedRecipe
+
+              else if (recipe.frontmatter.linkedRecipes)
+                return (
+                  filter.logic(recipe.frontmatter) &&
+                  recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
+                    const foundLinkedRecipe = recipeList.find(
+                      element => element.frontmatter.title === linkedRecipe
+                    )
+
+                    if (foundLinkedRecipe)
+                      return filter.logic(foundLinkedRecipe.frontmatter)
+                    else {
+                      console.log(
+                        "Linked recipe: " + linkedRecipe + " not found!"
                       )
-                      if (foundLinkedRecipe)
-                        return filter.logic(foundLinkedRecipe.frontmatter)
-                      else {
-                        console.log(
-                          "Linked recipe: " + linkedRecipe + " not found!"
-                        )
-                        return false
-                      }
-                    })
-                  )
-                } else return filter.logic(recipe.frontmatter)
-              }
+                      return false
+                    }
+                  })
+                )
+              else return filter.logic(recipe.frontmatter)
             })
         )
         .sort((a, b) => {
@@ -276,20 +244,21 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
             <RecipeCardContainer key={recipe.id}>
               <Link to={`/recettes${slug}`}>
                 <RecipeCard>
-                  <RecipeImage
-                    headerImg={{
-                      image: fm.header
-                        ? fm.header.childImageSharp.fluid
-                        : false,
-                      description: fm.headerDescription,
-                    }}
-                    featureImg={{
-                      image: fm.feature
-                        ? fm.feature.childImageSharp.fluid
-                        : false,
-                      description: fm.featureDescription,
-                    }}
-                  />
+                  {fm.feature && (
+                    <Img
+                      style={{
+                        width: "100%",
+                        maxHeight: "200px",
+                      }}
+                      imgStyle={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      fluid={fm.feature.childImageSharp.fluid}
+                      alt={fm.featureDescription}
+                    />
+                  )}
                   <RecipeText>
                     <h3>{fm.title}</h3>
                     <hr />

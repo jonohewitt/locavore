@@ -18,7 +18,9 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   box-shadow: 0 1px 2px hsla(0, 0%, 10%, 0.2);
-  ${props => props.shadow && "box-shadow: 0 2px 6px hsla(var(--color-searchShadow), 0.2);"}
+  ${props =>
+    props.shadow &&
+    "box-shadow: 0 2px 6px hsla(var(--color-searchShadow), 0.2);"}
   width: 100%;
 
   svg {
@@ -124,8 +126,8 @@ const SearchResult = styled.li`
   :hover {
     ${props =>
       props.selected
-        ? " background: var(--color-searchListHover);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListHover) 100%); "
-        : " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "};
+        ? " background: var(--color-searchListHover);background: linear-gradient(60deg, #0000, #0000 5%, var(--color-searchListHover) 100%); "
+        : " background: var(--color-searchListSelected);background: linear-gradient(60deg, #0000 0%, #0000 5%, var(--color-searchListSelected) 100%); "};
   }
 
   a {
@@ -226,14 +228,14 @@ export const Search = ({
   }
 
   const handleSearchResultClick = () => {
-    (mobile || app) && setMobileSearchIsActive(false)
-    mobile && setDropDownIsOpen(false)
-    navBar && setNavBarSearchIsActive(false)
+    if (mobile || app) setMobileSearchIsActive(false)
+    if (mobile) setDropDownIsOpen(false)
+    if (navBar) setNavBarSearchIsActive(false)
   }
 
   const handleSubmit = async event => {
     event.preventDefault()
-    if (list.length && list[0].type !== "Error") {
+    if (list[0]?.type !== "Error") {
       await navigate(
         `/${
           list[indexHighlighted].type
@@ -244,11 +246,9 @@ export const Search = ({
           strict: true,
         })}`
       )
-      mobile && setDropDownIsOpen(false)
-      navBar && setNavBarSearchIsActive(false)
-    } else if (value.length) {
-      setList([{ type: "Error" }])
-    }
+      if (mobile) setDropDownIsOpen(false)
+      if (navBar) setNavBarSearchIsActive(false)
+    } else if (value.length) setList([{ type: "Error" }])
   }
 
   const handleKeyDown = event => {
@@ -268,12 +268,12 @@ export const Search = ({
       }
       //if escape is pressed
     } else if (event.which === 27) {
-      navBar && setNavBarSearchIsActive(false)
+      if (navBar) setNavBarSearchIsActive(false)
     }
   }
 
   const handleFocus = event => {
-    (mobile || app) && setMobileSearchIsActive(true)
+    if (mobile || app) setMobileSearchIsActive(true)
     handleChange(event)
   }
 
@@ -290,26 +290,24 @@ export const Search = ({
     </>
   )
 
-  const OtherPageSearchResult = ({ element }) => (
-    <>
-      <CategoryLabel type={element.type}>{element.type}</CategoryLabel>
-      <Link
-        onClick={handleSearchResultClick}
-        className="searchResult"
-        to={`/${element.type}${
-          element.customSlug
-            ? element.customSlug
-            : "/" +
-              slugify(element.name, {
-                lower: true,
-                strict: true,
-              })
-        }`}
-      >
-        {element.name}
-      </Link>
-    </>
-  )
+  const OtherPageSearchResult = ({ element }) => {
+    let slug
+
+    if (element.customSlug) slug = element.customSlug
+    else slug = "/" + slugify(element.name, { lower: true, strict: true })
+    return (
+      <>
+        <CategoryLabel type={element.type}>{element.type}</CategoryLabel>
+        <Link
+          onClick={handleSearchResultClick}
+          className="searchResult"
+          to={`/${element.type + slug}`}
+        >
+          {element.name}
+        </Link>
+      </>
+    )
+  }
 
   const NoResultsFound = ({ element }) => (
     <>
@@ -321,7 +319,9 @@ export const Search = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <InputContainer shadow={!((mobile || app) && mobileSearchIsActive === false)}>
+        <InputContainer
+          shadow={!((mobile || app) && mobileSearchIsActive === false)}
+        >
           {searchSVG}
           <SearchInput
             // Autofocus only happens after search button is pressed therefore focus is expected

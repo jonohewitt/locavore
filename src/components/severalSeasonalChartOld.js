@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
-import { ingredientsData } from "../posts/ingredients/ingredientsData.js"
+import { ingredientsData } from "../data/ingredientsData"
 import slugify from "slugify"
 import { Link, navigate } from "gatsby"
 

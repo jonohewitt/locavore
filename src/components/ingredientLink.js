@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 import slugify from "slugify"
 import { GlobalState } from "../context/globalStateContext"
 import styled from "styled-components"
@@ -19,7 +19,7 @@ const IngredientLink = styled(Link)`
   span {
     white-space: nowrap;
   }
-  
+
   &:hover {
     border-bottom: 2px solid;
   }

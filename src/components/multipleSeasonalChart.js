@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import * as d3 from "d3"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 import { breakToMobile } from "./contentWrapper"
 
 const ChartWrapper = styled.div`

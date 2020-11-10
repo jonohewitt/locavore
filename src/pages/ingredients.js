@@ -8,7 +8,7 @@ import { monthIndexToName } from "../components/smallReusableFunctions"
 import { listOfIngredients } from "../components/listOfIngredients"
 import { StyledIngredientList } from "../components/styledIngredientsList"
 import { graphql, useStaticQuery } from "gatsby"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 
 const Styles = styled.main`
   h2 {

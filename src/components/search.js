@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { ingredientsData } from "../posts/ingredients/ingredientsData"
+import { ingredientsData } from "../data/ingredientsData"
 import { Ing } from "./ingredientLink"
 import { navigate, useStaticQuery, Link, graphql } from "gatsby"
 import slugify from "slugify"

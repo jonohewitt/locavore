@@ -44,7 +44,7 @@ const CommentTextArea = styled.textarea`
   min-height: 80px;
 `
 
-const OpenCommentForm = styled.button`
+const OpenCommentFormButton = styled.button`
   background: var(--color-settingsIcon);
   height: 40px;
   width: 200px;
@@ -186,19 +186,18 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
           slug: slug,
         },
       }).catch(error => console.log(error))
-
       nameRef.current.value = ""
       commentRef.current.value = ""
     } else {
       if (!nameRef.current.value.trim().length) {
         setNameError(true)
         nameRef.current.value = ""
-        nameRef.current.placeholder = "Please enter a name"
+        nameRef.current.placeholder = "Veuillez entrer un nom"
       }
       if (!commentRef.current.value.trim().length) {
         setCommentError(true)
         commentRef.current.value = ""
-        commentRef.current.placeholder = "Please enter a comment"
+        commentRef.current.placeholder = "Veuillez entrer un commentaire"
       }
     }
   }
@@ -209,6 +208,10 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
     setCommentFormOpen(false)
   }
 
+  const handleInputBlur = ref => {
+    ref.current.value = ref.current.value.trim()
+  }
+
   return (
     <CommentForm onSubmit={handleSubmit}>
       <NameContainer error={nameError}>
@@ -216,9 +219,7 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
           placeholder="Name..."
           ref={nameRef}
           onFocus={() => setNameError(false)}
-          onBlur={() =>
-            (nameRef.current.value = nameRef.current.value.trim())
-          }
+          onBlur={() => handleInputBlur(nameRef)}
         />
       </NameContainer>
       <CommentContainer error={commentError}>
@@ -226,15 +227,13 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
           placeholder="Comment..."
           ref={commentRef}
           onFocus={() => setCommentError(false)}
-          onBlur={() =>
-            (commentRef.current.value = commentRef.current.value.trim())
-          }
+          onBlur={() => handleInputBlur(commentRef)}
         />
       </CommentContainer>
 
       <ButtonsContainer>
-        <PostCommentButton type="submit">Post</PostCommentButton>
-        <CancelButton onClick={handleCancel}>Cancel</CancelButton>
+        <PostCommentButton type="submit">Poster</PostCommentButton>
+        <CancelButton onClick={handleCancel}>Annuler</CancelButton>
       </ButtonsContainer>
     </CommentForm>
   )
@@ -254,23 +253,25 @@ const CommentsList = ({ slug }) => {
   const { data, loading, error } = useQuery(GET_COMMENTS_BY_SLUG, {
     variables: { slug: slug },
   })
-  if (loading) return <p>Loading...</p>
-  if (error) {
+  if (loading) {
+    return <p>Chargement...</p>
+  } else if (error) {
     console.log(error)
-    return <p>Error :(</p>
+    return <p>Erreur :(</p>
+  } else {
+    const commentListData = [...data.getCommentsBySlug.data].reverse()
+    return (
+      <CommentList>
+        {commentListData.map(comment => (
+          <CommentListItem key={comment._id}>
+            <CommentAuthor>{comment.name}</CommentAuthor>
+            <CommentDate>{tsToLocaleDate(comment._ts)}</CommentDate>
+            <CommentBody>{comment.comment}</CommentBody>
+          </CommentListItem>
+        ))}
+      </CommentList>
+    )
   }
-  const commentListData = [...data.getCommentsBySlug.data].reverse()
-  return (
-    <CommentList>
-      {commentListData.map(comment => (
-        <CommentListItem key={comment._id}>
-          <CommentAuthor>{comment.name}</CommentAuthor>
-          <CommentDate>{tsToLocaleDate(comment._ts)}</CommentDate>
-          <CommentBody>{comment.comment}</CommentBody>
-        </CommentListItem>
-      ))}
-    </CommentList>
-  )
 }
 
 export const CommentSectionComponent = ({
@@ -280,14 +281,14 @@ export const CommentSectionComponent = ({
 }) => {
   return (
     <CommentSectionContainer>
-      <h2>Comments</h2>
+      <h2>Commentaire</h2>
       <hr />
       {commentFormOpen ? (
         <CommentsForm slug={slug} setCommentFormOpen={setCommentFormOpen} />
       ) : (
-        <OpenCommentForm onClick={() => setCommentFormOpen(true)}>
-          Leave a comment
-        </OpenCommentForm>
+        <OpenCommentFormButton onClick={() => setCommentFormOpen(true)}>
+          Laisser un commentaire
+        </OpenCommentFormButton>
       )}
       <hr />
       <CommentsList slug={slug} />

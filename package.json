@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Jono Hewitt <jonohewitt@gmail.com>",
   "dependencies": {
+    "@apollo/client": "^3.2.5",
     "@mdx-js/mdx": "^1.6.19",
     "@mdx-js/react": "^1.6.16",
     "babel-plugin-styled-components": "^1.11.1",
@@ -22,7 +23,9 @@
     "gatsby-plugin-styled-components": "^3.3.10",
     "gatsby-recipes": "^0.2.34",
     "gatsby-source-filesystem": "^2.3.27",
+    "gatsby-theme-apollo": "^3.0.3",
     "gatsby-transformer-sharp": "^2.5.14",
+    "isomorphic-fetch": "^3.0.0",
     "localstorage-memory": "^1.0.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

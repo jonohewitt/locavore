@@ -22,10 +22,12 @@ import {
   DairyIndicator,
 } from "../../components/recipeIndicators"
 import { infoSVG } from "../../components/icons"
+import { CommentSectionComponent } from "../../components/commentSection"
+import slugify from "slugify"
 
 const IngredientBox = styled.div`
   background-color: var(--color-graphBackground);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   padding: 10px 20px 30px 20px;
   margin: 0 0 40px 0;
   font-weight: 600;
@@ -72,10 +74,9 @@ const IngredientsButton = styled.button`
   height: 45px;
   font-size: 18px;
   font-weight: 600;
-  color: ${props =>
-    props.selected && !props.isDark && "var(--color-graphBackground)"};
+  color: ${props => (props.isDark || props.selected) && "#fff"};
   background: ${props =>
-    props.selected ? "#aa685b" : "var(--color-background)"};
+    props.selected ? "var(--color-settingsIcon)" : "var(--color-background)"};
   width: 50%;
   border-radius: 10px 0 0 10px;
   margin: 14px 0 10px 0;
@@ -357,6 +358,16 @@ const RecipeTemplate = ({ data }) => {
     </Preparation>
   )
 
+  const [commentFormOpen, setCommentFormOpen] = useState(false)
+
+  const CommentSection = () => (
+    <CommentSectionComponent
+      commentFormOpen={commentFormOpen}
+      setCommentFormOpen={setCommentFormOpen}
+      slug={slugify(fm.title, { strict: true, lower: true })}
+    />
+  )
+
   return (
     <>
       <SEO title={fm.title} />
@@ -370,6 +381,7 @@ const RecipeTemplate = ({ data }) => {
               <LeftColumn>
                 <Header />
                 <IngredientsSection />
+                <CommentSection />
               </LeftColumn>
               <RightColumn>
                 <FeatureImage fm={fm} />
@@ -382,6 +394,7 @@ const RecipeTemplate = ({ data }) => {
               <FeatureImage fm={fm} />
               <IngredientsSection />
               <PreperationSection />
+              <CommentSection />
             </>
           )}
         </StyledArticle>

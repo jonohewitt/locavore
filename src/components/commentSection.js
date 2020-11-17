@@ -47,7 +47,7 @@ const CommentTextArea = styled.textarea`
 const OpenCommentFormButton = styled.button`
   background: var(--color-settingsIcon);
   height: 40px;
-  width: 200px;
+  padding: 0 20px;
   border-radius: 10px;
   font-size: 18px;
   font-weight: 600;
@@ -216,7 +216,7 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
     <CommentForm onSubmit={handleSubmit}>
       <NameContainer error={nameError}>
         <NameInput
-          placeholder="Name..."
+          placeholder="Nom..."
           ref={nameRef}
           onFocus={() => setNameError(false)}
           onBlur={() => handleInputBlur(nameRef)}
@@ -224,7 +224,7 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
       </NameContainer>
       <CommentContainer error={commentError}>
         <CommentTextArea
-          placeholder="Comment..."
+          placeholder="Commentaire..."
           ref={commentRef}
           onFocus={() => setCommentError(false)}
           onBlur={() => handleInputBlur(commentRef)}

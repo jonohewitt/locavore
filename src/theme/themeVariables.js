@@ -36,7 +36,7 @@ export const darkTheme = {
   navTitle: "#ddd",
   navText: "#ddd",
   settings: "hsla(234, 11%, 12%, 1)",
-  settingsIcon: "hsla(10, 48%, 63%, 1)",
+  settingsIcon: "hsl(10.5, 35.7%, 56.1%)",
   altColor: "hsla(10, 48%, 63%, 1)",
   graphBackground: "hsla(240, 8%, 6%, 1)",
   hr: "hsla(0, 0%, 86%, 0.3)",

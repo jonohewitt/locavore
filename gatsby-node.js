@@ -1,7 +1,8 @@
-const path = require("path")
-const slugify = require("slugify")
+import path from "path"
+import slugify from "slugify"
+import {ingredientsData} from "./src/data/ingredientsData"
 
-exports.createPages = async ({
+export const createPages = async ({
   graphql,
   actions: { createPage },
   reporter,
@@ -32,6 +33,8 @@ exports.createPages = async ({
 
   const ingredientSet = new Set()
 
+  ingredientsData.forEach(ingredient => ingredientSet.add(ingredient.name))
+
   posts.forEach(node => {
     const slug = node.frontmatter.customSlug
       ? node.frontmatter.customSlug
@@ -45,7 +48,9 @@ exports.createPages = async ({
 
     createPage({
       path: `${node.fields.source}${slug}`,
-      component: path.resolve(`./src/posts/templates/${node.fields.source}-template.js`),
+      component: path.resolve(
+        `./src/posts/templates/${node.fields.source}-template.js`
+      ),
       context: { id: node.id },
     })
   })

@@ -32,7 +32,8 @@ const RecipeCard = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
   overflow: hidden;
-  @media (min-width: ${600}px) {
+  transform: translateY(0);
+  @media (min-width: 600px) {
     height: 100%;
   }
 
@@ -82,102 +83,95 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
   useEffect(() => setFadedIn(true), [])
 
-  const mostRecentStart = recipe => {
-    let mostRecent = 100 // arbitrary high number for always in season
-
-    const findMostRecentStart = recipeToTest => {
-      recipeToTest.frontmatter.ingredients.forEach(ingredient => {
-        const ingredientObj = ingredientsData.find(
-          object => object.name === ingredient
-        )
-
-        // ensure valid data exists
-        if (ingredientObj?.months?.length === 12) {
-          if (
-            ingredientObj.months.includes("start") && // filter out permanently in season
-            ingredientObj.months[context.currentMonth]
-          ) {
-            let value =
-              context.currentMonth - ingredientObj.months.indexOf("start")
-            if (value < 0) {
-              value += 12
-            }
-            if (value < mostRecent) {
-              mostRecent = value
-            }
-          }
-        } else {
-          console.log(ingredient + " not found or has insufficient data!")
-        }
-      })
-    }
-
-    findMostRecentStart(recipe)
-
+  // Combine original recipe with any linked recipes into an array of recipe objects
+  const combinedRecipeAndLinks = recipe => {
+    const combinedArray = [recipe]
     if (recipe.frontmatter.linkedRecipes) {
       recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-        const foundLinkedRecipe = recipeList.find(
-          element => element.frontmatter.title === linkedRecipe
+        const foundRecipe = recipeList.find(
+          recipeData => recipeData.frontmatter.title === linkedRecipe
         )
-        findMostRecentStart(foundLinkedRecipe)
+        if (foundRecipe) combinedArray.push(foundRecipe)
+        else
+          console.log(
+            `${linkedRecipe} linked in ${recipe.frontmatter.title} not found!`
+          )
       })
     }
-    return mostRecent
+    return combinedArray
   }
 
-  const soonestEnd = recipe => {
-    let soonest = 100 // arbitrary high number to compare against
-    const findSoonestEnd = recipeToTest => {
-      recipeToTest.frontmatter.ingredients.forEach(ingredient => {
-        const ingredientObj = ingredientsData.find(
-          object => object.name === ingredient
-        )
+  // Provide a set of unique ingredient data objects for a given recipe
+  // as well as ingredients in any nested linked recipes
+  const getIngredientData = recipe => {
+    const uniqueIngredients = new Set()
 
-        if (ingredientObj.months.includes("end")) {
-          let value = ingredientObj.months.indexOf("end") - context.currentMonth
-          if (value < 0) {
-            value += 12
-          }
-          if (value < soonest) {
-            soonest = value
-          }
-        }
-      })
-    }
-    findSoonestEnd(recipe)
-
-    if (recipe.frontmatter.linkedRecipes) {
-      recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-        const foundLinkedRecipe = recipeList.find(
-          element => element.frontmatter.title === linkedRecipe
-        )
-        findSoonestEnd(foundLinkedRecipe)
-      })
-    }
-    return soonest
-  }
-
-  const allInSeason = recipe => {
-    const inSeasonCheck = context.filterList.find(
-      filter => filter.name === "En saison"
-    ).logic
-
-    const recipeIngredientsInSeason = inSeasonCheck(recipe.frontmatter)
-
-    if (recipe.frontmatter.linkedRecipes)
-      return (
-        inSeasonCheck(recipe.frontmatter) &&
-        recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
-          const foundLinkedRecipe = recipeList.find(
-            element => element.frontmatter.title === linkedRecipe
-          )
-          return (
-            foundLinkedRecipe && inSeasonCheck(foundLinkedRecipe.frontmatter)
-          )
-        })
+    combinedRecipeAndLinks(recipe).forEach(recipeObj =>
+      recipeObj.frontmatter.ingredients.forEach(ingredient =>
+        uniqueIngredients.add(ingredient)
       )
-    else return recipeIngredientsInSeason
+    )
+
+    const uniqueIngredientObjects = []
+
+    uniqueIngredients.forEach(ingredient => {
+      const ingredientObj = ingredientsData.find(
+        object => object.name === ingredient
+      )
+      if (ingredientObj) uniqueIngredientObjects.push(ingredientObj)
+    })
+
+    return uniqueIngredientObjects
   }
+
+  const calcMonths = (recipe, comparison, seasonalEvent) => {
+    // set maximum to compare against
+    let difference = 12
+
+    getIngredientData(recipe).forEach(ingredientObj => {
+      // check data exists and is not wrongly formatted
+      if (ingredientObj.months?.length === 12) {
+        // check data includes the seasonal event being searched
+        // and that the ingredient is currently in season
+        if (
+          ingredientObj.months.includes(seasonalEvent) &&
+          ingredientObj.months[context.currentMonth]
+        ) {
+          // get difference between now and seasonal event being searched
+          let value
+          // switch to make it easy to add other comparisons later
+          switch (comparison) {
+            case "mostRecent":
+              value =
+                context.currentMonth -
+                ingredientObj.months.indexOf(seasonalEvent)
+              break
+            case "soonest":
+              value =
+                ingredientObj.months.indexOf(seasonalEvent) -
+                context.currentMonth
+              break
+            default:
+              console.log("Comparison value error")
+              break
+          }
+          // if the difference in month indices is negative, add 12
+          // e.g if it was currently Jan [0] and the seasonal event was in Dec [11]
+          // 0 - 11 = -11 => 1 month difference
+          if (value < 0) value += 12
+          // find the smallest value after looping through all the ingredients
+          if (value < difference) difference = value
+        }
+      } else console.log(`No data for ${ingredientObj.name}`)
+    })
+    return difference
+  }
+
+  // check if all ingredients in a recipe and linked recipes are in currently in season
+  const allInSeason = recipe =>
+    getIngredientData(recipe).every(
+      ingredientObj => ingredientObj.months[context.currentMonth]
+    )
 
   return (
     <StyledUL fadedIn={fadedIn}>
@@ -185,28 +179,13 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
         .filter(
           recipe =>
             !filterList ||
-            filterList.every(filter => {
-              if (!filter.isApplied) return true
-              else if (recipe.frontmatter.linkedRecipes)
-                return (
-                  filter.logic(recipe.frontmatter) &&
-                  recipe.frontmatter.linkedRecipes.every(linkedRecipe => {
-                    const foundLinkedRecipe = recipeList.find(
-                      element => element.frontmatter.title === linkedRecipe
-                    )
-
-                    if (foundLinkedRecipe)
-                      return filter.logic(foundLinkedRecipe.frontmatter)
-                    else {
-                      console.log(
-                        "Linked recipe: " + linkedRecipe + " not found!"
-                      )
-                      return false
-                    }
-                  })
+            filterList.every(
+              filter =>
+                !filter.isApplied ||
+                combinedRecipeAndLinks(recipe).every(recipeObj =>
+                  filter.logic(recipeObj.frontmatter)
                 )
-              else return filter.logic(recipe.frontmatter)
-            })
+            )
         )
         .sort((a, b) => {
           let sortValue
@@ -215,13 +194,17 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
             switch (sort) {
               case "Nouveautés":
                 if (allInSeason(a) && allInSeason(b)) {
-                  sortValue = mostRecentStart(a) - mostRecentStart(b)
-                } else sortValue = allInSeason(a) && !allInSeason(b) ? -1 : 1
+                  sortValue =
+                    calcMonths(a, "mostRecent", "start") -
+                    calcMonths(b, "mostRecent", "start")
+                } else sortValue = allInSeason(a) ? -1 : 1
                 break
               case "Bientôt hors saison":
                 if (allInSeason(a) && allInSeason(b)) {
-                  sortValue = soonestEnd(a) - soonestEnd(b)
-                } else sortValue = allInSeason(a) && !allInSeason(b) ? -1 : 1
+                  sortValue =
+                    calcMonths(a, "soonest", "end") -
+                    calcMonths(b, "soonest", "end")
+                } else sortValue = allInSeason(a) ? -1 : 1
                 break
               default:
                 break
@@ -230,7 +213,8 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
           if (sortValue) return sortValue
           else {
-            // sort by french alphabetical if sort function returns a tie or no sort preference given
+            // sort by french alphabetical if sort function returns a tie
+            // or if no sort preference is given
             return new Intl.Collator("fr").compare(
               a.frontmatter.title,
               b.frontmatter.title

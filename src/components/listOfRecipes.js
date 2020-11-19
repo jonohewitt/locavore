@@ -83,22 +83,36 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
   useEffect(() => setFadedIn(true), [])
 
-  // Combine original recipe with any linked recipes into an array of recipe objects
+// Find and return recipe data object from its title
+  const findRecipeObject = recipeTitle =>
+    recipeList.find(recipeData => recipeData.frontmatter.title === recipeTitle)
+
+  // Combine a recipe with any linked recipes into a single array of recipe objects
+  // This is done recursively to catch an unknown amount of nesting of linked recipes
+  // It's unlikely to have a recipe nested deeper than 1 level but could be possible in future.
   const combinedRecipeAndLinks = recipe => {
-    const combinedArray = [recipe]
-    if (recipe.frontmatter.linkedRecipes) {
-      recipe.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-        const foundRecipe = recipeList.find(
-          recipeData => recipeData.frontmatter.title === linkedRecipe
-        )
-        if (foundRecipe) combinedArray.push(foundRecipe)
-        else
-          console.log(
-            `${linkedRecipe} linked in ${recipe.frontmatter.title} not found!`
-          )
-      })
+    const uniqueRecipeSet = new Set()
+
+    const recursiveSearchAndAdd = recipeToSearch => {
+      uniqueRecipeSet.add(recipeToSearch)
+      if (recipeToSearch.frontmatter.linkedRecipes) {
+        recipeToSearch.frontmatter.linkedRecipes.forEach(linkedRecipe => {
+          const foundRecipe = findRecipeObject(linkedRecipe)
+          if (foundRecipe) {
+            if (!uniqueRecipeSet.has(foundRecipe)) {
+              recursiveSearchAndAdd(foundRecipe)
+            }
+          } else {
+            console.log(
+              `${linkedRecipe} linked in ${recipeToSearch.frontmatter.title} not found!`
+            )
+          }
+        })
+      }
     }
-    return combinedArray
+
+    recursiveSearchAndAdd(recipe)
+    return [...uniqueRecipeSet]
   }
 
   // Provide a set of unique ingredient data objects for a given recipe
@@ -157,7 +171,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
           }
           // if the difference in month indices is negative, add 12
           // e.g if it was currently Jan [0] and the seasonal event was in Dec [11]
-          // 0 - 11 = -11 => 1 month difference
+          // 0 - 11 + 12 = 1 month difference
           if (value < 0) value += 12
           // find the smallest value after looping through all the ingredients
           if (value < difference) difference = value
@@ -167,7 +181,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
     return difference
   }
 
-  // check if all ingredients in a recipe and linked recipes are in currently in season
+  // Check if all ingredients in a recipe and linked recipes are currently in season
   const allInSeason = recipe =>
     getIngredientData(recipe).every(
       ingredientObj => ingredientObj.months[context.currentMonth]
@@ -213,8 +227,8 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
 
           if (sortValue) return sortValue
           else {
-            // sort by french alphabetical if sort function returns a tie
-            // or if no sort preference is given
+            // Sort by French alphabetical if sort function returns a tie
+            // or if no sort preference is given in the ListOfRecipes args
             return new Intl.Collator("fr").compare(
               a.frontmatter.title,
               b.frontmatter.title

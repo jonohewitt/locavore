@@ -11,7 +11,7 @@
     "babel-plugin-styled-components": "^1.11.1",
     "d3": "^6.1.1",
     "esm": "^3.2.25",
-    "gatsby": "^2.24.90",
+    "gatsby": "^2.27.0",
     "gatsby-cli": "^2.12.113",
     "gatsby-image": "^2.4.14",
     "gatsby-plugin-manifest": "^2.4.27",

@@ -1,80 +1,54 @@
-import { ingredientsData } from "../data/ingredientsData"
+import React, { useState, useEffect } from "react"
+import styled from "styled-components"
+import slugify from "slugify"
+import { Link } from "gatsby"
 
-export const listOfIngredients = ({ filter, sort, monthIndex }) => {
-  const calcMonths = (value, target, ingredient, limit) => {
-    if (ingredient.months.includes(target)) {
-      let numOfMonths
-      switch (value) {
-        case "until":
-          numOfMonths = ingredient.months.indexOf(target) - monthIndex
-          break
-        case "since":
-          numOfMonths = monthIndex - ingredient.months.indexOf(target)
-          break
-        default:
-          console.log("calcMonths value error")
-          return false
-      }
-
-      const posNumOfMonths = numOfMonths < 0 ? numOfMonths + 12 : numOfMonths
-
-      if (limit) return posNumOfMonths <= limit
-      else return posNumOfMonths
-    } else return false
+const StyledUL = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s, transform 0.8s;
+  ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
+  li {
+    height: 100px;
+    transition: transform 0.3s;
+    &:hover {
+      transform: translateY(-5px);
+    }
+    a {
+      font-size: 15px;
+      font-weight: 700;
+      border: 1.5px solid;
+      border-radius: 15px;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      line-height: 1.3;
+    }
   }
+`
 
-  return ingredientsData
-    .filter(ingredient => {
-      switch (filter) {
-        case "currentlyInSeason":
-          return (
-            ingredient.months[monthIndex] &&
-            ingredient.months.some(month => !month)
-          )
-        case "alwaysInSeason":
-          return ingredient.months.every(month => month)
-        case "outOfSeason":
-          return !ingredient.months[monthIndex]
-        case "noData":
-          return !ingredient.months || ingredient.months.length !== 12
-        case "lastChance":
-          return calcMonths("until", "end", ingredient, 1)
-        case "justIn":
-          return (
-            ingredient.months[monthIndex] &&
-            calcMonths("since", "start", ingredient, 1)
-          )
-        case "comingUp":
-          return (
-            !ingredient.months[monthIndex] &&
-            calcMonths("until", "start", ingredient, 1)
-          )
-        case "testEmpty":
-          return false
-        default:
-          return true
-      }
-    })
-    .sort((a, b) => {
-      let sortValue
-      switch (sort) {
-        case "newest":
-          sortValue =
-            calcMonths("since", "start", a) - calcMonths("since", "start", b)
-          break
-        case "endingSoonest":
-          sortValue =
-            calcMonths("until", "end", a) - calcMonths("until", "end", b)
-          break
-        case "startingSoonest":
-          sortValue =
-            calcMonths("until", "start", a) - calcMonths("until", "start", b)
-          break
-        default:
-          break
-      }
-      // sort by french alphabetical if previous sort function returns a tie or no sort preference given
-      if (sortValue) return sortValue
-      else return new Intl.Collator("fr").compare(a.name, b.name)
-    })
+export const ListOfIngredients = ({ list }) => {
+  const [fadedIn, setFadedIn] = useState(false)
+  useEffect(() => setFadedIn(true), [])
+
+  return (
+    <StyledUL fadedIn={fadedIn}>
+      {list.map(ingredient => (
+        <li key={ingredient.name}>
+          <Link
+            to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}
+          >
+            {ingredient.name}
+          </Link>
+        </li>
+      ))}
+    </StyledUL>
+  )
 }

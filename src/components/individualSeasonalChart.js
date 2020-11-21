@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
-import { monthIndexToName } from "./smallReusableFunctions"
+import { monthIndexToName } from "../functions/monthIndexToName"
+import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 
 const ChartWrapper = styled.div`
   background-color: var(--color-graphBackground);
@@ -172,7 +173,7 @@ const Month = ({ value, index, monthIndex, toolTipsCanShow }) => {
   )
 }
 
-export const IndividualSeasonalChart = ({ data }) => {
+export const IndividualSeasonalChart = ({ ingredient }) => {
   const [fadedIn, setFadedIn] = useState(false)
   const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
 
@@ -192,7 +193,7 @@ export const IndividualSeasonalChart = ({ data }) => {
     <>
       <ChartWrapper fadedIn={fadedIn}>
         <MonthList>
-          {data.months.map((month, index) => (
+          {getSeasonalityArray(ingredient).map((month, index) => (
             <Month
               toolTipsCanShow={toolTipsCanShow}
               key={index}
@@ -203,15 +204,15 @@ export const IndividualSeasonalChart = ({ data }) => {
           ))}
         </MonthList>
       </ChartWrapper>
-      {data.source && (
+      {ingredient.source && (
         <SourceText>
           Source :{" "}
           <a
-            href={data.source.link}
+            href={ingredient.source.link}
             rel="noreferrer noopener external"
             target="_blank"
           >
-            {data.source.name}
+            {ingredient.source.name}
           </a>
         </SourceText>
       )}

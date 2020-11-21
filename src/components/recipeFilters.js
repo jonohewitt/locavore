@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
-import { useWindowWidth } from "./smallReusableFunctions"
+import { useWindowWidth } from "../functions/useWindowWidth"
 import { GlobalState } from "../context/globalStateContext"
 
 const SelectOptionsButton = styled.button`
@@ -177,7 +177,7 @@ export const Options = ({
   sortList,
   setSortList,
 }) => {
-  const context = useContext(GlobalState)
+  const { isDark } = useContext(GlobalState)
 
   const toggleFilter = filterName => {
     setFilterList(prevState => {
@@ -244,7 +244,7 @@ export const Options = ({
                 }}
                 isApplied={filter.isApplied}
                 color="var(--color-filterSectionA)"
-                isDark={context.isDark}
+                isDark={isDark}
               />
             ))}
         </span>
@@ -259,7 +259,7 @@ export const Options = ({
                 action={() => toggleFilter(filter.name)}
                 isApplied={filter.isApplied}
                 color="var(--color-text)"
-                isDark={context.isDark}
+                isDark={isDark}
               />
             ))}
         </span>
@@ -281,7 +281,7 @@ export const Options = ({
                 !filterList.find(filter => filter.name === "En saison")
                   .isApplied
               }
-              isDark={context.isDark}
+              isDark={isDark}
             />
           ))}
         </span>

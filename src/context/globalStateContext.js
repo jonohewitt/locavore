@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react"
+import { useStaticQuery, graphql } from "gatsby"
 import { lightTheme, darkTheme } from "../theme/themeVariables"
-import { ingredientsData } from "../data/ingredientsData"
+import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 
 export const GlobalState = React.createContext()
 
@@ -9,24 +10,43 @@ const Provider = ({ children }) => {
   const [settingsIsOpen, setSettingsIsOpen] = useState(false)
   const [isDark, setTheme] = useState(undefined)
   const [currentMonth, setMonth] = useState(new Date().getMonth())
+
+  const {
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(
+    graphql`
+      query {
+        allIngredientsJson {
+          nodes {
+            name
+            season {
+              end
+              start
+            }
+          }
+        }
+      }
+    `
+  )
+
   const [filterList, setFilterList] = useState([
     {
       name: "En saison",
       group: "green",
       logic(fm) {
-        return fm.ingredients.every(ingredientName => {
-          const foundIngredient = ingredientsData.find(
-            ingredientObject => ingredientObject.name === ingredientName
+        return fm.ingredients.every(ingredientStr => {
+          const foundIngredient = allIngredients.find(
+            ingredientObj => ingredientObj.name === ingredientStr
           )
-          if (
-            foundIngredient &&
-            foundIngredient.months &&
-            foundIngredient.months.length === 12
-          ) {
-            return foundIngredient.months[currentMonth]
+          if (foundIngredient) {
+            return checkIngredientInSeason({
+              ingredient: foundIngredient,
+              monthIndex: currentMonth,
+              includeYearRound: true,
+            })
           } else {
-            console.log(ingredientName + " not found or has insufficient data!")
-            return true
+            console.log(ingredientStr + " not found or has insufficient data!")
+            return false
           }
         })
       },
@@ -44,11 +64,11 @@ const Provider = ({ children }) => {
       name: "Saisonnier",
       group: "green",
       logic(fm) {
-        return fm.ingredients.some(ingredientName => {
-          const foundIngredient = ingredientsData.find(
-            ingredientObject => ingredientObject.name === ingredientName
+        return fm.ingredients.some(ingredientStr => {
+          const foundIngredient = allIngredients.find(
+            ingredientObj => ingredientObj.name === ingredientStr
           )
-          return foundIngredient && foundIngredient.months.includes(false)
+          return foundIngredient && foundIngredient.season
         })
       },
       isApplied: false,

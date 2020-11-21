@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react"
 import styled from "styled-components"
 import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
-import { useWindowWidth } from "./smallReusableFunctions"
+import { useWindowWidth } from "../functions/useWindowWidth"
 import { GlobalState } from "../context/globalStateContext"
 import { searchSVG, crossSVG, arrowSVG } from "./icons"
 import { Search } from "./search"
@@ -52,7 +52,7 @@ const SearchContainer = styled.div`
   z-index: 5;
   top: 10px;
   right: 55px;
-  width: 350px;
+  width: min(500px, 45%);
 
   &.fade-enter {
     opacity: 0;
@@ -272,7 +272,7 @@ export const BrowserNav = ({
   const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
   const [value, setValue] = useState("")
   const [list, setList] = useState([])
-  const context = useContext(GlobalState)
+  const { setSettingsIsOpen } = useContext(GlobalState)
 
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -402,7 +402,7 @@ export const BrowserNav = ({
             onClick={() => {
               setMobileSearchIsActive(false)
               setDropDownIsOpen(!dropDownIsOpen)
-              context.setSettingsIsOpen(false)
+              setSettingsIsOpen(false)
             }}
           >
             Menu {arrowSVG}

@@ -1,11 +1,12 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
-import { ingredientsData } from "../data/ingredientsData"
 import slugify from "slugify"
 import { navigate } from "gatsby"
 import { infoSVG } from "./icons"
-import { monthIndexToName } from "./smallReusableFunctions"
+import { monthIndexToName } from "../functions/monthIndexToName"
+import { getSeasonalityArray } from "../functions/getSeasonalityArray"
+import { graphql, useStaticQuery } from "gatsby"
 
 const NoIngredientData = styled.div`
   display: flex;
@@ -107,15 +108,15 @@ const IngredientName = styled.td`
 `
 
 const MonthInitials = () => {
-  const context = useContext(GlobalState)
+  const { currentMonth } = useContext(GlobalState)
   const initials = []
 
   for (let i = 0; i < 12; i++) {
     initials.push(
       <MonthInitial
         key={monthIndexToName(i)}
-        isCurrentMonth={i === context.currentMonth}
-        title={i === context.currentMonth ? "ce mois-ci" : monthIndexToName(i)}
+        isCurrentMonth={i === currentMonth}
+        title={i === currentMonth ? "ce mois-ci" : monthIndexToName(i)}
       >
         {monthIndexToName(i).charAt(0).toUpperCase()}
       </MonthInitial>
@@ -132,22 +133,47 @@ const MonthInitials = () => {
 }
 
 export const RecipeSeasonalityTable = ({ ingredients }) => {
-  const foundIngredients = []
+  const {
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(
+    graphql`
+      query {
+        allIngredientsJson {
+          nodes {
+            name
+            season {
+              end
+              start
+            }
+            type
+            source {
+              link
+              name
+            }
+          }
+        }
+      }
+    `
+  )
+
+  const uniqueIngredients = new Set()
   let yearRoundIngredientFound = false
 
   ingredients.forEach(ingredient => {
-    const foundIngredient = ingredientsData.find(
+    const foundIngredient = allIngredients.find(
       ingredientObj => ingredientObj.name === ingredient
     )
 
     if (foundIngredient) {
-      if (foundIngredient.months.includes(false)) {
-        foundIngredients.push(foundIngredient)
+      if (foundIngredient.season) {
+        uniqueIngredients.add(foundIngredient)
       } else {
         yearRoundIngredientFound = true
       }
     }
   })
+
+  const foundIngredients = [...uniqueIngredients]
 
   return foundIngredients.length ? (
     <StyledTable>
@@ -165,7 +191,7 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
             }
           >
             <IngredientName>{ingredient.name}</IngredientName>
-            {ingredient.months.map((month, i) => (
+            {getSeasonalityArray(ingredient).map((month, i) => (
               <MonthValues
                 key={monthIndexToName(i)}
                 value={month}

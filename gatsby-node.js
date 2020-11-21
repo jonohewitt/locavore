@@ -1,6 +1,5 @@
 import path from "path"
 import slugify from "slugify"
-import { ingredientsData } from "./src/data/ingredientsData"
 
 export const createPages = async ({
   graphql,
@@ -22,6 +21,11 @@ export const createPages = async ({
           }
         }
       }
+      allIngredientsJson {
+        nodes {
+          name
+        }
+      }
     }
   `)
 
@@ -29,29 +33,30 @@ export const createPages = async ({
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  const posts = result.data.allMdx.nodes
+  const allPosts = result.data.allMdx.nodes
+  const allIngredients = result.data.allIngredientsJson.nodes
 
   const ingredientSet = new Set()
 
-  ingredientsData.forEach(ingredient => ingredientSet.add(ingredient.name))
+  allIngredients.forEach(ingredient => ingredientSet.add(ingredient.name))
 
-  posts.forEach(node => {
-    const slug = node.frontmatter.customSlug
-      ? node.frontmatter.customSlug
-      : `/${slugify(node.frontmatter.title, { lower: true, strict: true })}`
+  allPosts.forEach(post => {
+    const slug = post.frontmatter.customSlug
+      ? post.frontmatter.customSlug
+      : `/${slugify(post.frontmatter.title, { lower: true, strict: true })}`
 
-    if (node.frontmatter.ingredients) {
-      node.frontmatter.ingredients.forEach(ingredient => {
+    if (post.frontmatter.ingredients) {
+      post.frontmatter.ingredients.forEach(ingredient => {
         ingredientSet.add(ingredient)
       })
     }
 
     createPage({
-      path: `${node.fields.source}${slug}`,
+      path: `${post.fields.source}${slug}`,
       component: path.resolve(
-        `./src/posts/templates/${node.fields.source}-template.js`
+        `./src/posts/templates/${post.fields.source}-template.js`
       ),
-      context: { id: node.id },
+      context: { id: post.id },
     })
   })
 

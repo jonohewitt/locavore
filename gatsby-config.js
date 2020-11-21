@@ -66,6 +66,14 @@ module.exports = {
       },
     },
     `gatsby-plugin-netlify`,
-    `gatsby-theme-apollo`
+    `gatsby-theme-apollo`,
+    `gatsby-transformer-json`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: "ingredients",
+        path: `./src/data/`,
+      },
+    },
   ],
 }

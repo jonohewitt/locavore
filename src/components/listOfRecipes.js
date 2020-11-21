@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
 import slugify from "slugify"
 import { TimeIndicators, DairyIndicator } from "./recipeIndicators"
 import { GlobalState } from "../context/globalStateContext"
-import { ingredientsData } from "../data/ingredientsData"
+import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
+import { combineRecipeAndLinks } from "../functions/combineRecipeAndLinks"
 
 const StyledUL = styled.ul`
   margin-top: 25px;
@@ -78,113 +79,104 @@ const RecipeText = styled.div`
 `
 
 export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
+  const {
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(
+    graphql`
+      query {
+        allIngredientsJson {
+          nodes {
+            name
+            season {
+              end
+              start
+            }
+            type
+            source {
+              link
+              name
+            }
+          }
+        }
+      }
+    `
+  )
+
   const [fadedIn, setFadedIn] = useState(false)
-  const context = useContext(GlobalState)
+  const { currentMonth } = useContext(GlobalState)
 
   useEffect(() => setFadedIn(true), [])
-
-// Find and return recipe data object from its title
-  const findRecipeObject = recipeTitle =>
-    recipeList.find(recipeData => recipeData.frontmatter.title === recipeTitle)
-
-  // Combine a recipe with any linked recipes into a single array of recipe objects
-  // This is done recursively to catch an unknown amount of nesting of linked recipes
-  // It's unlikely to have a recipe nested deeper than 1 level but could be possible in future.
-  const combinedRecipeAndLinks = recipe => {
-    const uniqueRecipeSet = new Set()
-
-    const recursiveSearchAndAdd = recipeToSearch => {
-      uniqueRecipeSet.add(recipeToSearch)
-      if (recipeToSearch.frontmatter.linkedRecipes) {
-        recipeToSearch.frontmatter.linkedRecipes.forEach(linkedRecipe => {
-          const foundRecipe = findRecipeObject(linkedRecipe)
-          if (foundRecipe) {
-            if (!uniqueRecipeSet.has(foundRecipe)) {
-              recursiveSearchAndAdd(foundRecipe)
-            }
-          } else {
-            console.log(
-              `${linkedRecipe} linked in ${recipeToSearch.frontmatter.title} not found!`
-            )
-          }
-        })
-      }
-    }
-
-    recursiveSearchAndAdd(recipe)
-    return [...uniqueRecipeSet]
-  }
 
   // Provide a set of unique ingredient data objects for a given recipe
   // as well as ingredients in any nested linked recipes
   const getIngredientData = recipe => {
     const uniqueIngredients = new Set()
 
-    combinedRecipeAndLinks(recipe).forEach(recipeObj =>
+    combineRecipeAndLinks(recipe, recipeList).forEach(recipeObj =>
       recipeObj.frontmatter.ingredients.forEach(ingredient =>
         uniqueIngredients.add(ingredient)
       )
     )
-
     const uniqueIngredientObjects = []
 
     uniqueIngredients.forEach(ingredient => {
-      const ingredientObj = ingredientsData.find(
+      const ingredientObj = allIngredients.find(
         object => object.name === ingredient
       )
       if (ingredientObj) uniqueIngredientObjects.push(ingredientObj)
+      else console.log(`No data for ${ingredient}`)
     })
-
     return uniqueIngredientObjects
   }
+
 
   const calcMonths = (recipe, comparison, seasonalEvent) => {
     // set maximum to compare against
     let difference = 12
 
     getIngredientData(recipe).forEach(ingredientObj => {
-      // check data exists and is not wrongly formatted
-      if (ingredientObj.months?.length === 12) {
-        // check data includes the seasonal event being searched
-        // and that the ingredient is currently in season
-        if (
-          ingredientObj.months.includes(seasonalEvent) &&
-          ingredientObj.months[context.currentMonth]
-        ) {
-          // get difference between now and seasonal event being searched
-          let value
-          // switch to make it easy to add other comparisons later
-          switch (comparison) {
-            case "mostRecent":
-              value =
-                context.currentMonth -
-                ingredientObj.months.indexOf(seasonalEvent)
-              break
-            case "soonest":
-              value =
-                ingredientObj.months.indexOf(seasonalEvent) -
-                context.currentMonth
-              break
-            default:
-              console.log("Comparison value error")
-              break
-          }
-          // if the difference in month indices is negative, add 12
-          // e.g if it was currently Jan [0] and the seasonal event was in Dec [11]
-          // 0 - 11 + 12 = 1 month difference
-          if (value < 0) value += 12
-          // find the smallest value after looping through all the ingredients
-          if (value < difference) difference = value
+      // check data includes the seasonal event being searched
+      // and that the ingredient is currently in season
+      if (
+        checkIngredientInSeason({
+          ingredient: ingredientObj,
+          monthIndex: currentMonth,
+          includeYearRound: false,
+        })
+      ) {
+        // get difference between now and seasonal event being searched
+        let value
+        // switch to make it easy to add other comparisons later
+        switch (comparison) {
+          case "mostRecent":
+            value = currentMonth - ingredientObj.season[seasonalEvent]
+            break
+          case "soonest":
+            value = ingredientObj.season[seasonalEvent] - currentMonth
+            break
+          default:
+            console.log("Comparison value error")
+            break
         }
-      } else console.log(`No data for ${ingredientObj.name}`)
+        // if the difference in month indices is negative, add 12
+        // e.g if it was currently Jan [0] and the seasonal event was in Dec [11]
+        // 0 - 11 + 12 = 1 month difference
+        if (value < 0) value += 12
+        // find the smallest value after looping through all the ingredients
+        if (value < difference) difference = value
+      }
     })
     return difference
   }
 
   // Check if all ingredients in a recipe and linked recipes are currently in season
   const allInSeason = recipe =>
-    getIngredientData(recipe).every(
-      ingredientObj => ingredientObj.months[context.currentMonth]
+    getIngredientData(recipe).every(ingredientObj =>
+      checkIngredientInSeason({
+        ingredient: ingredientObj,
+        monthIndex: currentMonth,
+        includeYearRound: true,
+      })
     )
 
   return (
@@ -196,7 +188,7 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
             filterList.every(
               filter =>
                 !filter.isApplied ||
-                combinedRecipeAndLinks(recipe).every(recipeObj =>
+                combineRecipeAndLinks(recipe, recipeList).every(recipeObj =>
                   filter.logic(recipeObj.frontmatter)
                 )
             )

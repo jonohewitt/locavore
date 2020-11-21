@@ -25,6 +25,7 @@
     "gatsby-recipes": "^0.2.34",
     "gatsby-source-filesystem": "^2.3.27",
     "gatsby-theme-apollo": "^3.0.3",
+    "gatsby-transformer-json": "^2.6.0",
     "gatsby-transformer-sharp": "^2.5.14",
     "isomorphic-fetch": "^3.0.0",
     "localstorage-memory": "^1.0.3",

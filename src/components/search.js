@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { ingredientsData } from "../data/ingredientsData"
 import { Ing } from "./ingredientLink"
 import { navigate, useStaticQuery, Link, graphql } from "gatsby"
 import slugify from "slugify"
@@ -135,18 +134,12 @@ const SearchResult = styled.li`
   }
 `
 
-const getSearchResults = (searchText, otherPageTitles) => {
+const getSearchResults = (searchText, allPages) => {
   const safeSearchText = slugify(searchText, { strict: true, replacement: " " })
   const regex = new RegExp(`^${safeSearchText}|\\s${safeSearchText}`, "gi")
-  const ingredientMatchList = ingredientsData.filter(ingredient =>
-    slugify(ingredient.name, { strict: true, replacement: " " }).match(regex)
+  return allPages.filter(page =>
+    slugify(page.name, { strict: true, replacement: " " }).match(regex)
   )
-
-  const otherMatchingPages = otherPageTitles.filter(title =>
-    slugify(title.name, { strict: true, replacement: " " }).match(regex)
-  )
-
-  return ingredientMatchList.concat(otherMatchingPages)
 }
 
 export const Search = ({
@@ -164,7 +157,13 @@ export const Search = ({
   app,
   navBar,
 }) => {
-  const data = useStaticQuery(graphql`
+  const [indexHighlighted, setIndex] = useState(0)
+  const [typedInput, setTypedInput] = useState("")
+
+  const {
+    allMdx: { nodes: allPosts },
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(graphql`
     query {
       allMdx {
         nodes {
@@ -177,25 +176,39 @@ export const Search = ({
           }
         }
       }
+      allIngredientsJson {
+        nodes {
+          name
+          type
+          season {
+            end
+            start
+          }
+        }
+      }
     }
   `)
 
-  const [indexHighlighted, setIndex] = useState(0)
-  const [typedInput, setTypedInput] = useState("")
+  const allPages = []
 
-  let otherPageTitles = []
+  allIngredients.forEach(ingredient =>
+    allPages.push({
+      name: ingredient.name,
+      type: "ingredients",
+    })
+  )
 
-  data.allMdx.nodes.forEach(node => {
-    if (node.fields.source) {
-      otherPageTitles.push({
-        name: node.frontmatter.title,
-        type: node.fields.source,
-        customSlug: node.frontmatter.customSlug
-          ? node.frontmatter.customSlug
-          : false,
-      })
-    }
-  })
+  allPosts.forEach(post =>
+    allPages.push({
+      name: post.frontmatter.title,
+      type: post.fields.source,
+      customSlug: post.frontmatter.customSlug
+        ? post.frontmatter.customSlug
+        : false,
+    })
+  )
+
+
 
   useEffect(() => {
     if (!navBarSearchIsActive) {
@@ -216,7 +229,7 @@ export const Search = ({
     setValue(event.target.value)
     setTypedInput(event.target.value)
     if (event.target.value.length) {
-      const results = getSearchResults(event.target.value, otherPageTitles)
+      const results = getSearchResults(event.target.value, allPages)
       if (results.length) {
         setList(results)
       } else {
@@ -277,7 +290,7 @@ export const Search = ({
     handleChange(event)
   }
 
-  const IngredientSearchResult = ({ element }) => (
+  const IngredientResult = ({ element }) => (
     <>
       <CategoryLabel>Ingredients</CategoryLabel>
       <Ing
@@ -290,7 +303,7 @@ export const Search = ({
     </>
   )
 
-  const OtherPageSearchResult = ({ element }) => {
+  const RecipeOrBlogResult = ({ element }) => {
     let slug
 
     if (element.customSlug) slug = element.customSlug
@@ -316,6 +329,25 @@ export const Search = ({
     </>
   )
 
+  const GetResult = (element, index) => {
+    let result
+    if (element.type === "blog" || element.type === "recettes") {
+      result = <RecipeOrBlogResult element={element} />
+    } else if (element.name) {
+      result = <IngredientResult element={element} />
+    } else result = <NoResultsFound element={element} />
+
+    return (
+      <SearchResult
+        selected={index === indexHighlighted}
+        key={element.name ? element.name : "Error"}
+      >
+        {result}
+        <hr />
+      </SearchResult>
+    )
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -336,24 +368,11 @@ export const Search = ({
             onFocus={handleFocus}
           />
         </InputContainer>
-        {list && list.length > 0 && (
+
+        {list?.length > 0 && (
           <SearchResultListContainer outline={mobile || app}>
             <SearchResultList>
-              {list.map((element, index) => (
-                <SearchResult
-                  selected={index === indexHighlighted}
-                  key={element.name ? element.name : "Error"}
-                >
-                  {element.months ? (
-                    <IngredientSearchResult element={element} />
-                  ) : element.type !== "Error" ? (
-                    <OtherPageSearchResult element={element} />
-                  ) : (
-                    <NoResultsFound element={element} />
-                  )}
-                  <hr />
-                </SearchResult>
-              ))}
+              {list.map((element, index) => GetResult(element, index))}
             </SearchResultList>
           </SearchResultListContainer>
         )}

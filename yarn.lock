@@ -7346,6 +7346,14 @@ gatsby-theme-apollo@^3.0.3:
   resolved "https://registry.yarnpkg.com/gatsby-theme-apollo/-/gatsby-theme-apollo-3.0.3.tgz#c6bfa9d9cd3e851f7db70053a73a3c5dee7bbd9f"
   integrity sha512-8xHI93SypSHu4y1BbvhJE1sqFQEw1QR7zFPVdZGBcgmiSh5Nbkvf4PBisV/Iiia7NiekiXEne5sCSCK5mu/oRA==
 
+gatsby-transformer-json@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-json/-/gatsby-transformer-json-2.6.0.tgz#99826e1b56ee1d1d299fb24a49cee40e7d38af81"
+  integrity sha512-hSaMk5/rVhTkNrY/xF0W6BIyhKlUdEcRM8te4j2Xw9l7VGduwPo8jHMBanapQwY4mhJqaFODjSfw4OefYH46NQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    bluebird "^3.7.2"
+
 gatsby-transformer-sharp@^2.5.14:
   version "2.5.20"
   resolved "https://registry.yarnpkg.com/gatsby-transformer-sharp/-/gatsby-transformer-sharp-2.5.20.tgz#b06aab5439893bc9a52b498fce96bf17429f18f3"

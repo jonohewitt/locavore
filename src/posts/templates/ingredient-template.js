@@ -5,11 +5,12 @@ import { SEO } from "../../components/seo"
 import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
 import { ListOfRecipes } from "../../components/listOfRecipes"
 import { GlobalState } from "../../context/globalStateContext"
-import { ingredientsData } from "../../data/ingredientsData"
 import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
-import { monthIndexToName } from "../../components/smallReusableFunctions"
+import { monthIndexToName } from "../../functions/monthIndexToName"
 import { BackButton } from "../../components/backButton"
+import { checkIngredientInSeason } from "../../functions/checkIngredientInSeason"
+import { combineRecipeAndLinks } from "../../functions/combineRecipeAndLinks"
 
 const IngredientStyles = styled.div`
   h1 {
@@ -19,10 +20,6 @@ const IngredientStyles = styled.div`
 
   h2 {
     font-size: 26px;
-    svg {
-      transform: scale(1.5);
-      margin-left: 6px;
-    }
   }
 
   main {
@@ -52,27 +49,41 @@ const Header = styled.header`
   }
 `
 
-const IngredientTemplate = ({ pageContext, data }) => {
-  const context = useContext(GlobalState)
+const SeasonalIndicator = styled.h2`
+  svg {
+    transform: scale(1.5);
+    margin-left: 6px;
+  }
+  ${props => !props.foundIngredient && "margin-bottom: 50px;"}
+`
 
-  const ingredientObject = ingredientsData.find(
+const IngredientTemplate = ({ pageContext, data }) => {
+  const { currentMonth } = useContext(GlobalState)
+  const allRecipes = data.allMdx.nodes
+  const allIngredients = data.allIngredientsJson.nodes
+
+  const foundIngredient = allIngredients.find(
     ingredient => ingredient.name === pageContext.name
   )
 
   let currentlyInSeason
 
-  if (ingredientObject) {
-    currentlyInSeason = ingredientObject.months[context.currentMonth]
+  if (foundIngredient) {
+    currentlyInSeason = checkIngredientInSeason({
+      ingredient: foundIngredient,
+      monthIndex: currentMonth,
+      includeYearRound: true,
+    })
   }
 
   let seasonalIndicator
   let icon
 
   if (currentlyInSeason !== undefined) {
-    if (ingredientObject.months.includes(false)) {
+    if (foundIngredient.season) {
       seasonalIndicator = currentlyInSeason
-        ? `En saison en ${monthIndexToName(context.currentMonth)}`
-        : `Hors saison en ${monthIndexToName(context.currentMonth)}`
+        ? `En saison en ${monthIndexToName(currentMonth)}`
+        : `Hors saison en ${monthIndexToName(currentMonth)}`
       icon = currentlyInSeason ? tickSVG : crossSVG
     } else {
       seasonalIndicator = "Disponible toute l'année"
@@ -82,23 +93,12 @@ const IngredientTemplate = ({ pageContext, data }) => {
     seasonalIndicator = "Pas encore d'information"
   }
 
-  const recipeList = data.allMdx.nodes
-
   const recipesWithIngredient = new Set(
-    recipeList.filter(recipe => {
-      if (recipe.frontmatter.linkedRecipes) {
-        return (
-          recipe.frontmatter.ingredients.includes(pageContext.name) ||
-          recipe.frontmatter.linkedRecipes.some(linkedRecipe => {
-            const foundLinkedRecipe = recipeList.find(
-              element => element.frontmatter.title === linkedRecipe
-            )
-            return foundLinkedRecipe?.frontmatter.ingredients.includes(
-              pageContext.name
-            )
-          })
-        )
-      } else return recipe.frontmatter.ingredients.includes(pageContext.name)
+    allRecipes.filter(recipe => {
+      const combinedWithLinks = combineRecipeAndLinks(recipe, allRecipes)
+      return combinedWithLinks.some(recipeObj =>
+        recipeObj.frontmatter.ingredients.includes(pageContext.name)
+      )
     })
   )
 
@@ -112,13 +112,14 @@ const IngredientTemplate = ({ pageContext, data }) => {
         </Header>
         <hr />
         <main>
-          {ingredientObject && (
+          <SeasonalIndicator foundIngredient={foundIngredient}>
+            {seasonalIndicator} {icon && icon}
+          </SeasonalIndicator>
+
+          {foundIngredient && (
             <>
-              <h2>
-                {seasonalIndicator} {icon}
-              </h2>
               <hr />
-              <IndividualSeasonalChart data={ingredientObject} />
+              <IndividualSeasonalChart ingredient={foundIngredient} />
             </>
           )}
           <h2>Recettes proposées</h2>
@@ -154,6 +155,19 @@ export const pageQuery = graphql`
           course
           ingredients
           linkedRecipes
+        }
+      }
+    }
+    allIngredientsJson {
+      nodes {
+        name
+        season {
+          start
+          end
+        }
+        source {
+          name
+          link
         }
       }
     }

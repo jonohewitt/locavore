@@ -84,20 +84,20 @@ const RightSlider = styled(SliderTemplate)`
 `
 
 export const SettingsIcon = ({ clickFunctions }) => {
-  const context = useContext(GlobalState)
+  const { toggleSettings, settingsIsOpen } = useContext(GlobalState)
   return (
     <IconWrapper
       aria-label="Toggle settings menu"
       onClick={() => {
-        context.toggleSettings()
+        toggleSettings()
         clickFunctions && clickFunctions()
       }}
     >
-      <Square settingsIsOpen={context.settingsIsOpen} />
-      <LeftTrack settingsIsOpen={context.settingsIsOpen} />
-      <RightTrack settingsIsOpen={context.settingsIsOpen} />
-      <LeftSlider settingsIsOpen={context.settingsIsOpen} />
-      <RightSlider settingsIsOpen={context.settingsIsOpen} />
+      <Square settingsIsOpen={settingsIsOpen} />
+      <LeftTrack settingsIsOpen={settingsIsOpen} />
+      <RightTrack settingsIsOpen={settingsIsOpen} />
+      <LeftSlider settingsIsOpen={settingsIsOpen} />
+      <RightSlider settingsIsOpen={settingsIsOpen} />
     </IconWrapper>
   )
 }

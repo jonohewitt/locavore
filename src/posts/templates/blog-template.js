@@ -9,7 +9,8 @@ import Img from "gatsby-image"
 import { SEO } from "../../components/seo"
 import { PostStyles } from ".././post-styles"
 import { GlobalState } from "../../context/globalStateContext"
-import { Ing, LinkedRecipe } from "../../components/ingredientLink"
+import { Ing } from "../../components/ingredientLink"
+import { LinkedRecipe } from "../../components/linkedRecipe"
 import { BackButton } from "../../components/backButton"
 
 const Highlight = styled.div`
@@ -93,7 +94,6 @@ const BlogTemplate = ({ data }) => {
       <ContentWrapper headerImg={fm.header}>
         <PostStyles>
           <StyledArticle>
-
             <Header>
               <BackButton />
               <HeaderText>
@@ -121,7 +121,6 @@ const BlogTemplate = ({ data }) => {
             <MDXProvider components={shortcodes}>
               <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </MDXProvider>
-
           </StyledArticle>
         </PostStyles>
       </ContentWrapper>

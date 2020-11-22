@@ -10,9 +10,12 @@ import { ProcessIngredients } from "../functions/processIngredients"
 import { FindNoDataIngredients } from "../functions/findNoDataIngredients"
 
 const Styles = styled.main`
+  section {
+    margin-top: 40px;
+    margin-bottom: 100px;
+  }
   h2 {
     line-height: 1.2;
-    margin-top: 40px;
     font-size: 28px;
     svg {
       transform: scale(1.5);

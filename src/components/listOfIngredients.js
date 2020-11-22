@@ -8,7 +8,7 @@ const AllIngredientTypes = styled.div`
   transform: translateY(8px);
   transition: opacity 0.8s, transform 0.8s;
   ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 
   h3 {
     font-size: 18px;

@@ -1,4 +1,7 @@
-export const findNoDataIngredients = ({ allIngredients, allRecipes }) => {
+import { useMemo } from "react"
+import { useStaticQuery, graphql } from "gatsby"
+
+const findNoData = (allRecipes, allIngredients) => {
   const allIngredientNames = allIngredients.map(ingredient => ingredient.name)
   const allRecipeIngredients = new Set()
   const noDataList = []
@@ -17,4 +20,36 @@ export const findNoDataIngredients = ({ allIngredients, allRecipes }) => {
     }
   })
   return noDataList
+}
+
+export const FindNoDataIngredients = () => {
+  const {
+    allMdx: { nodes: allRecipes },
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(graphql`
+    query {
+      allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
+        nodes {
+          frontmatter {
+            ingredients
+          }
+        }
+      }
+      allIngredientsJson {
+        nodes {
+          name
+          type
+          season {
+            end
+            start
+          }
+        }
+      }
+    }
+  `)
+
+  return useMemo(() => findNoData(allRecipes, allIngredients), [
+    allRecipes,
+    allIngredients,
+  ])
 }

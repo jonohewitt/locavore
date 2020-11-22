@@ -1,14 +1,28 @@
 import { useContext } from "react"
 import { GlobalState } from "../context/globalStateContext"
 import { checkIngredientInSeason } from "./checkIngredientInSeason"
+import { graphql, useStaticQuery } from "gatsby"
 
-export const ProcessIngredients = ({
-  ingredients,
-  filter,
-  sort,
-}) => {
+export const ProcessIngredients = ({ filter, sort }) => {
   const { currentMonth } = useContext(GlobalState)
-  const calcMonths = ({ value, target, ingredient, limit }) => {
+  const {
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(graphql`
+    query {
+      allIngredientsJson {
+        nodes {
+          name
+          type
+          season {
+            end
+            start
+          }
+        }
+      }
+    }
+  `)
+
+  const calcMonths = (value, target, ingredient, limit) => {
     if (ingredient.season) {
       let numOfMonths
       switch (value) {
@@ -29,7 +43,7 @@ export const ProcessIngredients = ({
     } else return false
   }
 
-  return ingredients
+  return allIngredients
     .filter(ingredient => {
       switch (filter) {
         case "currentlyInSeason":
@@ -54,8 +68,7 @@ export const ProcessIngredients = ({
               ingredient: ingredient,
               monthIndex: currentMonth,
               includeYearRound: false,
-            }) &&
-            calcMonths("since", "start", ingredient, 1)
+            }) && calcMonths("since", "start", ingredient, 1)
           )
         case "comingUp":
           return (
@@ -63,8 +76,7 @@ export const ProcessIngredients = ({
               ingredient: ingredient,
               monthIndex: currentMonth,
               includeYearRound: false,
-            }) &&
-            calcMonths("until", "start", ingredient, 1)
+            }) && calcMonths("until", "start", ingredient, 2)
           )
         case "testEmpty":
           return false

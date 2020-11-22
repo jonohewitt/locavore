@@ -1,5 +1,4 @@
 import React, { useContext } from "react"
-import { useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
@@ -8,7 +7,7 @@ import { tickSVG, crossSVG } from "../components/icons"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { ListOfIngredients } from "../components/listOfIngredients"
 import { ProcessIngredients } from "../functions/processIngredients"
-import { findNoDataIngredients } from "../functions/findNoDataIngredients"
+import { FindNoDataIngredients } from "../functions/findNoDataIngredients"
 
 const Styles = styled.main`
   h2 {
@@ -30,54 +29,23 @@ const Styles = styled.main`
 `
 
 const Ingredients = () => {
-  const {
-    allMdx: { nodes: allRecipes },
-    allIngredientsJson: { nodes: allIngredients },
-  } = useStaticQuery(graphql`
-    query {
-      allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
-        nodes {
-          frontmatter {
-            ingredients
-          }
-        }
-      }
-      allIngredientsJson {
-        nodes {
-          name
-          type
-          season {
-            end
-            start
-          }
-        }
-      }
-    }
-  `)
-
   const { currentMonth } = useContext(GlobalState)
 
   const currentlyInSeasonList = ProcessIngredients({
-    ingredients: allIngredients,
     filter: "currentlyInSeason",
     monthIndex: currentMonth,
   })
 
   const alwaysInSeasonList = ProcessIngredients({
-    ingredients: allIngredients,
     filter: "alwaysInSeason",
   })
 
   const outOfSeasonList = ProcessIngredients({
-    ingredients: allIngredients,
     filter: "outOfSeason",
     monthIndex: currentMonth,
   })
 
-  const noDataList = findNoDataIngredients({
-    allIngredients: allIngredients,
-    allRecipes: allRecipes,
-  })
+  const noDataList = FindNoDataIngredients()
 
   return (
     <>

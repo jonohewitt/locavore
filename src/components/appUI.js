@@ -122,7 +122,7 @@ const AppUI = ({ settingsIsOpen, toggleSettings }) => {
             <StyledLink
               to={tab.link}
               activeClassName="active"
-              partiallyActive={tab.link === "/" ? false : true}
+              partiallyActive={tab.link !== "/"}
             >
               {tab.icon}
               <h6>{tab.name}</h6>

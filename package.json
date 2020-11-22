@@ -27,7 +27,7 @@
     "gatsby-theme-apollo": "^3.0.3",
     "gatsby-transformer-json": "^2.6.0",
     "gatsby-transformer-sharp": "^2.5.14",
-    "isomorphic-fetch": "^3.0.0",
+    "isomorphic-unfetch": "^3.1.0",
     "localstorage-memory": "^1.0.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

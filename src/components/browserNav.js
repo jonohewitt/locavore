@@ -262,16 +262,15 @@ const SearchButton = styled.button`
 export const BrowserNav = ({
   settingsIsOpen,
   toggleSettings,
-  navBarSearchIsActive,
-  setNavBarSearchIsActive,
+  searchIsActive,
+  setSearchIsActive,
 }) => {
   const [halfDeviceHeight, setHalfDeviceHeight] = useState("50%")
   const windowWidth = useWindowWidth()
   const [navFadedIn, setNavFadedIn] = useState(false)
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
-  const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
-  const [value, setValue] = useState("")
-  const [list, setList] = useState([])
+  const [inputValue, setInputValue] = useState("")
+  const [resultsList, setResultsList] = useState([])
   const { setSettingsIsOpen } = useContext(GlobalState)
 
   const data = useStaticQuery(graphql`
@@ -314,7 +313,7 @@ export const BrowserNav = ({
         className="clearResultsList"
         onClick={event => {
           if (event.target.classList.contains("clearResultsList")) {
-            setMobileSearchIsActive(false)
+            setSearchIsActive(false)
           }
         }}
         aria-label="Navigation options"
@@ -323,24 +322,24 @@ export const BrowserNav = ({
         <MobileSearchContainer>
           <Search
             mobile
-            value={value}
-            setValue={setValue}
-            list={list}
-            setList={setList}
-            mobileSearchIsActive={mobileSearchIsActive}
-            setMobileSearchIsActive={setMobileSearchIsActive}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            resultsList={resultsList}
+            setResultsList={setResultsList}
+            searchIsActive={searchIsActive}
+            setSearchIsActive={setSearchIsActive}
             dropDownIsOpen={dropDownIsOpen}
             setDropDownIsOpen={setDropDownIsOpen}
           />
         </MobileSearchContainer>
         <DropDownNavList
-          className={`clearResultsList ${mobileSearchIsActive && "hidden"}`}
+          className={`clearResultsList ${searchIsActive && "hidden"}`}
           halfDeviceHeight={halfDeviceHeight}
         >
           {navOptions.map((element, index) => (
             <DropDownListItem key={element.name}>
               <DropDownLink
-                tabIndex={dropDownIsOpen && !mobileSearchIsActive ? "0" : "-1"}
+                tabIndex={dropDownIsOpen && !searchIsActive ? "0" : "-1"}
                 onClick={() => setDropDownIsOpen(!dropDownIsOpen)}
                 to={element.link}
               >
@@ -355,7 +354,7 @@ export const BrowserNav = ({
       <NavWrapper fadedIn={navFadedIn}>
         <SettingsIcon
           clickFunctions={() => {
-            setMobileSearchIsActive(false)
+            setSearchIsActive(false)
             setDropDownIsOpen(false)
           }}
         />
@@ -365,7 +364,7 @@ export const BrowserNav = ({
         {windowWidth > 700 ? (
           <>
             <CSSTransition
-              in={!navBarSearchIsActive}
+              in={!searchIsActive}
               timeout={{ enter: 400, exit: 200 }}
               classNames="fade"
             >
@@ -378,7 +377,7 @@ export const BrowserNav = ({
                         border: "solid 1.5px",
                         borderRadius: "8px",
                       }}
-                      partiallyActive={element.link === "/" ? false : true}
+                      partiallyActive={element.link !== "/"}
                     >
                       {element.name}
                     </Link>
@@ -388,11 +387,11 @@ export const BrowserNav = ({
             </CSSTransition>
 
             <SearchButton
-              navBarSearchIsActive={navBarSearchIsActive}
+              searchIsActive={searchIsActive}
               className="searchButton"
-              onClick={() => setNavBarSearchIsActive(!navBarSearchIsActive)}
+              onClick={() => setSearchIsActive(!searchIsActive)}
             >
-              {navBarSearchIsActive ? crossSVG : searchSVG}
+              {searchIsActive ? crossSVG : searchSVG}
             </SearchButton>
           </>
         ) : (
@@ -400,7 +399,7 @@ export const BrowserNav = ({
             SVGrotation={dropDownIsOpen && "180"}
             aria-label="Toggle navigation menu"
             onClick={() => {
-              setMobileSearchIsActive(false)
+              setSearchIsActive(false)
               setDropDownIsOpen(!dropDownIsOpen)
               setSettingsIsOpen(false)
             }}
@@ -411,7 +410,7 @@ export const BrowserNav = ({
       </NavWrapper>
 
       <CSSTransition
-        in={navBarSearchIsActive}
+        in={searchIsActive && windowWidth > 700}
         timeout={{ enter: 200, exit: 400 }}
         classNames="fade"
         unmountOnExit
@@ -419,12 +418,12 @@ export const BrowserNav = ({
         <SearchContainer>
           <Search
             navBar
-            value={value}
-            setValue={setValue}
-            list={list}
-            setList={setList}
-            navBarSearchIsActive={navBarSearchIsActive}
-            setNavBarSearchIsActive={setNavBarSearchIsActive}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            resultsList={resultsList}
+            setResultsList={setResultsList}
+            searchIsActive={searchIsActive}
+            setSearchIsActive={setSearchIsActive}
           />
         </SearchContainer>
       </CSSTransition>

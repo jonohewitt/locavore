@@ -45,8 +45,13 @@ const Content = styled.div`
 `
 
 export const Layout = ({ children }) => {
-  const [navBarSearchIsActive, setNavBarSearchIsActive] = useState(false)
-  const context = useContext(GlobalState)
+  const [searchIsActive, setSearchIsActive] = useState(false)
+  const {
+    appInterface,
+    settingsIsOpen,
+    toggleInterface,
+    toggleSettings,
+  } = useContext(GlobalState)
   const [pageFadedIn, setPageFadedIn] = useState(false)
 
   useEffect(() => {
@@ -80,32 +85,30 @@ export const Layout = ({ children }) => {
         classNames="fade"
       >
         <FadeInWrapper pageFadedIn={pageFadedIn}>
-          {context.appInterface && <AppUI />}
-          {context.appInterface === false && (
+          {appInterface && <AppUI />}
+          {!appInterface && (
             <BrowserNav
-              navBarSearchIsActive={navBarSearchIsActive}
-              setNavBarSearchIsActive={setNavBarSearchIsActive}
+              searchIsActive={searchIsActive}
+              setSearchIsActive={setSearchIsActive}
             />
           )}
 
           <OverflowWrapper>
             <Settings
-              settingsIsOpen={context.settingsIsOpen}
-              appInterface={context.appInterface}
-              setAppInterface={context.toggleInterface}
+              settingsIsOpen={settingsIsOpen}
+              appInterface={appInterface}
+              setAppInterface={toggleInterface}
             />
             <Page
-              onClick={event => {
-                if (navBarSearchIsActive) {
-                  setNavBarSearchIsActive(false)
-                }
+              onClick={() => {
+                if (searchIsActive) setSearchIsActive(false)
               }}
-              settingsIsOpen={context.settingsIsOpen}
-              toggleSettings={context.toggleSettings}
+              settingsIsOpen={settingsIsOpen}
+              toggleSettings={toggleSettings}
             >
-              <Content appInterface={context.appInterface}>
+              <Content appInterface={appInterface}>
                 {children}
-                {!context.appInterface && <Footer />}
+                {!appInterface && <Footer />}
               </Content>
             </Page>
           </OverflowWrapper>

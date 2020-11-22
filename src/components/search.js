@@ -123,10 +123,16 @@ const SearchResult = styled.li`
   }
 
   :hover {
+    background: var(--color-searchListSelected);
+    background: linear-gradient(
+      60deg,
+      #0000 0%,
+      #0000 5%,
+      var(--color-searchListSelected) 100%
+    );
     ${props =>
-      props.selected
-        ? " background: var(--color-searchListHover);background: linear-gradient(60deg, #0000, #0000 5%, var(--color-searchListHover) 100%); "
-        : " background: var(--color-searchListSelected);background: linear-gradient(60deg, #0000 0%, #0000 5%, var(--color-searchListSelected) 100%); "};
+      props.selected &&
+      "background: var(--color-searchListHover);background: linear-gradient(60deg, #0000, #0000 5%, var(--color-searchListHover) 100%)"};
   }
 
   a {
@@ -143,21 +149,12 @@ const getSearchResults = (searchText, allPages) => {
 }
 
 export const Search = ({
-  // inputValue,
-  // setInputValue,
-  // resultsList,
-  // setResultsList,
-  setMobileSearchIsActive,
-  mobileSearchIsActive,
-  navBarSearchIsActive,
-  setNavBarSearchIsActive,
   setDropDownIsOpen,
   dropDownIsOpen,
   mobile,
   app,
-  navBar,
   searchIsActive,
-  setSearchIsActive
+  setSearchIsActive,
 }) => {
   const [typedInput, setTypedInput] = useState("")
   const [resultsList, setResultsList] = useState([])
@@ -208,9 +205,7 @@ export const Search = ({
       arr.push({
         name: post.frontmatter.title,
         type: post.fields.source,
-        customSlug: post.frontmatter.customSlug
-          ? post.frontmatter.customSlug
-          : false,
+        customSlug: post.frontmatter.customSlug,
       })
     )
     return arr
@@ -220,7 +215,7 @@ export const Search = ({
   useEffect(() => {
     setResultsList([])
     searchInputRef.current.value = ""
-  }, [setResultsList, navBarSearchIsActive, mobileSearchIsActive])
+  }, [setResultsList, searchIsActive])
 
   const handleChange = event => {
     // set the result highlight to the top of the list
@@ -230,10 +225,9 @@ export const Search = ({
     // travel down the results list, see handleKeyDown (event.which === 38)
     setTypedInput(event.target.value)
 
-    // get search results for the new input value
-    // if there are results, show them
-    // otherwise, if there is writing in the input field, show an error message
-    // otherwise, hide the list UI
+    // get and show search results for the new input value
+    // if no results, if there is text in the input field, show an error message
+    // otherwise, hide the results list UI
     if (event.target.value.length) {
       const results = getSearchResults(event.target.value, allPages)
       if (results.length) {
@@ -251,18 +245,16 @@ export const Search = ({
   // this functions as a more targeted onBlur to reset and close the search UI
   const handleSearchResultClick = () => {
     if (mobile) setDropDownIsOpen(false)
-    if (mobile || app) setMobileSearchIsActive(false)
-    if (navBar) setNavBarSearchIsActive(false)
+    setSearchIsActive(false)
   }
 
   // handle the behaviour when a user presses enter
   const handleSubmit = async event => {
-    // don't reload the page
     event.preventDefault()
 
     // if there are valid results in the results list
-    if (resultsList[0]?.type !== "Error") {
-      // use a custom slug if provided, otherwise use its slugified name
+    if (resultsList[indexHighlighted]?.type !== "Error") {
+      // use a custom slug if provided, otherwise use its slugified name property
       let slug
       if (resultsList[indexHighlighted].customSlug) {
         slug = resultsList[indexHighlighted].customSlug
@@ -275,7 +267,7 @@ export const Search = ({
       await navigate(`/${resultsList[indexHighlighted].type}/${slug}`)
       // then close and reset the search UI
       if (mobile) setDropDownIsOpen(false)
-      if (navBar) setNavBarSearchIsActive(false)
+      setSearchIsActive(false)
     }
   }
 
@@ -301,12 +293,12 @@ export const Search = ({
 
       // if escape is pressed, close and reset the search UI
     } else if (event.which === 27) {
-      if (navBar) setNavBarSearchIsActive(false)
+      setSearchIsActive(false)
     }
   }
 
   const handleFocus = event => {
-    if (mobile || app) setMobileSearchIsActive(true)
+    setSearchIsActive(true)
     handleChange(event)
   }
 
@@ -325,9 +317,9 @@ export const Search = ({
 
   const RecipeOrBlogResult = ({ element }) => {
     let slug
-
     if (element.customSlug) slug = element.customSlug
     else slug = slugify(element.name, { lower: true, strict: true })
+
     return (
       <>
         <CategoryLabel type={element.type}>{element.type}</CategoryLabel>
@@ -371,12 +363,11 @@ export const Search = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <InputContainer
-          shadow={!((mobile || app) && mobileSearchIsActive === false)}
-        >
+        <InputContainer shadow={!((mobile || app) && searchIsActive === false)}>
           {searchSVG}
           <SearchInput
-            // Autofocus only happens after search button is pressed therefore focus is expected
+            // Autofocus only happens after search button is pressed
+            // therefore focus is expected and not anti a11y
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={!(mobile || app)}
             aria-label="Search"

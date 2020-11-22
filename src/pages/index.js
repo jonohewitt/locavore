@@ -5,8 +5,8 @@ import { ContentWrapper, breakToMobile } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import { SettingsIcon } from "../components/settingsIcon"
 import { Search } from "../components/search"
-import { listOfIngredients } from "../components/listOfIngredients"
-import { StyledIngredientList } from "../components/styledIngredientsList"
+import { ListOfIngredients } from "../components/listOfIngredients"
+import { ProcessIngredients } from "../functions/processIngredients"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -21,6 +21,7 @@ const SearchContainer = styled.div`
   width: 70%;
   margin-right: 15px;
   position: relative;
+  z-index: 1;
 `
 const IngredientListWrapper = styled.div`
   background-color: var(--color-graphBackground);
@@ -45,63 +46,34 @@ const IngredientListWrapper = styled.div`
   }
 `
 
-const IngredientShowCase = () => {
-  const context = useContext(GlobalState)
+const IndexPage = () => {
+  const { currentMonth, appInterface } = useContext(GlobalState)
+  const [appSearchIsActive, setAppSearchIsActive] = useState(false)
+  const [value, setValue] = useState("")
+  const [list, setList] = useState([])
 
-  const justInList = listOfIngredients({
+  const justInList = ProcessIngredients({
     filter: "justIn",
-    monthIndex: context.currentMonth,
+    monthIndex: currentMonth,
     sort: "newest",
   })
 
-  const lastChanceList = listOfIngredients({
+  const lastChanceList = ProcessIngredients({
     filter: "lastChance",
-    monthIndex: context.currentMonth,
+    monthIndex: currentMonth,
     sort: "endingSoonest",
   })
 
-  const comingUpList = listOfIngredients({
+  const comingUpList = ProcessIngredients({
     filter: "comingUp",
-    monthIndex: context.currentMonth,
+    monthIndex: currentMonth,
     sort: "startingSoonest",
   })
 
   return (
     <>
-      {justInList.length > 0 && (
-        <IngredientListWrapper>
-          <h2>Nouveautés</h2>
-          <hr />
-          <StyledIngredientList list={justInList} />
-        </IngredientListWrapper>
-      )}
-      {lastChanceList.length > 0 && (
-        <IngredientListWrapper>
-          <h2>Dernière chance</h2>
-          <hr />
-          <StyledIngredientList list={lastChanceList} />
-        </IngredientListWrapper>
-      )}
-      {comingUpList.length > 0 && (
-        <IngredientListWrapper>
-          <h2>A venir</h2>
-          <hr />
-          <StyledIngredientList list={comingUpList} />
-        </IngredientListWrapper>
-      )}
-    </>
-  )
-}
-
-const IndexPage = () => {
-  const context = useContext(GlobalState)
-  const [mobileSearchIsActive, setMobileSearchIsActive] = useState(false)
-  const [value, setValue] = useState("")
-  const [list, setList] = useState([])
-  return (
-    <>
       <SEO title="Home" />
-      {context.appInterface && (
+      {appInterface && (
         <SearchAndSettingsContainer>
           <SettingsIcon />
           <SearchContainer>
@@ -111,8 +83,8 @@ const IndexPage = () => {
               setValue={setValue}
               list={list}
               setList={setList}
-              mobileSearchIsActive={mobileSearchIsActive}
-              setMobileSearchIsActive={setMobileSearchIsActive}
+              searchIsActive={appSearchIsActive}
+              setSearchIsActive={setAppSearchIsActive}
             />
           </SearchContainer>
         </SearchAndSettingsContainer>
@@ -135,7 +107,27 @@ const IndexPage = () => {
           </p>
         </article>
 
-        <IngredientShowCase />
+        {justInList.length > 0 && (
+          <IngredientListWrapper>
+            <h2>Nouveautés</h2>
+            <hr />
+            <ListOfIngredients list={justInList} />
+          </IngredientListWrapper>
+        )}
+        {lastChanceList.length > 0 && (
+          <IngredientListWrapper>
+            <h2>Dernière chance</h2>
+            <hr />
+            <ListOfIngredients list={lastChanceList} />
+          </IngredientListWrapper>
+        )}
+        {comingUpList.length > 0 && (
+          <IngredientListWrapper>
+            <h2>A venir</h2>
+            <hr />
+            <ListOfIngredients list={comingUpList} />
+          </IngredientListWrapper>
+        )}
       </ContentWrapper>
     </>
   )

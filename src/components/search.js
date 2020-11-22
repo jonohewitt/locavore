@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import styled from "styled-components"
 import { Ing } from "./ingredientLink"
 import { navigate, useStaticQuery, Link, graphql } from "gatsby"
@@ -143,22 +143,26 @@ const getSearchResults = (searchText, allPages) => {
 }
 
 export const Search = ({
-  value,
-  setValue,
-  list,
-  setList,
+  // inputValue,
+  // setInputValue,
+  // resultsList,
+  // setResultsList,
+  setMobileSearchIsActive,
+  mobileSearchIsActive,
   navBarSearchIsActive,
   setNavBarSearchIsActive,
   setDropDownIsOpen,
   dropDownIsOpen,
-  setMobileSearchIsActive,
-  mobileSearchIsActive,
   mobile,
   app,
   navBar,
+  searchIsActive,
+  setSearchIsActive
 }) => {
-  const [indexHighlighted, setIndex] = useState(0)
   const [typedInput, setTypedInput] = useState("")
+  const [resultsList, setResultsList] = useState([])
+  const [indexHighlighted, setIndexHighlighted] = useState(0)
+  const searchInputRef = useRef()
 
   const {
     allMdx: { nodes: allPosts },
@@ -189,97 +193,113 @@ export const Search = ({
     }
   `)
 
-  const allPages = []
+  // get an array of every page I want to be searchable
+  // at the moment this is every ingredient plus every mdx file - (blog, recipe)
+  // memoised as it could be expensive in future and does not change after build time
+  const allPages = useMemo(() => {
+    const arr = []
+    allIngredients.forEach(ingredient =>
+      arr.push({
+        name: ingredient.name,
+        type: "ingredients",
+      })
+    )
+    allPosts.forEach(post =>
+      arr.push({
+        name: post.frontmatter.title,
+        type: post.fields.source,
+        customSlug: post.frontmatter.customSlug
+          ? post.frontmatter.customSlug
+          : false,
+      })
+    )
+    return arr
+  }, [allIngredients, allPosts])
 
-  allIngredients.forEach(ingredient =>
-    allPages.push({
-      name: ingredient.name,
-      type: "ingredients",
-    })
-  )
-
-  allPosts.forEach(post =>
-    allPages.push({
-      name: post.frontmatter.title,
-      type: post.fields.source,
-      customSlug: post.frontmatter.customSlug
-        ? post.frontmatter.customSlug
-        : false,
-    })
-  )
-
-
-
+  // clear the input and results resultsList when search is closed / opened
   useEffect(() => {
-    if (!navBarSearchIsActive) {
-      setList([])
-      setValue("")
-    }
-  }, [setList, setValue, navBarSearchIsActive])
-
-  useEffect(() => {
-    if (!mobileSearchIsActive) {
-      setList([])
-      setValue("")
-    }
-  }, [setList, setValue, mobileSearchIsActive])
+    setResultsList([])
+    searchInputRef.current.value = ""
+  }, [setResultsList, navBarSearchIsActive, mobileSearchIsActive])
 
   const handleChange = event => {
-    setIndex(0)
-    setValue(event.target.value)
+    // set the result highlight to the top of the list
+    setIndexHighlighted(0)
+
+    // remember the typed input in case a user uses the arrow keys to
+    // travel down the results list, see handleKeyDown (event.which === 38)
     setTypedInput(event.target.value)
+
+    // get search results for the new input value
+    // if there are results, show them
+    // otherwise, if there is writing in the input field, show an error message
+    // otherwise, hide the list UI
     if (event.target.value.length) {
       const results = getSearchResults(event.target.value, allPages)
       if (results.length) {
-        setList(results)
+        setResultsList(results)
       } else {
-        setList([{ type: "Error" }])
+        setResultsList([{ type: "Error" }])
       }
     } else {
-      setList([])
+      setResultsList([])
     }
   }
 
+  // close the mobile dropdown UI if a result has been clicked on
+  // also set the active state to false
+  // this functions as a more targeted onBlur to reset and close the search UI
   const handleSearchResultClick = () => {
-    if (mobile || app) setMobileSearchIsActive(false)
     if (mobile) setDropDownIsOpen(false)
+    if (mobile || app) setMobileSearchIsActive(false)
     if (navBar) setNavBarSearchIsActive(false)
   }
 
+  // handle the behaviour when a user presses enter
   const handleSubmit = async event => {
+    // don't reload the page
     event.preventDefault()
-    if (list[0]?.type !== "Error") {
-      await navigate(
-        `/${
-          list[indexHighlighted].type
-            ? list[indexHighlighted].type
-            : "ingredients"
-        }/${slugify(list[indexHighlighted].name, {
+
+    // if there are valid results in the results list
+    if (resultsList[0]?.type !== "Error") {
+      // use a custom slug if provided, otherwise use its slugified name
+      let slug
+      if (resultsList[indexHighlighted].customSlug) {
+        slug = resultsList[indexHighlighted].customSlug
+      } else
+        slug = slugify(resultsList[indexHighlighted].name, {
           lower: true,
           strict: true,
-        })}`
-      )
+        })
+      // wait for the page to navigate to the highlighted page
+      await navigate(`/${resultsList[indexHighlighted].type}/${slug}`)
+      // then close and reset the search UI
       if (mobile) setDropDownIsOpen(false)
       if (navBar) setNavBarSearchIsActive(false)
-    } else if (value.length) setList([{ type: "Error" }])
+    }
   }
 
   const handleKeyDown = event => {
-    //if down arrow is pressed
-    if (event.which === 40 && indexHighlighted < list.length - 1) {
-      setIndex(indexHighlighted + 1)
-      setValue(list[indexHighlighted + 1].name)
+    // if the down arrow is pressed, move the highlight down
+    // and update the search input value to the highlighted name
+    if (event.which === 40 && indexHighlighted < resultsList.length - 1) {
+      setIndexHighlighted(indexHighlighted + 1)
+      // setInputValue(resultsList[indexHighlighted + 1].name)
+      searchInputRef.current.value = resultsList[indexHighlighted + 1].name
     }
-    //if up arrow is pressed
+    // if the up arrow is pressed, update highlight and input value
+    // except if the highlight is on the top option, in which case
+    // set the search input value back to the typed input
     else if (event.which === 38) {
       event.preventDefault()
       if (indexHighlighted > 0) {
-        setIndex(indexHighlighted - 1)
-        setValue(list[indexHighlighted - 1].name)
+        setIndexHighlighted(indexHighlighted - 1)
+        searchInputRef.current.value = resultsList[indexHighlighted - 1].name
       } else {
-        setValue(typedInput)
+        searchInputRef.current.value = typedInput
       }
-      //if escape is pressed
+
+      // if escape is pressed, close and reset the search UI
     } else if (event.which === 27) {
       if (navBar) setNavBarSearchIsActive(false)
     }
@@ -307,14 +327,14 @@ export const Search = ({
     let slug
 
     if (element.customSlug) slug = element.customSlug
-    else slug = "/" + slugify(element.name, { lower: true, strict: true })
+    else slug = slugify(element.name, { lower: true, strict: true })
     return (
       <>
         <CategoryLabel type={element.type}>{element.type}</CategoryLabel>
         <Link
           onClick={handleSearchResultClick}
           className="searchResult"
-          to={`/${element.type + slug}`}
+          to={`/${element.type}/${slug}`}
         >
           {element.name}
         </Link>
@@ -362,17 +382,17 @@ export const Search = ({
             aria-label="Search"
             placeholder="Ingredients, recettes, blog posts..."
             type="text"
-            value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             onFocus={handleFocus}
+            ref={searchInputRef}
           />
         </InputContainer>
 
-        {list?.length > 0 && (
+        {resultsList?.length > 0 && (
           <SearchResultListContainer outline={mobile || app}>
             <SearchResultList>
-              {list.map((element, index) => GetResult(element, index))}
+              {resultsList.map((element, index) => GetResult(element, index))}
             </SearchResultList>
           </SearchResultListContainer>
         )}

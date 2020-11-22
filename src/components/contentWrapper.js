@@ -18,9 +18,9 @@ const Wrapper = styled.div`
 `
 
 export const ContentWrapper = ({ children, headerImg }) => {
-  const context = useContext(GlobalState)
+  const { appInterface } = useContext(GlobalState)
   return (
-    <Wrapper headerImg={headerImg} appInterface={context.appInterface}>
+    <Wrapper headerImg={headerImg} appInterface={appInterface}>
       {children}
     </Wrapper>
   )

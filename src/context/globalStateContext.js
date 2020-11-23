@@ -45,7 +45,7 @@ const Provider = ({ children }) => {
               includeYearRound: true,
             })
           } else {
-            console.log(ingredientStr + " not found or has insufficient data!")
+            console.warn(ingredientStr + " not found or has insufficient data!")
             return false
           }
         })

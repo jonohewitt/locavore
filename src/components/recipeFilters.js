@@ -96,7 +96,7 @@ const OptionButtonContainer = styled.li`
   margin: 0 5px 8px 3px;
   transition: transform 0.2s;
   &:hover {
-    transform: scale(1.04);
+    ${props => !props.disabled && "transform: scale(1.04);"}
   }
 `
 
@@ -132,7 +132,7 @@ const ButtonComponent = ({
   disabled,
   isDark,
 }) => (
-  <OptionButtonContainer onClick={action}>
+  <OptionButtonContainer onClick={action} disabled={disabled}>
     <OptionButton
       isDark={isDark}
       color={color}

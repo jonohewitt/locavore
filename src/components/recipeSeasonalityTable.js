@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import slugify from "slugify"
 import { navigate } from "gatsby"
-import { infoSVG } from "./icons"
+import { infoSVG, tickSVG } from "./icons"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 import { graphql, useStaticQuery } from "gatsby"
@@ -48,6 +48,11 @@ const StyledTable = styled.table`
     width: 75%;
     margin: 5px auto;
 
+    p {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
     svg {
       position: relative;
       top: 3px;
@@ -58,6 +63,7 @@ const StyledTable = styled.table`
       font-size: 12px;
       padding: 0;
       margin-bottom: 10px;
+      width: 100%;
 
       svg {
         transform: scale(0.8);
@@ -158,6 +164,7 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
 
   const uniqueIngredients = new Set()
   let yearRoundIngredientFound = false
+  const noDataIngredientSet = new Set()
 
   ingredients.forEach(ingredient => {
     const foundIngredient = allIngredients.find(
@@ -165,15 +172,25 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
     )
 
     if (foundIngredient) {
-      if (foundIngredient.season) {
-        uniqueIngredients.add(foundIngredient)
-      } else {
-        yearRoundIngredientFound = true
-      }
-    }
+      if (foundIngredient.season) uniqueIngredients.add(foundIngredient)
+      else yearRoundIngredientFound = true
+    } else noDataIngredientSet.add(ingredient)
   })
 
   const foundIngredients = [...uniqueIngredients]
+  const noDataIngredientArray = [...noDataIngredientSet]
+
+  let noDataIngredientString
+
+  if (noDataIngredientArray.length) {
+    noDataIngredientString = noDataIngredientArray.reduce(
+      (list, ingredient, index) => {
+        if (index < noDataIngredientArray.length - 1) {
+          return list + `, ${ingredient}`
+        } else return list + ` ou ${ingredient}`
+      }
+    )
+  }
 
   return foundIngredients.length ? (
     <StyledTable>
@@ -203,18 +220,33 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
       </tbody>
       {yearRoundIngredientFound && (
         <caption>
-          {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
-          indiqués.
+          <p>
+            {infoSVG} Les ingrédients disponibles toute l'année ne sont pas
+            indiqués.
+          </p>
+          {noDataIngredientString && (
+            <p>
+              Nous n'avons pas encore de données pour {noDataIngredientString}.
+            </p>
+          )}
         </caption>
       )}
     </StyledTable>
   ) : (
     <NoIngredientData>
-      {infoSVG}{" "}
-      <p>
-        Soit tous les ingrédients de cette recette sont disponibles toute
-        l'année, soit nous n'avons pas encore de données à leur sujet.
-      </p>
+      {noDataIngredientString ? (
+        <>
+          {infoSVG}
+          <p>
+            Nous n'avons pas encore de données pour {noDataIngredientString}.
+          </p>
+        </>
+      ) : (
+        <>
+          {tickSVG}
+          <p>Tous les ingrédients sont disponibles toute l'année!</p>
+        </>
+      )}
     </NoIngredientData>
   )
 }

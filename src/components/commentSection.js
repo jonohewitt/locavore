@@ -87,7 +87,7 @@ const CancelButton = styled(PostCommentButton)`
 
 const CommentAuthor = styled.p`
   font-weight: 700;
-  font-size: 24px;
+  font-size: 21px;
   margin-bottom: 0;
 `
 

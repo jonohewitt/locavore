@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { GlobalState } from "../context/globalStateContext"
 import styled from "styled-components"
 import slugify from "slugify"
 import { Link } from "gatsby"
+import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
+import { calcIngredientMonths } from "../functions/calcIngredientMonths"
+import { graphql, useStaticQuery } from "gatsby"
 
 const AllIngredientTypes = styled.div`
   opacity: 0;
@@ -9,9 +13,11 @@ const AllIngredientTypes = styled.div`
   transition: opacity 0.8s, transform 0.8s;
   ${props => props.fadedIn && "opacity: 1; transform: translateY(0);"}
   margin-bottom: 10px;
+  margin-top: 50px;
 
   h3 {
     font-size: 18px;
+    font-weight: 700;
     margin-top: 40px;
   }
 
@@ -48,15 +54,125 @@ const StyledUL = styled.ul`
   }
 `
 
-export const ListOfIngredients = ({ list }) => {
+export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
+  const {
+    allIngredientsJson: { nodes: allIngredients },
+  } = useStaticQuery(graphql`
+    query {
+      allIngredientsJson {
+        nodes {
+          name
+          type
+          season {
+            end
+            start
+          }
+        }
+      }
+    }
+  `)
+  const { currentMonth } = useContext(GlobalState)
   const [fadedIn, setFadedIn] = useState(false)
   useEffect(() => setFadedIn(true), [])
 
-  const filteredList = filter => {
-    if (filter) {
-      return list.filter(ingredient => ingredient.type === `${filter}`)
-    } else return list
-  }
+  const ingredientInSeason = ingredient =>
+    checkIngredientInSeason({
+      ingredient: ingredient,
+      monthIndex: currentMonth,
+      includeYearRound: true,
+    })
+
+  const processedList = allIngredients
+    .filter(
+      ingredient =>
+        !ingredientFilterList ||
+        ingredientFilterList.every(
+          filter => !filter.isApplied || filter.logic(ingredient)
+        )
+    )
+    .sort((a, b) => {
+      let sortValue
+      if (sort) {
+        switch (sort) {
+          case "Nouveautés":
+            // This is for most recently in season ingredients, so the order should be:
+            // Seasonal and in season (by most recently in season) >
+            // Year round (alphabetical) > Out of season (alphabetical)
+
+            // If both ingredients are in season (including year round)
+            if (ingredientInSeason(a) && ingredientInSeason(b)) {
+              // if both are seasonal (aka excluding year round)
+              if (a.season && b.season) {
+                // sort by most recently come into season
+                sortValue =
+                  calcIngredientMonths(a, "since", "start", currentMonth) -
+                  calcIngredientMonths(b, "since", "start", currentMonth)
+                // otherwise if both are year round
+              } else if (!a.season && !b.season) {
+                // sort by default alphabetical
+                sortValue = 0
+                // otherwise only one can be seasonal, sort it higher
+              } else {
+                sortValue = a.season ? -1 : 1
+              }
+              // otherwise if both are out of season (excluding year round)
+            } else if (!ingredientInSeason(a) && !ingredientInSeason(b)) {
+              // sort by default alphabetical
+              sortValue = 0
+            } else {
+              // only one can be in season, sort it higher
+              sortValue = ingredientInSeason(a) ? -1 : 1
+            }
+            break
+          case "Bientôt hors saison":
+            // This is to highlight soon to go out of season ingredients, so the order should be:
+            // Seasonal and in season (by soonest to go out of season) >
+            // Year round (alphabetical) > Out of season (alphabetical)
+
+            // If both ingredients are in season (including year round)
+            if (ingredientInSeason(a) && ingredientInSeason(b)) {
+              // if both are seasonal (aka excluding year round)
+              if (a.season && b.season) {
+                // sort by soonest to go out of season
+                sortValue =
+                  calcIngredientMonths(a, "until", "end", currentMonth) -
+                  calcIngredientMonths(b, "until", "end", currentMonth)
+                // otherwise if both are year round
+              } else if (!a.season && !b.season) {
+                // sort by default alphabetical
+                sortValue = 0
+                // otherwise only one can be seasonal, sort it higher
+              } else {
+                sortValue = a.season ? -1 : 1
+              }
+              // otherwise if both are out of season (excluding year round)
+            } else if (!ingredientInSeason(a) && !ingredientInSeason(b)) {
+              // sort by default alphabetical
+              sortValue = 0
+            } else {
+              // only one can be in season, sort it higher
+              sortValue = ingredientInSeason(a) ? -1 : 1
+            }
+            break
+          case "A venir":
+            sortValue =
+              calcIngredientMonths(a, "until", "start", currentMonth) -
+              calcIngredientMonths(b, "until", "start", currentMonth)
+              break
+          default:
+            break
+        }
+      }
+      if (sortValue) return sortValue
+      else {
+        // Sort by French alphabetical if sort function returns a tie
+        // or if no sort preference is given in the ListOfIngredients args
+        return new Intl.Collator("fr").compare(a.name, b.name)
+      }
+    })
+
+  const categorisedList = filter =>
+    processedList.filter(ingredient => ingredient.type === `${filter}`)
 
   const mappedList = typeList =>
     typeList.map(ingredient => (
@@ -67,43 +183,47 @@ export const ListOfIngredients = ({ list }) => {
       </li>
     ))
 
-  const fruits = filteredList("fruit")
-  const vegetables = filteredList("veg")
-  const other = filteredList("other")
-  const uncategorised = list.filter(ingredient => !ingredient.type)
+  const vegetables = categorisedList("veg")
+  const fruits = categorisedList("fruit")
+  const other = categorisedList("other")
+  const uncategorised = allIngredients.filter(ingredient => !ingredient.type)
+
+  const allCategories = [...vegetables, ...fruits, ...other, ...uncategorised]
 
   return (
-    <AllIngredientTypes fadedIn={fadedIn}>
-      <ul>
-        {fruits.length > 0 && (
-          <li>
-            <h3>Fruits</h3>
-            <hr />
-            <StyledUL>{mappedList(fruits)}</StyledUL>
-          </li>
-        )}
-        {vegetables.length > 0 && (
-          <li>
-            <h3>Vegetables</h3>
-            <hr />
-            <StyledUL>{mappedList(vegetables)}</StyledUL>
-          </li>
-        )}
-        {other.length > 0 && (
-          <li>
-            <h3>Other</h3>
-            <hr />
-            <StyledUL>{mappedList(other)}</StyledUL>
-          </li>
-        )}
-        {uncategorised.length > 0 && (
-          <li>
-            <h3>Uncategorised</h3>
-            <hr />
-            <StyledUL>{mappedList(uncategorised)}</StyledUL>
-          </li>
-        )}
-      </ul>
-    </AllIngredientTypes>
+    allCategories.length > 0 && (
+      <AllIngredientTypes fadedIn={fadedIn}>
+        <ul>
+          {vegetables.length > 0 && (
+            <li>
+              <h3>Légumes</h3>
+              <hr />
+              <StyledUL>{mappedList(vegetables)}</StyledUL>
+            </li>
+          )}
+          {fruits.length > 0 && (
+            <li>
+              <h3>Fruits</h3>
+              <hr />
+              <StyledUL>{mappedList(fruits)}</StyledUL>
+            </li>
+          )}
+          {other.length > 0 && (
+            <li>
+              <h3>Other</h3>
+              <hr />
+              <StyledUL>{mappedList(other)}</StyledUL>
+            </li>
+          )}
+          {uncategorised.length > 0 && (
+            <li>
+              <h3>Uncategorised</h3>
+              <hr />
+              <StyledUL>{mappedList(uncategorised)}</StyledUL>
+            </li>
+          )}
+        </ul>
+      </AllIngredientTypes>
+    )
   )
 }

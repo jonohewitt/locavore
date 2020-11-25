@@ -298,7 +298,7 @@ export const BrowserNav = ({
       link: "/recettes",
     },
     {
-      name: "Ingredients",
+      name: "Ingrédients",
       link: "/ingredients",
     },
     {

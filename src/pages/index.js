@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react"
 import styled from "styled-components"
 import { SEO } from "../components/seo"
-import { ContentWrapper, breakToMobile } from "../components/contentWrapper"
+import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import { SettingsIcon } from "../components/settingsIcon"
 import { Search } from "../components/search"
-import { ListOfIngredients } from "../components/listOfIngredients"
-import { ProcessIngredients } from "../functions/processIngredients"
+import { IngredientShowcase } from "../components/ingredientShowcase"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -23,52 +22,12 @@ const SearchContainer = styled.div`
   position: relative;
   z-index: 1;
 `
-const IngredientListWrapper = styled.div`
-  background-color: var(--color-graphBackground);
-  margin: 40px 0;
-  padding: 10px 30px 30px 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  h2 {
-    margin: 30px 0 10px 0;
-  }
-  hr {
-    margin-bottom: 15px;
-  }
-  li {
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 1.6;
-  }
-
-  @media (max-width: ${breakToMobile}px) {
-    margin: 30px 0;
-  }
-`
 
 const IndexPage = () => {
-  const { currentMonth, appInterface } = useContext(GlobalState)
+  const { appInterface } = useContext(GlobalState)
   const [appSearchIsActive, setAppSearchIsActive] = useState(false)
   const [value, setValue] = useState("")
   const [list, setList] = useState([])
-
-  const justInList = ProcessIngredients({
-    filter: "justIn",
-    monthIndex: currentMonth,
-    sort: "newest",
-  })
-
-  const lastChanceList = ProcessIngredients({
-    filter: "lastChance",
-    monthIndex: currentMonth,
-    sort: "endingSoonest",
-  })
-
-  const comingUpList = ProcessIngredients({
-    filter: "comingUp",
-    monthIndex: currentMonth,
-    sort: "startingSoonest",
-  })
 
   return (
     <>
@@ -107,27 +66,8 @@ const IndexPage = () => {
           </p>
         </article>
 
-        {justInList.length > 0 && (
-          <IngredientListWrapper>
-            <h2>Nouveautés</h2>
-            <hr />
-            <ListOfIngredients list={justInList} />
-          </IngredientListWrapper>
-        )}
-        {lastChanceList.length > 0 && (
-          <IngredientListWrapper>
-            <h2>Dernière chance</h2>
-            <hr />
-            <ListOfIngredients list={lastChanceList} />
-          </IngredientListWrapper>
-        )}
-        {comingUpList.length > 0 && (
-          <IngredientListWrapper>
-            <h2>A venir</h2>
-            <hr />
-            <ListOfIngredients list={comingUpList} />
-          </IngredientListWrapper>
-        )}
+        <IngredientShowcase />
+
       </ContentWrapper>
     </>
   )

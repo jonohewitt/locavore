@@ -78,7 +78,7 @@ const RecipeText = styled.div`
 `
 
 const CourseFeeds = styled.p`
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 5px;
 `
 
@@ -86,7 +86,7 @@ const SeasonalityInfo = styled.p`
   margin-bottom: 20px;
 `
 
-export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
+export const ListOfRecipes = ({ recipeList, recipeFilterList, sort }) => {
   const {
     allIngredientsJson: { nodes: allIngredients },
   } = useStaticQuery(
@@ -232,8 +232,8 @@ export const ListOfRecipes = ({ recipeList, filterList, sort }) => {
       {recipeList
         .filter(
           recipe =>
-            !filterList ||
-            filterList.every(
+            !recipeFilterList ||
+            recipeFilterList.every(
               filter =>
                 !filter.isApplied ||
                 combineRecipeAndLinks(recipe, recipeList).every(recipeObj =>

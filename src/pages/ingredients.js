@@ -3,11 +3,10 @@ import styled from "styled-components"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
-import { tickSVG, crossSVG } from "../components/icons"
-import { monthIndexToName } from "../functions/monthIndexToName"
+// import { tickSVG, crossSVG } from "../components/icons"
+// import { monthIndexToName } from "../functions/monthIndexToName"
 import { ListOfIngredients } from "../components/listOfIngredients"
-import { ProcessIngredients } from "../functions/processIngredients"
-import { FindNoDataIngredients } from "../functions/findNoDataIngredients"
+import { IngredientListOptions } from "../components/ingredientListOptions"
 
 const Styles = styled.main`
   section {
@@ -27,74 +26,80 @@ const Styles = styled.main`
   }
 
   hr {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
   }
 `
 
+// const SeasonalHeaderContainer = styled.div`
+//   margin-top: 50px;
+// `
+
 const Ingredients = () => {
-  const { currentMonth } = useContext(GlobalState)
+  const {
+    // currentMonth,
+    ingredientFilterList,
+    ingredientSortList,
+  } = useContext(GlobalState)
 
-  const currentlyInSeasonList = ProcessIngredients({
-    filter: "currentlyInSeason",
-    monthIndex: currentMonth,
-  })
-
-  const alwaysInSeasonList = ProcessIngredients({
-    filter: "alwaysInSeason",
-  })
-
-  const outOfSeasonList = ProcessIngredients({
-    filter: "outOfSeason",
-    monthIndex: currentMonth,
-  })
-
-  const noDataList = FindNoDataIngredients()
+  // const SeasonalHeader = () => {
+  //   const selectedFilter = ingredientFilterList.find(
+  //     filter => filter.isApplied === true
+  //   ).name
+  //
+  //   switch (selectedFilter) {
+  //     case "En saison en novembre":
+  //       return (
+  //         <SeasonalHeaderContainer>
+  //           <h2>
+  //             En saison en{" "}
+  //             <span>
+  //               {monthIndexToName(currentMonth)} {tickSVG}
+  //             </span>
+  //           </h2>
+  //           <hr />
+  //         </SeasonalHeaderContainer>
+  //       )
+  //     case "Toute l'année":
+  //       return (
+  //         <SeasonalHeaderContainer>
+  //           <h2>
+  //             Disponible toute <span>l'année {tickSVG}</span>
+  //           </h2>
+  //           <hr />
+  //         </SeasonalHeaderContainer>
+  //       )
+  //     case "Hors saison":
+  //       return (
+  //         <SeasonalHeaderContainer>
+  //           <h2>
+  //             Hors saison en{" "}
+  //             <span>
+  //               {monthIndexToName(currentMonth)} {crossSVG}
+  //             </span>
+  //           </h2>
+  //           <hr />
+  //         </SeasonalHeaderContainer>
+  //       )
+  //     default:
+  //       return null
+  //   }
+  // }
 
   return (
     <>
-      <SEO title="Ingredients" />
+      <SEO title="Ingrédients" />
       <ContentWrapper>
         <Styles>
-          {currentlyInSeasonList.length > 0 && (
-            <section>
-              <h2>
-                En saison en{" "}
-                <span>
-                  {monthIndexToName(currentMonth)} {tickSVG}
-                </span>
-              </h2>
-              <hr />
-              <ListOfIngredients list={currentlyInSeasonList} />
-            </section>
-          )}
-          {alwaysInSeasonList.length > 0 && (
-            <section>
-              <h2>
-                Disponible toute <span>l'année {tickSVG}</span>
-              </h2>
-              <hr />
-              <ListOfIngredients list={alwaysInSeasonList} />
-            </section>
-          )}
-          {outOfSeasonList.length > 0 && (
-            <section>
-              <h2>
-                Hors saison en{" "}
-                <span>
-                  {monthIndexToName(currentMonth)} {crossSVG}
-                </span>
-              </h2>
-              <hr />
-              <ListOfIngredients list={outOfSeasonList} />
-            </section>
-          )}
-          {noDataList.length > 0 && (
-            <section>
-              <h2>Pas encore d'information</h2>
-              <hr />
-              <ListOfIngredients list={noDataList} />
-            </section>
-          )}
+          <h1>Ingrédients</h1>
+          <hr />
+          <IngredientListOptions />
+          {/* <SeasonalHeader /> */}
+          <ListOfIngredients
+            ingredientFilterList={ingredientFilterList}
+            sort={
+              ingredientSortList.find(option => option.isApplied === true).name
+            }
+          />
         </Styles>
       </ContentWrapper>
     </>

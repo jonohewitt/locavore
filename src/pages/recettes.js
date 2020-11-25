@@ -28,10 +28,12 @@ const HeaderContent = styled.div`
 `
 
 const Recettes = () => {
-  const context = useContext(GlobalState)
+  const { recipeFilterList, recipeSortList } = useContext(GlobalState)
   const [optionsAreShown, setOptionsAreShown] = useState(true)
 
-  const data = useStaticQuery(graphql`
+  const {
+    allMdx: { nodes: allRecipes },
+  } = useStaticQuery(graphql`
     query {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
         nodes {
@@ -86,21 +88,12 @@ const Recettes = () => {
             <hr />
           </header>
 
-          {optionsAreShown && (
-            <Options
-              filterList={context.filterList}
-              setFilterList={context.setFilterList}
-              sortList={context.sortList}
-              setSortList={context.setSortList}
-            />
-          )}
+          {optionsAreShown && <Options />}
 
           <ListOfRecipes
-            recipeList={data.allMdx.nodes}
-            filterList={context.filterList}
-            sort={
-              context.sortList.find(option => option.isApplied === true).name
-            }
+            recipeList={allRecipes}
+            recipeFilterList={recipeFilterList}
+            sort={recipeSortList.find(option => option.isApplied === true).name}
           />
         </RecipeIndexWrapper>
       </ContentWrapper>

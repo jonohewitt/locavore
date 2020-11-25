@@ -1,15 +1,41 @@
-import React, { useState, useLayoutEffect } from "react"
+import React, { useState, useLayoutEffect, createContext } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { lightTheme, darkTheme } from "../theme/themeVariables"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 
-export const GlobalState = React.createContext()
+export const GlobalState = createContext()
 
 const Provider = ({ children }) => {
   const [appInterface, setAppInterface] = useState(undefined)
   const [settingsIsOpen, setSettingsIsOpen] = useState(false)
   const [isDark, setTheme] = useState(undefined)
   const [currentMonth, setMonth] = useState(new Date().getMonth())
+
+  useLayoutEffect(() => {
+    setAppInterface(
+      navigator.standalone ||
+        window.matchMedia("(display-mode: standalone)").matches
+    )
+
+    const initialTheme =
+      window.document.documentElement.attributes["is-dark-mode"].value ===
+      "true"
+    setTheme(initialTheme)
+    setMonth(new Date().getMonth())
+  }, [])
+
+  const toggleTheme = () => {
+    setTheme(!isDark)
+    window.localStorage.setItem("darkTheme", !isDark)
+    window.document.documentElement.setAttribute("is-dark-mode", !isDark)
+
+    Object.entries(!isDark ? darkTheme : lightTheme).forEach(
+      ([name, value]) => {
+        const cssVarName = `--color-${name}`
+        window.document.documentElement.style.setProperty(cssVarName, value)
+      }
+    )
+  }
 
   const {
     allIngredientsJson: { nodes: allIngredients },
@@ -29,7 +55,68 @@ const Provider = ({ children }) => {
     `
   )
 
-  const [filterList, setFilterList] = useState([
+  const [ingredientFilterList, setIngredientFilterList] = useState([
+    {
+      name: "En saison",
+      logic(ingredient) {
+        return checkIngredientInSeason({
+          ingredient: ingredient,
+          monthIndex: currentMonth,
+          includeYearRound: false,
+        })
+      },
+      isApplied: true,
+    },
+    {
+      name: "Toute l'année",
+      logic(ingredient) {
+        return !ingredient.season
+      },
+      isApplied: false,
+    },
+    {
+      name: "Hors saison",
+      logic(ingredient) {
+        return !checkIngredientInSeason({
+          ingredient: ingredient,
+          monthIndex: currentMonth,
+          includeYearRound: true,
+        })
+      },
+      isApplied: false,
+    },
+  ])
+
+  const [ingredientSortList, setIngredientSortList] = useState([
+    { name: "A-Z", isApplied: true },
+    { name: "Nouveautés", isApplied: false },
+    { name: "Bientôt hors saison", isApplied: false },
+  ])
+
+  const toggleIngredientFilter = filterName => {
+    if (filterName === "En saison") toggleIngredientSort("A-Z")
+    setIngredientFilterList(prevState => {
+      const newState = [...prevState]
+      newState.forEach(filter => {
+        if (filter.name === filterName) filter.isApplied = !filter.isApplied
+        else filter.isApplied = false
+      })
+      return newState
+    })
+  }
+
+  const toggleIngredientSort = sortName => {
+    setIngredientSortList(prevState => {
+      const newState = [...prevState]
+      newState.forEach(sort => {
+        if (sort.name === sortName) sort.isApplied = true
+        else sort.isApplied = false
+      })
+      return newState
+    })
+  }
+
+  const [recipeFilterList, setRecipeFilterList] = useState([
     {
       name: "En saison",
       group: "green",
@@ -107,36 +194,52 @@ const Provider = ({ children }) => {
     },
   ])
 
-  const [sortList, setSortList] = useState([
+  const [recipeSortList, setRecipeSortList] = useState([
     { name: "Nouveautés", isApplied: true },
     { name: "Bientôt hors saison", isApplied: false },
     { name: "A-Z", isApplied: false },
   ])
 
-  useLayoutEffect(() => {
-    setAppInterface(
-      navigator.standalone ||
-        window.matchMedia("(display-mode: standalone)").matches
-    )
+  const toggleRecipeFilter = filterName => {
+    if (filterName === "En saison") toggleRecipeSort("A-Z")
+    setRecipeFilterList(prevState => {
+      const newState = [...prevState]
+      const filterIndex = newState.findIndex(
+        filter => filter.name === filterName
+      )
 
-    const initialTheme =
-      window.document.documentElement.attributes["is-dark-mode"].value ===
-      "true"
-    setTheme(initialTheme)
-    setMonth(new Date().getMonth())
-  }, [])
+      const listOfExclusiveGroups = ["course"]
 
-  const toggleTheme = () => {
-    setTheme(!isDark)
-    window.localStorage.setItem("darkTheme", !isDark)
-    window.document.documentElement.setAttribute("is-dark-mode", !isDark)
-
-    Object.entries(!isDark ? darkTheme : lightTheme).forEach(
-      ([name, value]) => {
-        const cssVarName = `--color-${name}`
-        window.document.documentElement.style.setProperty(cssVarName, value)
+      if (listOfExclusiveGroups.includes(newState[filterIndex].group)) {
+        newState.forEach(filter => {
+          if (
+            filter !== newState[filterIndex] &&
+            filter.group === newState[filterIndex].group
+          ) {
+            filter.isApplied = false
+          }
+        })
       }
-    )
+      newState[filterIndex].isApplied = !newState[filterIndex].isApplied
+      return newState
+    })
+  }
+
+  const toggleRecipeSort = sortOption => {
+    setRecipeSortList(prevState => {
+      const newState = [...prevState]
+      const optionIndex = newState.findIndex(
+        option => option.name === sortOption
+      )
+      newState.forEach(option => {
+        if (option !== newState[optionIndex]) {
+          option.isApplied = false
+        } else {
+          option.isApplied = true
+        }
+      })
+      return newState
+    })
   }
 
   return (
@@ -150,10 +253,14 @@ const Provider = ({ children }) => {
         isDark,
         toggleTheme,
         currentMonth,
-        filterList,
-        setFilterList,
-        sortList,
-        setSortList,
+        ingredientFilterList,
+        ingredientSortList,
+        toggleIngredientFilter,
+        toggleIngredientSort,
+        recipeSortList,
+        recipeFilterList,
+        toggleRecipeFilter,
+        toggleRecipeSort,
       }}
     >
       {children}

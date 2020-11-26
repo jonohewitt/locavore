@@ -88,12 +88,12 @@ const SeasonalityInfo = styled.p`
 
 export const ListOfRecipes = ({ recipeList, recipeFilterList, sort }) => {
   const {
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(
     graphql`
       query {
-        allIngredientsJson {
-          nodes {
+        ingredientsByCountryJson(country: { eq: "belgium" }) {
+          ingredients {
             name
             season {
               end
@@ -329,7 +329,11 @@ export const ListOfRecipes = ({ recipeList, recipeFilterList, sort }) => {
             ? fm.customSlug
             : `/${slugify(fm.title, { lower: true, strict: true })}`
 
-          const startMonthName = getOutlierMonthName(recipe, "mostRecent", "start")
+          const startMonthName = getOutlierMonthName(
+            recipe,
+            "mostRecent",
+            "start"
+          )
           const endMonthName = getOutlierMonthName(recipe, "soonest", "end")
 
           let seasonalityInfo

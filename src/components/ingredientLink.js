@@ -28,12 +28,12 @@ const IngredientLink = styled(Link)`
 export const Ing = ({ id, text, children, className, onClick }) => {
   const { currentMonth } = useContext(GlobalState)
   const {
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(
     graphql`
       query {
-        allIngredientsJson {
-          nodes {
+        ingredientsByCountryJson(country: { eq: "belgium" }) {
+          ingredients {
             name
             season {
               end

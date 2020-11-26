@@ -25,7 +25,7 @@ const findNoData = (allRecipes, allIngredients) => {
 export const FindNoDataIngredients = () => {
   const {
     allMdx: { nodes: allRecipes },
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(graphql`
     query {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
@@ -35,8 +35,8 @@ export const FindNoDataIngredients = () => {
           }
         }
       }
-      allIngredientsJson {
-        nodes {
+      ingredientsByCountryJson(country: { eq: "belgium" }) {
+        ingredients {
           name
           type
           season {

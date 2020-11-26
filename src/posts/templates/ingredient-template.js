@@ -60,7 +60,7 @@ const SeasonalIndicator = styled.h2`
 const IngredientTemplate = ({ pageContext, data }) => {
   const { currentMonth } = useContext(GlobalState)
   const allRecipes = data.allMdx.nodes
-  const allIngredients = data.allIngredientsJson.nodes
+  const allIngredients = data.ingredientsByCountryJson.ingredients
 
   const foundIngredient = allIngredients.find(
     ingredient => ingredient.name === pageContext.name
@@ -158,8 +158,8 @@ export const pageQuery = graphql`
         }
       }
     }
-    allIngredientsJson {
-      nodes {
+    ingredientsByCountryJson(country: { eq: "belgium" }) {
+      ingredients {
         name
         season {
           start

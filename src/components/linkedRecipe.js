@@ -29,7 +29,7 @@ export const LinkedRecipe = ({ id, children }) => {
   const { currentMonth } = useContext(GlobalState)
   const {
     allMdx: { nodes: allRecipes },
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(graphql`
     query {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
@@ -41,8 +41,8 @@ export const LinkedRecipe = ({ id, children }) => {
           }
         }
       }
-      allIngredientsJson {
-        nodes {
+      ingredientsByCountryJson(country: { eq: "belgium" }) {
+        ingredients {
           name
           season {
             end

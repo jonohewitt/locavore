@@ -38,12 +38,12 @@ const Provider = ({ children }) => {
   }
 
   const {
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(
     graphql`
       query {
-        allIngredientsJson {
-          nodes {
+        ingredientsByCountryJson(country: { eq: "belgium" }) {
+          ingredients {
             name
             season {
               end

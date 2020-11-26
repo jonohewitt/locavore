@@ -56,11 +56,11 @@ const StyledUL = styled.ul`
 
 export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
   const {
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(graphql`
     query {
-      allIngredientsJson {
-        nodes {
+      ingredientsByCountryJson(country: { eq: "belgium" }) {
+        ingredients {
           name
           type
           season {
@@ -158,7 +158,7 @@ export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
             sortValue =
               calcIngredientMonths(a, "until", "start", currentMonth) -
               calcIngredientMonths(b, "until", "start", currentMonth)
-              break
+            break
           default:
             break
         }

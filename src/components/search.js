@@ -163,7 +163,7 @@ export const Search = ({
 
   const {
     allMdx: { nodes: allPosts },
-    allIngredientsJson: { nodes: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(graphql`
     query {
       allMdx {
@@ -177,8 +177,8 @@ export const Search = ({
           }
         }
       }
-      allIngredientsJson {
-        nodes {
+      ingredientsByCountryJson(country: { eq: "belgium" }) {
+        ingredients {
           name
           type
           season {

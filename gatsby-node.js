@@ -21,8 +21,8 @@ export const createPages = async ({
           }
         }
       }
-      allIngredientsJson {
-        nodes {
+      ingredientsByCountryJson(country: { eq: "belgium" }) {
+        ingredients {
           name
         }
       }
@@ -34,7 +34,7 @@ export const createPages = async ({
   }
 
   const allPosts = result.data.allMdx.nodes
-  const allIngredients = result.data.allIngredientsJson.nodes
+  const allIngredients = result.data.ingredientsByCountryJson.ingredients
 
   const ingredientSet = new Set()
 

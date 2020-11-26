@@ -148,19 +148,6 @@ const Provider = ({ children }) => {
       isApplied: false,
     },
     {
-      name: "Saisonnier",
-      group: "green",
-      logic(fm) {
-        return fm.ingredients.some(ingredientStr => {
-          const foundIngredient = allIngredients.find(
-            ingredientObj => ingredientObj.name === ingredientStr
-          )
-          return foundIngredient && foundIngredient.season
-        })
-      },
-      isApplied: false,
-    },
-    {
       name: "Plat principal",
       group: "course",
       logic(fm) {

@@ -1,0 +1,921 @@
+{
+  "country": "belgium",
+  "ingredients": [
+    {
+      "name": "Ail",
+      "type": "veg",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Artichaut",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Asperge",
+      "type": "veg",
+      "season": {
+        "start": 3,
+        "end": 5
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Aubergine",
+      "type": "veg",
+      "season": {
+        "start": 6,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Avoine",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Bette",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Betterave",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Beurre",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Brocoli",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 11
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Carotte",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Cassis",
+      "type": "fruit",
+      "season": {
+        "start": 5,
+        "end": 6
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Cerfeuil",
+      "type": "veg",
+      "season": {
+        "start": 3,
+        "end": 11
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Cerise",
+      "type": "fruit",
+      "season": {
+        "start": 5,
+        "end": 6
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Champignon",
+      "type": "veg",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chapelure",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chicon",
+      "type": "veg",
+      "season": {
+        "start": 9,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chicorée",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou blanc",
+      "type": "veg",
+      "season": {
+        "start": 4,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou chinois",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou de Bruxelles",
+      "type": "veg",
+      "season": {
+        "start": 8,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou fleur",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou frisé",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou rave",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 1
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou rouge",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Chou vert",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Concombre",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 8
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Coriandre",
+      "type": "veg",
+      "season": {
+        "start": 4,
+        "end": 9
+      },
+      "source": {
+        "name": "jardiner-malin.fr",
+        "link": "https://www.jardiner-malin.fr/fiche/coriandre.html"
+      }
+    },
+    {
+      "name": "Courgette",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Cresson",
+      "type": "veg",
+      "season": {
+        "start": 9,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Crème",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Céleri branche",
+      "type": "veg",
+      "season": {
+        "start": 6,
+        "end": 11
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Céleri rave",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Farine",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Fenouil",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Fraise",
+      "type": "fruit",
+      "season": {
+        "start": 5,
+        "end": 8
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Framboise",
+      "type": "fruit",
+      "season": {
+        "start": 5,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Fromage",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Germes de soja",
+      "type": "veg",
+      "season": {
+        "start": 2,
+        "end": 4
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Griotte",
+      "type": "fruit",
+      "season": {
+        "start": 5,
+        "end": 6
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Groseilles",
+      "type": "fruit",
+      "season": {
+        "start": 5,
+        "end": 6
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Haricot",
+      "type": "veg",
+      "season": {
+        "start": 6,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Huile végétale",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Lait",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Lentilles",
+      "type": "veg",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Maïs",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Miel",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Mirabelle",
+      "type": "fruit",
+      "season": {
+        "start": 6,
+        "end": 8
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Myrtille",
+      "type": "fruit",
+      "season": {
+        "start": 6,
+        "end": 7
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Mâche",
+      "type": "veg",
+      "season": {
+        "start": 9,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Mûre",
+      "type": "fruit",
+      "season": {
+        "start": 6,
+        "end": 7
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Navet",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Noisette",
+      "type": "fruit",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Noix",
+      "type": "fruit",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Oignon",
+      "type": "veg",
+      "season": {
+        "start": 6,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Orge",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Ortie",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 8
+      },
+      "source": {
+        "name": "medadvicees.com",
+        "link": "https://medadvicees.com/fr/pages/13103"
+      }
+    },
+    {
+      "name": "Panais",
+      "type": "veg",
+      "season": {
+        "start": 8,
+        "end": 3
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Patate",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 3
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Petit pois",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 6
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Pleurote",
+      "type": "veg",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Poire",
+      "type": "fruit",
+      "season": {
+        "start": 7,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Poireau",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 3
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Poivron",
+      "type": "veg",
+      "season": {
+        "start": 6,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Pomme",
+      "type": "fruit",
+      "season": {
+        "start": 7,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Potimarron",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 1
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Potiron",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 1
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Pourpier",
+      "type": "veg",
+      "season": {
+        "start": 5,
+        "end": 8
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Prune",
+      "type": "fruit",
+      "season": {
+        "start": 7,
+        "end": 8
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Quinoa",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Radis noir",
+      "type": "veg",
+      "season": {
+        "start": 8,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Radis rose",
+      "type": "veg",
+      "season": {
+        "start": 3,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Raisin",
+      "type": "fruit",
+      "season": {
+        "start": 7,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Rhubarbe",
+      "type": "fruit",
+      "season": {
+        "start": 3,
+        "end": 7
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Rutabaga",
+      "type": "veg",
+      "season": {
+        "start": 7,
+        "end": 3
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Salade",
+      "type": "veg",
+      "season": {
+        "start": 3,
+        "end": 10
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Salsifi",
+      "type": "veg",
+      "season": {
+        "start": 10,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Sarriette",
+      "type": "veg",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Scorsonère",
+      "type": "veg",
+      "season": {
+        "start": 10,
+        "end": 2
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Sucre",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Tomate",
+      "type": "fruit",
+      "season": {
+        "start": 6,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Topinambour",
+      "type": "veg",
+      "season": {
+        "start": 9,
+        "end": 3
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Tétragone",
+      "type": "veg",
+      "season": {
+        "start": 6,
+        "end": 9
+      },
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    },
+    {
+      "name": "Œuf",
+      "type": "other",
+      "source": {
+        "name": "Bruxelles Environnement IBGE",
+        "link": "https://environnement.brussels/sites/default/files/calendrier_saison_fr_def_part_fr.pdf"
+      }
+    }
+  ]
+}

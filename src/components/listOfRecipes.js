@@ -341,7 +341,7 @@ export const ListOfRecipes = ({ recipeList, recipeFilterList, sort }) => {
           switch (sort) {
             case "Nouveautés":
               if (allInSeason(recipe) && startMonthName)
-                seasonalityInfo = `En season depuis ${startMonthName}`
+                seasonalityInfo = `En saison depuis ${startMonthName}`
               break
 
             case "Bientôt hors saison":

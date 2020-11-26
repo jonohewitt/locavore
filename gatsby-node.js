@@ -52,7 +52,7 @@ export const createPages = async ({
     }
 
     createPage({
-      path: `${post.fields.source}${slug}`,
+      path: `be/fr/${post.fields.source}${slug}`,
       component: path.resolve(
         `./src/posts/templates/${post.fields.source}-template.js`
       ),
@@ -62,7 +62,7 @@ export const createPages = async ({
 
   ingredientSet.forEach(ingredient =>
     createPage({
-      path: `ingredients/${slugify(ingredient, { lower: true })}`,
+      path: `be/fr/ingredients/${slugify(ingredient, { lower: true })}`,
       component: path.resolve(`./src/posts/templates/ingredient-template.js`),
       context: { name: ingredient },
     })

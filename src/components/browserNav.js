@@ -295,15 +295,15 @@ export const BrowserNav = ({
     },
     {
       name: "Recettes",
-      link: "/recettes",
+      link: "/be/fr/recettes",
     },
     {
       name: "Ingrédients",
-      link: "/ingredients",
+      link: "/be/fr/ingredients",
     },
     {
       name: "Blog",
-      link: "/blog",
+      link: "/be/fr/blog",
     },
   ]
 

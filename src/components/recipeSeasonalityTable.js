@@ -203,7 +203,7 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
             key={ingredient.name}
             onClick={() =>
               navigate(
-                `/ingredients/${slugify(ingredient.name, { lower: true })}`
+                `/be/fr/ingredients/${slugify(ingredient.name, { lower: true })}`
               )
             }
           >

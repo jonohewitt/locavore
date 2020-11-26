@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { SEO } from "../components/seo"
-import { ContentWrapper } from "../components/contentWrapper"
+import { SEO } from "../../../components/seo"
+import { ContentWrapper } from "../../../components/contentWrapper"
 import styled from "styled-components"
-import { ShowOptions, Options } from "../components/recipeFilters"
-import { ListOfRecipes } from "../components/listOfRecipes"
-import { GlobalState } from "../context/globalStateContext"
+import { ShowOptions, Options } from "../../../components/recipeFilters"
+import { ListOfRecipes } from "../../../components/listOfRecipes"
+import { GlobalState } from "../../../context/globalStateContext"
 
 const RecipeIndexWrapper = styled.div`
   ul {

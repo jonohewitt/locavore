@@ -177,7 +177,7 @@ export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
   const mappedList = typeList =>
     typeList.map(ingredient => (
       <li key={ingredient.name}>
-        <Link to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}>
+        <Link to={`/be/fr/ingredients/${slugify(ingredient.name, { lower: true })}`}>
           {ingredient.name}
         </Link>
       </li>

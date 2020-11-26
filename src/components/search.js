@@ -222,7 +222,7 @@ export const Search = ({
     setIndexHighlighted(0)
 
     // remember the typed input in case a user uses the arrow keys to
-    // travel down the results list, see handleKeyDown (event.which === 38)
+    // travel down the results list, then back up, see handleKeyDown (event.which === 38)
     setTypedInput(event.target.value)
 
     // get and show search results for the new input value
@@ -264,7 +264,7 @@ export const Search = ({
           strict: true,
         })
       // wait for the page to navigate to the highlighted page
-      await navigate(`/${resultsList[indexHighlighted].type}/${slug}`)
+      await navigate(`/be/fr/${resultsList[indexHighlighted].type}/${slug}`)
       // then close and reset the search UI
       if (mobile) setDropDownIsOpen(false)
       setSearchIsActive(false)
@@ -326,7 +326,7 @@ export const Search = ({
         <Link
           onClick={handleSearchResultClick}
           className="searchResult"
-          to={`/${element.type}/${slug}`}
+          to={`/be/fr/${element.type}/${slug}`}
         >
           {element.name}
         </Link>

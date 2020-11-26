@@ -369,7 +369,7 @@ export const ListOfRecipes = ({ recipeList, recipeFilterList, sort }) => {
 
           return (
             <RecipeCardContainer key={recipe.id}>
-              <Link to={`/recettes${slug}`}>
+              <Link to={`/be/fr/recettes${slug}`}>
                 <RecipeCard>
                   {fm.feature && (
                     <Img

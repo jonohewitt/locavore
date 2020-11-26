@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { SEO } from "../components/seo"
-import { ContentWrapper } from "../components/contentWrapper"
+import { SEO } from "../../../components/seo"
+import { ContentWrapper } from "../../../components/contentWrapper"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Img from "gatsby-image"

@@ -83,7 +83,7 @@ export const Ing = ({ id, text, children, className, onClick }) => {
     <IngredientLink
       onClick={onClick && onClick}
       color={color}
-      to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
+      to={`/be/fr/ingredients/${slugify(id, { lower: true, strict: true })}`}
       className={className}
     >
       <span>

@@ -1,12 +1,12 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import { SEO } from "../components/seo"
-import { ContentWrapper } from "../components/contentWrapper"
-import { GlobalState } from "../context/globalStateContext"
+import { SEO } from "../../../components/seo"
+import { ContentWrapper } from "../../../components/contentWrapper"
+import { GlobalState } from "../../../context/globalStateContext"
 // import { tickSVG, crossSVG } from "../components/icons"
 // import { monthIndexToName } from "../functions/monthIndexToName"
-import { ListOfIngredients } from "../components/listOfIngredients"
-import { IngredientListOptions } from "../components/ingredientListOptions"
+import { ListOfIngredients } from "../../../components/listOfIngredients"
+import { IngredientListOptions } from "../../../components/ingredientListOptions"
 
 const Styles = styled.main`
   section {

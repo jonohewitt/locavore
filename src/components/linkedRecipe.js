@@ -103,7 +103,7 @@ export const LinkedRecipe = ({ id, children }) => {
   return (
     <IngredientLink
       color={color}
-      to={`/recettes${
+      to={`/be/fr/recettes${
         foundRecipe.frontmatter.customSlug
           ? foundRecipe.frontmatter.customSlug
           : "/" + slugify(id, { lower: true, strict: true })

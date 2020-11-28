@@ -5,7 +5,7 @@ export const lightTheme = {
   navTitle: "#B36464",
   navText: "#9D5A5A",
   settings: "#393f51",
-  settingsIcon: "#ce8273",
+  settingsIcon: "#bd7b6e",
   altColor: "#02799d",
   graphBackground: "#fff",
   hr: "hsla(7.6, 52.3%, 61.4%, 0.5)",

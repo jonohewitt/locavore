@@ -152,7 +152,7 @@ const RecipeTitle = styled.div`
 
 const CourseAndFeeds = styled.p`
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `
 
 const Metadata = styled.div`

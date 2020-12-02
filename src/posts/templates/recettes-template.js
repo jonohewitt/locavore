@@ -130,12 +130,6 @@ const StyledHeader = styled.header`
   position: relative;
 `
 
-const Metadata = styled.div`
-  p {
-    margin-bottom: 0;
-  }
-`
-
 const RecipeTitle = styled.div`
   ${props =>
     props.backButton &&
@@ -158,21 +152,29 @@ const RecipeTitle = styled.div`
 
 const CourseAndFeeds = styled.p`
   font-weight: 600;
+  margin-bottom: 10px;
 `
+
+const Metadata = styled.div`
+`
+
+const RecipeIndicators = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+
+  p {
+    margin-bottom: 0;
+  }
+`
+
+const IngredientsContainer = styled.div``
 
 const Preparation = styled.div`
   margin-top: 20px;
   ol {
     margin-bottom: 50px;
   }
-`
-
-const IngredientsContainer = styled.div``
-
-const RecipeIndicators = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 0;
 `
 
 const LeftColumn = styled.div`

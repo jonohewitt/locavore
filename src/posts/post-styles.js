@@ -7,6 +7,8 @@ export const PostStyles = styled.main`
 
   h2 {
     margin: 30px 0 10px 0;
+    font-size: 28px;
+    font-weight: 600;
   }
 
   h3 {

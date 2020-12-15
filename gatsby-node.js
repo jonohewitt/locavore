@@ -33,7 +33,10 @@ export const createPages = async ({
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  const allPosts = result.data.allMdx.nodes
+  const allPosts = result.data.allMdx.nodes.filter(
+    node => node.fields.source === "recettes" || node.fields.source === "blog"
+  )
+
   const allIngredients = result.data.ingredientsByCountryJson.ingredients
 
   const ingredientSet = new Set()
@@ -64,7 +67,7 @@ export const createPages = async ({
     createPage({
       path: `ingredients/${slugify(ingredient, { lower: true })}`,
       component: path.resolve(`./src/posts/templates/ingredient-template.js`),
-      context: { name: ingredient },
+      context: { name: ingredient, localInfoPathRegex: `/${ingredient}/local-info/i` },
     })
   )
 }

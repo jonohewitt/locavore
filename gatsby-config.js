@@ -55,14 +55,21 @@ module.exports = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "recettes",
-        path: `${__dirname}/src/posts/recipes`,
+        path: `./src/posts/recipes`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "ingredientProfileContent",
+        path: `./src/posts/ingredients`,
       },
     },
     {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "blog",
-        path: `${__dirname}/src/posts/blog`,
+        path: `./src/posts/blog`,
       },
     },
     `gatsby-plugin-netlify`,
@@ -71,7 +78,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: "ingredients",
+        name: `ingredientSeasonalityData`,
         path: `./src/data/`,
       },
     },

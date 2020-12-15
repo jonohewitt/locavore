@@ -166,7 +166,7 @@ export const Search = ({
     ingredientsByCountryJson: { ingredients: allIngredients },
   } = useStaticQuery(graphql`
     query {
-      allMdx {
+      allMdx(filter: { fields: { source: { regex: "/recettes|blog/" } } }) {
         nodes {
           fields {
             source

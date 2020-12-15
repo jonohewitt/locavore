@@ -1,6 +1,8 @@
 import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
+import { MDXRenderer } from "gatsby-plugin-mdx"
+import { MDXProvider } from "@mdx-js/react"
 import { SEO } from "../../components/seo"
 import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
 import { ListOfRecipes } from "../../components/listOfRecipes"
@@ -59,8 +61,14 @@ const SeasonalIndicator = styled.h2`
 
 const IngredientTemplate = ({ pageContext, data }) => {
   const { currentMonth } = useContext(GlobalState)
+
   const allRecipes = data.allMdx.nodes
+  const ingredientContent = data.mdx?.body
+  const allLocalInfo = data.allFile.nodes
   const allIngredients = data.ingredientsByCountryJson.ingredients
+
+  const chosenLocalInfo = allLocalInfo?.find(post => post.name === "bruxelles")
+    ?.childMdx.body
 
   const foundIngredient = allIngredients.find(
     ingredient => ingredient.name === pageContext.name
@@ -94,12 +102,11 @@ const IngredientTemplate = ({ pageContext, data }) => {
   }
 
   const recipesWithIngredient = new Set(
-    allRecipes.filter(recipe => {
-      const combinedWithLinks = combineRecipeAndLinks(recipe, allRecipes)
-      return combinedWithLinks.some(recipeObj =>
+    allRecipes.filter(recipe =>
+      combineRecipeAndLinks(recipe, allRecipes).some(recipeObj =>
         recipeObj.frontmatter.ingredients.includes(pageContext.name)
       )
-    })
+    )
   )
 
   return (
@@ -111,6 +118,11 @@ const IngredientTemplate = ({ pageContext, data }) => {
           <h1>{pageContext.name}</h1>
         </Header>
         <hr />
+        <MDXProvider>
+          {ingredientContent && <MDXRenderer>{ingredientContent}</MDXRenderer>}
+          {chosenLocalInfo && <MDXRenderer>{chosenLocalInfo}</MDXRenderer>}
+        </MDXProvider>
+
         <main>
           <SeasonalIndicator foundIngredient={foundIngredient}>
             {seasonalIndicator} {icon && icon}
@@ -132,7 +144,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
 }
 
 export const pageQuery = graphql`
-  query {
+  query($name: String, $localInfoPathRegex: String) {
     allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
       nodes {
         id
@@ -155,6 +167,20 @@ export const pageQuery = graphql`
           course
           ingredients
           linkedRecipes
+        }
+      }
+    }
+    mdx(
+      fields: { source: { eq: "ingredientProfileContent" } }
+      frontmatter: { title: { eq: $name } }
+    ) {
+      body
+    }
+    allFile(filter: { relativePath: { regex: $localInfoPathRegex } }) {
+      nodes {
+        name
+        childMdx {
+          body
         }
       }
     }

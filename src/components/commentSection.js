@@ -11,23 +11,25 @@ const NameInput = styled.input`
   border: none;
   outline: none;
   padding: 0;
+  background: var(--color-graphBackground);
+  color: var(--color-text);
 `
 
 const NameContainer = styled.div`
   width: 100%;
   margin: 10px 0;
-  background: #fff;
+  background: var(--color-graphBackground);
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 0 15px hsla(0, 0%, 0%, 0.2);
   ${props => props.error && "box-shadow: 0 0 10px 2px hsla(0, 95%, 70%, 1);"}
 
   &:focus-within {
-    transform: scale(1.02);
-    box-shadow: 0 5px 20px hsla(0, 0%, 0%, 0.3);
+    transform: scale(1.015);
+    box-shadow: 0 0 15px -5px var(--color-text);
   }
 
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 `
 
 const CommentContainer = styled(NameContainer)`
@@ -42,6 +44,8 @@ const CommentTextArea = styled.textarea`
   height: 100%;
   resize: vertical;
   min-height: 80px;
+  background: var(--color-graphBackground);
+  color: var(--color-text);
 `
 
 const OpenCommentFormButton = styled.button`

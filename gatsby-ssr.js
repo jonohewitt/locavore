@@ -1,7 +1,7 @@
 import React from "react"
 import { lightTheme, darkTheme } from "./src/theme/themeVariables"
 import { Layout } from "./src/components/layout"
-import Provider from "./src/context/globalStateContext"
+import { Provider } from "./src/context/globalStateContext"
 
 const ScriptInjection = () => {
   let codeToRunOnClient = `(function() {
@@ -34,6 +34,6 @@ export const onRenderBody = ({ setPreBodyComponents }) => {
   setPreBodyComponents(<ScriptInjection key="🔑" />)
 }
 
-export const wrapRootElement = Provider
+export const wrapRootElement = ({ element }) => <Provider>{element}</Provider>
 
 export const wrapPageElement = ({ element }) => <Layout>{element}</Layout>

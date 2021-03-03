@@ -255,4 +255,4 @@ const Provider = ({ children }) => {
   )
 }
 
-export default ({ element }) => <Provider>{element}</Provider>
+export { Provider }

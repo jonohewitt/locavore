@@ -113,7 +113,7 @@ const mainLinks = [
   },
 ]
 
-const AppUI = ({ settingsIsOpen, toggleSettings }) => {
+const AppUI = () => {
   return (
     <BarWrapper>
       <TabList>

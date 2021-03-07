@@ -27,6 +27,28 @@ const HeaderContent = styled.div`
   align-items: baseline;
 `
 
+export interface Frontmatter {
+  title: string
+  vegan: boolean
+  vegetarian: boolean
+  veganOption: boolean
+  prepTime: number
+  cookTime: number
+  course: string
+  ingredients: string[]
+  description?: string
+  feature?: any
+  featureDescription?: string
+  feeds?: number
+  linkedRecipes?: string[]
+  customSlug?: string
+}
+
+export interface Recipe {
+  id: string
+  frontmatter: Frontmatter
+}
+
 const Recettes = () => {
   const { recipeFilterList, recipeSortList } = useContext(GlobalState)
   const [optionsAreShown, setOptionsAreShown] = useState(true)
@@ -34,7 +56,7 @@ const Recettes = () => {
   const {
     allMdx: { nodes: allRecipes },
   } = useStaticQuery(graphql`
-    query {
+    {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
         nodes {
           id
@@ -43,17 +65,21 @@ const Recettes = () => {
             customSlug
             header {
               childImageSharp {
-                fluid(maxWidth: 800) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(
+                  width: 800
+                  layout: CONSTRAINED
+                  placeholder: BLURRED
+                )
               }
             }
             headerDescription
             feature {
               childImageSharp {
-                fluid(maxWidth: 800) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(
+                  width: 800
+                  layout: CONSTRAINED
+                  placeholder: BLURRED
+                )
               }
             }
             featureDescription

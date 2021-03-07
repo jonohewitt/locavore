@@ -14,6 +14,7 @@
     "gatsby": "^3.0.0",
     "gatsby-cli": "^3.0.0",
     "gatsby-image": "^3.0.0",
+    "gatsby-plugin-image": "^1.0.0",
     "gatsby-plugin-manifest": "^3.0.0",
     "gatsby-plugin-mdx": "^2.0.0",
     "gatsby-plugin-mdx-source-name": "^1.0.1",
@@ -41,7 +42,8 @@
   },
   "devDependencies": {
     "eslint-plugin-mdx": "^1.9.0",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "@types/styled-components": "^5.1.7"
   },
   "keywords": [
     "gatsby"
@@ -50,6 +52,7 @@
   "scripts": {
     "build": "NODE_OPTIONS='-r esm' gatsby build",
     "develop": "NODE_OPTIONS='-r esm' gatsby develop -H=0.0.0.0",
+    "dev": "NODE_OPTIONS='-r esm' gatsby develop -H=0.0.0.0",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",

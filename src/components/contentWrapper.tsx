@@ -7,7 +7,7 @@ export const mobileWidthPercent = 90
 export const maxWidth = 900
 export const breakToMobile = 885
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ appInterface: boolean; headerImg?: boolean }>`
   width: ${widthPercent}%;
   max-width: ${maxWidth}px;
   margin: ${props => (props.appInterface || props.headerImg ? "30px" : "100px")}
@@ -16,8 +16,12 @@ const Wrapper = styled.div`
     width: ${mobileWidthPercent}%;
   }
 `
+type ContentWrapperProps = {
+  children: any
+  headerImg?: boolean
+}
 
-export const ContentWrapper = ({ children, headerImg }) => {
+export const ContentWrapper = ({ children, headerImg }: ContentWrapperProps) => {
   const { appInterface } = useContext(GlobalState)
   return (
     <Wrapper headerImg={headerImg} appInterface={appInterface}>

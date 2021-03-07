@@ -1,9 +1,10 @@
+import { Ingredient } from "../pages/ingredients"
+
 export const calcIngredientMonths = (
-  ingredient,
-  comparison,
-  seasonalEvent,
-  monthIndex,
-  limit
+  ingredient: Ingredient,
+  comparison: string,
+  seasonalEvent: string,
+  monthIndex: number
 ) => {
   if (!ingredient.season) return null
 
@@ -17,6 +18,5 @@ export const calcIngredientMonths = (
 
   if (difference < 0) difference += 12
 
-  if (limit) return difference <= limit
-  else return difference
+  return difference
 }

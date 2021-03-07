@@ -23,7 +23,7 @@ const IndicatorPair = styled.div`
   }
 `
 
-const timeConverter = minsInput => {
+const timeConverter = (minsInput: number) => {
   const hours = Math.floor(minsInput / 60)
   const minutes = minsInput % 60
   if (minutes === 0) {
@@ -54,23 +54,31 @@ const timeConverter = minsInput => {
   }
 }
 
-const TimePair = ({ icon, value }) => {
-  return (
-    <IndicatorPair>
-      {icon}
-      {value < 60 ? (
-        <p>
-          {value}
-          <span>m</span>
-        </p>
-      ) : (
-        timeConverter(value)
-      )}
-    </IndicatorPair>
-  )
+type TimePairProps = {
+  icon: { type: "svg" }
+  value: number
 }
 
-export const TimeIndicators = ({ prepTime, cookTime }) => {
+const TimePair = ({ icon, value }: TimePairProps) => (
+  <IndicatorPair>
+    {icon}
+    {value < 60 ? (
+      <p>
+        {value}
+        <span>m</span>
+      </p>
+    ) : (
+      timeConverter(value)
+    )}
+  </IndicatorPair>
+)
+
+type TimeIndicatorProps = {
+  prepTime: number
+  cookTime: number
+}
+
+export const TimeIndicators = ({ prepTime, cookTime }: TimeIndicatorProps) => {
   return (
     <IndicatorContainer className="indicatorContainer">
       {prepTime && <TimePair icon={prepTimeSVG} value={prepTime} />}
@@ -79,7 +87,7 @@ export const TimeIndicators = ({ prepTime, cookTime }) => {
   )
 }
 
-const DairyLabel = styled.div`
+const DairyLabel = styled.div<{ vegan?: boolean; veganOption?: boolean }>`
   height: 28px;
   border-radius: 5px;
   border: solid 1.5px;
@@ -114,6 +122,6 @@ export const DairyIndicator = ({ vegan, veganOption, vegetarian }) => {
   } else if (vegetarian) {
     return <DairyLabel className="dairyLabel">Végétarien</DairyLabel>
   } else {
-    return false
+    return null
   }
 }

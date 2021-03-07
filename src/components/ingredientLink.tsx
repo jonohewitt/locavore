@@ -6,6 +6,8 @@ import styled from "styled-components"
 import { tickSVG, crossSVG } from "./icons"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 
+import { Ingredient } from "../pages/ingredients"
+
 const IngredientLink = styled(Link)`
   color: ${props => props.color} !important;
   svg {
@@ -25,10 +27,18 @@ const IngredientLink = styled(Link)`
   }
 `
 
-export const Ing = ({ id, text, children, className, onClick }) => {
+interface IngProps {
+  id: string,
+  text?: string,
+  children?: string
+  className?: string
+  onClick?: void
+}
+
+export const Ing = ({ id, text, children, className, onClick }: IngProps) => {
   const { currentMonth } = useContext(GlobalState)
   const {
-    ingredientsByCountryJson: { ingredients: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredientResults },
   } = useStaticQuery(
     graphql`
       query {
@@ -45,21 +55,25 @@ export const Ing = ({ id, text, children, className, onClick }) => {
     `
   )
 
+  const allIngredients: Ingredient[] = allIngredientResults
+
   const foundIngredient = allIngredients.find(
     ingredient =>
       slugify(ingredient.name, { lower: true, strict: true }) ===
       slugify(id, { lower: true, strict: true })
   )
 
-  let color
-  let icon
+  let color: string
+  let icon: JSX.Element
 
   if (foundIngredient) {
-    const inSeason = checkIngredientInSeason({
-      ingredient: foundIngredient,
-      monthIndex: currentMonth,
-      includeYearRound: true,
-    })
+
+    const inSeason = checkIngredientInSeason(
+      foundIngredient,
+      currentMonth,
+      true
+    )
+
     if (inSeason) {
       icon = tickSVG
       color = "var(--color-positive)"

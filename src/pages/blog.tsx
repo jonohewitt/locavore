@@ -3,10 +3,10 @@ import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
-import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import slugify from "slugify"
 
-const ListOfBlogPosts = styled.ul`
+const ListOfBlogPosts = styled.ul<{fadedIn: boolean}>`
   margin-top: 25px;
   opacity: 0;
   transform: translateY(8px);
@@ -33,7 +33,7 @@ const CardText = styled.div`
 
 const Blog = () => {
   const data = useStaticQuery(graphql`
-    query {
+    {
       allMdx(
         filter: { fields: { source: { eq: "blog" } } }
         sort: { fields: frontmatter___date, order: DESC }
@@ -47,17 +47,21 @@ const Blog = () => {
             date(formatString: "DD MMMM, YYYY", locale: "fr")
             header {
               childImageSharp {
-                fluid(maxWidth: 800) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(
+                  width: 800
+                  layout: CONSTRAINED
+                  placeholder: BLURRED
+                )
               }
             }
             headerDescription
             feature {
               childImageSharp {
-                fluid(maxWidth: 800) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(
+                  width: 800
+                  layout: CONSTRAINED
+                  placeholder: BLURRED
+                )
               }
             }
             featureDescription
@@ -71,7 +75,7 @@ const Blog = () => {
   useEffect(() => setFadedIn(true), [])
 
   const CardImage = ({ headerImg, featureImg }) => {
-    let usedImage = false
+    let usedImage
 
     if (!headerImg.image && featureImg.image) {
       usedImage = featureImg
@@ -81,7 +85,8 @@ const Blog = () => {
 
     if (usedImage) {
       return (
-        <Img
+        <GatsbyImage
+          image={usedImage.image}
           style={{
             width: "100%",
             height: "100px",
@@ -91,12 +96,11 @@ const Blog = () => {
             width: "100%",
             height: "100%",
           }}
-          fluid={usedImage.image}
           alt={usedImage.description ? usedImage.description : ""}
         />
       )
     } else {
-      return false
+      return null
     }
   }
   return (
@@ -122,13 +126,13 @@ const Blog = () => {
                       <CardImage
                         headerImg={{
                           image: fm.header
-                            ? fm.header.childImageSharp.fluid
+                            ? fm.header.childImageSharp.gatsbyImageData
                             : false,
                           description: fm.headerDescription,
                         }}
                         featureImg={{
                           image: fm.feature
-                            ? fm.feature.childImageSharp.fluid
+                            ? fm.feature.childImageSharp.gatsbyImageData
                             : false,
                           description: fm.featureDescription,
                         }}

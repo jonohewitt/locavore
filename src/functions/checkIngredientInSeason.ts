@@ -1,4 +1,10 @@
-export const checkIngredientInSeason = ({ingredient, monthIndex, includeYearRound}) => {
+import { Ingredient } from "../pages/ingredients"
+
+export const checkIngredientInSeason = (
+  ingredient: Ingredient,
+  monthIndex: number,
+  includeYearRound: boolean
+) => {
   if (ingredient.season) {
     const start = ingredient.season.start
     const end = ingredient.season.end

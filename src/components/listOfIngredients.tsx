@@ -7,7 +7,9 @@ import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { calcIngredientMonths } from "../functions/calcIngredientMonths"
 import { graphql, useStaticQuery } from "gatsby"
 
-const AllIngredientTypes = styled.div`
+import { Ingredient } from "../pages/ingredients"
+
+const AllIngredientTypes = styled.div<{ fadedIn: boolean }>`
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.8s, transform 0.8s;
@@ -56,7 +58,7 @@ const StyledUL = styled.ul`
 
 export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
   const {
-    ingredientsByCountryJson: { ingredients: allIngredients },
+    ingredientsByCountryJson: { ingredients: allIngredientResults },
   } = useStaticQuery(graphql`
     query {
       ingredientsByCountryJson(country: { eq: "belgium" }) {
@@ -71,16 +73,16 @@ export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
       }
     }
   `)
+
+  const allIngredients: Ingredient[] = allIngredientResults
+
   const { currentMonth } = useContext(GlobalState)
   const [fadedIn, setFadedIn] = useState(false)
   useEffect(() => setFadedIn(true), [])
 
-  const ingredientInSeason = ingredient =>
-    checkIngredientInSeason({
-      ingredient: ingredient,
-      monthIndex: currentMonth,
-      includeYearRound: true,
-    })
+  // include currentMonth and true arguments here to save repition later on
+  const ingredientInSeason = (ingredient: Ingredient) =>
+    checkIngredientInSeason(ingredient, currentMonth, true)
 
   const processedList = allIngredients
     .filter(

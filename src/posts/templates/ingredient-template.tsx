@@ -12,6 +12,9 @@ import { BackButton } from "../../components/backButton"
 import { checkIngredientInSeason } from "../../functions/checkIngredientInSeason"
 import { combineRecipeAndLinks } from "../../functions/combineRecipeAndLinks"
 
+import { Recipe } from "../../pages/recettes"
+import { Ingredient } from "../../pages/ingredients"
+
 const IngredientStyles = styled.div`
   h1 {
     font-size: 32px;
@@ -49,7 +52,7 @@ const Header = styled.header`
   }
 `
 
-const SeasonalIndicator = styled.h2`
+const SeasonalIndicator = styled.h2<{ foundIngredient: boolean }>`
   svg {
     transform: scale(1.5);
     margin-left: 6px;
@@ -63,21 +66,21 @@ const IngredientTemplate = ({ pageContext, data }) => {
   const allIngredients = data.ingredientsByCountryJson.ingredients
 
   const foundIngredient = allIngredients.find(
-    ingredient => ingredient.name === pageContext.name
+    (ingredient: Ingredient) => ingredient.name === pageContext.name
   )
 
-  let currentlyInSeason
+  let currentlyInSeason: undefined | boolean
 
   if (foundIngredient) {
-    currentlyInSeason = checkIngredientInSeason({
-      ingredient: foundIngredient,
-      monthIndex: currentMonth,
-      includeYearRound: true,
-    })
+    currentlyInSeason = checkIngredientInSeason(
+      foundIngredient,
+      currentMonth,
+      true
+    )
   }
 
-  let seasonalIndicator
   let icon
+  let seasonalIndicator = "Pas encore d'information"
 
   if (currentlyInSeason !== undefined) {
     if (foundIngredient.season) {
@@ -89,8 +92,6 @@ const IngredientTemplate = ({ pageContext, data }) => {
       seasonalIndicator = "Disponible toute l'année"
       icon = tickSVG
     }
-  } else {
-    seasonalIndicator = "Pas encore d'information"
   }
 
   const recipesWithIngredient = new Set(
@@ -124,7 +125,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
           )}
           <h2>Recettes proposées</h2>
           <hr />
-          <ListOfRecipes recipeList={[...recipesWithIngredient]} />
+          <ListOfRecipes recipeList={[...recipesWithIngredient] as Recipe[]} />
         </main>
       </ContentWrapper>
     </IngredientStyles>
@@ -132,7 +133,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
 }
 
 export const pageQuery = graphql`
-  query {
+  {
     allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
       nodes {
         id
@@ -140,9 +141,11 @@ export const pageQuery = graphql`
           title
           feature {
             childImageSharp {
-              fluid(maxWidth: 800) {
-                ...GatsbyImageSharpFluid_withWebp
-              }
+              gatsbyImageData(
+                width: 800
+                layout: CONSTRAINED
+                placeholder: BLURRED
+              )
             }
           }
           featureDescription

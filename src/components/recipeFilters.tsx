@@ -5,8 +5,8 @@ import { useWindowWidth } from "../functions/useWindowWidth"
 import {
   FilterOrSortButtons,
   FilterOrSortOptionsList,
-} from "../components/filterOrSortOptions"
-import { GlobalState } from "../context/globalStateContext.js"
+} from "./filterOrSortOptions"
+import { GlobalState } from "../context/globalStateContext"
 
 const SelectOptionsButton = styled.button`
   display: flex;
@@ -14,8 +14,14 @@ const SelectOptionsButton = styled.button`
   font-size: 16px;
   padding: 10px 0 0 0;
   font-weight: 700;
+  &:hover {
+    svg {
+      transform: scale(1.2);
+    }
+  }
   svg {
     margin-left: 8px;
+    transition: transform 0.2s;
   }
 `
 
@@ -44,22 +50,27 @@ export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
   )
 }
 
-export const IngredientListOptions = () => {
+export const Options = () => {
   const {
-    ingredientFilterList,
-    ingredientSortList,
-    toggleIngredientFilter,
-    toggleIngredientSort,
+    recipeFilterList,
+    recipeSortList,
+    toggleRecipeFilter,
+    toggleRecipeSort,
   } = useContext(GlobalState)
 
   return (
     <>
       <FilterOrSortOptionsList title="Filtres">
         <FilterOrSortButtons
-          list={ingredientFilterList}
-          action={option => toggleIngredientFilter(option.name)}
-          color="var(--color-filterSectionA)"
+          list={recipeFilterList.filter(filter => filter.group === "green")}
+          action={option => toggleRecipeFilter(option.name)}
           cross
+          color="var(--color-filterSectionA)"
+        />
+        <FilterOrSortButtons
+          list={recipeFilterList.filter(filter => filter.group === "course")}
+          action={option => toggleRecipeFilter(option.name)}
+          color="var(--color-text)"
         />
       </FilterOrSortOptionsList>
 
@@ -67,12 +78,12 @@ export const IngredientListOptions = () => {
 
       <FilterOrSortOptionsList title="Trier par">
         <FilterOrSortButtons
-          list={ingredientSortList}
-          action={option => toggleIngredientSort(option.name)}
+          list={recipeSortList}
+          action={option => toggleRecipeSort(option.name)}
           color="var(--color-text)"
           disabledFunction={option =>
             option.name !== "A-Z" &&
-            !ingredientFilterList.find(filter => filter.name === "En saison")
+            !recipeFilterList.find(filter => filter.name === "En saison")
               .isApplied
           }
         />

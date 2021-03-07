@@ -9,7 +9,7 @@ import { searchSVG, crossSVG, arrowSVG } from "./icons"
 import { Search } from "./search"
 import { CSSTransition } from "react-transition-group"
 
-const NavWrapper = styled.nav`
+const NavWrapper = styled.nav<{ fadedIn: boolean }>`
   position: fixed;
   top: 0;
   width: 100%;
@@ -26,7 +26,7 @@ const NavWrapper = styled.nav`
   ${props => props.fadedIn && "opacity: 1;"}
 `
 
-const MenuButton = styled.button`
+const MenuButton = styled.button<{ SVGrotation: number }>`
   font-size: 16px;
   font-weight: 700;
   padding: 10px 15px 10px 10px;
@@ -165,7 +165,7 @@ const PageTitle = styled(Link)`
   }
 `
 
-const DropDownMenu = styled.section`
+const DropDownMenu = styled.section<{ open: boolean }>`
   width: 100%;
   height: 100vh;
   position: fixed;
@@ -210,7 +210,7 @@ const MobileSearchContainer = styled.div`
   z-index: 5;
 `
 
-const DropDownNavList = styled.ul`
+const DropDownNavList = styled.ul<{ halfDeviceHeight: string }>`
   position: absolute;
   top: ${props => props.halfDeviceHeight};
   left: 50%;

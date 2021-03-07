@@ -6,6 +6,8 @@ import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { calcIngredientMonths } from "../functions/calcIngredientMonths"
 import { ListOfIngredients } from "./listOfIngredients"
 
+import { Ingredient } from "../pages/ingredients"
+
 const ShowcaseContainer = styled.div``
 
 const IngredientListWrapper = styled.div`
@@ -34,19 +36,16 @@ const IngredientListWrapper = styled.div`
 export const IngredientShowcase = () => {
   const { currentMonth } = useContext(GlobalState)
 
-  const inSeasonAndSeasonal = ingredient =>
-    checkIngredientInSeason({
-      ingredient: ingredient,
-      monthIndex: currentMonth,
-      includeYearRound: false,
-    })
+  // set arguments to save reptition later on
+  const inSeasonAndSeasonal = (ingredient: Ingredient) =>
+    checkIngredientInSeason(ingredient, currentMonth, false)
 
   const justInFilter = [
     {
       logic(ingredient) {
         return (
           inSeasonAndSeasonal(ingredient) &&
-          calcIngredientMonths(ingredient, "since", "start", currentMonth, 1)
+          calcIngredientMonths(ingredient, "since", "start", currentMonth) <= 1
         )
       },
       isApplied: true,
@@ -58,7 +57,7 @@ export const IngredientShowcase = () => {
       logic(ingredient) {
         return (
           inSeasonAndSeasonal(ingredient) &&
-          calcIngredientMonths(ingredient, "until", "end", currentMonth, 1)
+          calcIngredientMonths(ingredient, "until", "end", currentMonth) <= 1
         )
       },
       isApplied: true,
@@ -70,7 +69,7 @@ export const IngredientShowcase = () => {
       logic(ingredient) {
         return (
           !inSeasonAndSeasonal(ingredient) &&
-          calcIngredientMonths(ingredient, "until", "start", currentMonth, 2)
+          calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 2
         )
       },
       isApplied: true,

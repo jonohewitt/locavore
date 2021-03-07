@@ -5,9 +5,9 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
-import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import { SEO } from "../../components/seo"
-import { PostStyles } from ".././post-styles"
+import { PostStyles } from "../post-styles"
 import { GlobalState } from "../../context/globalStateContext"
 import { Ing } from "../../components/ingredientLink"
 import { LinkedRecipe } from "../../components/linkedRecipe"
@@ -76,7 +76,8 @@ const BlogTemplate = ({ data }) => {
     <>
       <SEO title={fm.title} />
       {fm.header && (
-        <Img
+        <GatsbyImage
+          image={fm.header.childImageSharp.gatsbyImageData}
           style={{
             width: "100%",
             height: context.appInterface ? "20vmax" : "30vmax",
@@ -87,7 +88,6 @@ const BlogTemplate = ({ data }) => {
             width: "100%",
             height: "100%",
           }}
-          fluid={fm.header.childImageSharp.fluid}
           alt={fm.headerDescription}
         />
       )}
@@ -105,14 +105,14 @@ const BlogTemplate = ({ data }) => {
 
             {fm.feature && (
               <FeatureImgContainer>
-                <Img
+                <GatsbyImage
+                  image={fm.feature.childImageSharp.gatsbyImageData}
                   style={{
                     width: "100%",
                   }}
                   imgStyle={{
                     width: "100%",
                   }}
-                  fluid={fm.feature.childImageSharp.fluid}
                   alt={fm.featureDescription}
                 />
               </FeatureImgContainer>
@@ -138,17 +138,17 @@ export const pageQuery = graphql`
         date(formatString: "DD MMMM, YYYY", locale: "fr")
         header {
           childImageSharp {
-            fluid(maxWidth: 1500) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
+            gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
           }
         }
         headerDescription
         feature {
           childImageSharp {
-            fluid(maxWidth: 800) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
+            gatsbyImageData(
+              width: 800
+              layout: CONSTRAINED
+              placeholder: BLURRED
+            )
           }
         }
         featureDescription

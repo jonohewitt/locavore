@@ -1,10 +1,10 @@
-module.exports = {
-  siteMetadata: {
+export const siteMetadata = {
     title: `Locavore`,
     description: `A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably. Content focuses around recipes 🥗, blog posts 👩‍💻, information resources 📚 and data visualisations 📊.`,
     author: `Locavore`,
-  },
-  plugins: [
+  }
+  
+  export const plugins = [
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -20,6 +20,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -31,7 +32,7 @@ module.exports = {
         background_color: `hsl(234, 11%, 17%)`,
         theme_color: `hsla(234, 11%, 22%, 0.98)`,
         display: `standalone`,
-        icon: `src/images/pear-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/pear-icon.png`,
         icon_options: {
           purpose: `any maskable`,
         },
@@ -75,5 +76,5 @@ module.exports = {
         path: `./src/data/`,
       },
     },
-  ],
-}
+  ]
+  

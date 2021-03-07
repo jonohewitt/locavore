@@ -10,9 +10,9 @@ import {
   maxWidth,
   breakToMobile,
 } from "../../components/contentWrapper"
-import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import { SEO } from "../../components/seo"
-import { PostStyles } from ".././post-styles"
+import { PostStyles } from "../post-styles"
 import { GlobalState } from "../../context/globalStateContext"
 import { Ing } from "../../components/ingredientLink"
 import { LinkedRecipe } from "../../components/linkedRecipe"
@@ -26,7 +26,7 @@ import { infoSVG } from "../../components/icons"
 import { CommentSectionComponent } from "../../components/commentSection"
 import slugify from "slugify"
 
-const IngredientBox = styled.div`
+const IngredientBox = styled.div<{ featureImage: boolean }>`
   background-color: var(--color-graphBackground);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   padding: 10px 20px 30px 20px;
@@ -71,7 +71,10 @@ const IngredientBox = styled.div`
   }
 `
 
-const IngredientsButton = styled.button`
+const IngredientsButton = styled.button<{
+  isDark?: boolean
+  selected?: boolean
+}>`
   height: 45px;
   font-size: 18px;
   font-weight: 600;
@@ -130,7 +133,7 @@ const StyledHeader = styled.header`
   position: relative;
 `
 
-const RecipeTitle = styled.div`
+const RecipeTitle = styled.div<{ backButton: boolean }>`
   ${props =>
     props.backButton &&
     "position: relative;left: -50px;display: grid;grid-template-columns: 50px 1fr;align-items: start;"}
@@ -155,8 +158,7 @@ const CourseAndFeeds = styled.p`
   margin-bottom: 5px;
 `
 
-const Metadata = styled.div`
-`
+const Metadata = styled.div``
 
 const RecipeIndicators = styled.div`
   display: flex;
@@ -189,7 +191,7 @@ const RightColumn = styled.div`
   }
 `
 
-const StyledArticle = styled.article`
+const StyledArticle = styled.article<{ appInterface: boolean; masonryLayout: boolean }>`
   width: ${widthPercent}%;
   max-width: ${maxWidth}px;
   margin: ${props => (props.appInterface ? "30px" : "100px")} auto 0 auto;
@@ -229,18 +231,20 @@ const Note = ({ children }) => (
 )
 
 const FeatureImage = ({ fm }) => {
-  const featureImg = fm.feature ? fm.feature.childImageSharp.fluid : false
+  const featureImg = fm.feature
+    ? fm.feature.childImageSharp.gatsbyImageData
+    : false
   return (
     featureImg && (
       <FeatureImgContainer>
-        <Img
+        <GatsbyImage
+          image={featureImg}
           style={{
             width: "100%",
           }}
           imgStyle={{
             width: "100%",
           }}
-          fluid={featureImg}
           alt={fm.featureDescription}
         />
       </FeatureImgContainer>
@@ -293,8 +297,8 @@ const RecipeTemplate = ({ data }) => {
 
   const Header = () => (
     <StyledHeader>
-      <RecipeTitle backButton={BackButton()}>
-        <BackButton link="/recettes" />
+      <RecipeTitle backButton={Boolean(BackButton())}>
+        <BackButton />
         <h1>{fm.title}</h1>
       </RecipeTitle>
       <hr />
@@ -416,9 +420,7 @@ export const pageQuery = graphql`
         description
         feature {
           childImageSharp {
-            fluid(maxWidth: 1300) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
+            gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
           }
         }
         featureDescription

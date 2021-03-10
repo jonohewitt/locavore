@@ -62,14 +62,14 @@ const SeasonalIndicator = styled.h2<{ foundIngredient: boolean }>`
 
 const IngredientTemplate = ({ pageContext, data }) => {
   const { currentMonth } = useContext(GlobalState)
-  const allRecipes = data.allMdx.nodes
-  const allIngredients = data.ingredientsByCountryJson.ingredients
+  const allRecipes: Recipe[] = data.allMdx.nodes
+  const allIngredients: Ingredient[] = data.ingredientsByCountryJson.ingredients
 
   const foundIngredient = allIngredients.find(
     (ingredient: Ingredient) => ingredient.name === pageContext.name
   )
 
-  let currentlyInSeason: undefined | boolean
+  let currentlyInSeason: boolean
 
   if (foundIngredient) {
     currentlyInSeason = checkIngredientInSeason(
@@ -94,7 +94,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
     }
   }
 
-  const recipesWithIngredient = new Set(
+  const recipesWithIngredient = new Set<Recipe>(
     allRecipes.filter(recipe => {
       const combinedWithLinks = combineRecipeAndLinks(recipe, allRecipes)
       return combinedWithLinks.some(recipeObj =>
@@ -113,7 +113,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
         </Header>
         <hr />
         <main>
-          <SeasonalIndicator foundIngredient={foundIngredient}>
+          <SeasonalIndicator foundIngredient={Boolean(foundIngredient)}>
             {seasonalIndicator} {icon && icon}
           </SeasonalIndicator>
 
@@ -125,7 +125,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
           )}
           <h2>Recettes proposées</h2>
           <hr />
-          <ListOfRecipes recipeList={[...recipesWithIngredient] as Recipe[]} />
+          <ListOfRecipes recipeList={[...recipesWithIngredient]} />
         </main>
       </ContentWrapper>
     </IngredientStyles>

@@ -6,6 +6,9 @@ import styled from "styled-components"
 import { tickSVG, crossSVG } from "./icons"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 
+import { Recipe } from "../pages/recettes"
+import { Ingredient } from "../pages/ingredients"
+
 const IngredientLink = styled(Link)`
   color: ${props => props.color} !important;
   svg {
@@ -25,12 +28,14 @@ const IngredientLink = styled(Link)`
   }
 `
 
-export const LinkedRecipe = ({ id, children }) => {
+interface LinkedRecipeProps {
+  id: string
+  children: string
+}
+
+export const LinkedRecipe = ({ id, children }: LinkedRecipeProps) => {
   const { currentMonth } = useContext(GlobalState)
-  const {
-    allMdx: { nodes: allRecipes },
-    ingredientsByCountryJson: { ingredients: allIngredients },
-  } = useStaticQuery(graphql`
+  const queryResults = useStaticQuery(graphql`
     query {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
         nodes {
@@ -53,9 +58,13 @@ export const LinkedRecipe = ({ id, children }) => {
     }
   `)
 
+  const allRecipes: Recipe[] = queryResults.allMdx.nodes
+  const allIngredients: Ingredient[] =
+    queryResults.ingredientsByCountryJson.ingredients
+
   const foundRecipe = allRecipes.find(recipe => recipe.frontmatter.title === id)
 
-  let allInSeason
+  let allInSeason: boolean
 
   if (foundRecipe) {
     allInSeason = foundRecipe.frontmatter.ingredients.every(ingredientStr => {
@@ -63,17 +72,13 @@ export const LinkedRecipe = ({ id, children }) => {
         ingredient => ingredient.name === ingredientStr
       )
       if (foundIngredient) {
-        return checkIngredientInSeason({
-          ingredient: foundIngredient,
-          monthIndex: currentMonth,
-          includeYearRound: true,
-        })
+        return checkIngredientInSeason(foundIngredient, currentMonth, true)
       } else return false
     })
   }
 
-  let color
-  let icon
+  let color: string
+  let icon: JSX.Element
 
   if (allInSeason !== undefined) {
     if (allInSeason) {
@@ -89,14 +94,15 @@ export const LinkedRecipe = ({ id, children }) => {
 
   const childrenWords = children.split(" ")
 
-  let startingWords = []
-  let finalWord
+  let startingWordsArray: string[]
+  let startingWords: string
+  let finalWord: string
 
   if (childrenWords.length > 1) {
     for (let i = 0; i < childrenWords.length - 1; i++) {
-      startingWords.push(childrenWords[i])
+      startingWordsArray.push(childrenWords[i])
     }
-    startingWords = startingWords.join(" ")
+    startingWords = startingWordsArray.join(" ")
     finalWord = childrenWords[childrenWords.length - 1]
   }
 

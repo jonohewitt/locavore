@@ -42,36 +42,30 @@ export const IngredientShowcase = () => {
 
   const justInFilter = [
     {
-      logic(ingredient) {
-        return (
-          inSeasonAndSeasonal(ingredient) &&
-          calcIngredientMonths(ingredient, "since", "start", currentMonth) <= 1
-        )
-      },
+      name: "justIn",
+      logic: (ingredient: Ingredient) =>
+        inSeasonAndSeasonal(ingredient) &&
+        calcIngredientMonths(ingredient, "since", "start", currentMonth) <= 1,
       isApplied: true,
     },
   ]
 
   const lastChanceFilter = [
     {
-      logic(ingredient) {
-        return (
-          inSeasonAndSeasonal(ingredient) &&
-          calcIngredientMonths(ingredient, "until", "end", currentMonth) <= 1
-        )
-      },
+      name: "lastChance",
+      logic: (ingredient: Ingredient) =>
+        inSeasonAndSeasonal(ingredient) &&
+        calcIngredientMonths(ingredient, "until", "end", currentMonth) <= 1,
       isApplied: true,
     },
   ]
 
   const comingUpFilter = [
     {
-      logic(ingredient) {
-        return (
-          !inSeasonAndSeasonal(ingredient) &&
-          calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 2
-        )
-      },
+      name: "comingUp",
+      logic: (ingredient: Ingredient) =>
+        !inSeasonAndSeasonal(ingredient) &&
+        calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 2,
       isApplied: true,
     },
   ]

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import { ToggleSwitch } from "./toggleSwitch"
 
-const SettingsWrapper = styled.section`
+const SettingsWrapper = styled.section<{ settingsIsOpen: boolean }>`
   position: fixed;
   z-index: 2;
   top: 0;
@@ -20,10 +20,10 @@ const SettingsWrapper = styled.section`
   color: #eee;
   box-shadow: ${props =>
     props.settingsIsOpen ? "0 0 20px rgba(0, 0, 0, 0.3)" : "0"};
-    hr {
-      background: var(--color-text);
-      opacity: 0.4;
-    }
+  hr {
+    background: var(--color-text);
+    opacity: 0.4;
+  }
 `
 const StyledUL = styled.ul`
   hr {
@@ -33,7 +33,6 @@ const StyledUL = styled.ul`
 
 const ToggleContainer = styled.div`
   margin: 15px 20px;
-  cursor: ${props => (props.pointer ? "pointer" : "normal")};
   display: flex;
   justify-content: space-between;
   align-items: center;

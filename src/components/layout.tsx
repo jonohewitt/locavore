@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react"
-import PropTypes from "prop-types"
 import { GlobalStyles } from "../theme/globalStyles"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
@@ -11,9 +10,9 @@ import { Footer, footerHeight } from "./footer"
 import { AppUI } from "./appUI"
 import { CSSTransition } from "react-transition-group"
 
-const FadeInWrapper = styled.div`
+const FadeInWrapper = styled.div<{ fadedIn: boolean }>`
   opacity: 0;
-  ${props => props.pageFadedIn && "opacity: 1;"}
+  ${props => props.fadedIn && "opacity: 1;"}
 
   &.fade-enter {
     opacity: 0;
@@ -40,11 +39,11 @@ const OverflowWrapper = styled.div`
 `
 const footerPadding = `${footerHeight + 100}px`
 
-const Content = styled.div`
+const Content = styled.div<{ appInterface: boolean }>`
   padding-bottom: ${props => (props.appInterface ? "100px" : footerPadding)};
 `
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children }: { children: JSX.Element }) => {
   const [searchIsActive, setSearchIsActive] = useState(false)
   const {
     appInterface,
@@ -52,10 +51,10 @@ export const Layout = ({ children }) => {
     toggleInterface,
     toggleSettings,
   } = useContext(GlobalState)
-  const [pageFadedIn, setPageFadedIn] = useState(false)
+  const [fadedIn, setFadedIn] = useState(false)
 
   useEffect(() => {
-    setPageFadedIn(true)
+    setFadedIn(true)
   }, [])
 
   return (
@@ -80,11 +79,11 @@ export const Layout = ({ children }) => {
       <GlobalStyles />
 
       <CSSTransition
-        in={pageFadedIn}
+        in={fadedIn}
         timeout={{ enter: 2000, exit: 200 }}
         classNames="fade"
       >
-        <FadeInWrapper pageFadedIn={pageFadedIn}>
+        <FadeInWrapper fadedIn={fadedIn}>
           {appInterface && <AppUI />}
           {!appInterface && (
             <BrowserNav
@@ -94,15 +93,9 @@ export const Layout = ({ children }) => {
           )}
 
           <OverflowWrapper>
-            <Settings
-              settingsIsOpen={settingsIsOpen}
-              appInterface={appInterface}
-              setAppInterface={toggleInterface}
-            />
+            <Settings />
             <Page
-              onClick={() => {
-                if (searchIsActive) setSearchIsActive(false)
-              }}
+              onClick={() => searchIsActive && setSearchIsActive(false)}
               settingsIsOpen={settingsIsOpen}
               toggleSettings={toggleSettings}
             >
@@ -116,8 +109,4 @@ export const Layout = ({ children }) => {
       </CSSTransition>
     </>
   )
-}
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 }

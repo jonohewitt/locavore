@@ -159,7 +159,7 @@ const getSearchResults = (searchText: string, allPages: Page[]) => {
 }
 
 interface SearchProps {
-  setDropDownIsOpen: Function
+  setDropDownIsOpen?: Function
   mobile?: boolean
   app?: boolean
   searchIsActive: boolean

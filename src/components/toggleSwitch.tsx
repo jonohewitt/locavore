@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-const Container = styled.button`
+const Container = styled.button<{ state: boolean }>`
   padding: 0;
   border: none;
   outline-offset: 4px;
@@ -17,7 +17,7 @@ const Container = styled.button`
   cursor: pointer;
   box-shadow: 0 5px 5px hsla(0, 0%, 10%, 0.1) !important;
 `
-const Slider = styled.div`
+const Slider = styled.div<{ state: boolean }>`
   width: 22px;
   height: 22px;
   border-radius: 10px;
@@ -30,7 +30,12 @@ const Slider = styled.div`
 
 export const ToggleSwitch = ({ state, setState, notTabbable, label }) => {
   return (
-    <Container aria-label={label} tabIndex={notTabbable ? "-1" : "0"} onClick={setState} state={state}>
+    <Container
+      aria-label={label}
+      tabIndex={notTabbable ? -1 : 0}
+      onClick={setState}
+      state={state}
+    >
       <Slider state={state} />
     </Container>
   )

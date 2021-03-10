@@ -93,7 +93,7 @@ const SeasonalityInfo = styled.p`
 
 interface ListOfRecipesProps {
   recipeList: Recipe[]
-  recipeFilterList: RecipeFilter[]
+  recipeFilterList?: RecipeFilter[]
   sort?: string
 }
 

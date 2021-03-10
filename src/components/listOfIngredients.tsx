@@ -9,6 +9,8 @@ import { graphql, useStaticQuery } from "gatsby"
 
 import { Ingredient } from "../pages/ingredients"
 
+import { IngredientFilter } from "../context/ingredientListContext"
+
 const AllIngredientTypes = styled.div<{ fadedIn: boolean }>`
   opacity: 0;
   transform: translateY(8px);
@@ -56,10 +58,16 @@ const StyledUL = styled.ul`
   }
 `
 
-export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
-  const {
-    ingredientsByCountryJson: { ingredients: allIngredientResults },
-  } = useStaticQuery(graphql`
+interface ListOfIngredientsProps {
+  ingredientFilterList: IngredientFilter[]
+  sort?: string
+}
+
+export const ListOfIngredients = ({
+  ingredientFilterList,
+  sort,
+}: ListOfIngredientsProps) => {
+  const allIngredients: Ingredient[] = useStaticQuery(graphql`
     query {
       ingredientsByCountryJson(country: { eq: "belgium" }) {
         ingredients {
@@ -72,9 +80,7 @@ export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
         }
       }
     }
-  `)
-
-  const allIngredients: Ingredient[] = allIngredientResults
+  `).ingredientsByCountryJson.ingredients
 
   const { currentMonth } = useContext(GlobalState)
   const [fadedIn, setFadedIn] = useState(false)
@@ -93,7 +99,7 @@ export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
         )
     )
     .sort((a, b) => {
-      let sortValue
+      let sortValue: number
       if (sort) {
         switch (sort) {
           case "Nouveautés":
@@ -173,11 +179,11 @@ export const ListOfIngredients = ({ ingredientFilterList, sort }) => {
       }
     })
 
-  const categorisedList = filter =>
-    processedList.filter(ingredient => ingredient.type === `${filter}`)
+  const categorisedList = (category: string) =>
+    processedList.filter(ingredient => ingredient.type === category)
 
-  const mappedList = typeList =>
-    typeList.map(ingredient => (
+  const mappedList = (categoryList: Ingredient[]) =>
+  categoryList.map(ingredient => (
       <li key={ingredient.name}>
         <Link to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}>
           {ingredient.name}

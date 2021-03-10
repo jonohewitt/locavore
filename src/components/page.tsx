@@ -1,7 +1,7 @@
-import React from "react"
+import React, { MouseEventHandler } from "react"
 import styled from "styled-components"
 
-const StyledPage = styled.div`
+const StyledPage = styled.div<{ settingsIsOpen: boolean }>`
   position: relative;
   z-index: 1;
   min-height: 100vh;
@@ -11,7 +11,7 @@ const StyledPage = styled.div`
   overflow-x: hidden;
 `
 
-const ClickAwayCover = styled.div`
+const ClickAwayCover = styled.div<{ settingsIsOpen: boolean }>`
   position: fixed;
   z-index: 2;
   top: 0;
@@ -25,7 +25,19 @@ const ClickAwayCover = styled.div`
   transition: opacity 0.3s;
 `
 
-export const Page = ({ settingsIsOpen, toggleSettings, children, onClick }) => (
+interface PageProps {
+  settingsIsOpen: boolean
+  toggleSettings: MouseEventHandler
+  children: JSX.Element
+  onClick: MouseEventHandler
+}
+
+export const Page = ({
+  settingsIsOpen,
+  toggleSettings,
+  children,
+  onClick,
+}: PageProps) => (
   <StyledPage settingsIsOpen={settingsIsOpen} onClick={onClick}>
     <ClickAwayCover onClick={toggleSettings} settingsIsOpen={settingsIsOpen} />
     {children}

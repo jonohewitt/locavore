@@ -106,7 +106,17 @@ const DairyLabel = styled.div<{ vegan?: boolean; veganOption?: boolean }>`
   padding: 0px 5px;
 `
 
-export const DairyIndicator = ({ vegan, veganOption, vegetarian }) => {
+interface DairyIndicatorProps {
+  vegan: boolean
+  veganOption?: boolean
+  vegetarian?: boolean
+}
+
+export const DairyIndicator = ({
+  vegan,
+  veganOption,
+  vegetarian,
+}: DairyIndicatorProps) => {
   if (vegan) {
     return (
       <DairyLabel className="dairyLabel" vegan>

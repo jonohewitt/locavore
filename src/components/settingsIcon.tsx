@@ -15,7 +15,7 @@ const IconWrapper = styled.button`
   outline-offset: 4px;
   overflow: hidden;
 `
-const Square = styled.div`
+const Square = styled.div<{ settingsIsOpen: boolean }>`
   position: relative;
   width: ${props => (props.settingsIsOpen ? 0 : "32px")};
   height: ${props => (props.settingsIsOpen ? "30px" : "30px")};
@@ -31,7 +31,7 @@ const Square = styled.div`
   transition: width 0.3s, height 0.3s, border 0.5s, transform 0.3s,
     background-color 0.1s ${props => props.settingsIsOpen && "0.11s"};
 `
-const TrackTemplate = styled.div`
+const TrackTemplate = styled.div<{ settingsIsOpen: boolean }>`
   position: absolute;
   width: 2px;
   height: 17px;
@@ -55,7 +55,7 @@ const RightTrack = styled(TrackTemplate)`
       : "translate(0,0) rotate(0)"};
   transition: transform 0.3s, height 0.3s, width 0.3s;
 `
-const SliderTemplate = styled.div`
+const SliderTemplate = styled.div<{ settingsIsOpen: boolean }>`
   position: absolute;
   width: 8px;
   height: 4px;
@@ -83,7 +83,11 @@ const RightSlider = styled(SliderTemplate)`
   }
 `
 
-export const SettingsIcon = ({ clickFunctions }) => {
+export const SettingsIcon = ({
+  clickFunctions,
+}: {
+  clickFunctions?: Function
+}) => {
   const { toggleSettings, settingsIsOpen } = useContext(GlobalState)
   return (
     <IconWrapper

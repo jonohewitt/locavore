@@ -26,8 +26,6 @@ const SearchContainer = styled.div`
 const IndexPage = () => {
   const { appInterface } = useContext(GlobalState)
   const [appSearchIsActive, setAppSearchIsActive] = useState(false)
-  const [value, setValue] = useState("")
-  const [list, setList] = useState([])
 
   return (
     <>
@@ -38,10 +36,6 @@ const IndexPage = () => {
           <SearchContainer>
             <Search
               app
-              value={value}
-              setValue={setValue}
-              list={list}
-              setList={setList}
               searchIsActive={appSearchIsActive}
               setSearchIsActive={setAppSearchIsActive}
             />

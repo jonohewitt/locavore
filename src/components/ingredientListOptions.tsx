@@ -23,7 +23,7 @@ const SelectOptionsButton = styled.button`
 
 export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
   const windowWidth = useWindowWidth()
-  let buttonContent
+  let buttonContent: JSX.Element
 
   if (optionsAreShown) {
     buttonContent = (

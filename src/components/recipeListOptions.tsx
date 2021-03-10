@@ -2,11 +2,7 @@ import React, { useContext } from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
-import {
-  OptionsList,
-  FilterButtons,
-  SortButtons,
-} from "./filterOrSortOptions"
+import { OptionsList, FilterButtons, SortButtons } from "./filterOrSortOptions"
 import { GlobalState } from "../context/globalStateContext"
 import { RecipeFilter, RecipeSort } from "../context/recipeListContext"
 
@@ -27,9 +23,17 @@ const SelectOptionsButton = styled.button`
   }
 `
 
-export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
+interface ShowOptionsProps {
+  optionsAreShown: boolean
+  setOptionsAreShown: Function
+}
+
+export const ShowOptions = ({
+  optionsAreShown,
+  setOptionsAreShown,
+}: ShowOptionsProps) => {
   const windowWidth = useWindowWidth()
-  let buttonContent
+  let buttonContent: JSX.Element
 
   if (optionsAreShown) {
     buttonContent = (
@@ -52,18 +56,20 @@ export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
   )
 }
 
+interface RecipeListOptionsProps {
+  recipeFilterList: RecipeFilter[]
+  recipeSortList: RecipeSort[]
+  toggleRecipeFilter: Function
+  toggleRecipeSort: Function
+}
+
 export const RecipeListOptions = () => {
   const {
     recipeFilterList,
     recipeSortList,
     toggleRecipeFilter,
     toggleRecipeSort,
-  }: {
-    recipeFilterList: RecipeFilter[]
-    recipeSortList: RecipeSort[]
-    toggleRecipeFilter: Function
-    toggleRecipeSort: Function
-  } = useContext(GlobalState)
+  }: RecipeListOptionsProps = useContext(GlobalState)
 
   return (
     <>

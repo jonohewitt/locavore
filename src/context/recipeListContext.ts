@@ -13,6 +13,11 @@ export interface RecipeFilter {
   isApplied: boolean
 }
 
+export interface RecipeSort {
+  name: string
+  isApplied: boolean
+}
+
 export const RecipeListContext = (currentMonth: number) => {
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
@@ -29,11 +34,6 @@ export const RecipeListContext = (currentMonth: number) => {
       }
     `
   ).ingredientsByCountryJson.ingredients
-
-  interface RecipeSort {
-    name: string
-    isApplied: boolean
-  }
 
   const [recipeSortList, setRecipeSortList] = useState<RecipeSort[]>([
     { name: "Nouveautés", isApplied: true },

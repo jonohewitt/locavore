@@ -8,6 +8,8 @@ import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 import { graphql, useStaticQuery } from "gatsby"
 
+import { Ingredient } from "../pages/ingredients"
+
 const NoIngredientData = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,7 +75,7 @@ const StyledTable = styled.table`
   }
 `
 
-const MonthInitial = styled.th`
+const MonthInitial = styled.th<{ isCurrentMonth: boolean }>`
   height: 25px;
   line-height: 25px;
   ${props =>
@@ -96,7 +98,7 @@ const IngredientRow = styled.tr`
   }
 `
 
-const MonthValues = styled.td`
+const MonthValues = styled.td<{ value: boolean | string }>`
   background-color: ${props =>
     props.value ? "var(--color-positive)" : "hsl(0,29.5%,41.2%)"};
   border-radius: 3px;
@@ -138,10 +140,14 @@ const MonthInitials = () => {
   )
 }
 
-export const RecipeSeasonalityTable = ({ ingredients }) => {
-  const {
-    ingredientsByCountryJson: { ingredients: allIngredients },
-  } = useStaticQuery(
+interface RecipeSeasonalityTableProps {
+  ingredients: string[]
+}
+
+export const RecipeSeasonalityTable = ({
+  ingredients,
+}: RecipeSeasonalityTableProps) => {
+  const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {
         ingredientsByCountryJson(country: { eq: "belgium" }) {
@@ -160,11 +166,11 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
         }
       }
     `
-  )
+  ).ingredientsByCountryJson.ingredients
 
-  const uniqueIngredients = new Set()
+  const uniqueIngredients: Set<Ingredient> = new Set()
   let yearRoundIngredientFound = false
-  const noDataIngredientSet = new Set()
+  const noDataIngredientSet: Set<string> = new Set()
 
   ingredients.forEach(ingredient => {
     const foundIngredient = allIngredients.find(
@@ -180,7 +186,7 @@ export const RecipeSeasonalityTable = ({ ingredients }) => {
   const foundIngredients = [...uniqueIngredients]
   const noDataIngredientArray = [...noDataIngredientSet]
 
-  let noDataIngredientString
+  let noDataIngredientString: string
 
   if (noDataIngredientArray.length) {
     noDataIngredientString = noDataIngredientArray.reduce(

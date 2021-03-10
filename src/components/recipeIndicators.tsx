@@ -54,7 +54,7 @@ const timeConverter = (minsInput: number) => {
   }
 }
 
-type TimePairProps = {
+interface TimePairProps {
   icon: { type: "svg" }
   value: number
 }
@@ -73,7 +73,7 @@ const TimePair = ({ icon, value }: TimePairProps) => (
   </IndicatorPair>
 )
 
-type TimeIndicatorProps = {
+interface TimeIndicatorProps {
   prepTime: number
   cookTime: number
 }

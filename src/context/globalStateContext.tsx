@@ -27,6 +27,7 @@ const Provider = ({ children }) => {
   } = IngredientListContext(currentMonth)
 
   useLayoutEffect(() => {
+    const navigator: any = window.navigator
     setAppInterface(
       navigator.standalone ||
         window.matchMedia("(display-mode: standalone)").matches

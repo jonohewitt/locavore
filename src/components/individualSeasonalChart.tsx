@@ -5,7 +5,9 @@ import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 
-const ChartWrapper = styled.div`
+import { Ingredient } from "../pages/ingredients"
+
+const ChartWrapper = styled.div<{ fadedIn: boolean }>`
   background-color: var(--color-graphBackground);
   border-radius: 5px;
   padding: 15px;
@@ -34,7 +36,7 @@ const LabelContainer = styled.div`
   position: relative;
 `
 
-const ToolTip = styled.div`
+const ToolTip = styled.div<{ toolTipShowing: boolean }>`
   width: 130px;
   position: absolute;
   bottom: 55px;
@@ -47,10 +49,12 @@ const ToolTip = styled.div`
   opacity: ${props => (props.toolTipShowing ? "1" : "0")};
   transition: opacity 0.5s;
 
-  ${"" /* Move tooltip to center above month initial letter.
+  ${
+    "" /* Move tooltip to center above month initial letter.
 -50% gets tooltip center above left edge. The following calc gets the content width,
 then minuses the padding on the ChartWrapper, and the gap between each MonthRect * 11,
-divides by 12 to get each MonthRect width, and divides by 2 to get half*/}
+divides by 12 to get each MonthRect width, and divides by 2 to get half*/
+  }
   transform: translateX(
     calc(-50% + (min(${widthPercent}vw, ${maxWidth}px) - 30px - 11 * 3px) / 12 / 2)
   );
@@ -71,7 +75,7 @@ divides by 12 to get each MonthRect width, and divides by 2 to get half*/}
   }
 `
 
-const MonthInitial = styled.h3`
+const MonthInitial = styled.h3<{ isCurrentMonth: boolean }>`
   ${props =>
     props.isCurrentMonth && "border: 2px solid; border-radius: 5px; top: -2px;"}
   padding: 0 4px;
@@ -81,7 +85,7 @@ const MonthInitial = styled.h3`
   position: relative;
 `
 
-const MonthRect = styled.div`
+const MonthRect = styled.div<{ value: boolean }>`
   background-color: ${props =>
     props.value ? "var(--color-positive)" : "hsl(0, 29.5%, 41.2%)"};
   height: ${props => (props.value ? "20px" : "10px")};
@@ -101,11 +105,18 @@ const SourceText = styled.p`
   }
 `
 
-const Month = ({ value, index, monthIndex, toolTipsCanShow }) => {
+interface MonthProps {
+  value: string | boolean
+  index: number
+  monthIndex: number
+  toolTipsCanShow: boolean
+}
+
+const Month = ({ value, index, monthIndex, toolTipsCanShow }: MonthProps) => {
   const [toolTipShowing, setToolTipShowing] = useState(false)
 
   const isCurrentMonth = index === monthIndex
-  let description
+  let description: string
   switch (value) {
     case "start":
       description = `La saison commence ${
@@ -167,13 +178,19 @@ const Month = ({ value, index, monthIndex, toolTipsCanShow }) => {
       <MonthRect
         role="img"
         aria-label={value ? "En saison" : "Pas en saison"}
-        value={value}
+        value={Boolean(value)}
       />
     </MonthContainer>
   )
 }
 
-export const IndividualSeasonalChart = ({ ingredient }) => {
+interface IndividualSeasonalChartProps {
+  ingredient: Ingredient
+}
+
+export const IndividualSeasonalChart = ({
+  ingredient,
+}: IndividualSeasonalChartProps) => {
   const [fadedIn, setFadedIn] = useState(false)
   const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
 

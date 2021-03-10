@@ -4,8 +4,10 @@ import { Ing } from "./ingredientLink"
 import { navigate, useStaticQuery, Link, graphql } from "gatsby"
 import slugify from "slugify"
 import { searchSVG } from "./icons"
+import { Ingredient } from "../pages/ingredients"
+import { Frontmatter } from "../pages/recettes"
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<{ shadow: boolean }>`
   border: 2px solid var(--color-hr);
   border-radius: 20px;
   background-color: var(--color-searchBackground);
@@ -50,7 +52,7 @@ const SearchResultList = styled.ul`
   scrollbar-color: var(--color-hr) var(--color-searchBackground);
 `
 
-const SearchResultListContainer = styled.div`
+const SearchResultListContainer = styled.div<{ outline: boolean }>`
   position: absolute;
   top: 55px;
   right: 0;
@@ -63,7 +65,7 @@ const SearchResultListContainer = styled.div`
   overflow: hidden;
 `
 
-const CategoryLabel = styled.p`
+const CategoryLabel = styled.p<{ type?: string }>`
   position: absolute;
   pointer-events: none;
   text-transform: capitalize;
@@ -87,7 +89,7 @@ const CategoryLabel = styled.p`
 
 const ErrorMessage = styled.p``
 
-const SearchResult = styled.li`
+const SearchResult = styled.li<{ selected: boolean }>`
   ${props =>
     props.selected &&
     " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "}
@@ -140,7 +142,15 @@ const SearchResult = styled.li`
   }
 `
 
-const getSearchResults = (searchText, allPages) => {
+interface Page {
+  name: string
+  type: string
+  customSlug?: string
+  frontmatter?: Frontmatter
+  fields: { source: string }
+}
+
+const getSearchResults = (searchText: string, allPages: Page[]) => {
   const safeSearchText = slugify(searchText, { strict: true, replacement: " " })
   const regex = new RegExp(`^${safeSearchText}|\\s${safeSearchText}`, "gi")
   return allPages.filter(page =>
@@ -148,23 +158,27 @@ const getSearchResults = (searchText, allPages) => {
   )
 }
 
+interface SearchProps {
+  setDropDownIsOpen: Function
+  mobile?: boolean
+  app?: boolean
+  searchIsActive: boolean
+  setSearchIsActive: Function
+}
+
 export const Search = ({
   setDropDownIsOpen,
-  dropDownIsOpen,
   mobile,
   app,
   searchIsActive,
   setSearchIsActive,
-}) => {
+}: SearchProps) => {
   const [typedInput, setTypedInput] = useState("")
   const [resultsList, setResultsList] = useState([])
   const [indexHighlighted, setIndexHighlighted] = useState(0)
-  const searchInputRef = useRef()
+  const searchInputRef = useRef<HTMLInputElement>()
 
-  const {
-    allMdx: { nodes: allPosts },
-    ingredientsByCountryJson: { ingredients: allIngredients },
-  } = useStaticQuery(graphql`
+  const queryResults = useStaticQuery(graphql`
     query {
       allMdx {
         nodes {
@@ -189,6 +203,10 @@ export const Search = ({
       }
     }
   `)
+
+  const allPosts: Page[] = queryResults.allMdx.nodes
+  const allIngredients: Ingredient[] =
+    queryResults.ingredientsByCountryJson.ingredients
 
   // get an array of every page I want to be searchable
   // at the moment this is every ingredient plus every mdx file - (blog, recipe)
@@ -306,7 +324,7 @@ export const Search = ({
     <>
       <CategoryLabel>Ingredients</CategoryLabel>
       <Ing
-        onClick={handleSearchResultClick}
+        clickAction={handleSearchResultClick}
         className="searchResult"
         id={element.name}
       >

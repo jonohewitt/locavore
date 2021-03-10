@@ -16,12 +16,15 @@ const Wrapper = styled.div<{ appInterface: boolean; headerImg?: boolean }>`
     width: ${mobileWidthPercent}%;
   }
 `
-type ContentWrapperProps = {
+interface ContentWrapperProps {
   children: any
   headerImg?: boolean
 }
 
-export const ContentWrapper = ({ children, headerImg }: ContentWrapperProps) => {
+export const ContentWrapper = ({
+  children,
+  headerImg,
+}: ContentWrapperProps) => {
   const { appInterface } = useContext(GlobalState)
   return (
     <Wrapper headerImg={headerImg} appInterface={appInterface}>

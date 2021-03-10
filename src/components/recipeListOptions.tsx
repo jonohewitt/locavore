@@ -3,10 +3,12 @@ import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
 import {
-  FilterOrSortButtons,
-  FilterOrSortOptionsList,
+  OptionsList,
+  FilterButtons,
+  SortButtons,
 } from "./filterOrSortOptions"
 import { GlobalState } from "../context/globalStateContext"
+import { RecipeFilter, RecipeSort } from "../context/recipeListContext"
 
 const SelectOptionsButton = styled.button`
   display: flex;
@@ -50,44 +52,49 @@ export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
   )
 }
 
-export const Options = () => {
+export const RecipeListOptions = () => {
   const {
     recipeFilterList,
     recipeSortList,
     toggleRecipeFilter,
     toggleRecipeSort,
+  }: {
+    recipeFilterList: RecipeFilter[]
+    recipeSortList: RecipeSort[]
+    toggleRecipeFilter: Function
+    toggleRecipeSort: Function
   } = useContext(GlobalState)
 
   return (
     <>
-      <FilterOrSortOptionsList title="Filtres">
-        <FilterOrSortButtons
+      <OptionsList title="Filtres">
+        <FilterButtons
           list={recipeFilterList.filter(filter => filter.group === "green")}
-          action={option => toggleRecipeFilter(option.name)}
+          action={(filter: RecipeFilter) => toggleRecipeFilter(filter.name)}
           cross
           color="var(--color-filterSectionA)"
         />
-        <FilterOrSortButtons
+        <FilterButtons
           list={recipeFilterList.filter(filter => filter.group === "course")}
-          action={option => toggleRecipeFilter(option.name)}
+          action={(filter: RecipeFilter) => toggleRecipeFilter(filter.name)}
           color="var(--color-text)"
         />
-      </FilterOrSortOptionsList>
+      </OptionsList>
 
       <hr />
 
-      <FilterOrSortOptionsList title="Trier par">
-        <FilterOrSortButtons
+      <OptionsList title="Trier par">
+        <SortButtons
           list={recipeSortList}
-          action={option => toggleRecipeSort(option.name)}
+          action={(sort: RecipeSort) => toggleRecipeSort(sort.name)}
           color="var(--color-text)"
-          disabledFunction={option =>
-            option.name !== "A-Z" &&
+          disabledFunction={(sort: RecipeSort) =>
+            sort.name !== "A-Z" &&
             !recipeFilterList.find(filter => filter.name === "En saison")
               .isApplied
           }
         />
-      </FilterOrSortOptionsList>
+      </OptionsList>
 
       <hr />
     </>

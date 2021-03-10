@@ -3,7 +3,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import styled from "styled-components"
-import { ShowOptions, Options } from "../components/recipeFilters"
+import { ShowOptions, RecipeListOptions } from "../components/recipeListOptions"
 import { ListOfRecipes } from "../components/listOfRecipes"
 import { GlobalState } from "../context/globalStateContext"
 
@@ -114,7 +114,7 @@ const Recettes = () => {
             <hr />
           </header>
 
-          {optionsAreShown && <Options />}
+          {optionsAreShown && <RecipeListOptions />}
 
           <ListOfRecipes
             recipeList={allRecipes}

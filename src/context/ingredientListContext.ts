@@ -2,18 +2,18 @@ import { useState } from "react"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { Ingredient } from "../pages/ingredients"
 
-interface IngredientFilter {
+export interface IngredientFilter {
   name: string
   logic: Function
   isApplied: boolean
 }
 
-export const IngredientListContext = (currentMonth: number) => {
+export interface IngredientSort {
+  name: string
+  isApplied: boolean
+}
 
-  interface IngredientSort {
-    name: string
-    isApplied: boolean
-  }
+export const IngredientListContext = (currentMonth: number) => {
 
   const [ingredientSortList, setIngredientSortList] = useState<
     IngredientSort[]

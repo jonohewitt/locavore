@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { RefObject, useRef, useState } from "react"
 import styled from "styled-components"
 import { useQuery, useMutation, gql } from "@apollo/client"
 
@@ -15,7 +15,7 @@ const NameInput = styled.input`
   color: var(--color-text);
 `
 
-const NameContainer = styled.div`
+const NameContainer = styled.div<{ error: boolean }>`
   width: 100%;
   margin: 10px 0;
   background: var(--color-graphBackground);
@@ -148,8 +148,8 @@ const CREATE_COMMENT = gql`
 `
 
 const CommentsForm = ({ slug, setCommentFormOpen }) => {
-  const nameRef = useRef()
-  const commentRef = useRef()
+  const nameRef = useRef<HTMLInputElement>()
+  const commentRef = useRef<HTMLTextAreaElement>()
   const [nameError, setNameError] = useState(false)
   const [commentError, setCommentError] = useState(false)
 
@@ -177,7 +177,7 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
     },
   })
 
-  const handleSubmit = event => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     if (
       nameRef.current.value.trim().length &&
@@ -206,13 +206,15 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
     }
   }
 
-  const handleCancel = event => {
+  const handleCancel = () => {
     nameRef.current.value = ""
     commentRef.current.value = ""
     setCommentFormOpen(false)
   }
 
-  const handleInputBlur = ref => {
+  const handleInputBlur = (
+    ref: RefObject<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     ref.current.value = ref.current.value.trim()
   }
 
@@ -243,17 +245,15 @@ const CommentsForm = ({ slug, setCommentFormOpen }) => {
   )
 }
 
-const tsToLocaleDate = ts => {
-  const options = {
+const tsToLocaleDate = (ts: number) =>
+  new Date(ts / 1000).toLocaleDateString("fr", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  }
-  return new Date(ts / 1000).toLocaleDateString("fr", options)
-}
+  })
 
-const CommentsList = ({ slug }) => {
+const CommentsList = ({ slug }: { slug: string }) => {
   const { data, loading, error } = useQuery(GET_COMMENTS_BY_SLUG, {
     variables: { slug: slug },
   })
@@ -278,11 +278,17 @@ const CommentsList = ({ slug }) => {
   }
 }
 
+interface CommentSectionComponentProps {
+  slug: string
+  commentFormOpen: boolean
+  setCommentFormOpen: Function
+}
+
 export const CommentSectionComponent = ({
   slug,
   commentFormOpen,
   setCommentFormOpen,
-}) => {
+}: CommentSectionComponentProps) => {
   return (
     <CommentSectionContainer>
       <h2>Commentaire</h2>

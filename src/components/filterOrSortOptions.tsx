@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { MouseEventHandler, useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 
@@ -51,7 +51,7 @@ const OptionTitle = styled.p`
   font-weight: 700;
 `
 
-const OptionButtonContainer = styled.li`
+const OptionButtonContainer = styled.li<{ disabled: boolean }>`
   position: relative;
   margin: 0 5px 8px 3px;
   transition: transform 0.2s;
@@ -60,7 +60,7 @@ const OptionButtonContainer = styled.li`
   }
 `
 
-const OptionButton = styled.button`
+const OptionButton = styled.button<{ selected: boolean; isDark: boolean }>`
   background-color: ${props => (props.selected ? props.color : "transparent")};
   ${props => props.selected && "font-weight: 600;"}
   font-weight: 600;
@@ -75,13 +75,23 @@ const OptionButton = styled.button`
     props.selected ? "0 4px 7px rgba(0, 0, 0, 0.2)" : ""} !important;
 `
 
-const CrossSVG = styled.svg`
+const CrossSVG = styled.svg<{ selected: boolean }>`
   ${props => !props.selected && "display: none;"}
   position: absolute;
   right: -14px;
   top: -13px;
   cursor: pointer;
 `
+
+interface ButtonComponentProps {
+  name: string
+  action: MouseEventHandler
+  isApplied: boolean
+  color: string
+  cross?: boolean
+  disabled?: boolean
+  isDark: boolean
+}
 
 const ButtonComponent = ({
   name,
@@ -91,7 +101,7 @@ const ButtonComponent = ({
   cross,
   disabled,
   isDark,
-}) => (
+}: ButtonComponentProps) => (
   <OptionButtonContainer onClick={action} disabled={disabled}>
     <OptionButton
       isDark={isDark}
@@ -130,26 +140,37 @@ const ButtonComponent = ({
   </OptionButtonContainer>
 )
 
-export const FilterOrSortOptionsList = ({ title, children }) => (
+export const OptionsList = ({ title, children }) => (
   <>
     <OptionTitle>{title}</OptionTitle>
     <ListOfOptions>{children}</ListOfOptions>
   </>
 )
 
-export const FilterOrSortButtons = ({
+interface FilterOption {
+  name: string
+  logic: Function
+  isApplied: boolean
+  group?: string
+}
+
+interface FilterButtonsProps {
+  list: FilterOption[]
+  action: Function
+  cross?: boolean
+  color: string
+}
+
+export const FilterButtons = ({
   list,
   action,
   cross,
   color,
-  disabledFunction,
-}) => {
+}: FilterButtonsProps) => {
   const { isDark } = useContext(GlobalState)
   return (
     <span>
       {list.map(option => {
-        let disabledValue = false
-        if (disabledFunction) disabledValue = disabledFunction(option)
         return (
           <ButtonComponent
             cross={cross}
@@ -158,7 +179,44 @@ export const FilterOrSortButtons = ({
             action={() => action(option)}
             isApplied={option.isApplied}
             color={color}
-            disabled={disabledValue}
+            isDark={isDark}
+          />
+        )
+      })}
+    </span>
+  )
+}
+
+interface SortOption {
+  name: string
+  isApplied: boolean
+}
+
+interface SortButtonProps {
+  list: SortOption[]
+  action: Function
+  color: string
+  disabledFunction?: Function
+}
+
+export const SortButtons = ({
+  list,
+  action,
+  color,
+  disabledFunction,
+}: SortButtonProps) => {
+  const { isDark } = useContext(GlobalState)
+  return (
+    <span>
+      {list.map(option => {
+        return (
+          <ButtonComponent
+            key={option.name}
+            name={option.name}
+            action={() => action(option)}
+            isApplied={option.isApplied}
+            color={color}
+            disabled={disabledFunction(option)}
             isDark={isDark}
           />
         )

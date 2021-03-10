@@ -28,18 +28,22 @@ const IngredientLink = styled(Link)`
 `
 
 interface IngProps {
-  id: string,
-  text?: string,
+  id: string
+  text?: string
   children?: string
   className?: string
-  onClick?: void
+  clickAction?: () => void
 }
 
-export const Ing = ({ id, text, children, className, onClick }: IngProps) => {
+export const Ing = ({
+  id,
+  text,
+  children,
+  className,
+  clickAction,
+}: IngProps) => {
   const { currentMonth } = useContext(GlobalState)
-  const {
-    ingredientsByCountryJson: { ingredients: allIngredientResults },
-  } = useStaticQuery(
+  const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {
         ingredientsByCountryJson(country: { eq: "belgium" }) {
@@ -53,9 +57,7 @@ export const Ing = ({ id, text, children, className, onClick }: IngProps) => {
         }
       }
     `
-  )
-
-  const allIngredients: Ingredient[] = allIngredientResults
+  ).ingredientsByCountryJson.ingredients
 
   const foundIngredient = allIngredients.find(
     ingredient =>
@@ -67,7 +69,6 @@ export const Ing = ({ id, text, children, className, onClick }: IngProps) => {
   let icon: JSX.Element
 
   if (foundIngredient) {
-
     const inSeason = checkIngredientInSeason(
       foundIngredient,
       currentMonth,
@@ -95,7 +96,7 @@ export const Ing = ({ id, text, children, className, onClick }: IngProps) => {
 
   return (
     <IngredientLink
-      onClick={onClick && onClick}
+      onClick={clickAction}
       color={color}
       to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
       className={className}

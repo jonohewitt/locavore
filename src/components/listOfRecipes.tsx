@@ -91,7 +91,7 @@ const SeasonalityInfo = styled.p`
   margin-bottom: 20px;
 `
 
-type ListOfRecipesProps = {
+interface ListOfRecipesProps {
   recipeList: Recipe[]
   recipeFilterList: RecipeFilter[]
   sort?: string
@@ -102,9 +102,7 @@ export const ListOfRecipes = ({
   recipeFilterList,
   sort,
 }: ListOfRecipesProps) => {
-  const {
-    ingredientsByCountryJson: { ingredients: allIngredients },
-  } = useStaticQuery(
+  const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {
         ingredientsByCountryJson(country: { eq: "belgium" }) {
@@ -123,10 +121,10 @@ export const ListOfRecipes = ({
         }
       }
     `
-  )
+  ).ingredientsByCountryJson.ingredients
 
   const [fadedIn, setFadedIn] = useState(false)
-  const currentMonth: number  = useContext(GlobalState).currentMonth
+  const currentMonth: number = useContext(GlobalState).currentMonth
 
   useEffect(() => setFadedIn(true), [])
 

@@ -259,21 +259,23 @@ const SearchButton = styled.button`
   }
 `
 
+interface BrowserNavProps {
+  searchIsActive: boolean
+  setSearchIsActive: Function
+}
+
 export const BrowserNav = ({
-  settingsIsOpen,
-  toggleSettings,
   searchIsActive,
   setSearchIsActive,
-}) => {
+}: BrowserNavProps) => {
+
   const [halfDeviceHeight, setHalfDeviceHeight] = useState("50%")
   const windowWidth = useWindowWidth()
   const [navFadedIn, setNavFadedIn] = useState(false)
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
-  const [inputValue, setInputValue] = useState("")
-  const [resultsList, setResultsList] = useState([])
   const { setSettingsIsOpen } = useContext(GlobalState)
 
-  const data = useStaticQuery(graphql`
+  const siteTitle: string = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
@@ -281,7 +283,7 @@ export const BrowserNav = ({
         }
       }
     }
-  `)
+  `).site.siteMetadata.title
 
   useEffect(() => {
     setNavFadedIn(true)
@@ -312,7 +314,8 @@ export const BrowserNav = ({
       <DropDownMenu
         className="clearResultsList"
         onClick={event => {
-          if (event.target.classList.contains("clearResultsList")) {
+          const target = event.target as HTMLElement
+          if (target.classList.contains("clearResultsList")) {
             setSearchIsActive(false)
           }
         }}
@@ -322,13 +325,8 @@ export const BrowserNav = ({
         <MobileSearchContainer>
           <Search
             mobile
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            resultsList={resultsList}
-            setResultsList={setResultsList}
             searchIsActive={searchIsActive}
             setSearchIsActive={setSearchIsActive}
-            dropDownIsOpen={dropDownIsOpen}
             setDropDownIsOpen={setDropDownIsOpen}
           />
         </MobileSearchContainer>
@@ -339,7 +337,7 @@ export const BrowserNav = ({
           {navOptions.map((element, index) => (
             <DropDownListItem key={element.name}>
               <DropDownLink
-                tabIndex={dropDownIsOpen && !searchIsActive ? "0" : "-1"}
+                tabIndex={dropDownIsOpen && !searchIsActive ? 0 : -1}
                 onClick={() => setDropDownIsOpen(!dropDownIsOpen)}
                 to={element.link}
               >
@@ -359,7 +357,7 @@ export const BrowserNav = ({
           }}
         />
         <PageTitle to="/">
-          {data.site.siteMetadata.title} <span>BXL</span>
+          {siteTitle} <span>BXL</span>
         </PageTitle>
         {windowWidth > 700 ? (
           <>
@@ -387,7 +385,6 @@ export const BrowserNav = ({
             </CSSTransition>
 
             <SearchButton
-              searchIsActive={searchIsActive}
               className="searchButton"
               onClick={() => setSearchIsActive(!searchIsActive)}
             >
@@ -396,7 +393,7 @@ export const BrowserNav = ({
           </>
         ) : (
           <MenuButton
-            SVGrotation={dropDownIsOpen && "180"}
+            SVGrotation={dropDownIsOpen && 180}
             aria-label="Toggle navigation menu"
             onClick={() => {
               setSearchIsActive(false)
@@ -417,13 +414,9 @@ export const BrowserNav = ({
       >
         <SearchContainer>
           <Search
-            navBar
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            resultsList={resultsList}
-            setResultsList={setResultsList}
             searchIsActive={searchIsActive}
             setSearchIsActive={setSearchIsActive}
+            setDropDownIsOpen={setDropDownIsOpen}
           />
         </SearchContainer>
       </CSSTransition>

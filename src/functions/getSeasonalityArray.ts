@@ -1,9 +1,11 @@
-export const getSeasonalityArray = ingredient => {
-  if (!ingredient.season) return new Array(12).fill(true)
+import { Ingredient } from "../pages/ingredients"
+
+export const getSeasonalityArray = (ingredient: Ingredient) => {
+  if (!ingredient.season) return new Array(12).fill(true) as (boolean|string)[]
   else {
     const start = ingredient.season.start
     const end = ingredient.season.end
-    const array = new Array(12).fill(false)
+    const array: (boolean|string)[] = new Array(12).fill(false)
 
     if (start - end < 0) {
       array.fill(true, start, end + 1)

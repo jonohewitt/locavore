@@ -2,11 +2,13 @@ import React, { useContext } from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
-import {
-  FilterOrSortButtons,
-  FilterOrSortOptionsList,
-} from "./filterOrSortOptions"
+import { OptionsList, FilterButtons, SortButtons } from "./filterOrSortOptions"
 import { GlobalState } from "../context/globalStateContext"
+
+import {
+  IngredientFilter,
+  IngredientSort,
+} from "../context/ingredientListContext"
 
 const SelectOptionsButton = styled.button`
   display: flex;
@@ -50,33 +52,40 @@ export const IngredientListOptions = () => {
     ingredientSortList,
     toggleIngredientFilter,
     toggleIngredientSort,
+  }: {
+    ingredientFilterList: IngredientFilter[]
+    ingredientSortList: IngredientSort[]
+    toggleIngredientFilter: Function
+    toggleIngredientSort: Function
   } = useContext(GlobalState)
 
   return (
     <>
-      <FilterOrSortOptionsList title="Filtres">
-        <FilterOrSortButtons
+      <OptionsList title="Filtres">
+        <FilterButtons
           list={ingredientFilterList}
-          action={option => toggleIngredientFilter(option.name)}
+          action={(filter: IngredientFilter) =>
+            toggleIngredientFilter(filter.name)
+          }
           color="var(--color-filterSectionA)"
           cross
         />
-      </FilterOrSortOptionsList>
+      </OptionsList>
 
       <hr />
 
-      <FilterOrSortOptionsList title="Trier par">
-        <FilterOrSortButtons
+      <OptionsList title="Trier par">
+        <SortButtons
           list={ingredientSortList}
-          action={option => toggleIngredientSort(option.name)}
+          action={(sort: IngredientSort) => toggleIngredientSort(sort.name)}
           color="var(--color-text)"
-          disabledFunction={option =>
-            option.name !== "A-Z" &&
+          disabledFunction={(sort: IngredientSort) =>
+            sort.name !== "A-Z" &&
             !ingredientFilterList.find(filter => filter.name === "En saison")
               .isApplied
           }
         />
-      </FilterOrSortOptionsList>
+      </OptionsList>
 
       <hr />
     </>

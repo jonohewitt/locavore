@@ -94,7 +94,7 @@ export const LinkedRecipe = ({ id, children }: LinkedRecipeProps) => {
 
   const childrenWords = children.split(" ")
 
-  let startingWordsArray: string[]
+  let startingWordsArray: string[] = []
   let startingWords: string
   let finalWord: string
 

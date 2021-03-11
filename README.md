@@ -10,7 +10,7 @@ A website and PWA for helping people enjoy eating locally, seasonally and sustai
 
 Content focuses around recipes 🥗, information resources 📚, blog posts 👩‍💻, and data visualisations 📊.
 
-Built using Gatsby, React, GraphQL, Styled-Components, MDX and D3.
+Built using Gatsby, React, Typescript, GraphQL, Styled-Components and MDX.
 
 _We'd love to collaborate! Please get in touch if you'd like to share any data, ideas or give feedback about the site._
 

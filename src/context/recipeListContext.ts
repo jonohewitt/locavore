@@ -9,7 +9,7 @@ import { Ingredient } from "../pages/ingredients"
 export interface RecipeFilter {
   name: string
   group: string
-  logic: Function
+  logic: (fm: Frontmatter) => boolean
   isApplied: boolean
 }
 

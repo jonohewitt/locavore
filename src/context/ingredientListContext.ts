@@ -4,7 +4,7 @@ import { Ingredient } from "../pages/ingredients"
 
 export interface IngredientFilter {
   name: string
-  logic: Function
+  logic: (ingredient: Ingredient) => boolean
   isApplied: boolean
 }
 
@@ -14,7 +14,6 @@ export interface IngredientSort {
 }
 
 export const IngredientListContext = (currentMonth: number) => {
-
   const [ingredientSortList, setIngredientSortList] = useState<
     IngredientSort[]
   >([

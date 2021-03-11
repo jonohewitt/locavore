@@ -124,7 +124,7 @@ export const ListOfRecipes = ({
   ).ingredientsByCountryJson.ingredients
 
   const [fadedIn, setFadedIn] = useState(false)
-  const currentMonth: number = useContext(GlobalState).currentMonth
+  const { currentMonth } = useContext(GlobalState)
 
   useEffect(() => setFadedIn(true), [])
 

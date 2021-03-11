@@ -1,6 +1,8 @@
 import path from "path"
 import slugify from "slugify"
 
+import { Ingredient } from "../src/pages/ingredients"
+
 export const createPages = async ({
   graphql,
   actions: { createPage },
@@ -34,9 +36,9 @@ export const createPages = async ({
   }
 
   const allPosts = result.data.allMdx.nodes
-  const allIngredients = result.data.ingredientsByCountryJson.ingredients
+  const allIngredients: Ingredient[] = result.data.ingredientsByCountryJson.ingredients
 
-  const ingredientSet = new Set()
+  const ingredientSet = new Set<string>()
 
   allIngredients.forEach(ingredient => ingredientSet.add(ingredient.name))
 

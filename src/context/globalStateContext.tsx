@@ -1,10 +1,37 @@
 import React, { useState, useLayoutEffect, createContext } from "react"
 
 import { lightTheme, darkTheme } from "../theme/themeVariables"
-import { RecipeListContext } from "./recipeListContext"
-import { IngredientListContext } from "./ingredientListContext"
+import {
+  RecipeListContext,
+  RecipeSort,
+  RecipeFilter,
+} from "./recipeListContext"
+import {
+  IngredientListContext,
+  IngredientSort,
+  IngredientFilter,
+} from "./ingredientListContext"
 
-export const GlobalState = createContext(undefined)
+interface GlobalStateValue {
+  appInterface: boolean
+  toggleInterface: Function
+  settingsIsOpen: boolean
+  toggleSettings: Function
+  setSettingsIsOpen: Function
+  isDark: boolean
+  toggleTheme: Function
+  currentMonth: number
+  ingredientFilterList: IngredientFilter[]
+  ingredientSortList: IngredientSort[]
+  toggleIngredientFilter: Function
+  toggleIngredientSort: Function
+  recipeSortList: RecipeSort[]
+  recipeFilterList: RecipeFilter[]
+  toggleRecipeFilter: Function
+  toggleRecipeSort: Function
+}
+
+export const GlobalState = createContext<GlobalStateValue>(undefined)
 
 const Provider = ({ children }) => {
   const [appInterface, setAppInterface] = useState<boolean>(undefined)

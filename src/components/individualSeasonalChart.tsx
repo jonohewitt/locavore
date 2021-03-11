@@ -204,8 +204,7 @@ export const IndividualSeasonalChart = ({
     }
   }, [])
 
-  const context = useContext(GlobalState)
-  const monthIndex = context.currentMonth
+  const { currentMonth } = useContext(GlobalState)
   return (
     <>
       <ChartWrapper fadedIn={fadedIn}>
@@ -216,7 +215,7 @@ export const IndividualSeasonalChart = ({
               key={index}
               index={index}
               value={month}
-              monthIndex={monthIndex}
+              monthIndex={currentMonth}
             />
           ))}
         </MonthList>

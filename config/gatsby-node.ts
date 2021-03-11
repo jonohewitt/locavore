@@ -35,7 +35,13 @@ export const createPages = async ({
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  const allPosts = result.data.allMdx.nodes
+  interface Post {
+    id: string
+    fields: { source: string}
+    frontmatter: {title: string, customSlug: string, ingredients: string[]}
+  }
+
+  const allPosts: Post[] = result.data.allMdx.nodes
   const allIngredients: Ingredient[] = result.data.ingredientsByCountryJson.ingredients
 
   const ingredientSet = new Set<string>()

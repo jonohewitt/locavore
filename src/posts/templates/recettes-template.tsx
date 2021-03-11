@@ -4,13 +4,15 @@ import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
+import slugify from "slugify"
+import { GatsbyImage } from "gatsby-plugin-image"
 import {
   widthPercent,
   mobileWidthPercent,
   maxWidth,
   breakToMobile,
 } from "../../components/contentWrapper"
-import { GatsbyImage } from "gatsby-plugin-image"
+
 import { SEO } from "../../components/seo"
 import { PostStyles } from "../post-styles"
 import { GlobalState } from "../../context/globalStateContext"
@@ -24,7 +26,8 @@ import {
 } from "../../components/recipeIndicators"
 import { infoSVG } from "../../components/icons"
 import { CommentSectionComponent } from "../../components/commentSection"
-import slugify from "slugify"
+
+import { Frontmatter } from "../../pages/recettes"
 
 const IngredientBox = styled.div<{ featureImage: boolean }>`
   background-color: var(--color-graphBackground);
@@ -191,7 +194,10 @@ const RightColumn = styled.div`
   }
 `
 
-const StyledArticle = styled.article<{ appInterface: boolean; masonryLayout: boolean }>`
+const StyledArticle = styled.article<{
+  appInterface: boolean
+  masonryLayout: boolean
+}>`
   width: ${widthPercent}%;
   max-width: ${maxWidth}px;
   margin: ${props => (props.appInterface ? "30px" : "100px")} auto 0 auto;
@@ -230,7 +236,7 @@ const Note = ({ children }) => (
   </NoteWrapper>
 )
 
-const FeatureImage = ({ fm }) => {
+const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
   const featureImg = fm.feature
     ? fm.feature.childImageSharp.gatsbyImageData
     : false
@@ -253,10 +259,10 @@ const FeatureImage = ({ fm }) => {
 }
 
 const RecipeTemplate = ({ data }) => {
-  const context = useContext(GlobalState)
+  const { isDark, appInterface } = useContext(GlobalState)
   const [masonryLayout, setMasonryLayout] = useState(false)
 
-  const fm = data.mdx.frontmatter
+  const fm: Frontmatter = data.mdx.frontmatter
 
   useLayoutEffect(() => {
     const updateWidth = () => {
@@ -272,14 +278,14 @@ const RecipeTemplate = ({ data }) => {
   const Ingredients = ({ children }) => (
     <IngredientBox featureImage={fm.feature}>
       <IngredientsButton
-        isDark={context.isDark}
+        isDark={isDark}
         selected={ingredientsSelected}
         onClick={() => setIngredientsSelected(true)}
       >
         <span>Ingredients</span>
       </IngredientsButton>
       <SeasonalityButton
-        isDark={context.isDark}
+        isDark={isDark}
         selected={!ingredientsSelected}
         onClick={() => setIngredientsSelected(false)}
       >
@@ -381,7 +387,7 @@ const RecipeTemplate = ({ data }) => {
       <PostStyles>
         <StyledArticle
           masonryLayout={masonryLayout}
-          appInterface={context.appInterface}
+          appInterface={appInterface}
         >
           {masonryLayout ? (
             <>

@@ -41,9 +41,10 @@
     "typeface-quicksand": "^1.1.4"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.7",
     "eslint-plugin-mdx": "^1.9.0",
-    "prettier": "2.2.1",
-    "@types/styled-components": "^5.1.7"
+    "gatsby-plugin-ts-config": "^1.1.5",
+    "prettier": "2.2.1"
   },
   "keywords": [
     "gatsby"

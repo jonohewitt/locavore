@@ -56,20 +56,13 @@ export const ShowOptions = ({
   )
 }
 
-interface RecipeListOptionsProps {
-  recipeFilterList: RecipeFilter[]
-  recipeSortList: RecipeSort[]
-  toggleRecipeFilter: Function
-  toggleRecipeSort: Function
-}
-
 export const RecipeListOptions = () => {
   const {
     recipeFilterList,
     recipeSortList,
     toggleRecipeFilter,
     toggleRecipeSort,
-  }: RecipeListOptionsProps = useContext(GlobalState)
+  } = useContext(GlobalState)
 
   return (
     <>

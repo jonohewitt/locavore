@@ -62,7 +62,7 @@ const HeaderText = styled.div`
 `
 
 const BlogTemplate = ({ data }) => {
-  const context = useContext(GlobalState)
+  const { appInterface } = useContext(GlobalState)
   const fm = data.mdx.frontmatter
 
   const shortcodes = {
@@ -80,7 +80,7 @@ const BlogTemplate = ({ data }) => {
           image={fm.header.childImageSharp.gatsbyImageData}
           style={{
             width: "100%",
-            height: context.appInterface ? "20vmax" : "30vmax",
+            height: appInterface ? "20vmax" : "30vmax",
             maxHeight: "350px",
           }}
           imgStyle={{

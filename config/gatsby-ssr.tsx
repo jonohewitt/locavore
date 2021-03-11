@@ -1,7 +1,7 @@
 import React from "react"
-import { lightTheme, darkTheme } from "./src/theme/themeVariables"
-import { Layout } from "./src/components/layout"
-import { Provider } from "./src/context/globalStateContext"
+import { lightTheme, darkTheme } from "../src/theme/themeVariables"
+import { Layout } from "../src/components/layout"
+import { Provider } from "../src/context/globalStateContext"
 
 const ScriptInjection = () => {
   let codeToRunOnClient = `(function() {

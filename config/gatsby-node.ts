@@ -1,6 +1,5 @@
 import path from "path"
 import slugify from "slugify"
-
 import { Ingredient } from "../src/pages/ingredients"
 
 export const createPages = async ({
@@ -37,12 +36,13 @@ export const createPages = async ({
 
   interface Post {
     id: string
-    fields: { source: string}
-    frontmatter: {title: string, customSlug: string, ingredients: string[]}
+    fields: { source: string }
+    frontmatter: { title: string; customSlug: string; ingredients: string[] }
   }
 
   const allPosts: Post[] = result.data.allMdx.nodes
-  const allIngredients: Ingredient[] = result.data.ingredientsByCountryJson.ingredients
+  const allIngredients: Ingredient[] =
+    result.data.ingredientsByCountryJson.ingredients
 
   const ingredientSet = new Set<string>()
 

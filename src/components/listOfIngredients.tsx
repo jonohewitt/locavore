@@ -205,9 +205,9 @@ export const ListOfIngredients = ({
   const sectionData = [
     { title: "Légumes", list: categorisedList("veg") },
     { title: "Fruits", list: categorisedList("fruit") },
-    { title: "Other", list: categorisedList("other") },
+    { title: "Autres", list: categorisedList("other") },
     {
-      title: "Uncategorised",
+      title: "Non catégorisé",
       list: allIngredients.filter(ingredient => !ingredient.type),
     },
   ]

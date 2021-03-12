@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useContext } from "react"
-import { GlobalState } from "../context/globalStateContext"
+import { Link, graphql, useStaticQuery } from "gatsby"
 import styled from "styled-components"
 import slugify from "slugify"
-import { Link } from "gatsby"
+import { GlobalState } from "../context/globalStateContext"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { calcIngredientMonths } from "../functions/calcIngredientMonths"
-import { graphql, useStaticQuery } from "gatsby"
 
 import { Ingredient } from "../pages/ingredients"
-
 import { IngredientFilter } from "../context/ingredientListContext"
 
-const AllIngredientTypes = styled.div<{ fadedIn: boolean }>`
+const AllIngredientTypes = styled.ul<{ fadedIn: boolean }>`
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.8s, transform 0.8s;
@@ -183,7 +181,7 @@ export const ListOfIngredients = ({
     processedList.filter(ingredient => ingredient.type === category)
 
   const mappedList = (categoryList: Ingredient[]) =>
-  categoryList.map(ingredient => (
+    categoryList.map(ingredient => (
       <li key={ingredient.name}>
         <Link to={`/ingredients/${slugify(ingredient.name, { lower: true })}`}>
           {ingredient.name}
@@ -191,46 +189,35 @@ export const ListOfIngredients = ({
       </li>
     ))
 
-  const vegetables = categorisedList("veg")
-  const fruits = categorisedList("fruit")
-  const other = categorisedList("other")
-  const uncategorised = allIngredients.filter(ingredient => !ingredient.type)
+  const CategorySection = ({
+    data,
+  }: {
+    data: { list: Ingredient[]; title: string }
+  }) =>
+    data.list.length > 0 && (
+      <li>
+        <h3>{data.title}</h3>
+        <hr />
+        <StyledUL>{mappedList(data.list)}</StyledUL>
+      </li>
+    )
 
-  const allCategories = [...vegetables, ...fruits, ...other, ...uncategorised]
+  const sectionData = [
+    { title: "Légumes", list: categorisedList("veg") },
+    { title: "Fruits", list: categorisedList("fruit") },
+    { title: "Other", list: categorisedList("other") },
+    {
+      title: "Uncategorised",
+      list: allIngredients.filter(ingredient => !ingredient.type),
+    },
+  ]
 
   return (
-    allCategories.length > 0 && (
+    sectionData.some(section => section.list.length) && (
       <AllIngredientTypes fadedIn={fadedIn}>
-        <ul>
-          {vegetables.length > 0 && (
-            <li>
-              <h3>Légumes</h3>
-              <hr />
-              <StyledUL>{mappedList(vegetables)}</StyledUL>
-            </li>
-          )}
-          {fruits.length > 0 && (
-            <li>
-              <h3>Fruits</h3>
-              <hr />
-              <StyledUL>{mappedList(fruits)}</StyledUL>
-            </li>
-          )}
-          {other.length > 0 && (
-            <li>
-              <h3>Other</h3>
-              <hr />
-              <StyledUL>{mappedList(other)}</StyledUL>
-            </li>
-          )}
-          {uncategorised.length > 0 && (
-            <li>
-              <h3>Uncategorised</h3>
-              <hr />
-              <StyledUL>{mappedList(uncategorised)}</StyledUL>
-            </li>
-          )}
-        </ul>
+        {sectionData.map(data => (
+          <CategorySection data={data} />
+        ))}
       </AllIngredientTypes>
     )
   )

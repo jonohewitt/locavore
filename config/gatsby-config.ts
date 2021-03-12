@@ -1,4 +1,6 @@
-module.exports = {
+import { GatsbyConfig } from "gatsby"
+
+const config: GatsbyConfig = {
   siteMetadata: {
     title: `Locavore`,
     description: `A website for helping people in Brussels 🇧🇪 enjoy eating food locally, seasonally and sustainably. Content focuses around recipes 🥗, blog posts 👩‍💻, information resources 📚 and data visualisations 📊.`,
@@ -78,3 +80,5 @@ module.exports = {
     },
   ],
 }
+
+export default config

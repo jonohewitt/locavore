@@ -6,6 +6,7 @@ import styled from "styled-components"
 import { ShowOptions, RecipeListOptions } from "../components/recipeListOptions"
 import { ListOfRecipes } from "../components/listOfRecipes"
 import { GlobalState } from "../context/globalStateContext"
+import { monthIndexToName } from "../functions/monthIndexToName"
 
 const RecipeIndexWrapper = styled.div`
   ul {
@@ -50,7 +51,7 @@ export interface Recipe {
 }
 
 const Recettes = () => {
-  const { recipeFilterList, recipeSortList } = useContext(GlobalState)
+  const { recipeFilterList, recipeSortList, currentMonth } = useContext(GlobalState)
   const [optionsAreShown, setOptionsAreShown] = useState(true)
 
   const {
@@ -105,7 +106,7 @@ const Recettes = () => {
         <RecipeIndexWrapper>
           <header>
             <HeaderContent>
-              <h1>Recettes</h1>
+              <h1>Recettes pour {monthIndexToName(currentMonth)}</h1>
               <ShowOptions
                 optionsAreShown={optionsAreShown}
                 setOptionsAreShown={setOptionsAreShown}

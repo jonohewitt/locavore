@@ -5,6 +5,7 @@ import { ContentWrapper } from "../components/contentWrapper"
 import { GlobalState } from "../context/globalStateContext"
 import { ListOfIngredients } from "../components/listOfIngredients"
 import { IngredientListOptions } from "../components/ingredientListOptions"
+import { monthIndexToName } from "../functions/monthIndexToName"
 
 const Styles = styled.main`
   section {
@@ -36,14 +37,16 @@ export interface Ingredient {
 }
 
 const Ingredients = () => {
-  const { ingredientFilterList, ingredientSortList } = useContext(GlobalState)
+  const { ingredientFilterList, ingredientSortList, currentMonth } = useContext(
+    GlobalState
+  )
 
   return (
     <>
       <SEO title="Ingrédients" />
       <ContentWrapper>
         <Styles>
-          <h1>Ingrédients</h1>
+          <h1>Ingrédients pour {monthIndexToName(currentMonth)}</h1>
           <hr />
           <IngredientListOptions />
           <ListOfIngredients

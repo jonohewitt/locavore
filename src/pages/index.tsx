@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useLayoutEffect } from "react"
+import React, { useContext, useState } from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import { SEO } from "../components/seo"
@@ -8,13 +8,12 @@ import { SettingsIcon } from "../components/settingsIcon"
 import { Search } from "../components/search"
 import { IngredientShowcase } from "../components/ingredientShowcase"
 import { arrowSVG } from "../components/icons"
+import { SpotlightFeature } from "../components/spotlightFeature"
 
 import FallingFruitsLight from "../images/falling-fruits-light.svg"
 import FallingFruitsDark from "../images/falling-fruits-dark.svg"
 import PearHalves from "../images/pear-halves.svg"
 import StrawberriesKnife from "../images/strawberries-knife.svg"
-
-// import { StrawberriesKnife } from "../illustrations/strawberries-knife"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -131,47 +130,20 @@ const LandingIllustration = styled.div`
 `
 
 const HalfIllustrationSection = styled.section`
+  background: var(--color-landingBgAccent);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+`
+
+const HalfIlluSectionContent = styled.div`
+  margin: 0 auto;
+  max-width: 1000px;
   padding: 50px 50px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 40px;
   justify-items: center;
   align-items: center;
-  background: var(--color-landingBgAccent);
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-`
-
-const SpotlightSection = styled.section`
-  position: relative;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  background: var(--color-landingSpotlight);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 80px 0;
-  color: #e8c3a8;
-  z-index: 0;
-  overflow: hidden;
-
-  h2 {
-    padding: 50px 0;
-    font-weight: 700;
-    font-size: 44px;
-    width: 70%;
-    text-align: center;
-    max-width: 500px;
-  }
-`
-
-const HollowButton = styled(Link)`
-  border-radius: 12px;
-  border: 2px solid;
-  padding: 10px;
-  font-size: 24px;
-  font-weight: 700;
 `
 
 const SectionText = styled.div`
@@ -184,92 +156,9 @@ const SectionText = styled.div`
   }
 `
 
-const Spotlight = styled.div`
-  background: #ffe5e5;
-  width: 300px;
-  height: 300px;
-  z-index: 1;
-  position: absolute;
-  border-radius: 150px;
-  mix-blend-mode: difference;
-  pointer-events: none;
-`
-
 const IndexPage = () => {
   const { appInterface, isDark } = useContext(GlobalState)
   const [appSearchIsActive, setAppSearchIsActive] = useState(false)
-
-  const SpotlightArea = () => {
-    const areaRef = useRef<HTMLElement>()
-    const spotlightElement = useRef<HTMLDivElement>()
-    const speed = useRef(0.05)
-
-    const mouse = useRef({ x: 0, y: 0 })
-    const spotlightLocation = useRef({ x: 0, y: 0 })
-
-    const animate = () => {
-      const distX = mouse.current.x - spotlightLocation.current.x
-      const distY = mouse.current.y - spotlightLocation.current.y
-
-      spotlightLocation.current.x =
-        spotlightLocation.current.x + distX * speed.current
-      spotlightLocation.current.y =
-        spotlightLocation.current.y + distY * speed.current
-
-      if (spotlightElement.current) {
-        spotlightElement.current.style.left = `${spotlightLocation.current.x}px`
-        spotlightElement.current.style.top = `${spotlightLocation.current.y}px`
-      }
-      requestAnimationFrame(animate)
-    }
-
-    useLayoutEffect(() => {
-      const areaWidth = areaRef.current.getBoundingClientRect().width
-      const areaHeight = areaRef.current.getBoundingClientRect().height
-      const spotWidth = spotlightElement.current.getBoundingClientRect().width
-      const spotHeight = spotlightElement.current.getBoundingClientRect().height
-
-      mouse.current.x = areaWidth / 2 - spotWidth / 2
-      mouse.current.y = areaHeight / 2 - spotHeight / 2
-
-      spotlightLocation.current = { x: mouse.current.x, y: mouse.current.y }
-
-      animate()
-    }, [])
-
-    const handleMouseMove = event => {
-      speed.current = 0.05
-      mouse.current.x =
-        event.pageX - spotlightElement.current.getBoundingClientRect().width / 2
-      mouse.current.y =
-        event.pageY -
-        (window.pageYOffset + areaRef.current.getBoundingClientRect().top) -
-        spotlightElement.current.getBoundingClientRect().height / 2
-    }
-
-    const handleMouseLeave = () => {
-      speed.current = 0.02
-      const areaWidth = areaRef.current.getBoundingClientRect().width
-      const areaHeight = areaRef.current.getBoundingClientRect().height
-      const spotWidth = spotlightElement.current.getBoundingClientRect().width
-      const spotHeight = spotlightElement.current.getBoundingClientRect().height
-
-      mouse.current.x = areaWidth / 2 - spotWidth / 2
-      mouse.current.y = areaHeight / 2 - spotHeight / 2
-    }
-
-    return (
-      <SpotlightSection
-        ref={areaRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        <Spotlight ref={spotlightElement} />
-        <h2>Mettre en valeur les producteurs locaux</h2>
-        <HollowButton to="/blog">En savoir plus</HollowButton>
-      </SpotlightSection>
-    )
-  }
 
   return (
     <>
@@ -319,27 +208,33 @@ const IndexPage = () => {
         </Header>
 
         <HalfIllustrationSection>
-          <PearHalves />
-          <SectionText>
-            <h2>Vitae et rhoncus mauris diam gravida.</h2>
-            <p>
-              Lacus cursus eget arcu platea iaculis nunc tempor sem. Velit ipsum
-              feugiat lectus tempus arcu volutpat. Tincidunt enim in enim risus.
-            </p>
-          </SectionText>
+          <HalfIlluSectionContent>
+            <PearHalves />
+            <SectionText>
+              <h2>Vitae et rhoncus mauris diam gravida.</h2>
+              <p>
+                Lacus cursus eget arcu platea iaculis nunc tempor sem. Velit
+                ipsum feugiat lectus tempus arcu volutpat. Tincidunt enim in
+                enim risus.
+              </p>
+            </SectionText>
+          </HalfIlluSectionContent>
         </HalfIllustrationSection>
 
-        <SpotlightArea />
+        <SpotlightFeature />
 
         <HalfIllustrationSection>
-          <SectionText>
-            <h2>Vitae et rhoncus mauris diam gravida.</h2>
-            <p>
-              Lacus cursus eget arcu platea iaculis nunc tempor sem. Velit ipsum
-              feugiat lectus tempus arcu volutpat. Tincidunt enim in enim risus.
-            </p>
-          </SectionText>
-          <StrawberriesKnife />
+          <HalfIlluSectionContent>
+            <SectionText>
+              <h2>Vitae et rhoncus mauris diam gravida.</h2>
+              <p>
+                Lacus cursus eget arcu platea iaculis nunc tempor sem. Velit
+                ipsum feugiat lectus tempus arcu volutpat. Tincidunt enim in
+                enim risus.
+              </p>
+            </SectionText>
+            <StrawberriesKnife />
+          </HalfIlluSectionContent>
         </HalfIllustrationSection>
 
         <IngredientShowcase />

@@ -66,6 +66,7 @@ export const IngredientShowcase = () => {
       name: "comingUp",
       logic: (ingredient: Ingredient) =>
         !inSeasonAndSeasonal(ingredient) &&
+        ingredient.season &&
         calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 2,
       isApplied: true,
     },

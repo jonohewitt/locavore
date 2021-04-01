@@ -216,7 +216,7 @@ export const ListOfIngredients = ({
     sectionData.some(section => section.list.length) && (
       <AllIngredientTypes fadedIn={fadedIn}>
         {sectionData.map(data => (
-          <CategorySection data={data} />
+          <CategorySection key={data.title} data={data} />
         ))}
       </AllIngredientTypes>
     )

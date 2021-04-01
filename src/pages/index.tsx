@@ -209,7 +209,7 @@ const IndexPage = () => {
 
         <HalfIllustrationSection>
           <HalfIlluSectionContent>
-            <PearHalves />
+            <StrawberriesKnife />
             <SectionText>
               <h2>Vitae et rhoncus mauris diam gravida.</h2>
               <p>
@@ -233,7 +233,7 @@ const IndexPage = () => {
                 enim risus.
               </p>
             </SectionText>
-            <StrawberriesKnife />
+            <PearHalves />
           </HalfIlluSectionContent>
         </HalfIllustrationSection>
 

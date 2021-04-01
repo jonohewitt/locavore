@@ -67,7 +67,7 @@ export const IngredientShowcase = () => {
       logic: (ingredient: Ingredient) =>
         !inSeasonAndSeasonal(ingredient) &&
         ingredient.season &&
-        calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 2,
+        calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 1,
       isApplied: true,
     },
   ]
@@ -76,7 +76,7 @@ export const IngredientShowcase = () => {
     <ShowcaseContainer>
       {ListOfIngredients({ ingredientFilterList: justInFilter }) && (
         <IngredientListWrapper>
-          <h2>Nouveautés</h2>
+          <h2>Nouveautés ce mois-ci</h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={justInFilter}
@@ -96,7 +96,7 @@ export const IngredientShowcase = () => {
       )}
       {ListOfIngredients({ ingredientFilterList: comingUpFilter }) && (
         <IngredientListWrapper>
-          <h2>A venir</h2>
+          <h2>A venir le mois prochain</h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={comingUpFilter}

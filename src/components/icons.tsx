@@ -214,7 +214,6 @@ export const cookTimeSVG = (
 export const arrowSVG = (
   <svg
     role="img"
-    aria-label="Montrer les options"
     width="21"
     height="21"
     viewBox="0 0 21 21"

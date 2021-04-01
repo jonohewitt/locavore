@@ -5,7 +5,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import slugify from "slugify"
-import { GatsbyImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import {
   widthPercent,
   mobileWidthPercent,
@@ -237,9 +237,7 @@ const Note = ({ children }) => (
 )
 
 const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
-  const featureImg = fm.feature
-    ? fm.feature.childImageSharp.gatsbyImageData
-    : false
+  const featureImg = getImage(fm.feature)
   return (
     featureImg && (
       <FeatureImgContainer>

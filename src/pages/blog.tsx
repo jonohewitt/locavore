@@ -3,7 +3,7 @@ import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
-import { GatsbyImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import slugify from "slugify"
 
 const ListOfBlogPosts = styled.ul<{fadedIn: boolean}>`
@@ -125,15 +125,11 @@ const Blog = () => {
                     <BlogCard>
                       <CardImage
                         headerImg={{
-                          image: fm.header
-                            ? fm.header.childImageSharp.gatsbyImageData
-                            : false,
+                          image: getImage(fm.header),
                           description: fm.headerDescription,
                         }}
                         featureImg={{
-                          image: fm.feature
-                            ? fm.feature.childImageSharp.gatsbyImageData
-                            : false,
+                          image: getImage(fm.feature),
                           description: fm.featureDescription,
                         }}
                       />

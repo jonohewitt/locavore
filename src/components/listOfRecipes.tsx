@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import styled from "styled-components"
 import slugify from "slugify"
 import { TimeIndicators, DairyIndicator } from "./recipeIndicators"
@@ -401,7 +401,7 @@ export const ListOfRecipes = ({
                 <RecipeCard>
                   {fm.feature && (
                     <GatsbyImage
-                      image={fm.feature.childImageSharp.gatsbyImageData}
+                      image={getImage(fm.feature)}
                       style={{
                         width: "100%",
                         maxHeight: "200px",

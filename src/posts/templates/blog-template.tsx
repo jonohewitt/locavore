@@ -5,7 +5,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
-import { GatsbyImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { SEO } from "../../components/seo"
 import { PostStyles } from "../post-styles"
 import { GlobalState } from "../../context/globalStateContext"
@@ -77,7 +77,7 @@ const BlogTemplate = ({ data }) => {
       <SEO title={fm.title} />
       {fm.header && (
         <GatsbyImage
-          image={fm.header.childImageSharp.gatsbyImageData}
+          image={getImage(fm.header)}
           style={{
             width: "100%",
             height: appInterface ? "20vmax" : "30vmax",
@@ -106,7 +106,7 @@ const BlogTemplate = ({ data }) => {
             {fm.feature && (
               <FeatureImgContainer>
                 <GatsbyImage
-                  image={fm.feature.childImageSharp.gatsbyImageData}
+                  image={getImage(fm.feature)}
                   style={{
                     width: "100%",
                   }}

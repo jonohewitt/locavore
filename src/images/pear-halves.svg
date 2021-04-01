@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="330px" height="307px" viewBox="0 0 330 307" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Illustration</title>
+    <defs>
+        <path d="M127.532969,35.8387276 C109.176969,-32.9410324 74.5050694,14.6633276 66.1010694,35.8387276 C49.1412694,78.5714276 72.6415694,58.5267276 24.6439694,121.296428 C-37.3567306,202.379428 32.9353694,265.743428 68.3623694,265.743428 L110.949969,265.743428 C206.677969,265.743428 181.803969,165.916428 170.497969,137.178428 C162.582969,119.784428 145.999969,105.037428 127.532969,35.8387276 Z" id="path-1"></path>
+        <path d="M18.4672,2.10632215 C11.6832,7.02202215 3.015,21.2650222 0,27.0630222 L28.2662,15.3409222 L27.5122,1.72822215 C26.8842,1.47612215 24.4932,-2.26027785 18.4672,2.10632215 Z" id="path-3"></path>
+        <path d="M162.630933,134.044357 C155.081933,117.082357 139.263933,102.702357 121.648933,35.2222567 C116.696933,16.2521567 109.665933,6.2211567 103.737933,1.5481567 C99.9279328,-1.8504433 99.5039328,1.9729567 95.6929328,2.3977567 C91.8824328,1.9729567 92.3058328,-1.8504433 88.0716328,1.1232567 C76.6688328,6.9905567 67.0432328,24.9392567 63.0513328,35.2222567 C46.8740328,76.8943567 69.2900328,57.3463567 23.5069328,118.557357 C-35.6331672,197.626357 31.4158328,259.417357 65.2082328,259.417357 L105.830933,259.417357 C197.142933,259.417357 173.415933,162.069357 162.630933,134.044357 Z" id="path-5"></path>
+        <path d="M127.669197,35.7585263 C109.294197,-32.8673237 74.5851973,14.6305263 66.1721973,35.7585263 C49.1941973,78.3964263 72.7191973,58.3954263 24.6701973,121.025426 C-37.3968027,201.926426 32.9711973,265.148426 68.4351973,265.148426 L111.069197,265.148426 C206.899197,265.148426 181.998197,165.544426 170.680197,136.871426 C162.757197,119.516426 146.156197,104.801426 127.669197,35.7585263 Z" id="path-7"></path>
+        <path d="M18.487,2.1016009 C11.696,7.0063009 3.018,21.2174009 5.68434189e-14,27.0025009 L28.296,15.3066009 L27.542,1.7243009 C26.913,1.4728009 24.519,-2.2551991 18.487,2.1016009 Z" id="path-9"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Illustration">
+            <g id="Clipped" transform="translate(-0.000000, 41.256573)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Path"></g>
+                <g id="Group" mask="url(#mask-2)">
+                    <g transform="translate(-3.999143, -5.377664)">
+                        <path d="M131.532112,41.2163915 C113.176112,-27.5633685 78.504212,20.0409915 70.100212,41.2163915 C53.140412,83.9490915 76.640712,63.9043915 28.643112,126.674091 C-33.357588,207.757091 36.934512,271.121091 72.361512,271.121091 L114.949112,271.121091 C210.677112,271.121091 185.803112,171.294091 174.497112,142.556091 C166.582112,125.162091 149.999112,110.415091 131.532112,41.2163915 Z" id="Path" fill="#E9FB7D" fill-rule="nonzero"></path>
+                        <path d="M166.428112,37.9408915 C146.055112,-34.8732085 107.570112,15.5233915 98.242612,37.9408915 C79.418212,83.1800915 105.502112,61.9595915 52.227612,128.411091 C-16.589588,214.250091 61.430612,281.330091 100.752512,281.330091 L148.022112,281.330091 C254.275112,281.330091 226.666112,175.648091 214.116112,145.224091 C205.332112,126.810091 186.926112,111.198091 166.428112,37.9408915 Z" id="Path" fill="#CADD55" fill-rule="nonzero"></path>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="86.683112" cy="17.3940915" rx="6.03013" ry="6.05012"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="101.758512" cy="12.1000915" rx="4.52258" ry="4.53759"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="96.482012" cy="15.8815915" rx="4.5226" ry="4.53759"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="90.451912" cy="9.83129147" rx="4.5226" ry="4.53759"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="109.673112" cy="15.5032915" rx="3.39194" ry="3.40318"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="104.396112" cy="4.91559147" rx="3.39195" ry="3.40319"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="115.703112" cy="9.45319147" rx="3.39195" ry="3.40319"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="97.612612" cy="7.18449147" rx="4.89948" ry="4.91573"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="109.673112" cy="8.69709147" rx="4.14572" ry="4.15945"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="111.934112" cy="26.0911915" rx="3.39196" ry="3.4032"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="102.889112" cy="23.0659915" rx="6.40702" ry="6.42825"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="116.834112" cy="17.3940915" rx="6.03012" ry="6.05012"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.994112" cy="26.0911915" rx="3.39195" ry="3.4032"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="91.205612" cy="27.2253915" rx="3.76883" ry="3.78133"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="96.105112" cy="36.6786915" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="120.226112" cy="30.6285915" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.070112" cy="91.1300915" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="97.612812" cy="59.3666915" rx="2.63818" ry="2.64694"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="106.658112" cy="44.2413915" rx="2.63819" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="176.004112" cy="156.925091" rx="2.63818" ry="2.64694"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="158.668112" cy="128.943091" rx="2.63818" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.824112" cy="169.781091" rx="2.63818" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="137.562112" cy="161.462091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="128.517112" cy="156.169091" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="70.477112" cy="83.5670915" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="44.095312" cy="116.843091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="68.215712" cy="151.631091" rx="2.63818" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="18.467212" cy="181.882091" rx="1.88442" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="70.477112" cy="200.032091" rx="2.63818" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="32.411912" cy="242.005091" rx="2.2613" ry="2.26881"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="68.969612" cy="231.039091" rx="2.63818" ry="2.64694"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="20.728512" cy="212.132091" rx="2.63818" ry="2.64694"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="4.14571" cy="197.007091" rx="4.14571" ry="4.15947"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="47.864112" cy="174.319091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="36.557712" cy="141.799091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="115.703112" cy="122.893091" rx="1.88442" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="100.627712" cy="152.387091" rx="2.63819" ry="2.64694"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="117.964112" cy="172.806091" rx="2.63817" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="95.351312" cy="190.957091" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="99.874112" cy="218.939091" rx="2.63818" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.070112" cy="106.255091" rx="2.63819" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="120.226112" cy="67.6850915" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="109.673112" cy="76.0040915" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.241112" cy="81.2980915" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="129.271112" cy="144.825091" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="145.100112" cy="175.075091" rx="2.63818" ry="2.64691"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="166.205112" cy="184.150091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="179.019112" cy="163.731091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.914112" cy="114.574091" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="128.517112" cy="185.663091" rx="2.63819" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="92.336312" cy="249.189091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="74.245912" cy="265.827091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="57.663112" cy="253.727091" rx="2.63818" ry="2.64691"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="77.261012" cy="254.483091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="90.075012" cy="271.121091" rx="2.63818" ry="2.6469"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="96.105112" cy="259.777091" rx="2.63818" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="113.442112" cy="32.1410915" rx="2.63817" ry="2.64693"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.241112" cy="38.9474915" rx="2.63819" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="81.029812" cy="24.5785915" rx="2.63818" ry="2.64692"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="85.552412" cy="33.6535915" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="114.949112" cy="196.250091" rx="1.88443" ry="1.89065"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="142.839112" cy="155.412091" rx="1.88441" ry="1.89068"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="134.547112" cy="166.756091" rx="1.88441" ry="1.89065"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="162.436112" cy="145.581091" rx="1.88442" ry="1.89067"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="147.361112" cy="117.599091" rx="1.88441" ry="1.89067"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="118.718112" cy="101.717091" rx="1.88442" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="112.688112" cy="162.975091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="132.286112" cy="79.0290915" rx="1.8844" ry="1.89067"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="126.256112" cy="46.5102915" rx="1.88441" ry="1.89067"></ellipse>
+                        <ellipse id="Oval" fill="#C07362" fill-rule="nonzero" cx="99.120312" cy="32.1411915" rx="1.8844" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="127.763112" cy="36.6787915" rx="1.88442" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="175.251112" cy="242.383091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="165.452112" cy="246.920091" rx="1.88442" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.160112" cy="248.433091" rx="1.88441" ry="1.89067"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="155.653112" cy="255.239091" rx="1.88442" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="148.115112" cy="258.264091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="145.854112" cy="207.594091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="140.577112" cy="218.938091" rx="1.88441" ry="1.89065"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="150.376112" cy="186.419091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="145.854112" cy="190.200091" rx="1.88441" ry="1.89066"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.160112" cy="156.925091" rx="2.63818" ry="2.64694"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="166.582112" cy="164.865091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="154.522112" cy="174.697091" rx="6.03012" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="161.306112" cy="174.697091" rx="6.03014" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="148.492112" cy="163.353091" rx="6.03013" ry="6.05015"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="176.381112" cy="177.722091" rx="9.79897" ry="9.83144"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="159.045112" cy="189.066091" rx="6.03013" ry="6.05012"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="130.401112" cy="226.123091" rx="6.03012" ry="6.05011"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="131.909112" cy="244.273091" rx="6.03013" ry="6.05011"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="113.065112" cy="246.542091" rx="6.03014" ry="6.05011"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="148.492112" cy="181.503091" rx="3.01506" ry="3.02507"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="172.612112" cy="193.604091" rx="6.03014" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.537112" cy="205.704091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="171.482112" cy="202.301091" rx="3.39194" ry="3.4032"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="164.321112" cy="198.141091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="174.497112" cy="232.551091" rx="9.42207" ry="9.45332"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="163.567112" cy="254.105091" rx="6.03014" ry="6.05011"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="174.120112" cy="245.030091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="156.783112" cy="243.517091" rx="6.03012" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="151.507112" cy="193.603091" rx="3.76883" ry="3.78132"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="180.150112" cy="187.553091" rx="6.03011" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="167.336112" cy="217.804091" rx="6.03013" ry="6.05012"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="183.165112" cy="222.342091" rx="6.03014" ry="6.05012"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="175.627112" cy="210.998091" rx="3.76884" ry="3.78132"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="153.391112" cy="224.232091" rx="13.1909" ry="13.2346"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="108.542112" cy="271.499091" rx="6.03012" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="122.864112" cy="271.499091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="111.934112" cy="260.533091" rx="3.39196" ry="3.4032"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="137.185112" cy="265.449091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="132.663112" cy="259.399091" rx="3.01506" ry="3.02507"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="144.723112" cy="252.592091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" transform="translate(114.572112, 221.586091) scale(-1, 1) rotate(-180.000000) translate(-114.572112, -221.586091) " cx="114.572112" cy="221.586091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="120.226112" cy="206.838091" rx="7.16078" ry="7.18452"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="107.788112" cy="212.510091" rx="3.76884" ry="3.78133"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="109.296112" cy="201.166091" rx="3.01508" ry="3.02507"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="129.648112" cy="214.779091" rx="3.01506" ry="3.02506"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="122.110112" cy="245.786091" rx="3.01507" ry="3.02507"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.617112" cy="236.711091" rx="3.01507" ry="3.02505"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="103.266012" cy="241.248091" rx="3.01507" ry="3.02507"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="145.477112" cy="242.004091" rx="3.01506" ry="3.02505"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.617112" cy="258.642091" rx="3.01507" ry="3.02507"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.070112" cy="197.763091" rx="4.14571" ry="4.15945"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="131.909112" cy="204.948091" rx="3.01506" ry="3.02505"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="183.919112" cy="197.385091" rx="6.03013" ry="6.05013"></ellipse>
+                        <ellipse id="Oval" fill="#8C5549" fill-rule="nonzero" cx="185.049112" cy="211.376091" rx="4.14571" ry="4.15945"></ellipse>
+                        <g id="Clipped" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(100.250912, 6.590569)">
+                            <mask id="mask-4" fill="white">
+                                <use xlink:href="#path-3"></use>
+                            </mask>
+                            <g id="Path"></g>
+                            <g id="Group" mask="url(#mask-4)" fill="#8C5549" fill-rule="nonzero">
+                                <g transform="translate(-3.768800, -0.540568)">
+                                    <ellipse id="Oval" cx="13.191" cy="9.45329" rx="3.39196" ry="3.40319"></ellipse>
+                                    <path d="M12.814,17.01589 C12.814,20.56619 9.945,23.44419 6.407,23.44419 C2.8685,23.44419 0,20.56619 0,17.01589 C0,13.46569 2.8685,10.58769 6.407,10.58769 C9.945,10.58769 12.814,13.46569 12.814,17.01589 Z" id="Path"></path>
+                                    <ellipse id="Oval" cx="20.352" cy="11.34389" rx="6.03012" ry="6.05012"></ellipse>
+                                    <ellipse id="Oval" cx="18.467" cy="3.40319" rx="3.39193" ry="3.40319"></ellipse>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <path d="M108.345969,2.97349074 C98.7615694,15.9709007 101.689969,36.3486007 104.351969,44.9127007 C100.928969,58.5146007 94.7680694,78.1618007 97.5064694,47.9354007 C100.244969,17.7089007 94.4809694,5.36642074 92.1990694,2.97349074 C101.243969,-0.79984226 111.406969,-1.17797926 108.345969,2.97349074 Z" id="Path" fill="#C07362" fill-rule="nonzero"></path>
+            <path d="M108.681969,3.29239074 C100.463969,16.2217007 103.148969,42.0348007 105.431969,50.5541007 C102.496969,64.0848007 96.5399694,80.2895007 96.5399694,50.1293007 C96.5399694,44.1817007 99.7874694,43.7569007 99.9273694,31.4370007 C100.060969,19.6619007 96.9599694,5.90682074 94.8372694,3.29239074 C102.592969,-0.46117826 111.306969,-0.83733726 108.681969,3.29239074 Z" id="Path" fill="#623228" fill-rule="nonzero"></path>
+            <g id="Clipped" transform="translate(5.081037, 47.306644)">
+                <mask id="mask-6" fill="white">
+                    <use xlink:href="#path-5"></use>
+                </mask>
+                <g id="Path"></g>
+                <g id="Group" mask="url(#mask-6)" fill-rule="nonzero">
+                    <g transform="translate(-0.846794, -3.974617)">
+                        <path d="M122.835727,35.5215733 C105.155727,-32.6495267 71.7609269,14.5335733 63.6664269,35.5215733 C47.3313269,77.8769733 69.9660269,58.0089733 23.7362269,120.222973 C-35.9807731,200.587973 31.7223269,263.391973 65.8444269,263.391973 L106.863727,263.391973 C199.065727,263.391973 175.107727,164.447973 164.217727,135.963973 C156.594727,118.723973 140.622727,104.106973 122.835727,35.5215733 Z" id="Path" fill="#FFF7E3"></path>
+                        <path d="M93.9752269,156.263973 C95.5304269,75.7049733 95.9667269,33.8166733 92.3058269,2.54907335 L100.774727,2.54907335 C95.9637269,42.4481733 97.3697269,83.7609733 99.9517269,156.263973 C99.9517269,168.543973 112.114727,173.336973 118.134727,187.015973 C125.961727,204.799973 95.6239269,206.800973 98.2337269,230.365973 C100.749727,253.086973 104.161727,259.521973 115.170727,264.240973 L76.2158269,264.240973 C88.0716269,260.379973 95.6932269,254.078973 95.6932269,230.365973 C95.6932269,206.652973 66.6952269,204.799973 74.5221269,187.015973 C80.5420269,173.336973 93.9752269,168.543973 93.9752269,156.263973 Z" id="Path" fill="#E3D5B0"></path>
+                        <path d="M91.6929269,175.791973 C85.5817269,177.436973 75.4225269,186.447973 80.6890269,199.782973 C92.7097269,192.552973 93.0272269,184.561973 91.6929269,175.791973 Z" id="Path" fill="#FFF7E3"></path>
+                        <path d="M91.0006269,177.232973 C87.6482269,177.232973 75.4648269,188.856973 82.9804269,192.825973 C90.4960269,196.794973 91.8824269,182.295973 91.0006269,177.232973 Z" id="Path" fill="#623228"></path>
+                        <ellipse id="Oval" fill="#FFFFFF" cx="82.9906269" cy="188.731973" rx="1.69368" ry="1.71613"></ellipse>
+                        <path d="M101.782727,175.791973 C107.894727,177.436973 118.053727,186.447973 112.786727,199.782973 C100.766727,192.552973 100.448727,184.560973 101.782727,175.791973 Z" id="Path" fill="#FFF7E3"></path>
+                        <path d="M102.269727,177.117973 C105.622727,177.117973 117.805727,188.741973 110.289727,192.710973 C102.774727,196.679973 101.387727,182.180973 102.269727,177.117973 Z" id="Path" fill="#623228"></path>
+                        <ellipse id="Oval" fill="#FFFFFF" cx="105.008727" cy="187.873973" rx="1.6937" ry="1.71613"></ellipse>
+                        <path d="M97.3867269,203.318973 C95.1286269,193.536973 95.1286269,167.279973 97.3867269,167.279973 C99.6447269,167.279973 99.6447269,189.074973 97.3867269,203.318973 Z" id="Path" fill="#5A5F3F"></path>
+                        <path d="M97.8107269,257.376973 C93.9995269,257.376973 94.8464269,262.095973 87.2248269,264.240973 L105.855727,264.240973 C99.5037269,261.666973 101.620727,257.376973 97.8107269,257.376973 Z" id="Path" fill="#8C5549"></path>
+                    </g>
+                </g>
+            </g>
+            <path d="M254.613969,3.46684074 C245.019969,16.4351007 247.950969,36.7672007 250.616969,45.3122007 C247.189969,58.8836007 241.021969,78.4868007 243.762969,48.3280007 C246.504969,18.1692007 240.734969,5.85441074 238.449969,3.46684074 C247.504969,-0.29805126 257.678969,-0.67534426 254.613969,3.46684074 Z" id="Path" fill="#C07362" fill-rule="nonzero"></path>
+            <path d="M254.949969,3.78528074 C246.722969,16.6856007 249.236969,36.9112007 251.521969,45.4114007 C248.583969,58.9118007 242.251969,78.3122007 245.645969,48.4115007 C249.059969,18.3342007 243.819969,6.10491074 241.089969,3.78528074 C248.853969,0.0401142399 257.577969,-0.33520226 254.949969,3.78528074 Z" id="Path" fill="#623228" fill-rule="nonzero"></path>
+            <g id="Clipped" transform="translate(146.999772, 41.664574)">
+                <mask id="mask-8" fill="white">
+                    <use xlink:href="#path-7"></use>
+                </mask>
+                <g id="Path"></g>
+                <g id="Group" mask="url(#mask-8)">
+                    <g transform="translate(-4.002953, -5.366010)">
+                        <path d="M131.67215,41.1245358 C113.29715,-27.5013142 78.58815,19.9965358 70.17515,41.1245358 C53.19715,83.7624358 76.72215,63.7614358 28.67315,126.391436 C-33.39385,207.292436 36.97415,270.514436 72.43815,270.514436 L115.07215,270.514436 C210.90215,270.514436 186.00115,170.910436 174.68315,142.237436 C166.76015,124.882436 150.15915,110.167436 131.67215,41.1245358 Z" id="Path" fill="#E9FB7D" fill-rule="nonzero"></path>
+                        <path d="M166.60615,37.8559358 C146.21115,-34.7951242 107.68515,15.4886358 98.34815,37.8559358 C79.50315,82.9944358 105.61515,61.8208358 52.28315,128.123436 C-16.60685,213.770436 61.49615,280.700436 100.86015,280.700436 L148.18115,280.700436 C254.54715,280.700436 226.90815,175.254436 214.34515,144.899436 C205.55115,126.526436 187.12615,110.949436 166.60615,37.8559358 Z" id="Path" fill="#CADD55" fill-rule="nonzero"></path>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="86.77615" cy="17.3554358" r="6.03657"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="101.86815" cy="12.0736358" r="4.52743"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="96.58615" cy="15.8465358" r="4.52743"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="90.54915" cy="9.80993579" r="4.52743"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="109.79115" cy="15.4683358" r="3.39557"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="104.50915" cy="4.90513579" r="3.39557"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="115.82715" cy="9.43223579" r="3.39557"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="97.71715" cy="7.16893579" r="4.90472"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="109.79015" cy="8.67823579" r="4.15015"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="112.05415" cy="26.0340358" r="3.39557"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="102.99915" cy="23.0152358" r="6.41386"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="116.95915" cy="17.3554358" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="124.12715" cy="26.0333358" r="3.39557"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="91.30315" cy="27.1647358" r="3.77286"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="96.20815" cy="36.5970358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="120.35415" cy="30.5604358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.21915" cy="90.9254358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="97.71715" cy="59.2342358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="106.77215" cy="44.1424358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="176.19315" cy="156.574436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="158.83715" cy="128.654436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.97315" cy="169.401436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="137.70915" cy="161.101436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="128.65515" cy="155.820436" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="70.55215" cy="83.3804358" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="44.14315" cy="116.581436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="68.28915" cy="151.292436" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="18.48715" cy="181.474436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="70.55215" cy="199.584436" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="32.44615" cy="241.463436" r="2.26372"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="69.04315" cy="230.522436" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="20.75115" cy="211.657436" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="4.15015" cy="196.565436" r="4.15015"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="47.91515" cy="173.928436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="36.59715" cy="141.482436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="115.82715" cy="122.618436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="100.73615" cy="152.046436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="118.09115" cy="172.420436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="95.45315" cy="190.529436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="99.98015" cy="218.448436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.21915" cy="106.017436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="120.35415" cy="67.5344358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="109.79115" cy="75.8354358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.37215" cy="81.1174358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="129.40915" cy="144.500436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="145.25515" cy="174.683436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="166.38315" cy="183.738436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="179.21115" cy="163.365436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="158.08315" cy="114.318436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="128.65515" cy="185.247436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="92.43515" cy="248.632436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="74.32615" cy="265.232436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="57.72515" cy="253.159436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="77.34415" cy="253.914436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="90.17115" cy="270.514436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="96.20815" cy="259.195436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="113.56315" cy="32.0694358" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.37215" cy="38.8605358" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="81.11615" cy="24.5240358" r="2.641"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="85.64415" cy="33.5790358" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="115.07215" cy="195.812436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="142.99115" cy="155.064436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="134.69115" cy="166.383436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="162.61015" cy="145.255436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="147.52015" cy="117.336436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="118.84515" cy="101.490436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="112.80915" cy="162.610436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="132.42815" cy="78.8534358" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="126.39115" cy="46.4074358" r="1.88643"></circle>
+                        <circle id="Oval" fill="#C07362" fill-rule="nonzero" cx="99.22515" cy="32.0700358" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="127.89915" cy="36.5969358" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="175.43715" cy="241.840436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="165.62915" cy="246.367436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.32915" cy="247.877436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="155.81915" cy="254.668436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="148.27415" cy="257.686436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="146.01015" cy="207.130436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="140.72815" cy="218.449436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="150.53715" cy="186.002436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="146.01015" cy="189.775436" r="1.88643"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.32815" cy="156.574436" r="2.641"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="166.76015" cy="164.497436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="154.68715" cy="174.306436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="161.47915" cy="174.306436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="148.65115" cy="162.987436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="176.56915" cy="177.324436" r="9.80943"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="159.21515" cy="188.643436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="130.54115" cy="225.617436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="132.05115" cy="243.726436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="113.18615" cy="245.990436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="148.65015" cy="181.097436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="172.79715" cy="193.169436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="157.70515" cy="205.243436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="171.66615" cy="201.848436" r="3.39557"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="164.49615" cy="197.697436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="174.68415" cy="232.031436" r="9.43215"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="163.74215" cy="253.536436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="174.30615" cy="244.481436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="156.95115" cy="242.972436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="151.66915" cy="193.170436" r="3.77286"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="180.34315" cy="187.134436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="167.51415" cy="217.316436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="183.36115" cy="221.844436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="175.81415" cy="210.525436" r="3.77286"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="153.55515" cy="223.730436" r="13.205"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="108.65915" cy="270.891436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="122.99615" cy="270.891436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="112.05415" cy="259.950436" r="3.39557"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="137.33215" cy="264.855436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="132.80515" cy="258.818436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="144.87915" cy="252.026436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" transform="translate(114.695150, 221.090436) scale(-1, 1) rotate(-180.000000) translate(-114.695150, -221.090436) " cx="114.69515" cy="221.090436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="120.35415" cy="206.376436" r="7.16843"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="107.90415" cy="212.034436" r="3.77286"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="109.41315" cy="200.716436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="129.78615" cy="214.298436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="122.24115" cy="245.236436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.75015" cy="236.181436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="103.37615" cy="240.708436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="145.63215" cy="241.462436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="123.75015" cy="258.064436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="139.21915" cy="197.320436" r="4.15015"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="132.05015" cy="204.489436" r="3.01829"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="184.11615" cy="196.943436" r="6.03657"></circle>
+                        <circle id="Oval" fill="#8C5549" fill-rule="nonzero" cx="185.24715" cy="210.903436" r="4.15015"></circle>
+                        <g id="Clipped" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(100.358150, 6.576435)">
+                            <mask id="mask-10" fill="white">
+                                <use xlink:href="#path-9"></use>
+                            </mask>
+                            <g id="Path"></g>
+                            <g id="Group" mask="url(#mask-10)" fill="#8C5549" fill-rule="nonzero">
+                                <g transform="translate(-3.773000, -0.540069)">
+                                    <circle id="Oval" cx="13.205" cy="9.43247" r="3.39557"></circle>
+                                    <path d="M12.828,16.97837 C12.828,20.52067 9.957,23.39217 6.414,23.39217 C2.872,23.39217 0,20.52067 0,16.97837 C0,13.43607 2.872,10.56447 6.414,10.56447 C9.957,10.56447 12.828,13.43607 12.828,16.97837 Z" id="Path"></path>
+                                    <circle id="Oval" cx="20.374" cy="11.31907" r="6.03657"></circle>
+                                    <circle id="Oval" cx="18.488" cy="3.39557" r="3.39557"></circle>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

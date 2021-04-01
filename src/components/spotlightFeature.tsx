@@ -32,6 +32,11 @@ const HollowButton = styled(Link)`
   padding: 10px;
   font-size: 24px;
   font-weight: 700;
+  transition: transform 0.5s;
+
+  :hover {
+    transform: scale(1.05);
+  }
 `
 
 const Spotlight = styled.div`

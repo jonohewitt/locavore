@@ -27,6 +27,11 @@ export const lightTheme = {
   searchListHover: "#ffc0b3",
   searchShadow: "0, 0%, 0%",
   filterSectionA: "#B55E5E",
+  landingH1: "#9D4646",
+  landingH2: "#742D2D",
+  landingUnderline: "#D3AAA4",
+  landingBgAccent: "#E5D3C1",
+  landingSpotlight: "#491223",
 }
 
 export const darkTheme = {
@@ -58,4 +63,9 @@ export const darkTheme = {
   searchListHover: "#384357",
   searchShadow: "0, 0%, 100%",
   filterSectionA: "#a6e2b7",
+  landingH1: "#ddd",
+  landingH2: "#ddd",
+  landingUnderline: "#B36464",
+  landingBgAccent: "#2D3443",
+  landingSpotlight: "#13161E",
 }

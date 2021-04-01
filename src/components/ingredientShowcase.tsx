@@ -8,7 +8,8 @@ import { ListOfIngredients } from "./listOfIngredients"
 
 import { Ingredient } from "../pages/ingredients"
 
-const ShowcaseContainer = styled.div``
+const ShowcaseContainer = styled.div`
+margin-top: 100px;`
 
 const IngredientListWrapper = styled.div`
   background-color: var(--color-graphBackground);

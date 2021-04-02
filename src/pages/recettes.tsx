@@ -26,6 +26,12 @@ const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+
+  @media (max-width: 600px) {
+    span {
+      display: none;
+    }
+  }
 `
 
 export interface Frontmatter {
@@ -51,7 +57,9 @@ export interface Recipe {
 }
 
 const Recettes = () => {
-  const { recipeFilterList, recipeSortList, currentMonth } = useContext(GlobalState)
+  const { recipeFilterList, recipeSortList, currentMonth } = useContext(
+    GlobalState
+  )
   const [optionsAreShown, setOptionsAreShown] = useState(true)
 
   const {
@@ -106,7 +114,9 @@ const Recettes = () => {
         <RecipeIndexWrapper>
           <header>
             <HeaderContent>
-              <h1>Recettes pour {monthIndexToName(currentMonth)}</h1>
+              <h1>
+                Recettes<span> pour {monthIndexToName(currentMonth)}</span>
+              </h1>
               <ShowOptions
                 optionsAreShown={optionsAreShown}
                 setOptionsAreShown={setOptionsAreShown}

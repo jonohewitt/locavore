@@ -27,6 +27,14 @@ const Styles = styled.main`
   hr {
     margin-bottom: 15px;
   }
+
+  @media (max-width: 500px) {
+    h1 {
+      span {
+        display: none;
+      }
+    }
+  }
 `
 
 export interface Ingredient {
@@ -46,7 +54,9 @@ const Ingredients = () => {
       <SEO title="Ingrédients" />
       <ContentWrapper>
         <Styles>
-          <h1>Ingrédients pour {monthIndexToName(currentMonth)}</h1>
+          <h1>
+            Ingrédients<span> pour {monthIndexToName(currentMonth)}</span>
+          </h1>
           <hr />
           <IngredientListOptions />
           <ListOfIngredients

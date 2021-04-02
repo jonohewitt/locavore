@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import { homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG } from "./icons"
+import { homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG, prepTimeSVG } from "./icons"
 
 const BarWrapper = styled.nav`
   position: fixed;
@@ -12,7 +12,8 @@ const BarWrapper = styled.nav`
   box-shadow: 0 -4px 10px hsla(0, 0%, 10%, 0.2);
   z-index: 3;
 
-  @supports (-webkit-overflow-scrolling: touch) {
+// detect iOS and add extra padding to tab bar to rise above iOS line
+  @supports (-webkit-touch-callout: none) {
     height: 75px;
     padding-bottom: 20px;
   }
@@ -92,13 +93,13 @@ const mainLinks = [
     link: "/",
   },
   {
-    name: "Recipes",
-    icon: recipesSVG,
+    name: "Recettes",
+    icon: prepTimeSVG,
     link: "/recettes",
   },
   {
-    name: "Resources",
-    icon: resourcesSVG,
+    name: "Ingrédients",
+    icon: recipesSVG,
     link: "/ingredients",
   },
   {
@@ -107,9 +108,9 @@ const mainLinks = [
     link: "/blog",
   },
   {
-    name: "Shops",
+    name: "Magasins",
     icon: shopsSVG,
-    link: "/shops",
+    link: "/magasins",
   },
 ]
 

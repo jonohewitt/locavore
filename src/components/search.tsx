@@ -92,7 +92,7 @@ const ErrorMessage = styled.p``
 const SearchResult = styled.li<{ selected: boolean }>`
   ${props =>
     props.selected &&
-    " background: var(--color-searchListSelected);background: linear-gradient(60deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0) 5%, var(--color-searchListSelected) 100%); "}
+    " background: var(--color-searchListSelected); background: linear-gradient(60deg, var(--color-searchListTransparent) 0%, var(--color-searchListSelected) 100%); "}
   display: flex;
   position: relative;
   height: 55px;
@@ -128,13 +128,12 @@ const SearchResult = styled.li<{ selected: boolean }>`
     background: var(--color-searchListSelected);
     background: linear-gradient(
       60deg,
-      #0000 0%,
-      #0000 5%,
+      var(--color-searchListTransparent) 0%,
       var(--color-searchListSelected) 100%
     );
     ${props =>
       props.selected &&
-      "background: var(--color-searchListHover);background: linear-gradient(60deg, #0000, #0000 5%, var(--color-searchListHover) 100%)"};
+      " background: var(--color-searchListHover);background: linear-gradient(60deg, var(--color-searchListTransparent) 0%, var(--color-searchListHover) 100%); "}
   }
 
   a {

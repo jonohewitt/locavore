@@ -213,6 +213,8 @@ const StyledArticle = styled.article<{
   ${props =>
     props.masonryLayout &&
     "display: grid; column-gap: 40px; margin: 100px auto 0 auto; width: 85%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
+
+  ${props => props.appInterface && props.masonryLayout && "margin-top: 50px;"}
 `
 
 const NoteWrapper = styled.div`
@@ -268,7 +270,7 @@ const RecipeTemplate = ({ data }) => {
 
   useLayoutEffect(() => {
     const updateWidth = () => {
-      setMasonryLayout(window.innerWidth >= 1000)
+      setMasonryLayout(window.innerWidth >= 950)
     }
     window.addEventListener("resize", updateWidth)
     updateWidth()

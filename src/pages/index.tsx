@@ -26,12 +26,15 @@ const SearchAndSettingsContainer = styled.div`
 `
 const SearchContainer = styled.div`
   width: 70%;
+  max-width: 400px;
   margin-right: 15px;
   position: relative;
   z-index: 1;
 `
 
 const Header = styled.header`
+  position: relative;
+  margin-top: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,6 +67,24 @@ const Header = styled.header`
     line-height: 1.15;
     max-width: 500px;
   }
+
+  @media (max-width: 450px) {
+    min-height: 75vh;
+    h1 {
+      font-size: 36px;
+      margin: 3vh 0;
+
+      svg {
+        bottom: 1px;
+        transform: scale(1.3);
+      }
+    }
+    h2 {
+      margin-top: 5vh;
+      padding: 0 10px;
+      font-size: 18px;
+    }
+  }
 `
 
 // use styled-components transient props syntax with $ to avoid the props being added to the DOM
@@ -82,10 +103,17 @@ const ButtonLink = styled(Link)<{ $isDark: boolean; $content: string }>`
   font-size: 18px;
   font-weight: 600;
   color: #fff9f2;
-  margin: 15px;
+  margin: 8px;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+`
+
+const LandingButtons = styled.div`
+  @media (max-width: 450px) {
+    position: absolute;
+    bottom: 0px;
+  }
 `
 
 const LearnMore = styled(Link)`
@@ -118,6 +146,10 @@ const LocationCountry = styled.span`
   background-position: 0 56px;
   background-repeat: repeat-x;
   background-size: 20px 4px;
+
+  @media (max-width: 450px) {
+    background-position: 0 42px;
+  }
 `
 
 const NoWrap = styled.span`
@@ -193,7 +225,7 @@ const IndexPage = () => {
             eiusmod tempor incididunt ut labore.{" "}
             <LearnMore to="/blog">Learn more{arrowSVG}</LearnMore>
           </h2>
-          <div>
+          <LandingButtons>
             <ButtonLink to="/recettes" $isDark={isDark} $content="recipe">
               Voir les recettes <br /> de saison
             </ButtonLink>
@@ -204,7 +236,7 @@ const IndexPage = () => {
             >
               Voir les ingrédients <br /> de saison
             </ButtonLink>
-          </div>
+          </LandingButtons>
         </Header>
 
         <HalfIllustrationSection>

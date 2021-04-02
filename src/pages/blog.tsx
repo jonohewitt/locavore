@@ -21,6 +21,7 @@ const BlogCard = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
   overflow: hidden;
+  transform: translateZ(0);
 
   &:hover {
     transform: translateY(-5px);

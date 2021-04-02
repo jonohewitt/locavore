@@ -21,7 +21,7 @@ const InputContainer = styled.div<{ shadow: boolean }>`
   box-shadow: 0 1px 2px hsla(0, 0%, 10%, 0.2);
   ${props =>
     props.shadow &&
-    "box-shadow: 0 2px 6px hsla(var(--color-searchShadow), 0.2);"}
+    "box-shadow: 0 2px 6px hsla(var(--color-searchShadow), 0.15);"}
   width: 100%;
 
   svg {

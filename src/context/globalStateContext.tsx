@@ -54,9 +54,10 @@ const Provider = ({ children }) => {
   } = IngredientListContext(currentMonth)
 
   useLayoutEffect(() => {
-    const navigator: any = window.navigator
+    setMonth(new Date().getMonth())
+
     setAppInterface(
-      navigator.standalone ||
+      window.navigator.standalone ||
         window.matchMedia("(display-mode: standalone)").matches
     )
 
@@ -64,7 +65,7 @@ const Provider = ({ children }) => {
       window.document.documentElement.attributes["is-dark-mode"].value ===
       "true"
     setTheme(initialTheme)
-    setMonth(new Date().getMonth())
+    
   }, [])
 
   const toggleTheme = () => {

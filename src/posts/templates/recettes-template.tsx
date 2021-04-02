@@ -120,6 +120,10 @@ const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
+  
+  /* Create new stacking context to fix border-radius on Safari */
+  transform: translateZ(0);
+
   @media (max-width: ${breakToMobile - 200}px) {
     box-shadow: initial;
     border-radius: 0;

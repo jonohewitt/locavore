@@ -86,7 +86,7 @@ export const IngredientShowcase = () => {
       )}
       {ListOfIngredients({ ingredientFilterList: lastChanceFilter }) && (
         <IngredientListWrapper>
-          <h2>Dernière chance</h2>
+          <h2>Dernière chance ce mois-ci</h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={lastChanceFilter}

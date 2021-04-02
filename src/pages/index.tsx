@@ -32,9 +32,9 @@ const SearchContainer = styled.div`
   z-index: 1;
 `
 
-const Header = styled.header`
+const Header = styled.header<{app: boolean}>`
   position: relative;
-  margin-top: 70px;
+  margin-top: ${props => props.app ? "100px" : "70px"};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,10 +69,10 @@ const Header = styled.header`
   }
 
   @media (max-width: 450px) {
-    min-height: 75vh;
+    min-height: calc(100vh - 250px);
     h1 {
       font-size: 36px;
-      margin: 3vh 0;
+      margin-bottom: 2vh;
 
       svg {
         bottom: 1px;
@@ -111,8 +111,9 @@ const ButtonLink = styled(Link)<{ $isDark: boolean; $content: string }>`
 
 const LandingButtons = styled.div`
   @media (max-width: 450px) {
-    position: absolute;
-    bottom: 0px;
+    /* position: absolute;
+    bottom: 0px; */
+    padding-top: 20px;
   }
 `
 
@@ -208,7 +209,7 @@ const IndexPage = () => {
         </SearchAndSettingsContainer>
       )}
       <ContentWrapper>
-        <Header>
+        <Header app={appInterface}>
           <h1>
             Nourriture locale et saisonnière en{" "}
             <NoWrap>

@@ -177,6 +177,9 @@ const HalfIlluSectionContent = styled.div`
   grid-gap: 40px;
   justify-items: center;
   align-items: center;
+  svg {
+    max-height: 30vh;
+  }
 `
 
 const SectionText = styled.div`

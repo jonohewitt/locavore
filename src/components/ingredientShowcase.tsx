@@ -8,6 +8,10 @@ import { ListOfIngredients } from "./listOfIngredients"
 
 import { Ingredient } from "../pages/ingredients"
 
+const NoWrap = styled.span`
+  white-space: nowrap;
+`
+
 const ShowcaseContainer = styled.div`
 margin-top: 100px;`
 
@@ -76,7 +80,7 @@ export const IngredientShowcase = () => {
     <ShowcaseContainer>
       {ListOfIngredients({ ingredientFilterList: justInFilter }) && (
         <IngredientListWrapper>
-          <h2>Nouveautés ce mois-ci</h2>
+          <h2>Nouveautés ce <NoWrap>mois-ci</NoWrap></h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={justInFilter}
@@ -86,7 +90,7 @@ export const IngredientShowcase = () => {
       )}
       {ListOfIngredients({ ingredientFilterList: lastChanceFilter }) && (
         <IngredientListWrapper>
-          <h2>Dernière chance ce mois-ci</h2>
+          <h2>Dernière chance ce <NoWrap>mois-ci</NoWrap></h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={lastChanceFilter}

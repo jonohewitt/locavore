@@ -24,6 +24,14 @@ const SpotlightSection = styled.section`
     text-align: center;
     max-width: 500px;
   }
+
+  @media (max-width: 450px) {
+    padding: 40px 0;
+    h2 {
+      font-size: 33px;
+      padding: 20px 0;
+    }
+  }
 `
 
 const HollowButton = styled(Link)`
@@ -48,10 +56,11 @@ const Spotlight = styled.div`
   border-radius: 150px;
   mix-blend-mode: difference;
   pointer-events: none;
+  box-shadow: 0 0 30px #ffe5e5aa;
 `
 
 export const SpotlightFeature = () => {
-  const areaRef = useRef<HTMLElement>()
+  const areaRef = useRef<HTMLDivElement>()
   const spotlightElement = useRef<HTMLDivElement>()
   const speed = useRef(0.05)
 

@@ -357,7 +357,7 @@ export const BrowserNav = ({
           }}
         />
         <PageTitle to="/">
-          {siteTitle} <span>BXL</span>
+          {siteTitle} <span>BE</span>
         </PageTitle>
         {windowWidth > 700 ? (
           <>

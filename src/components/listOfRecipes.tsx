@@ -359,6 +359,7 @@ export const ListOfRecipes = ({
             "mostRecent",
             "start"
           )
+
           const endMonthName = getOutlierMonthName(recipe, "soonest", "end")
 
           let seasonalityInfo: string
@@ -378,8 +379,12 @@ export const ListOfRecipes = ({
 
             default:
               // default to showing the start and end
-              if (allInSeason(recipe) && startMonthName && endMonthName)
-                seasonalityInfo = `En saison de ${startMonthName} à ${endMonthName}`
+              if (allInSeason(recipe) && startMonthName && endMonthName) {
+                const fromForm = startMonthName.charAt(0).match(/^[aeiouy]/)
+                  ? "d'"
+                  : "de "
+                seasonalityInfo = `En saison ${fromForm}${startMonthName} à ${endMonthName}`
+              }
           }
           // if the above switch didn't provide a message, the recipe is either year round or out of season
           if (!seasonalityInfo) {

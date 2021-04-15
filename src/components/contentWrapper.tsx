@@ -3,9 +3,9 @@ import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 
 export const widthPercent = 80
-export const mobileWidthPercent = 90
+export const mobileWidthPercent = 92
 export const maxWidth = 900
-export const breakToMobile = 885
+export const breakToMobile = 850
 
 const Wrapper = styled.div<{ appInterface: boolean; headerImg?: boolean }>`
   width: ${widthPercent}%;

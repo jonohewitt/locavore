@@ -32,10 +32,10 @@ import { Frontmatter } from "../../pages/recettes"
 const IngredientBox = styled.div<{ featureImage: boolean }>`
   background-color: var(--color-graphBackground);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  padding: 10px 20px 30px 20px;
-  margin: 0 0 40px 0;
+  padding: 20px 20px 30px 20px;
+  margin: 30px 0 40px 0;
   font-weight: 600;
-  border-radius: ${props => (props.featureImage ? "0 0 10px 10px" : "10px")};
+  border-radius: 10px;
 
   ul {
     margin-bottom: 15px;
@@ -86,7 +86,7 @@ const IngredientsButton = styled.button<{
     props.selected ? "var(--color-settingsIcon)" : "var(--color-background)"};
   width: 50%;
   border-radius: 10px 0 0 10px;
-  margin: 14px 0 10px 0;
+  margin: 5px 0;
   box-shadow: ${props => !props.selected && "inset"} 0 0 15px
     hsla(0, 0%, 0%, 0.2);
 
@@ -120,7 +120,7 @@ const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
-  
+
   /* Create new stacking context to fix border-radius on Safari */
   transform: translateZ(0);
 
@@ -143,7 +143,7 @@ const StyledHeader = styled.header`
 const RecipeTitle = styled.div<{ backButton: boolean }>`
   ${props =>
     props.backButton &&
-    "position: relative;left: -50px;display: grid;grid-template-columns: 50px 1fr;align-items: start;"}
+    "position: relative; display: grid; grid-template-columns: 50px 1fr; align-items: start;"}
 
   .backArrow {
     grid-column: 1 / 2;
@@ -154,10 +154,6 @@ const RecipeTitle = styled.div<{ backButton: boolean }>`
   h1 {
     grid-column: 2 / 3;
   }
-
-  @media (max-width: ${breakToMobile}px) {
-    left: 0;
-  }
 `
 
 const CourseAndFeeds = styled.p`
@@ -165,7 +161,31 @@ const CourseAndFeeds = styled.p`
   margin-bottom: 5px;
 `
 
-const Metadata = styled.div``
+const MetadataBox = styled.div<{ connectedImage: boolean }>`
+  background: var(--color-graphBackground);
+  padding: 20px;
+
+  border-radius: ${props => (props.connectedImage ? "0 0 10px 10px" : "10px")};
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  padding-top: 30px;
+
+  @media (max-width: ${breakToMobile - 200}px) {
+    border-radius: 10px;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 430px) {
+    margin: 4vw -2vw 40px -2vw;
+    padding: 20px;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 350px) {
+    padding: 10px;
+  }
+`
 
 const RecipeIndicators = styled.div`
   display: flex;
@@ -202,9 +222,9 @@ const StyledArticle = styled.article<{
   appInterface: boolean
   masonryLayout: boolean
 }>`
-  width: ${widthPercent}%;
+  width: 90%;
   max-width: ${maxWidth}px;
-  margin: ${props => (props.appInterface ? "30px" : "100px")} auto 0 auto;
+  margin: ${props => (props.appInterface ? "30px" : "90px")} auto 0 auto;
 
   @media (max-width: ${breakToMobile}px) {
     width: ${mobileWidthPercent}%;
@@ -212,13 +232,16 @@ const StyledArticle = styled.article<{
 
   ${props =>
     props.masonryLayout &&
-    "display: grid; column-gap: 40px; margin: 100px auto 0 auto; width: 85%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
+    "display: grid; column-gap: min(40px, 3vw); margin: 100px auto 0 auto; width: 92%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
 
   ${props => props.appInterface && props.masonryLayout && "margin-top: 50px;"}
+
+  @media (max-width: ${breakToMobile - 200}px) {
+    margin-top: ${props => (props.appInterface ? "0" : "55px")};
+  }
 `
 
 const NoteWrapper = styled.div`
-  ${"" /* background: var(--color-graphBackground); */}
   border: 1px solid;
   display: grid;
   grid-template-columns: 60px 1fr;
@@ -270,7 +293,7 @@ const RecipeTemplate = ({ data }) => {
 
   useLayoutEffect(() => {
     const updateWidth = () => {
-      setMasonryLayout(window.innerWidth >= 950)
+      setMasonryLayout(window.innerWidth >= 820)
     }
     window.addEventListener("resize", updateWidth)
     updateWidth()
@@ -312,25 +335,42 @@ const RecipeTemplate = ({ data }) => {
         <h1>{fm.title}</h1>
       </RecipeTitle>
       <hr />
-      <Metadata>
-        <CourseAndFeeds>
-          {fm.course}
-          {fm.feeds && ` • ${fm.feeds} personnes`}
-        </CourseAndFeeds>
-        <RecipeIndicators>
-          <DairyIndicator
-            vegan={fm.vegan}
-            veganOption={fm.veganOption}
-            vegetarian={fm.vegetarian}
-          />
-          <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
-        </RecipeIndicators>
-      </Metadata>
-      <hr />
-      {fm.description && (
-        <RecipeDescription>{fm.description}</RecipeDescription>
-      )}
+
+      {/* <hr /> */}
     </StyledHeader>
+  )
+
+  const Metadata = () => (
+    <MetadataBox connectedImage={!(masonryLayout && fm.feature)}>
+      <StyledHeader>
+        <RecipeTitle backButton={Boolean(BackButton())}>
+          <BackButton />
+          <h1>{fm.title}</h1>
+        </RecipeTitle>
+        <hr />
+
+        {/* <hr /> */}
+      </StyledHeader>
+      <CourseAndFeeds>
+        {fm.course}
+        {fm.feeds && ` • ${fm.feeds} personnes`}
+      </CourseAndFeeds>
+      <RecipeIndicators>
+        <DairyIndicator
+          vegan={fm.vegan}
+          veganOption={fm.veganOption}
+          vegetarian={fm.vegetarian}
+        />
+        <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
+      </RecipeIndicators>
+
+      {fm.description && (
+        <>
+          <hr />
+          <RecipeDescription>{fm.description}</RecipeDescription>
+        </>
+      )}
+    </MetadataBox>
   )
 
   const mdxComponents = {
@@ -396,7 +436,8 @@ const RecipeTemplate = ({ data }) => {
           {masonryLayout ? (
             <>
               <LeftColumn>
-                <Header />
+                {/* <Header /> */}
+                <Metadata />
                 <IngredientsSection />
                 <CommentSection />
               </LeftColumn>
@@ -407,8 +448,9 @@ const RecipeTemplate = ({ data }) => {
             </>
           ) : (
             <>
-              <Header />
+              {/* <Header /> */}
               <FeatureImage fm={fm} />
+              <Metadata />
               <IngredientsSection />
               <PreperationSection />
               <CommentSection />

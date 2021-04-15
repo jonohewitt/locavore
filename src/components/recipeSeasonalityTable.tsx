@@ -28,7 +28,7 @@ const NoIngredientData = styled.div`
 `
 
 const StyledTable = styled.table`
-  margin-top: 5px;
+  margin-top: 20px;
   border-collapse: separate;
   border-spacing: 3px 10px;
   width: 100%;
@@ -76,15 +76,14 @@ const StyledTable = styled.table`
 `
 
 const MonthInitial = styled.th<{ isCurrentMonth: boolean }>`
-  height: 25px;
-  line-height: 25px;
+  padding-bottom: 2px;
   ${props =>
     props.isCurrentMonth &&
-    "box-shadow: 0 0 0 2px var(--color-text); border-radius: 4px;"}
+    "border-bottom: 3px solid var(--color-settingsIcon);"}
+
+  ${props => props.isCurrentMonth && "color: var(--color-navText);"}
 
   @media (max-width: 500px) {
-    box-shadow: ${props =>
-      props.isCurrentMonth && "0 0 0 1px var(--color-text);"};
     font-size: 14px;
   }
 `
@@ -115,6 +114,10 @@ const IngredientName = styled.td`
   }
 `
 
+const MonthInitialRow = styled.tr`
+  padding-bottom: 3px;
+`
+
 const MonthInitials = () => {
   const { currentMonth } = useContext(GlobalState)
   const initials = []
@@ -132,11 +135,11 @@ const MonthInitials = () => {
   }
 
   return (
-    <tr>
+    <MonthInitialRow>
       {/* eslint-disable-next-line */}
       <th></th>
       {initials}
-    </tr>
+    </MonthInitialRow>
   )
 }
 

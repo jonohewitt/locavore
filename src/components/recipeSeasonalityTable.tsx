@@ -14,7 +14,7 @@ const NoIngredientData = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 40px;
 
   svg {
     transform: scale(1.5);
@@ -81,7 +81,7 @@ const MonthInitial = styled.th<{ isCurrentMonth: boolean }>`
     props.isCurrentMonth &&
     "border-bottom: 3px solid var(--color-settingsIcon);"}
 
-  ${props => props.isCurrentMonth && "color: var(--color-navText);"}
+  ${props => props.isCurrentMonth && "color: var(--color-settingsIcon);"}
 
   @media (max-width: 500px) {
     font-size: 14px;

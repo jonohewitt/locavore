@@ -107,7 +107,7 @@ const SeasonalityButton = styled(IngredientsButton)`
 `
 
 const IngredientsContent = styled.div`
-  margin-top: 20px;
+  margin-top: 30px;
   margin-left: 5px;
 `
 
@@ -217,7 +217,7 @@ const StyledArticle = styled.article<{
     props.masonryLayout &&
     "display: grid; column-gap: min(40px, 3vw); margin: 100px auto 0 auto; width: 92%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
 
-  ${props => props.appInterface && props.masonryLayout && "margin-top: 50px;"}
+  ${props => props.appInterface && props.masonryLayout && "margin-top: 35px;"}
 
   @media (max-width: ${breakToMobile - 200}px) {
     margin-top: ${props => (props.appInterface ? "0" : "55px")};

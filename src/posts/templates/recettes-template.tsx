@@ -86,17 +86,14 @@ const IngredientsButton = styled.button<{
     props.selected ? "var(--color-settingsIcon)" : "var(--color-background)"};
   width: 50%;
   border-radius: 10px 0 0 10px;
-  margin: 5px 0;
   box-shadow: ${props => !props.selected && "inset"} 0 0 15px
     hsla(0, 0%, 0%, 0.2);
 
   @media (max-width: ${breakToMobile}px) {
-    margin: 5px 0;
     font-size: 18px;
   }
 
   @media (max-width: 430px) {
-    margin: 0;
     font-size: 16px;
   }
 
@@ -114,8 +111,6 @@ const IngredientsContent = styled.div`
   margin-left: 5px;
 `
 
-const SeasonalityContent = styled.div``
-
 const FeatureImgContainer = styled.div`
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   border-radius: 10px 10px 0 0;
@@ -125,7 +120,7 @@ const FeatureImgContainer = styled.div`
   transform: translateZ(0);
 
   @media (max-width: ${breakToMobile - 200}px) {
-    box-shadow: initial;
+    box-shadow: unset;
     border-radius: 0;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
@@ -133,11 +128,7 @@ const FeatureImgContainer = styled.div`
 `
 
 const RecipeDescription = styled.p`
-  margin: 20px 0 30px 0;
-`
-
-const StyledHeader = styled.header`
-  position: relative;
+  margin: 20px 0 10px 0;
 `
 
 const RecipeTitle = styled.div<{ backButton: boolean }>`
@@ -162,11 +153,9 @@ const CourseAndFeeds = styled.p`
 `
 
 const MetadataBox = styled.div<{ connectedImage: boolean }>`
+  border-radius: ${props => (props.connectedImage ? "0 0 10px 10px" : "10px")};
   background: var(--color-graphBackground);
   padding: 20px;
-
-  border-radius: ${props => (props.connectedImage ? "0 0 10px 10px" : "10px")};
-
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
   padding-top: 30px;
@@ -197,8 +186,6 @@ const RecipeIndicators = styled.div`
   }
 `
 
-const IngredientsContainer = styled.div``
-
 const Preparation = styled.div`
   margin-top: 20px;
   ol {
@@ -206,11 +193,7 @@ const Preparation = styled.div`
   }
 `
 
-const LeftColumn = styled.div`
-  ${IngredientBox} {
-    border-radius: 10px;
-  }
-`
+const LeftColumn = styled.div``
 
 const RightColumn = styled.div`
   ${FeatureImgContainer} {
@@ -240,30 +223,6 @@ const StyledArticle = styled.article<{
     margin-top: ${props => (props.appInterface ? "0" : "55px")};
   }
 `
-
-const NoteWrapper = styled.div`
-  border: 1px solid;
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  padding: 15px 15px 15px 5px;
-  margin-bottom: 25px;
-  border-radius: 10px;
-  line-height: 1.4;
-  p {
-    margin-bottom: 0;
-  }
-  svg {
-    transform: scale(1.3);
-    margin: auto;
-  }
-`
-
-const Note = ({ children }) => (
-  <NoteWrapper>
-    {infoSVG}
-    <div>{children}</div>
-  </NoteWrapper>
-)
 
 const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
   const featureImg = getImage(fm.feature)
@@ -321,36 +280,20 @@ const RecipeTemplate = ({ data }) => {
       {ingredientsSelected ? (
         <IngredientsContent>{children}</IngredientsContent>
       ) : (
-        <SeasonalityContent>
-          <RecipeSeasonalityTable ingredients={fm.ingredients} />
-        </SeasonalityContent>
+        <RecipeSeasonalityTable ingredients={fm.ingredients} />
       )}
     </IngredientBox>
   )
 
-  const Header = () => (
-    <StyledHeader>
-      <RecipeTitle backButton={Boolean(BackButton())}>
-        <BackButton />
-        <h1>{fm.title}</h1>
-      </RecipeTitle>
-      <hr />
-
-      {/* <hr /> */}
-    </StyledHeader>
-  )
-
   const Metadata = () => (
     <MetadataBox connectedImage={!(masonryLayout && fm.feature)}>
-      <StyledHeader>
+      <header>
         <RecipeTitle backButton={Boolean(BackButton())}>
           <BackButton />
           <h1>{fm.title}</h1>
         </RecipeTitle>
         <hr />
-
-        {/* <hr /> */}
-      </StyledHeader>
+      </header>
       <CourseAndFeeds>
         {fm.course}
         {fm.feeds && ` • ${fm.feeds} personnes`}
@@ -378,24 +321,19 @@ const RecipeTemplate = ({ data }) => {
     Ing,
     Ingredients,
     LinkedRecipe,
-    Note,
   }
 
   const IngredientsSection = () => (
-    <IngredientsContainer>
-      <MDXProvider
-        components={{
-          ...mdxComponents,
-          wrapper: ({ children }) => (
-            <>
-              {children.filter(child => child.props.mdxType === "Ingredients")}
-            </>
-          ),
-        }}
-      >
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
-      </MDXProvider>
-    </IngredientsContainer>
+    <MDXProvider
+      components={{
+        ...mdxComponents,
+        wrapper: ({ children }) => (
+          <>{children.filter(child => child.props.mdxType === "Ingredients")}</>
+        ),
+      }}
+    >
+      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+    </MDXProvider>
   )
 
   const PreperationSection = () => (
@@ -436,7 +374,6 @@ const RecipeTemplate = ({ data }) => {
           {masonryLayout ? (
             <>
               <LeftColumn>
-                {/* <Header /> */}
                 <Metadata />
                 <IngredientsSection />
                 <CommentSection />
@@ -448,7 +385,6 @@ const RecipeTemplate = ({ data }) => {
             </>
           ) : (
             <>
-              {/* <Header /> */}
               <FeatureImage fm={fm} />
               <Metadata />
               <IngredientsSection />

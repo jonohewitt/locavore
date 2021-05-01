@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { GlobalStyles } from "../theme/globalStyles"
-import styled from "styled-components"
+import { lightTheme } from "../theme/themeVariables"
+import styled, { ThemeProvider, DefaultTheme } from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
 import { Helmet } from "react-helmet"
 import { Page } from "./page"
@@ -48,10 +49,15 @@ export const Layout = ({ children }: { children: JSX.Element }) => {
   const {
     appInterface,
     settingsIsOpen,
-    toggleInterface,
     toggleSettings,
   } = useContext(GlobalState)
   const [fadedIn, setFadedIn] = useState(false)
+
+  let theme: Partial<DefaultTheme> = {}
+
+  for (const style in lightTheme) {
+    theme[style] = `var(--color-${style})`
+  }
 
   useEffect(() => {
     setFadedIn(true)
@@ -75,38 +81,39 @@ export const Layout = ({ children }: { children: JSX.Element }) => {
           },
         ]}
       />
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
 
-      <GlobalStyles />
+        <CSSTransition
+          in={fadedIn}
+          timeout={{ enter: 2000, exit: 200 }}
+          classNames="fade"
+        >
+          <FadeInWrapper fadedIn={fadedIn}>
+            {appInterface && <AppUI />}
+            {!appInterface && (
+              <BrowserNav
+                searchIsActive={searchIsActive}
+                setSearchIsActive={setSearchIsActive}
+              />
+            )}
 
-      <CSSTransition
-        in={fadedIn}
-        timeout={{ enter: 2000, exit: 200 }}
-        classNames="fade"
-      >
-        <FadeInWrapper fadedIn={fadedIn}>
-          {appInterface && <AppUI />}
-          {!appInterface && (
-            <BrowserNav
-              searchIsActive={searchIsActive}
-              setSearchIsActive={setSearchIsActive}
-            />
-          )}
-
-          <OverflowWrapper>
-            <Settings />
-            <Page
-              onClick={() => searchIsActive && setSearchIsActive(false)}
-              settingsIsOpen={settingsIsOpen}
-              toggleSettings={toggleSettings}
-            >
-              <Content appInterface={appInterface}>
-                {children}
-                {!appInterface && <Footer />}
-              </Content>
-            </Page>
-          </OverflowWrapper>
-        </FadeInWrapper>
-      </CSSTransition>
+            <OverflowWrapper>
+              <Settings />
+              <Page
+                onClick={() => searchIsActive && setSearchIsActive(false)}
+                settingsIsOpen={settingsIsOpen}
+                toggleSettings={toggleSettings}
+              >
+                <Content appInterface={appInterface}>
+                  {children}
+                  {!appInterface && <Footer />}
+                </Content>
+              </Page>
+            </OverflowWrapper>
+          </FadeInWrapper>
+        </CSSTransition>
+      </ThemeProvider>
     </>
   )
 }

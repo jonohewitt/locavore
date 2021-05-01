@@ -35,7 +35,7 @@ export const lightTheme = {
   landingSpotlight: "#491223",
 }
 
-export const darkTheme = {
+export const darkTheme: typeof lightTheme = {
   text: "#ddd",
   background: "#272830",
   nav: "hsla(234, 11%, 22%, 0.98)",

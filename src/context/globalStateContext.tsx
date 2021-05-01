@@ -1,37 +1,10 @@
 import React, { useState, useLayoutEffect, createContext } from "react"
 
 import { lightTheme, darkTheme } from "../theme/themeVariables"
-import {
-  RecipeListContext,
-  RecipeSort,
-  RecipeFilter,
-} from "./recipeListContext"
-import {
-  IngredientListContext,
-  IngredientSort,
-  IngredientFilter,
-} from "./ingredientListContext"
+import { RecipeListContext } from "./recipeListContext"
+import { IngredientListContext } from "./ingredientListContext"
 
-interface GlobalStateValue {
-  appInterface: boolean
-  toggleInterface: Function
-  settingsIsOpen: boolean
-  toggleSettings: Function
-  setSettingsIsOpen: Function
-  isDark: boolean
-  toggleTheme: Function
-  currentMonth: number
-  ingredientFilterList: IngredientFilter[]
-  ingredientSortList: IngredientSort[]
-  toggleIngredientFilter: Function
-  toggleIngredientSort: Function
-  recipeSortList: RecipeSort[]
-  recipeFilterList: RecipeFilter[]
-  toggleRecipeFilter: Function
-  toggleRecipeSort: Function
-}
-
-export const GlobalState = createContext<GlobalStateValue>(undefined)
+export const GlobalState = createContext(undefined)
 
 const Provider = ({ children }) => {
   const [appInterface, setAppInterface] = useState<boolean>(undefined)
@@ -65,22 +38,17 @@ const Provider = ({ children }) => {
       window.document.documentElement.attributes["is-dark-mode"].value ===
       "true"
     setTheme(initialTheme)
-    
   }, [])
 
   const toggleTheme = () => {
+    const root = window.document.documentElement
+
     setTheme(!isDark)
     window.localStorage.setItem("darkTheme", (!isDark).toString())
-    window.document.documentElement.setAttribute(
-      "is-dark-mode",
-      (!isDark).toString()
-    )
+    root.setAttribute("is-dark-mode", (!isDark).toString())
 
-    Object.entries(!isDark ? darkTheme : lightTheme).forEach(
-      ([name, value]) => {
-        const cssVarName = `--color-${name}`
-        window.document.documentElement.style.setProperty(cssVarName, value)
-      }
+    Object.entries(!isDark ? darkTheme : lightTheme).forEach(([name, value]) =>
+      root.style.setProperty(`--color-${name}`, value)
     )
   }
 

@@ -46,18 +46,18 @@ const Content = styled.div<{ appInterface: boolean }>`
 
 export const Layout = ({ children }: { children: JSX.Element }) => {
   const [searchIsActive, setSearchIsActive] = useState(false)
-  const {
-    appInterface,
-    settingsIsOpen,
-    toggleSettings,
-  } = useContext(GlobalState)
+  const { appInterface, settingsIsOpen, toggleSettings } = useContext(
+    GlobalState
+  )
   const [fadedIn, setFadedIn] = useState(false)
 
-  let theme: Partial<DefaultTheme> = {}
-
-  for (const style in lightTheme) {
-    theme[style] = `var(--color-${style})`
-  }
+  const theme: DefaultTheme = Object.keys(lightTheme).reduce(
+    (theme, style) => ({
+      ...theme,
+      [style]: `var(--color-${style})`,
+    }),
+    {}
+  )
 
   useEffect(() => {
     setFadedIn(true)

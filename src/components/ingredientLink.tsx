@@ -8,14 +8,16 @@ import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 
 import { Ingredient } from "../pages/ingredients"
 
-const IngredientLink = styled(Link)`
-  color: ${props => props.color} !important;
+const IngredientLink = styled(Link)<{ $inSeason: boolean }>`
+  color: ${props =>
+    props.$inSeason ? props.theme.positive : props.theme.negative} !important;
   svg {
     transform: scale(0.8);
     vertical-align: text-bottom;
     margin-left: 2px;
     path {
-      fill: ${props => props.color};
+      fill: ${props =>
+        props.$inSeason ? props.theme.positive : props.theme.negative};
     }
   }
   span {
@@ -65,26 +67,19 @@ export const Ing = ({
       slugify(id, { lower: true, strict: true })
   )
 
-  let color: string
   let icon: JSX.Element
+  let inSeason: boolean
 
   if (foundIngredient) {
-    const inSeason = checkIngredientInSeason(
-      foundIngredient,
-      currentMonth,
-      true
-    )
-
-    if (inSeason) {
-      icon = tickSVG
-      color = "var(--color-positive)"
-    } else {
-      icon = crossSVG
-      color = "var(--color-negative)"
-    }
-  } else {
-    color = "var(--color-text)"
+    inSeason = checkIngredientInSeason(foundIngredient, currentMonth, true)
   }
+
+  if (inSeason) {
+    icon = tickSVG
+  } else if (inSeason === false) {
+    icon = crossSVG
+  }
+  // no icon if inSeason is undefined
 
   let linkText = id.toLowerCase()
 
@@ -97,7 +92,7 @@ export const Ing = ({
   return (
     <IngredientLink
       onClick={clickAction}
-      color={color}
+      $inSeason={inSeason}
       to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
       className={className}
     >

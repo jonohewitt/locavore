@@ -8,7 +8,7 @@ import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 import { Ingredient } from "../pages/ingredients"
 
 const ChartWrapper = styled.div<{ fadedIn: boolean }>`
-  background-color: var(--color-graphBackground);
+  background: ${props => props.theme.graphBackground};
   border-radius: 5px;
   padding: 15px;
   margin: 25px 0 5px 0;
@@ -40,10 +40,10 @@ const ToolTip = styled.div<{ toolTipShowing: boolean }>`
   width: 130px;
   position: absolute;
   bottom: 55px;
-  background-color: var(--color-graphBackground);
+  background-color: ${props => props.theme.graphBackground};
   padding: 5px;
   border-radius: 8px;
-  border: solid 1px var(--color-hr);
+  border: solid 1px ${props => props.theme.hr};
   box-shadow: 0 0 8px 0 hsla(0, 0%, 10%, 0.2);
   pointer-events: none;
   opacity: ${props => (props.toolTipShowing ? "1" : "0")};
@@ -87,7 +87,7 @@ const MonthInitial = styled.h3<{ isCurrentMonth: boolean }>`
 
 const MonthRect = styled.div<{ value: boolean }>`
   background-color: ${props =>
-    props.value ? "var(--color-positive)" : "hsl(0, 29.5%, 41.2%)"};
+    props.value ? props.theme.positive : "hsl(0, 29.5%, 41.2%)"};
   height: ${props => (props.value ? "20px" : "10px")};
   border-radius: 2px;
   position: relative;

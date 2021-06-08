@@ -347,7 +347,7 @@ export const ListOfRecipes = ({
             )
           }
         })
-        .map(recipe => {
+        .map((recipe, index) => {
           // shorten variable names for brevity
           const fm = recipe.frontmatter
           const slug = fm.customSlug
@@ -417,6 +417,7 @@ export const ListOfRecipes = ({
                         height: "100%",
                       }}
                       alt={fm.featureDescription}
+                      loading={index < 4 ? "eager" : "lazy"}
                     />
                   )}
                   <RecipeText featureImg={fm.feature}>

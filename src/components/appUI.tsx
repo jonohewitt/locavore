@@ -1,18 +1,18 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import { homeSVG, recipesSVG, resourcesSVG, blogSVG, shopsSVG, prepTimeSVG } from "./icons"
+import { homeSVG, recipesSVG, blogSVG, shopsSVG, prepTimeSVG } from "./icons"
 
 const BarWrapper = styled.nav`
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 55px;
-  background-color: var(--color-appBar);
+  background: ${props => props.theme.appBar};
   box-shadow: 0 -4px 10px hsla(0, 0%, 10%, 0.2);
   z-index: 3;
 
-// detect iOS and add extra padding to tab bar to rise above iOS line
+  // detect iOS and add extra padding to tab bar to rise above iOS line
   @supports (-webkit-touch-callout: none) {
     height: 75px;
     padding-bottom: 20px;
@@ -69,13 +69,13 @@ const StyledLink = styled(Link)`
   }
 
   &.active {
-    border-top: solid var(--color-appBarHighlight) 3px;
-    box-shadow: 0 -15px 15px var(--color-appBarDropShadow) !important;
+    border-top: solid ${props => props.theme.appBarHighlight} 3px;
+    box-shadow: 0 -15px 15px ${props => props.theme.appBarDropShadow} !important;
     border-radius: 6px 6px 0 0;
     background: linear-gradient(
-      var(--color-activeAppTab),
+      ${props => props.theme.activeAppTab},
       30%,
-      var(--color-appBar)
+      ${props => props.theme.appBar}
     );
     svg {
       opacity: 1;

@@ -6,7 +6,7 @@ export const footerHeight = 100
 const footerHeightString = `${footerHeight}px`
 
 const FooterWrapper = styled.footer`
-  background-color: var(--color-footer);
+  background: ${props => props.theme.footer};
   height: ${footerHeightString};
   position: absolute;
   bottom: 0;

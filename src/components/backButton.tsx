@@ -15,7 +15,7 @@ const Button = styled.button`
   svg {
     transform: rotate(90deg) scale(1.5);
     path {
-      fill: var(--color-settingsIcon);
+      fill: ${props => props.theme.settingsIcon};
     }
   }
 `

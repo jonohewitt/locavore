@@ -1,4 +1,4 @@
-import "typeface-quicksand"
+import "@fontsource/quicksand/latin.css"
 import "remove-focus-outline"
 import React from "react"
 import { Layout } from "../src/components/layout"

@@ -24,7 +24,14 @@ const config: GatsbyConfig = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        defaults: {
+          formats: [`auto`, `webp`, `avif`],
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {

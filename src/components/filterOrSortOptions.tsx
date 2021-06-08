@@ -69,7 +69,7 @@ const OptionButton = styled.button<{ selected: boolean; isDark: boolean }>`
   ${props => props.isDark && "border: solid 1px;"}
   border-radius: 10px;
   padding: 4px 7px;
-  color: ${props => (props.selected ? "var(--color-background)" : props.color)};
+  color: ${props => (props.selected ? props.theme.background : props.color)};
   ${props => props.disabled && "cursor: initial !important; opacity: 0.5;"};
   box-shadow: ${props =>
     props.selected ? "0 4px 7px rgba(0, 0, 0, 0.2)" : ""} !important;

@@ -14,7 +14,7 @@ const NavWrapper = styled.nav<{ fadedIn: boolean }>`
   top: 0;
   width: 100%;
   height: 55px;
-  background-color: var(--color-nav);
+  background-color: ${props => props.theme.nav};
   display: flex;
   justify-content: space-between;
   z-index: 3;
@@ -40,10 +40,10 @@ const MenuButton = styled.button<{ SVGrotation: number }>`
   }
 
   &:hover {
-    color: var(--color-activeLink);
+    color: ${props => props.theme.activeLink};
 
     path {
-      fill: var(--color-activeLink);
+      fill: ${props => props.theme.activeLink};
     }
   }
 `
@@ -88,14 +88,14 @@ const HorizontalNavList = styled.ul`
   }
 
   a {
-    color: var(--color-navText);
+    color: ${props => props.theme.navText};
     padding: 5px 8px;
     font-weight: 700;
     font-size: 14px;
     transition: color 0.2s;
 
     &:hover {
-      color: var(--color-activeLink);
+      color: ${props => props.theme.activeLink};
     }
   }
 
@@ -124,7 +124,7 @@ const PageTitle = styled(Link)`
   left: calc(50% - min(${widthPercent / 2}%, ${maxWidth / 2}px) - 10px);
   font-family: Quicksand, sans-serif;
   font-size: 24px;
-  color: var(--color-navTitle);
+  color: ${props => props.theme.navTitle};
   letter-spacing: 2px;
   text-transform: uppercase;
   font-weight: 700;
@@ -134,7 +134,7 @@ const PageTitle = styled(Link)`
   align-items: center;
 
   span {
-    color: var(--color-settingsIcon);
+    color: ${props => props.theme.settingsIcon};
     border: solid 1.5px;
     border-radius: 5px;
     padding: 2px 6px;
@@ -149,7 +149,7 @@ const PageTitle = styled(Link)`
   }
 
   &:hover {
-    color: var(--color-activeLink);
+    color: ${props => props.theme.activeLink};
   }
 
   @media (max-width: ${breakToMobile}px) {
@@ -170,13 +170,13 @@ const DropDownMenu = styled.section<{ open: boolean }>`
   height: 100vh;
   position: fixed;
   z-index: 2;
-  background-color: var(--color-navDropDown);
+  background: ${props => props.theme.navDropDown};
   padding: 8%;
   padding-top: 80px;
   box-shadow: 0 10px 20px hsla(0, 0%, 10%, 0.2);
 
   hr {
-    background-color: var(--color-text);
+    background: ${props => props.theme.text};
     opacity: 0.4;
   }
   transform: ${props => (props.open ? "translateY(0)" : "translateY(-100%)")};
@@ -189,7 +189,7 @@ const DropDownMenu = styled.section<{ open: boolean }>`
 `
 
 const DropDownLink = styled(Link)`
-  color: var(--color-text);
+  color: ${props => props.theme.text};
   display: inline-block;
   font-size: 18px;
   font-weight: 700;
@@ -197,7 +197,7 @@ const DropDownLink = styled(Link)`
   padding: 8px;
   width: 80%;
   &:hover {
-    color: var(--color-navDropDownHover);
+    color: ${props => props.theme.navDropDownHover};
   }
 `
 
@@ -242,17 +242,17 @@ const SearchButton = styled.button`
     }
     path {
       transition: fill 0.2s;
-      fill: var(--color-text);
+      fill: ${props => props.theme.text};
     }
   }
   :hover {
     svg {
       circle,
       line {
-        stroke: var(--color-activeLink);
+        stroke: ${props => props.theme.activeLink};
       }
       path {
-        fill: var(--color-activeLink);
+        fill: ${props => props.theme.activeLink};
       }
       transform: scale(1.5);
     }
@@ -268,7 +268,6 @@ export const BrowserNav = ({
   searchIsActive,
   setSearchIsActive,
 }: BrowserNavProps) => {
-
   const [halfDeviceHeight, setHalfDeviceHeight] = useState("50%")
   const windowWidth = useWindowWidth()
   const [navFadedIn, setNavFadedIn] = useState(false)

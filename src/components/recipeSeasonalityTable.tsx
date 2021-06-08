@@ -45,13 +45,11 @@ const StyledTable = styled.table`
     font-weight: 500;
     font-size: 14px;
     text-align: center;
-    padding: 10px 10px 0 10px;
-    margin-bottom: 5px;
+    padding: 10px;
     width: 75%;
-    margin: 5px auto;
+    margin: 10px auto 0 auto;
 
     p {
-      margin-top: 10px;
       margin-bottom: 0;
     }
 

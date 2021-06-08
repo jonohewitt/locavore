@@ -11,14 +11,14 @@ const NameInput = styled.input`
   border: none;
   outline: none;
   padding: 0;
-  background: var(--color-graphBackground);
-  color: var(--color-text);
+  background: ${props => props.theme.graphBackground};
+  color: ${props => props.theme.text};
 `
 
 const NameContainer = styled.div<{ error: boolean }>`
   width: 100%;
   margin: 10px 0;
-  background: var(--color-graphBackground);
+  background: ${props => props.theme.graphBackground};
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 0 15px hsla(0, 0%, 0%, 0.2);
@@ -26,7 +26,7 @@ const NameContainer = styled.div<{ error: boolean }>`
 
   &:focus-within {
     transform: scale(1.015);
-    box-shadow: 0 0 15px -5px var(--color-text);
+    box-shadow: 0 0 15px -5px ${props => props.theme.text};
   }
 
   transition: transform 0.2s, box-shadow 0.2s;
@@ -44,12 +44,12 @@ const CommentTextArea = styled.textarea`
   height: 100%;
   resize: vertical;
   min-height: 80px;
-  background: var(--color-graphBackground);
-  color: var(--color-text);
+  background: ${props => props.theme.graphBackground};
+  color: ${props => props.theme.text};
 `
 
 const OpenCommentFormButton = styled.button`
-  background: var(--color-settingsIcon);
+  background: ${props => props.theme.settingsIcon};
   height: 40px;
   padding: 0 20px;
   border-radius: 10px;
@@ -112,7 +112,7 @@ const CommentList = styled.ul`
 `
 
 const CommentListItem = styled.li`
-  background: var(--color-graphBackground);
+  background: ${props => props.theme.graphBackground};
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   padding: 20px;
   border-radius: 10px;

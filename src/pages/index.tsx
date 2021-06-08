@@ -14,6 +14,8 @@ import FallingFruitsLight from "../images/falling-fruits-light.svg"
 import FallingFruitsDark from "../images/falling-fruits-dark.svg"
 import PearHalves from "../images/pear-halves.svg"
 import StrawberriesKnife from "../images/strawberries-knife.svg"
+import strawb from "../images/strawb.png"
+import { StaticImage } from "gatsby-plugin-image"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -32,9 +34,9 @@ const SearchContainer = styled.div`
   z-index: 1;
 `
 
-const Header = styled.header<{app: boolean}>`
+const Header = styled.header<{ app: boolean }>`
   position: relative;
-  margin-top: ${props => props.app ? "100px" : "70px"};
+  margin-top: ${props => (props.app ? "100px" : "70px")};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -221,7 +223,24 @@ const IndexPage = () => {
           </h1>
 
           <LandingIllustration>
-            {isDark ? <FallingFruitsDark /> : <FallingFruitsLight />}
+            {/* {isDark ? <FallingFruitsDark /> : <FallingFruitsLight />} */}
+            {isDark ? (
+              <StaticImage
+                src="../images/fallingFruitsDark.png"
+                loading="eager"
+                alt="Falling fruits"
+                quality={65}
+                placeholder="none"
+              />
+            ) : (
+              <StaticImage
+                src="../images/fallingFruitsLight.png"
+                loading="eager"
+                alt="Falling fruits"
+                quality={65}
+                placeholder="none"
+              />
+            )}
           </LandingIllustration>
 
           <h2>
@@ -245,7 +264,14 @@ const IndexPage = () => {
 
         <HalfIllustrationSection>
           <HalfIlluSectionContent>
-            <StrawberriesKnife />
+            {/* <StrawberriesKnife /> */}
+            <StaticImage
+              src="../images/strawberry-knife.png"
+              alt="Two strawberries and a knife"
+              quality={65}
+              placeholder="none"
+              style={{ maxWidth: "400px" }}
+            />
             <SectionText>
               <h2>Vitae et rhoncus mauris diam gravida.</h2>
               <p>
@@ -269,7 +295,13 @@ const IndexPage = () => {
                 enim risus.
               </p>
             </SectionText>
-            <PearHalves />
+            <StaticImage
+              src="../images/pairOfPears.png"
+              alt="Two pears, one cut in half"
+              quality={65}
+              placeholder="none"
+              style={{ maxWidth: "400px" }}
+            />
           </HalfIlluSectionContent>
         </HalfIllustrationSection>
 

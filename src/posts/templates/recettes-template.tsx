@@ -24,7 +24,6 @@ import {
   TimeIndicators,
   DairyIndicator,
 } from "../../components/recipeIndicators"
-import { infoSVG } from "../../components/icons"
 import { CommentSectionComponent } from "../../components/commentSection"
 
 import { Frontmatter } from "../../pages/recettes"
@@ -154,7 +153,7 @@ const CourseAndFeeds = styled.p`
 
 const MetadataBox = styled.div<{ connectedImage: boolean }>`
   border-radius: ${props => (props.connectedImage ? "0 0 10px 10px" : "10px")};
-  background: var(--color-graphBackground);
+  background: ${({ theme }) => theme.graphBackground};
   padding: 20px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
@@ -231,6 +230,7 @@ const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
       <FeatureImgContainer>
         <GatsbyImage
           image={featureImg}
+          loading="eager"
           style={{
             width: "100%",
           }}

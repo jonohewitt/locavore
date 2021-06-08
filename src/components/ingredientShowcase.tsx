@@ -13,7 +13,8 @@ const NoWrap = styled.span`
 `
 
 const ShowcaseContainer = styled.div`
-margin-top: 100px;`
+  margin-top: 100px;
+`
 
 const IngredientListWrapper = styled.div`
   background-color: var(--color-graphBackground);
@@ -50,7 +51,7 @@ export const IngredientShowcase = () => {
       name: "justIn",
       logic: (ingredient: Ingredient) =>
         inSeasonAndSeasonal(ingredient) &&
-        calcIngredientMonths(ingredient, "since", "start", currentMonth) <= 1,
+        calcIngredientMonths(ingredient, "since", "start", currentMonth) === 0,
       isApplied: true,
     },
   ]
@@ -60,7 +61,7 @@ export const IngredientShowcase = () => {
       name: "lastChance",
       logic: (ingredient: Ingredient) =>
         inSeasonAndSeasonal(ingredient) &&
-        calcIngredientMonths(ingredient, "until", "end", currentMonth) <= 1,
+        calcIngredientMonths(ingredient, "until", "end", currentMonth) === 0,
       isApplied: true,
     },
   ]
@@ -71,7 +72,7 @@ export const IngredientShowcase = () => {
       logic: (ingredient: Ingredient) =>
         !inSeasonAndSeasonal(ingredient) &&
         ingredient.season &&
-        calcIngredientMonths(ingredient, "until", "start", currentMonth) <= 1,
+        calcIngredientMonths(ingredient, "until", "start", currentMonth) === 1,
       isApplied: true,
     },
   ]
@@ -80,7 +81,9 @@ export const IngredientShowcase = () => {
     <ShowcaseContainer>
       {ListOfIngredients({ ingredientFilterList: justInFilter }) && (
         <IngredientListWrapper>
-          <h2>Nouveautés ce <NoWrap>mois-ci</NoWrap></h2>
+          <h2>
+            Nouveautés ce <NoWrap>mois-ci</NoWrap>
+          </h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={justInFilter}
@@ -90,7 +93,9 @@ export const IngredientShowcase = () => {
       )}
       {ListOfIngredients({ ingredientFilterList: lastChanceFilter }) && (
         <IngredientListWrapper>
-          <h2>Dernière chance ce <NoWrap>mois-ci</NoWrap></h2>
+          <h2>
+            Dernière chance ce <NoWrap>mois-ci</NoWrap>
+          </h2>
           <hr />
           <ListOfIngredients
             ingredientFilterList={lastChanceFilter}

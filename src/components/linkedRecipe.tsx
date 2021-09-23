@@ -28,12 +28,12 @@ const IngredientLink = styled(Link)`
   }
 `
 
-interface LinkedRecipeProps {
+interface LinkedRecipe {
   id: string
   children: string
 }
 
-export const LinkedRecipe = ({ id, children }: LinkedRecipeProps) => {
+export const LinkedRecipe = ({ id, children }: LinkedRecipe) => {
   const { currentMonth } = useContext(GlobalState)
   const queryResults = useStaticQuery(graphql`
     query {

@@ -29,7 +29,7 @@ const IngredientLink = styled(Link)<{ $inSeason: boolean }>`
   }
 `
 
-interface IngProps {
+interface Ing {
   id: string
   text?: string
   children?: string
@@ -37,13 +37,7 @@ interface IngProps {
   clickAction?: () => void
 }
 
-export const Ing = ({
-  id,
-  text,
-  children,
-  className,
-  clickAction,
-}: IngProps) => {
+export const Ing = ({ id, text, children, className, clickAction }: Ing) => {
   const { currentMonth } = useContext(GlobalState)
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`

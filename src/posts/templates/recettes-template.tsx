@@ -1,4 +1,4 @@
-import React, { useState, useContext, useLayoutEffect } from "react"
+import React, { useState, useContext, useLayoutEffect, useRef } from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -24,9 +24,11 @@ import {
   TimeIndicators,
   DairyIndicator,
 } from "../../components/recipeIndicators"
-import { CommentSectionComponent } from "../../components/commentSection"
+import { CommentSectionComponent } from "../../components/commentSectionNew"
 
 import { Frontmatter } from "../../pages/recettes"
+import useSWR from "swr"
+import { supabase } from "../../supabaseClient"
 
 const IngredientBox = styled.div<{ featureImage: boolean }>`
   background-color: var(--color-graphBackground);
@@ -72,7 +74,6 @@ const IngredientBox = styled.div<{ featureImage: boolean }>`
     padding: 10px;
   }
 `
-
 const IngredientsButton = styled.button<{
   isDark?: boolean
   selected?: boolean
@@ -223,6 +224,7 @@ const StyledArticle = styled.article<{
   }
 `
 
+// Keep out of the main RecipeTemplate function to prevent image flashing on re-renders
 const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
   const featureImg = getImage(fm.feature)
   return (
@@ -245,11 +247,17 @@ const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
 }
 
 const RecipeTemplate = ({ data }) => {
+  const fm: Frontmatter = data.mdx.frontmatter
+  const slug = slugify(fm.title, { strict: true, lower: true })
+
   const { isDark, appInterface } = useContext(GlobalState)
   const [masonryLayout, setMasonryLayout] = useState(false)
 
-  const fm: Frontmatter = data.mdx.frontmatter
+  // Remember selection states as refs for maintaining state between masonry and column layout re-renders. Use refs instead of state to prevent triggering re-renders on change.
+  const ingredientsSelectedRef = useRef(true)
+  const commentsOpenRef = useRef(false)
 
+  // Get window width and choose masonry or column layout accordingly before first render
   useLayoutEffect(() => {
     const updateWidth = () => {
       setMasonryLayout(window.innerWidth >= 820)
@@ -259,31 +267,42 @@ const RecipeTemplate = ({ data }) => {
     return () => window.removeEventListener("resize", updateWidth)
   }, [])
 
-  const [ingredientsSelected, setIngredientsSelected] = useState(true)
+  // Assign each section to its own component for easy reordering between masonry and column layouts
 
-  const Ingredients = ({ children }) => (
-    <IngredientBox featureImage={fm.feature}>
-      <IngredientsButton
-        isDark={isDark}
-        selected={ingredientsSelected}
-        onClick={() => setIngredientsSelected(true)}
-      >
-        <span>Ingredients</span>
-      </IngredientsButton>
-      <SeasonalityButton
-        isDark={isDark}
-        selected={!ingredientsSelected}
-        onClick={() => setIngredientsSelected(false)}
-      >
-        <span>Saisonnalité</span>
-      </SeasonalityButton>
-      {ingredientsSelected ? (
-        <IngredientsContent>{children}</IngredientsContent>
-      ) : (
-        <RecipeSeasonalityTable ingredients={fm.ingredients} />
-      )}
-    </IngredientBox>
-  )
+  const Ingredients = ({ children }) => {
+    const [ingredientsSelected, setIngredientsSelected] = useState(
+      ingredientsSelectedRef.current
+    )
+    return (
+      <IngredientBox featureImage={fm.feature}>
+        <IngredientsButton
+          isDark={isDark}
+          selected={ingredientsSelected}
+          onClick={() => {
+            setIngredientsSelected(true)
+            ingredientsSelectedRef.current = true
+          }}
+        >
+          <span>Ingrédients</span>
+        </IngredientsButton>
+        <SeasonalityButton
+          isDark={isDark}
+          selected={!ingredientsSelected}
+          onClick={() => {
+            setIngredientsSelected(false)
+            ingredientsSelectedRef.current = false
+          }}
+        >
+          <span>Saisonnalité</span>
+        </SeasonalityButton>
+        {ingredientsSelected ? (
+          <IngredientsContent>{children}</IngredientsContent>
+        ) : (
+          <RecipeSeasonalityTable ingredients={fm.ingredients} />
+        )}
+      </IngredientBox>
+    )
+  }
 
   const Metadata = () => (
     <MetadataBox connectedImage={!(masonryLayout && fm.feature)}>
@@ -353,15 +372,37 @@ const RecipeTemplate = ({ data }) => {
     </Preparation>
   )
 
-  const [commentFormOpen, setCommentFormOpen] = useState(false)
-
-  const CommentSection = () => (
-    <CommentSectionComponent
-      commentFormOpen={commentFormOpen}
-      setCommentFormOpen={setCommentFormOpen}
-      slug={slugify(fm.title, { strict: true, lower: true })}
-    />
+  const { data: comments, error: commentsError } = useSWR(
+    slug,
+    async () =>
+      await supabase
+        .from("recipe_comments")
+        .select(
+          `id,
+              user_id,
+              comment_text,
+              date_added,
+              public_user_info ( 
+                  user_id, 
+                  username 
+              )
+          `
+        )
+        .order("id", { ascending: false })
+        .eq("recipe_slug", slug)
+        .then(res => res.data)
   )
+
+  const CommentSection = () => {
+    return (
+      <CommentSectionComponent
+        comments={comments}
+        commentsLoading={!comments && !commentsError}
+        commentsOpenRef={commentsOpenRef}
+        slug={slug}
+      />
+    )
+  }
 
   return (
     <>

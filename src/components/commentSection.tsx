@@ -1,6 +1,9 @@
 import React, { RefObject, useRef, useState } from "react"
 import styled from "styled-components"
 import { useQuery, useMutation, gql } from "@apollo/client"
+import { supabase } from "../supabaseClient"
+import useSWR from "swr"
+import { timestamp } from "../functions/timestamp"
 
 const CommentForm = styled.form`
   margin-top: 20px;
@@ -254,23 +257,43 @@ const tsToLocaleDate = (ts: number) =>
   })
 
 const CommentsList = ({ slug }: { slug: string }) => {
-  const { data, loading, error } = useQuery(GET_COMMENTS_BY_SLUG, {
-    variables: { slug: slug },
-  })
+  interface Comment {
+    id: number
+    user_id: string
+    username: string
+    comment_text: string
+    slug: string
+    date_added: string
+  }
+
+  const { data: comments, error: commentsError } = useSWR(
+    slug,
+    async () =>
+      await supabase
+        .from("recipe_comments")
+        .select("id, user_id, comment_text, date_added, username")
+        .order("id", { ascending: false })
+        .eq("recipe_slug", slug)
+        .then(res => res.data as Comment[])
+  )
+
+  const loading = !comments && !commentsError
+
   if (loading) {
     return <p>Chargement...</p>
-  } else if (error) {
-    console.log(error)
-    return <p>Erreur :(</p>
+  } else if (commentsError) {
+    console.log(commentsError)
+    return <p>Erreur</p>
   } else {
-    const commentListData = [...data.getCommentsBySlug.data].reverse()
     return (
       <CommentList>
-        {commentListData.map(comment => (
-          <CommentListItem key={comment._id}>
-            <CommentAuthor>{comment.name}</CommentAuthor>
-            <CommentDate>{tsToLocaleDate(comment._ts)}</CommentDate>
-            <CommentBody>{comment.comment}</CommentBody>
+        {comments.map(comment => (
+          <CommentListItem key={comment.id}>
+            <CommentAuthor>{comment.username}</CommentAuthor>
+            <CommentDate title={timestamp(comment.date_added)}>
+              {timestamp(comment.date_added, { vague: true })}
+            </CommentDate>
+            <CommentBody>{comment.comment_text}</CommentBody>
           </CommentListItem>
         ))}
       </CommentList>
@@ -278,7 +301,7 @@ const CommentsList = ({ slug }: { slug: string }) => {
   }
 }
 
-interface CommentSectionComponentProps {
+interface CommentSectionComponent {
   slug: string
   commentFormOpen: boolean
   setCommentFormOpen: Function
@@ -288,7 +311,7 @@ export const CommentSectionComponent = ({
   slug,
   commentFormOpen,
   setCommentFormOpen,
-}: CommentSectionComponentProps) => {
+}: CommentSectionComponent) => {
   return (
     <CommentSectionContainer>
       <h2>Commentaire</h2>

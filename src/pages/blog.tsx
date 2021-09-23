@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import slugify from "slugify"
 
-const ListOfBlogPosts = styled.ul<{fadedIn: boolean}>`
+const ListOfBlogPosts = styled.ul<{ fadedIn: boolean }>`
   margin-top: 25px;
   opacity: 0;
   transform: translateY(8px);

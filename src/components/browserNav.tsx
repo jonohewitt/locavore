@@ -259,7 +259,7 @@ const SearchButton = styled.button`
   }
 `
 
-interface BrowserNavProps {
+interface BrowserNav {
   searchIsActive: boolean
   setSearchIsActive: Function
 }
@@ -267,7 +267,7 @@ interface BrowserNavProps {
 export const BrowserNav = ({
   searchIsActive,
   setSearchIsActive,
-}: BrowserNavProps) => {
+}: BrowserNav) => {
   const [halfDeviceHeight, setHalfDeviceHeight] = useState("50%")
   const windowWidth = useWindowWidth()
   const [navFadedIn, setNavFadedIn] = useState(false)

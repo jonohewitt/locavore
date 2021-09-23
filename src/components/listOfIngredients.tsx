@@ -56,7 +56,7 @@ const StyledUL = styled.ul`
   }
 `
 
-interface ListOfIngredientsProps {
+interface ListOfIngredients {
   ingredientFilterList: IngredientFilter[]
   sort?: string
 }
@@ -64,7 +64,7 @@ interface ListOfIngredientsProps {
 export const ListOfIngredients = ({
   ingredientFilterList,
   sort,
-}: ListOfIngredientsProps) => {
+}: ListOfIngredients) => {
   const allIngredients: Ingredient[] = useStaticQuery(graphql`
     query {
       ingredientsByCountryJson(country: { eq: "belgium" }) {

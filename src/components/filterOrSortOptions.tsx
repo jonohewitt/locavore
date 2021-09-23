@@ -83,7 +83,7 @@ const CrossSVG = styled.svg<{ selected: boolean }>`
   cursor: pointer;
 `
 
-interface ButtonComponentProps {
+interface ButtonComponent {
   name: string
   action: MouseEventHandler
   isApplied: boolean
@@ -101,7 +101,7 @@ const ButtonComponent = ({
   cross,
   disabled,
   isDark,
-}: ButtonComponentProps) => (
+}: ButtonComponent) => (
   <OptionButtonContainer onClick={action} disabled={disabled}>
     <OptionButton
       isDark={isDark}
@@ -154,7 +154,7 @@ interface FilterOption {
   group?: string
 }
 
-interface FilterButtonsProps {
+interface FilterButtons {
   list: FilterOption[]
   action: Function
   cross?: boolean
@@ -166,7 +166,7 @@ export const FilterButtons = ({
   action,
   cross,
   color,
-}: FilterButtonsProps) => {
+}: FilterButtons) => {
   const { isDark } = useContext(GlobalState)
   return (
     <span>
@@ -192,7 +192,7 @@ interface SortOption {
   isApplied: boolean
 }
 
-interface SortButtonProps {
+interface SortButton {
   list: SortOption[]
   action: Function
   color: string
@@ -204,7 +204,7 @@ export const SortButtons = ({
   action,
   color,
   disabledFunction,
-}: SortButtonProps) => {
+}: SortButton) => {
   const { isDark } = useContext(GlobalState)
   return (
     <span>

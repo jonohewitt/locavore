@@ -25,7 +25,7 @@ const ClickAwayCover = styled.div<{ settingsIsOpen: boolean }>`
   transition: opacity 0.3s;
 `
 
-interface PageProps {
+interface Page {
   settingsIsOpen: boolean
   toggleSettings: MouseEventHandler
   children: JSX.Element
@@ -37,7 +37,7 @@ export const Page = ({
   toggleSettings,
   children,
   onClick,
-}: PageProps) => (
+}: Page) => (
   <StyledPage settingsIsOpen={settingsIsOpen} onClick={onClick}>
     <ClickAwayCover onClick={toggleSettings} settingsIsOpen={settingsIsOpen} />
     {children}

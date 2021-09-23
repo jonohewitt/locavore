@@ -141,13 +141,13 @@ const MonthInitials = () => {
   )
 }
 
-interface RecipeSeasonalityTableProps {
+interface RecipeSeasonalityTable {
   ingredients: string[]
 }
 
 export const RecipeSeasonalityTable = ({
   ingredients,
-}: RecipeSeasonalityTableProps) => {
+}: RecipeSeasonalityTable) => {
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {

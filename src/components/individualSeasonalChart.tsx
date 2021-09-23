@@ -105,14 +105,14 @@ const SourceText = styled.p`
   }
 `
 
-interface MonthProps {
+interface Month {
   value: string | boolean
   index: number
   monthIndex: number
   toolTipsCanShow: boolean
 }
 
-const Month = ({ value, index, monthIndex, toolTipsCanShow }: MonthProps) => {
+const Month = ({ value, index, monthIndex, toolTipsCanShow }: Month) => {
   const [toolTipShowing, setToolTipShowing] = useState(false)
 
   const isCurrentMonth = index === monthIndex
@@ -184,13 +184,13 @@ const Month = ({ value, index, monthIndex, toolTipsCanShow }: MonthProps) => {
   )
 }
 
-interface IndividualSeasonalChartProps {
+interface IndividualSeasonalChart {
   ingredient: Ingredient
 }
 
 export const IndividualSeasonalChart = ({
   ingredient,
-}: IndividualSeasonalChartProps) => {
+}: IndividualSeasonalChart) => {
   const [fadedIn, setFadedIn] = useState(false)
   const [toolTipsCanShow, setToolTipsCanShow] = useState(false)
 

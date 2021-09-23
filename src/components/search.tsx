@@ -157,7 +157,7 @@ const getSearchResults = (searchText: string, allPages: Page[]) => {
   )
 }
 
-interface SearchProps {
+interface Search {
   setDropDownIsOpen?: Function
   mobile?: boolean
   app?: boolean
@@ -171,7 +171,7 @@ export const Search = ({
   app,
   searchIsActive,
   setSearchIsActive,
-}: SearchProps) => {
+}: Search) => {
   const [typedInput, setTypedInput] = useState("")
   const [resultsList, setResultsList] = useState([])
   const [indexHighlighted, setIndexHighlighted] = useState(0)

@@ -23,7 +23,7 @@ const SelectOptionsButton = styled.button`
   }
 `
 
-interface ShowOptionsProps {
+interface ShowOptions {
   optionsAreShown: boolean
   setOptionsAreShown: Function
 }
@@ -31,7 +31,7 @@ interface ShowOptionsProps {
 export const ShowOptions = ({
   optionsAreShown,
   setOptionsAreShown,
-}: ShowOptionsProps) => {
+}: ShowOptions) => {
   const windowWidth = useWindowWidth()
   let buttonContent: JSX.Element
 

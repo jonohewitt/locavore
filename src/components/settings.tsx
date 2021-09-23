@@ -1,6 +1,9 @@
+import { navigate } from "gatsby"
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalState } from "../context/globalStateContext"
+import { useNewContext } from "../context/newContext"
+import { supabase } from "../supabaseClient"
 import { ToggleSwitch } from "./toggleSwitch"
 
 const SettingsWrapper = styled.section<{ settingsIsOpen: boolean }>`
@@ -26,13 +29,14 @@ const SettingsWrapper = styled.section<{ settingsIsOpen: boolean }>`
   }
 `
 const StyledUL = styled.ul`
+  margin: 0 20px;
   hr {
-    margin: 20px 20px;
+    margin: 20px 0;
   }
 `
 
 const ToggleContainer = styled.div`
-  margin: 15px 20px;
+  margin: 15px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,6 +48,25 @@ const InitialHR = styled.hr`
 
 export const Settings = () => {
   const context = useContext(GlobalState)
+  const {
+    state: { session },
+  } = useNewContext()
+
+  const handleSignOut = () => {
+    supabase.auth.signOut()
+    context.setSettingsIsOpen(false)
+  }
+
+  const handleSignIn = () => {
+    navigate("/signin", { state: { previousPath: window.location.pathname } })
+    context.setSettingsIsOpen(false)
+  }
+
+  const handleSignUp = () => {
+    navigate("/signup", { state: { previousPath: window.location.pathname } })
+    context.setSettingsIsOpen(false)
+  }
+
   return (
     <SettingsWrapper
       aria-label="Settings"
@@ -73,6 +96,16 @@ export const Settings = () => {
             />
           </ToggleContainer>
           <hr />
+        </li>
+        <li>
+          {session ? (
+            <button onClick={handleSignOut}>Sign Out</button>
+          ) : (
+            <>
+              <button onClick={handleSignIn}>Sign In</button>
+              <button onClick={handleSignUp}>Sign Up</button>
+            </>
+          )}
         </li>
       </StyledUL>
     </SettingsWrapper>

@@ -91,7 +91,7 @@ const SeasonalityInfo = styled.p`
   margin-bottom: 20px;
 `
 
-interface ListOfRecipesProps {
+interface ListOfRecipes {
   recipeList: Recipe[]
   recipeFilterList?: RecipeFilter[]
   sort?: string
@@ -101,7 +101,7 @@ export const ListOfRecipes = ({
   recipeList,
   recipeFilterList,
   sort,
-}: ListOfRecipesProps) => {
+}: ListOfRecipes) => {
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {

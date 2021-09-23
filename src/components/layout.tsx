@@ -51,13 +51,13 @@ export const Layout = ({ children }: { children: JSX.Element }) => {
   )
   const [fadedIn, setFadedIn] = useState(false)
 
-  const theme: DefaultTheme = Object.keys(lightTheme).reduce(
+  const theme = Object.keys(lightTheme).reduce(
     (theme, style) => ({
       ...theme,
       [style]: `var(--color-${style})`,
     }),
     {}
-  )
+  ) as DefaultTheme
 
   useEffect(() => {
     setFadedIn(true)

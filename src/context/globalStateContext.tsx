@@ -52,6 +52,7 @@ const Provider = ({ children }) => {
     )
   }
 
+
   return (
     <GlobalState.Provider
       value={{

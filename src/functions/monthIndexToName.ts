@@ -1,4 +1,6 @@
-export const monthIndexToName = (index: number) => {
+import { MonthIndex } from "../../types"
+
+export const monthIndexToName = (index: MonthIndex) => {
   switch (index) {
     case 0:
       return "janvier"
@@ -24,7 +26,5 @@ export const monthIndexToName = (index: number) => {
       return "novembre"
     case 11:
       return "décembre"
-    default:
-      return undefined
   }
 }

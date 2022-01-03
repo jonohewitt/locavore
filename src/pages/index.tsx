@@ -1,21 +1,21 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
-import { GlobalState } from "../context/globalStateContext"
 import { SettingsIcon } from "../components/settingsIcon"
 import { Search } from "../components/search"
 import { IngredientShowcase } from "../components/ingredientShowcase"
 import { arrowSVG } from "../components/icons"
 import { SpotlightFeature } from "../components/spotlightFeature"
 
-import FallingFruitsLight from "../images/falling-fruits-light.svg"
-import FallingFruitsDark from "../images/falling-fruits-dark.svg"
-import PearHalves from "../images/pear-halves.svg"
-import StrawberriesKnife from "../images/strawberries-knife.svg"
-import strawb from "../images/strawb.png"
+// import FallingFruitsLight from "../images/falling-fruits-light.svg"
+// import FallingFruitsDark from "../images/falling-fruits-dark.svg"
+// import PearHalves from "../images/pear-halves.svg"
+// import StrawberriesKnife from "../images/strawberries-knife.svg"
+// import strawb from "../images/strawb.png"
 import { StaticImage } from "gatsby-plugin-image"
+import { useTypedSelector } from "../redux/typedFunctions"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -195,7 +195,8 @@ const SectionText = styled.div`
 `
 
 const IndexPage = () => {
-  const { appInterface, isDark } = useContext(GlobalState)
+  const appInterface = useTypedSelector(state => state.global.appInterface)
+  const theme = useTypedSelector(state => state.global.theme)
   const [appSearchIsActive, setAppSearchIsActive] = useState(false)
 
   return (
@@ -214,7 +215,7 @@ const IndexPage = () => {
         </SearchAndSettingsContainer>
       )}
       <ContentWrapper>
-        <Header app={appInterface}>
+        <Header app={appInterface === true}>
           <h1>
             Nourriture locale et saisonnière en{" "}
             <NoWrap>
@@ -224,7 +225,7 @@ const IndexPage = () => {
 
           <LandingIllustration>
             {/* {isDark ? <FallingFruitsDark /> : <FallingFruitsLight />} */}
-            {isDark ? (
+            {theme === "dark" ? (
               <StaticImage
                 src="../images/fallingFruitsDark.png"
                 loading="eager"
@@ -249,12 +250,16 @@ const IndexPage = () => {
             <LearnMore to="/blog">Learn more{arrowSVG}</LearnMore>
           </h2>
           <LandingButtons>
-            <ButtonLink to="/recettes" $isDark={isDark} $content="recipe">
+            <ButtonLink
+              to="/recettes"
+              $isDark={theme === "dark"}
+              $content="recipe"
+            >
               Voir les recettes <br /> de saison
             </ButtonLink>
             <ButtonLink
               to="/ingredients"
-              $isDark={isDark}
+              $isDark={theme === "dark"}
               $content="ingredients"
             >
               Voir les ingrédients <br /> de saison

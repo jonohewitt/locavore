@@ -1,19 +1,17 @@
-import React, { useContext } from "react"
+import React from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
 import { SEO } from "../../components/seo"
 import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
 import { ListOfRecipes } from "../../components/listOfRecipes"
-import { GlobalState } from "../../context/globalStateContext"
 import { IndividualSeasonalChart } from "../../components/individualSeasonalChart"
 import { tickSVG, crossSVG } from "../../components/icons"
 import { monthIndexToName } from "../../functions/monthIndexToName"
 import { BackButton } from "../../components/backButton"
 import { checkIngredientInSeason } from "../../functions/checkIngredientInSeason"
 import { combineRecipeAndLinks } from "../../functions/combineRecipeAndLinks"
-
-import { Recipe } from "../../pages/recettes"
-import { Ingredient } from "../../pages/ingredients"
+import { useTypedSelector } from "../../redux/typedFunctions"
+import { Ingredient, Recipe } from "../../../types"
 
 const IngredientStyles = styled.div`
   h1 {
@@ -61,7 +59,7 @@ const SeasonalIndicator = styled.h2<{ foundIngredient: boolean }>`
 `
 
 const IngredientTemplate = ({ pageContext, data }) => {
-  const { currentMonth } = useContext(GlobalState)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
   const allRecipes: Recipe[] = data.allMdx.nodes
   const allIngredients: Ingredient[] = data.ingredientsByCountryJson.ingredients
 
@@ -69,7 +67,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
     (ingredient: Ingredient) => ingredient.name === pageContext.name
   )
 
-  let currentlyInSeason: boolean
+  let currentlyInSeason: boolean | undefined = undefined
 
   if (foundIngredient) {
     currentlyInSeason = checkIngredientInSeason(
@@ -83,7 +81,7 @@ const IngredientTemplate = ({ pageContext, data }) => {
   let seasonalIndicator = "Pas encore d'information"
 
   if (currentlyInSeason !== undefined) {
-    if (foundIngredient.season) {
+    if (foundIngredient?.season) {
       seasonalIndicator = currentlyInSeason
         ? `En saison en ${monthIndexToName(currentMonth)}`
         : `Hors saison en ${monthIndexToName(currentMonth)}`

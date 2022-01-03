@@ -1,8 +1,12 @@
 import { navigate } from "gatsby"
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
-import { useNewContext } from "../context/newContext"
+import {
+  setSettings,
+  setTheme,
+  toggleInterface,
+} from "../redux/slices/globalSlice"
+import { useTypedDispatch, useTypedSelector } from "../redux/typedFunctions"
 import { supabase } from "../supabaseClient"
 import { ToggleSwitch } from "./toggleSwitch"
 
@@ -47,31 +51,34 @@ const InitialHR = styled.hr`
 `
 
 export const Settings = () => {
-  const context = useContext(GlobalState)
-  const {
-    state: { session },
-  } = useNewContext()
+  const settingsIsOpen = useTypedSelector(state => state.global.settingsIsOpen)
+  const session = useTypedSelector(state => state.global.session)
+  const appInterface = useTypedSelector(state => state.global.appInterface)
+  const theme = useTypedSelector(state => state.global.theme)
+  const dispatch = useTypedDispatch()
 
   const handleSignOut = () => {
     supabase.auth.signOut()
-    context.setSettingsIsOpen(false)
+    dispatch(setSettings(false))
   }
 
   const handleSignIn = () => {
     navigate("/signin", { state: { previousPath: window.location.pathname } })
-    context.setSettingsIsOpen(false)
+    dispatch(setSettings(false))
   }
 
   const handleSignUp = () => {
     navigate("/signup", { state: { previousPath: window.location.pathname } })
-    context.setSettingsIsOpen(false)
+    dispatch(setSettings(false))
+  }
+
+  const toggleTheme = () => {
+    if (theme === "dark") dispatch(setTheme("light"))
+    else if (theme === "light") dispatch(setTheme("dark"))
   }
 
   return (
-    <SettingsWrapper
-      aria-label="Settings"
-      settingsIsOpen={context.settingsIsOpen}
-    >
+    <SettingsWrapper aria-label="Settings" settingsIsOpen={settingsIsOpen}>
       <InitialHR />
       <StyledUL>
         <li>
@@ -79,9 +86,9 @@ export const Settings = () => {
             Dark theme
             <ToggleSwitch
               label="Toggle darkmode"
-              state={context.isDark}
-              setState={context.toggleTheme}
-              notTabbable={!context.settingsIsOpen}
+              state={theme === "dark"}
+              setState={() => toggleTheme()}
+              notTabbable={!settingsIsOpen}
             />
           </ToggleContainer>
         </li>
@@ -90,9 +97,9 @@ export const Settings = () => {
             App interface
             <ToggleSwitch
               label="Toggle app interface"
-              state={context.appInterface}
-              setState={context.toggleInterface}
-              notTabbable={!context.settingsIsOpen}
+              state={appInterface === true}
+              setState={() => dispatch(toggleInterface())}
+              notTabbable={!settingsIsOpen}
             />
           </ToggleContainer>
           <hr />

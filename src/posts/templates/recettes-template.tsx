@@ -1,4 +1,4 @@
-import React, { useState, useContext, useLayoutEffect, useRef } from "react"
+import React, { useState, useLayoutEffect, useRef } from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -15,7 +15,6 @@ import {
 
 import { SEO } from "../../components/seo"
 import { PostStyles } from "../post-styles"
-import { GlobalState } from "../../context/globalStateContext"
 import { Ing } from "../../components/ingredientLink"
 import { LinkedRecipe } from "../../components/linkedRecipe"
 import { BackButton } from "../../components/backButton"
@@ -26,9 +25,10 @@ import {
 } from "../../components/recipeIndicators"
 import { CommentSectionComponent } from "../../components/commentSectionNew"
 
-import { Frontmatter } from "../../pages/recettes"
 import useSWR from "swr"
 import { supabase } from "../../supabaseClient"
+import { useTypedSelector } from "../../redux/typedFunctions"
+import { Frontmatter } from "../../../types"
 
 const IngredientBox = styled.div<{ featureImage: boolean }>`
   background-color: var(--color-graphBackground);
@@ -250,7 +250,11 @@ const RecipeTemplate = ({ data }) => {
   const fm: Frontmatter = data.mdx.frontmatter
   const slug = slugify(fm.title, { strict: true, lower: true })
 
-  const { isDark, appInterface } = useContext(GlobalState)
+  const theme = useTypedSelector(state => state.global.theme)
+  const appInterface =
+    useTypedSelector(state => state.global.appInterface) === true
+
+  // const { isDark, appInterface } = useContext(GlobalState)
   const [masonryLayout, setMasonryLayout] = useState(false)
 
   // Remember selection states as refs for maintaining state between masonry and column layout re-renders. Use refs instead of state to prevent triggering re-renders on change.
@@ -276,7 +280,7 @@ const RecipeTemplate = ({ data }) => {
     return (
       <IngredientBox featureImage={fm.feature}>
         <IngredientsButton
-          isDark={isDark}
+          isDark={theme === "dark"}
           selected={ingredientsSelected}
           onClick={() => {
             setIngredientsSelected(true)
@@ -286,7 +290,7 @@ const RecipeTemplate = ({ data }) => {
           <span>Ingrédients</span>
         </IngredientsButton>
         <SeasonalityButton
-          isDark={isDark}
+          isDark={theme === "dark"}
           selected={!ingredientsSelected}
           onClick={() => {
             setIngredientsSelected(false)
@@ -465,5 +469,4 @@ export const pageQuery = graphql`
     }
   }
 `
-
 export default RecipeTemplate

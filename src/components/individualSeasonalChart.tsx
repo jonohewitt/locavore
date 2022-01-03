@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 
-import { Ingredient } from "../pages/ingredients"
+import { useTypedSelector } from "../redux/typedFunctions"
+import { Ingredient } from "../../types"
 
 const ChartWrapper = styled.div<{ fadedIn: boolean }>`
   background: ${props => props.theme.graphBackground};
@@ -172,7 +172,7 @@ const Month = ({ value, index, monthIndex, toolTipsCanShow }: Month) => {
           <p>{description}</p>
         </ToolTip>
         <MonthInitial isCurrentMonth={isCurrentMonth}>
-          {monthIndexToName(index).charAt(0).toUpperCase()}
+          {monthIndexToName(index)?.charAt(0).toUpperCase()}
         </MonthInitial>
       </LabelContainer>
       <MonthRect
@@ -204,7 +204,7 @@ export const IndividualSeasonalChart = ({
     }
   }, [])
 
-  const { currentMonth } = useContext(GlobalState)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
   return (
     <>
       <ChartWrapper fadedIn={fadedIn}>

@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
-import { GlobalState } from "../context/globalStateContext"
 import { ListOfIngredients } from "../components/listOfIngredients"
 import { IngredientListOptions } from "../components/ingredientListOptions"
 import { monthIndexToName } from "../functions/monthIndexToName"
+import { useTypedSelector } from "../redux/typedFunctions"
 
 const Styles = styled.main`
   section {
@@ -37,17 +37,11 @@ const Styles = styled.main`
   }
 `
 
-export interface Ingredient {
-  name: string
-  type: string
-  season?: { start: number; end: number }
-  source?: { name: string; link: string }
-}
-
 const Ingredients = () => {
-  const { ingredientFilterList, ingredientSortList, currentMonth } = useContext(
-    GlobalState
-  )
+  const {
+    ingredients: ingredientState,
+    global: { currentMonth },
+  } = useTypedSelector(state => state)
 
   return (
     <>
@@ -60,9 +54,9 @@ const Ingredients = () => {
           <hr />
           <IngredientListOptions />
           <ListOfIngredients
-            ingredientFilterList={ingredientFilterList}
+            ingredientFilterList={ingredientState.filters}
             sort={
-              ingredientSortList.find(option => option.isApplied === true).name
+              ingredientState.sorts.find(option => option.enabled === true).name
             }
           />
         </Styles>

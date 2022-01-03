@@ -1,6 +1,6 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
+import { useTypedSelector } from "../redux/typedFunctions"
 
 export const widthPercent = 80
 export const mobileWidthPercent = 92
@@ -25,9 +25,9 @@ export const ContentWrapper = ({
   children,
   headerImg,
 }: ContentWrapperProps) => {
-  const { appInterface } = useContext(GlobalState)
+  const appInterface = useTypedSelector(state => state.global.appInterface)
   return (
-    <Wrapper headerImg={headerImg} appInterface={appInterface}>
+    <Wrapper headerImg={headerImg} appInterface={appInterface === true}>
       {children}
     </Wrapper>
   )

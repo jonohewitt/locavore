@@ -1,12 +1,11 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
 import { breakToMobile } from "./contentWrapper"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { calcIngredientMonths } from "../functions/calcIngredientMonths"
 import { ListOfIngredients } from "./listOfIngredients"
-
-import { Ingredient } from "../pages/ingredients"
+import { Ingredient } from "../../types"
+import { useTypedSelector } from "../redux/typedFunctions"
 
 const NoWrap = styled.span`
   white-space: nowrap;
@@ -40,7 +39,7 @@ const IngredientListWrapper = styled.div`
 `
 
 export const IngredientShowcase = () => {
-  const { currentMonth } = useContext(GlobalState)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
 
   // set arguments to save reptition later on
   const inSeasonAndSeasonal = (ingredient: Ingredient) =>

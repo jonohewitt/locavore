@@ -1,7 +1,8 @@
 import { navigate } from "gatsby"
 import React, { FormEventHandler, useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useNewContext } from "../context/newContext"
+import { updateUsername } from "../redux/slices/globalSlice"
+import { useTypedDispatch } from "../redux/typedFunctions"
 import { supabase } from "../supabaseClient"
 
 const SignUpForm = styled.form`
@@ -123,7 +124,7 @@ export const SignUpDisplayName = () => {
   const formRef = useRef<HTMLFormElement>()
   const displayNameRef = useRef<HTMLInputElement>()
 
-  const { dispatch } = useNewContext()
+  const dispatch = useTypedDispatch()
 
   const checkAvailability = async (candidate: string) => {
     const { data, error } = await supabase
@@ -147,7 +148,7 @@ export const SignUpDisplayName = () => {
           username: displayNameRef.current.value,
         })
         .single()
-      dispatch({ type: "updateUsername", payload: data.username })
+      dispatch(updateUsername(data.username))
       navigate(prevPage ? prevPage : "/")
     }
   }

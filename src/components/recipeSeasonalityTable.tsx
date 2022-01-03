@@ -1,14 +1,13 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
 import slugify from "slugify"
 import { navigate } from "gatsby"
 import { infoSVG, tickSVG } from "./icons"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 import { graphql, useStaticQuery } from "gatsby"
-
-import { Ingredient } from "../pages/ingredients"
+import { useTypedSelector } from "../redux/typedFunctions"
+import { Ingredient, MonthIndex } from "../../types"
 
 const NoIngredientData = styled.div`
   display: flex;
@@ -117,17 +116,21 @@ const MonthInitialRow = styled.tr`
 `
 
 const MonthInitials = () => {
-  const { currentMonth } = useContext(GlobalState)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
   const initials = []
 
   for (let i = 0; i < 12; i++) {
     initials.push(
       <MonthInitial
-        key={monthIndexToName(i)}
+        key={monthIndexToName(i as MonthIndex)}
         isCurrentMonth={i === currentMonth}
-        title={i === currentMonth ? "ce mois-ci" : monthIndexToName(i)}
+        title={
+          i === currentMonth ? "ce mois-ci" : monthIndexToName(i as MonthIndex)
+        }
       >
-        {monthIndexToName(i).charAt(0).toUpperCase()}
+        {monthIndexToName(i as MonthIndex)
+          .charAt(0)
+          .toUpperCase()}
       </MonthInitial>
     )
   }
@@ -187,7 +190,7 @@ export const RecipeSeasonalityTable = ({
   const foundIngredients = [...uniqueIngredients]
   const noDataIngredientArray = [...noDataIngredientSet]
 
-  let noDataIngredientString: string
+  let noDataIngredientString: string | null = null
 
   if (noDataIngredientArray.length) {
     noDataIngredientString = noDataIngredientArray.reduce(
@@ -217,7 +220,7 @@ export const RecipeSeasonalityTable = ({
             <IngredientName>{ingredient.name}</IngredientName>
             {getSeasonalityArray(ingredient).map((month, i) => (
               <MonthValues
-                key={monthIndexToName(i)}
+                key={monthIndexToName(i as MonthIndex)}
                 value={month}
                 aria-label={month ? "En saison" : "Pas en saison"}
               />

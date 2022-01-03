@@ -1,7 +1,6 @@
 import { navigate } from "gatsby"
 import React, { FormEventHandler, useLayoutEffect, useRef } from "react"
 import styled from "styled-components"
-import { useNewContext } from "../context/newContext"
 import { supabase } from "../supabaseClient"
 
 const SignInContainer = styled.div`
@@ -164,9 +163,6 @@ const lockSVG = (
 )
 
 const SignIn = ({ location }) => {
-  const { state } = useNewContext()
-  console.log(state)
-
   useLayoutEffect(() => {
     if (supabase.auth.user()) {
       navigate("/")
@@ -182,7 +178,6 @@ const SignIn = ({ location }) => {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     })
-    // console.log(user, session, error)
     if (session) {
       navigate(location.state.previousPath)
     }

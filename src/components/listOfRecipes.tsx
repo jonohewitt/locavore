@@ -1,17 +1,20 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import styled from "styled-components"
 import slugify from "slugify"
 import { TimeIndicators, DairyIndicator } from "./recipeIndicators"
-import { GlobalState } from "../context/globalStateContext"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { combineRecipeAndLinks } from "../functions/combineRecipeAndLinks"
 import { monthIndexToName } from "../functions/monthIndexToName"
-
-import { Ingredient } from "../pages/ingredients"
-import { Recipe } from "../pages/recettes"
-import { RecipeFilter } from "../context/recipeListContext"
+import { useTypedSelector } from "../redux/typedFunctions"
+import {
+  RecipeCourseFilterName,
+  RecipeFilter,
+  RecipeGreenFilterName,
+  RecipeSort,
+} from "../redux/slices/recipeSlice"
+import { Frontmatter, Ingredient, Recipe } from "../../types"
 
 const StyledUL = styled.ul<{ fadedIn: boolean }>`
   margin-top: 25px;
@@ -93,15 +96,64 @@ const SeasonalityInfo = styled.p`
 
 interface ListOfRecipes {
   recipeList: Recipe[]
-  recipeFilterList?: RecipeFilter[]
-  sort?: string
+  recipeFilters?: RecipeFilter[]
+  recipeSorts?: RecipeSort[]
 }
 
 export const ListOfRecipes = ({
   recipeList,
-  recipeFilterList,
-  sort,
+  recipeFilters,
+  recipeSorts,
 }: ListOfRecipes) => {
+  const {
+    global: { currentMonth },
+  } = useTypedSelector(state => state)
+
+  interface FilterLogic {
+    name: RecipeGreenFilterName | RecipeCourseFilterName
+    logic: (fm: Frontmatter) => boolean
+  }
+
+  const filterLogic: FilterLogic[] = [
+    {
+      name: "En saison",
+      logic: (fm: Frontmatter) =>
+        fm.ingredients.every(ingredientStr => {
+          const foundIngredient = allIngredients.find(
+            ingredientObj => ingredientObj.name === ingredientStr
+          )
+          if (foundIngredient) {
+            return checkIngredientInSeason(foundIngredient, currentMonth, true)
+          } else {
+            console.warn(
+              `${ingredientStr} in ${fm.title} not found or has insufficient data!`
+            )
+            return false
+          }
+        }),
+    },
+    {
+      name: "Vegan",
+      logic: (fm: Frontmatter) => fm.vegan === true,
+    },
+    {
+      name: "Plat principal",
+      logic: (fm: Frontmatter) => fm.course === "Plat principal",
+    },
+    {
+      name: "Dessert",
+      logic: (fm: Frontmatter) => fm.course === "Dessert",
+    },
+    {
+      name: "Apéro",
+      logic: (fm: Frontmatter) => fm.course === "Apéro",
+    },
+    {
+      name: "Les bases",
+      logic: (fm: Frontmatter) => fm.course === "Les bases",
+    },
+  ]
+
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {
@@ -124,30 +176,26 @@ export const ListOfRecipes = ({
   ).ingredientsByCountryJson.ingredients
 
   const [fadedIn, setFadedIn] = useState(false)
-  const { currentMonth } = useContext(GlobalState)
-
   useEffect(() => setFadedIn(true), [])
+
+  const sort = recipeSorts?.find(sort => sort.enabled)?.name
 
   // Provide a set of unique ingredient data objects for a given recipe
   // as well as ingredients in any nested linked recipes
-  const getIngredientData = (recipe: Recipe) => {
-    const uniqueIngredients = new Set()
-
-    combineRecipeAndLinks(recipe, recipeList).forEach(recipe =>
-      recipe.frontmatter.ingredients.forEach(ingredientName => {
-        const foundIngredient: Ingredient = allIngredients.find(
-          (ingredient: Ingredient) => ingredient.name === ingredientName
-        )
-
-        if (foundIngredient) {
-          uniqueIngredients.add(foundIngredient)
-        }
-        //  else console.warn(`No data for ${ingredientName}`)
-      })
-    )
-
-    return [...uniqueIngredients] as Ingredient[]
-  }
+  const getIngredientData = (recipe: Recipe) =>
+    [
+      ...combineRecipeAndLinks(recipe, recipeList).reduce(
+        (uniqueIngs, currentRecipe) => {
+          currentRecipe.frontmatter.ingredients.forEach(ing =>
+            uniqueIngs.add(ing)
+          )
+          return uniqueIngs
+        },
+        new Set<string>()
+      ),
+    ]
+      .map(ing => allIngredients.find(obj => obj.name === ing))
+      .filter(Boolean)
 
   // Get the max / min number of months to a specified event ("start" or "end" of season)
   const calcMonths = (
@@ -252,16 +300,18 @@ export const ListOfRecipes = ({
         .filter(
           recipe =>
             // if there is no filter list provided, return true
-            !recipeFilterList ||
+            !recipeFilters ||
             // otherwise for every filter in a provided list
-            recipeFilterList.every(
+            recipeFilters.every(
               filter =>
                 // if the filter isnt applied, return true
-                !filter.isApplied ||
+                !filter.enabled ||
                 // otherwise combine the recipe with any of its linked recipes
                 // and run the filter logic against each recipe's frontmatter
                 combineRecipeAndLinks(recipe, recipeList).every(recipeObj =>
-                  filter.logic(recipeObj.frontmatter)
+                  filterLogic
+                    .find(logic => logic.name === filter.name)
+                    ?.logic(recipeObj.frontmatter)
                 )
             )
         )

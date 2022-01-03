@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -8,10 +8,10 @@ import { ContentWrapper, breakToMobile } from "../../components/contentWrapper"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { SEO } from "../../components/seo"
 import { PostStyles } from "../post-styles"
-import { GlobalState } from "../../context/globalStateContext"
 import { Ing } from "../../components/ingredientLink"
 import { LinkedRecipe } from "../../components/linkedRecipe"
 import { BackButton } from "../../components/backButton"
+import { useTypedSelector } from "../../redux/typedFunctions"
 
 const Highlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -62,7 +62,8 @@ const HeaderText = styled.div`
 `
 
 const BlogTemplate = ({ data }) => {
-  const { appInterface } = useContext(GlobalState)
+  const appInterface =
+    useTypedSelector(state => state.global.appInterface) === true
   const fm = data.mdx.frontmatter
 
   const shortcodes = {

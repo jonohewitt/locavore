@@ -1,12 +1,11 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import slugify from "slugify"
-import { GlobalState } from "../context/globalStateContext"
 import styled from "styled-components"
 import { tickSVG, crossSVG } from "./icons"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
-
-import { Ingredient } from "../pages/ingredients"
+import { useTypedSelector } from "../redux/typedFunctions"
+import { Ingredient } from "../../types"
 
 const IngredientLink = styled(Link)<{ $inSeason: boolean }>`
   color: ${props =>
@@ -38,7 +37,7 @@ interface Ing {
 }
 
 export const Ing = ({ id, text, children, className, clickAction }: Ing) => {
-  const { currentMonth } = useContext(GlobalState)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {
@@ -61,18 +60,15 @@ export const Ing = ({ id, text, children, className, clickAction }: Ing) => {
       slugify(id, { lower: true, strict: true })
   )
 
-  let icon: JSX.Element
-  let inSeason: boolean
+  let icon: JSX.Element | null = null
+  let inSeason: boolean | undefined = undefined
 
   if (foundIngredient) {
     inSeason = checkIngredientInSeason(foundIngredient, currentMonth, true)
+    if (inSeason) icon = tickSVG
+    else if (inSeason === false) icon = crossSVG
   }
 
-  if (inSeason) {
-    icon = tickSVG
-  } else if (inSeason === false) {
-    icon = crossSVG
-  }
   // no icon if inSeason is undefined
 
   let linkText = id.toLowerCase()
@@ -86,7 +82,7 @@ export const Ing = ({ id, text, children, className, clickAction }: Ing) => {
   return (
     <IngredientLink
       onClick={clickAction}
-      $inSeason={inSeason}
+      $inSeason={inSeason === true}
       to={`/ingredients/${slugify(id, { lower: true, strict: true })}`}
       className={className}
     >

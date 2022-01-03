@@ -1,14 +1,9 @@
 import { navigate } from "gatsby"
-import React, {
-  FormEventHandler,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react"
+import React, { useLayoutEffect } from "react"
 import styled from "styled-components"
 import { SignUpCreateAccount } from "../components/signUpCreateAccount"
 import { SignUpDisplayName } from "../components/signUpDisplayName"
-import { useNewContext } from "../context/newContext"
+import { useTypedSelector } from "../redux/typedFunctions"
 
 const SignUpContainer = styled.div`
   position: absolute;
@@ -28,9 +23,8 @@ const SignUpWrapper = styled.div`
 `
 
 const SignUp = ({ location }) => {
-  const {
-    state: { session, username },
-  } = useNewContext()
+  const session = useTypedSelector(state => state.global.session)
+  const username = useTypedSelector(state => state.global.username)
 
   useLayoutEffect(() => {
     if (session && username) {

@@ -1,13 +1,12 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { SEO } from "../components/seo"
 import { ContentWrapper } from "../components/contentWrapper"
 import styled from "styled-components"
 import { ShowOptions, RecipeListOptions } from "../components/recipeListOptions"
 import { ListOfRecipes } from "../components/listOfRecipes"
-import { GlobalState } from "../context/globalStateContext"
 import { monthIndexToName } from "../functions/monthIndexToName"
-
+import { useTypedSelector } from "../redux/typedFunctions"
 const RecipeIndexWrapper = styled.div`
   ul {
     hr {
@@ -34,32 +33,12 @@ const HeaderContent = styled.div`
   }
 `
 
-export interface Frontmatter {
-  title: string
-  vegan: boolean
-  vegetarian: boolean
-  veganOption: boolean
-  prepTime: number
-  cookTime: number
-  course: string
-  ingredients: string[]
-  description?: string
-  feature?: any
-  featureDescription?: string
-  feeds?: number
-  linkedRecipes?: string[]
-  customSlug?: string
-}
-
-export interface Recipe {
-  id: string
-  frontmatter: Frontmatter
-}
-
 const Recettes = () => {
-  const { recipeFilterList, recipeSortList, currentMonth } = useContext(
-    GlobalState
-  )
+  const {
+    recipes: recipeState,
+    global: { currentMonth },
+  } = useTypedSelector(state => state)
+
   const [optionsAreShown, setOptionsAreShown] = useState(true)
 
   const {
@@ -129,8 +108,8 @@ const Recettes = () => {
 
           <ListOfRecipes
             recipeList={allRecipes}
-            recipeFilterList={recipeFilterList}
-            sort={recipeSortList.find(option => option.isApplied === true).name}
+            recipeFilters={recipeState.filters}
+            recipeSorts={recipeState.sorts}
           />
         </RecipeIndexWrapper>
       </ContentWrapper>

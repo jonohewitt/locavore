@@ -1,4 +1,4 @@
-import React from "react"
+import React, { MouseEventHandler } from "react"
 import styled from "styled-components"
 
 const Container = styled.button<{ state: boolean }>`
@@ -26,9 +26,22 @@ const Slider = styled.div<{ state: boolean }>`
   right: ${props => (props.state ? "2px" : "initial")};
   left: ${props => (props.state ? "initial" : "2px")};
   box-shadow: 0 3px 3px hsla(0, 0%, 10%, 0.1);
+  transition: 0.2s;
 `
 
-export const ToggleSwitch = ({ state, setState, notTabbable, label }) => {
+interface ToggleSwitch {
+  state: boolean
+  setState: MouseEventHandler
+  notTabbable: boolean
+  label: string
+}
+
+export const ToggleSwitch = ({
+  state,
+  setState,
+  notTabbable,
+  label,
+}: ToggleSwitch) => {
   return (
     <Container
       aria-label={label}
@@ -36,7 +49,7 @@ export const ToggleSwitch = ({ state, setState, notTabbable, label }) => {
       onClick={setState}
       state={state}
     >
-      <Slider state={state} />
+      <Slider className={state ? "enabled" : "disabled"} state={state} />
     </Container>
   )
 }

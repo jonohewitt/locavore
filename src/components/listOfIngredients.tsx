@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
 import styled from "styled-components"
 import slugify from "slugify"
-import { GlobalState } from "../context/globalStateContext"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { calcIngredientMonths } from "../functions/calcIngredientMonths"
-
-import { Ingredient } from "../pages/ingredients"
-import { IngredientFilter } from "../context/ingredientListContext"
+import { IngredientFilter } from "../redux/slices/ingredientSlice"
+import { useTypedSelector } from "../redux/typedFunctions"
+import { Ingredient } from "../../types"
 
 const AllIngredientTypes = styled.ul<{ fadedIn: boolean }>`
   opacity: 0;
@@ -65,6 +64,8 @@ export const ListOfIngredients = ({
   ingredientFilterList,
   sort,
 }: ListOfIngredients) => {
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+
   const allIngredients: Ingredient[] = useStaticQuery(graphql`
     query {
       ingredientsByCountryJson(country: { eq: "belgium" }) {
@@ -80,7 +81,33 @@ export const ListOfIngredients = ({
     }
   `).ingredientsByCountryJson.ingredients
 
-  const { currentMonth } = useContext(GlobalState)
+  interface FilterLogic {
+    name: string
+    logic: (ingredient: Ingredient) => boolean
+  }
+
+  const filterLogic: FilterLogic[] = [
+    {
+      name: "Disponible",
+      logic: ingredient =>
+        checkIngredientInSeason(ingredient, currentMonth, true),
+    },
+    {
+      name: "En saison",
+      logic: ingredient =>
+        checkIngredientInSeason(ingredient, currentMonth, false),
+    },
+    {
+      name: "Toute l'année",
+      logic: ingredient => !ingredient.season,
+    },
+    {
+      name: "Hors saison",
+      logic: ingredient =>
+        !checkIngredientInSeason(ingredient, currentMonth, true),
+    },
+  ]
+
   const [fadedIn, setFadedIn] = useState(false)
   useEffect(() => setFadedIn(true), [])
 
@@ -93,7 +120,11 @@ export const ListOfIngredients = ({
       ingredient =>
         !ingredientFilterList ||
         ingredientFilterList.every(
-          filter => !filter.isApplied || filter.logic(ingredient)
+          filter =>
+            !filter.enabled ||
+            filterLogic
+              .find(logic => logic.name === filter.name)
+              ?.logic(ingredient)
         )
     )
     .sort((a, b) => {

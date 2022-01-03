@@ -1,14 +1,15 @@
-import React, { useContext } from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
-import { OptionsList, FilterButtons, SortButtons } from "./filterOrSortOptions"
-import { GlobalState } from "../context/globalStateContext"
-
+import { OptionsList, ButtonComponent } from "./filterOrSortOptions"
+import { useTypedDispatch, useTypedSelector } from "../redux/typedFunctions"
 import {
   IngredientFilter,
   IngredientSort,
-} from "../context/ingredientListContext"
+  toggleIngredientFilter,
+  toggleIngredientSort,
+} from "../redux/slices/ingredientSlice"
 
 const SelectOptionsButton = styled.button`
   display: flex;
@@ -21,7 +22,15 @@ const SelectOptionsButton = styled.button`
   }
 `
 
-export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
+interface ShowOptions {
+  optionsAreShown: boolean
+  setOptionsAreShown: Dispatch<SetStateAction<boolean>>
+}
+
+export const ShowOptions = ({
+  optionsAreShown,
+  setOptionsAreShown,
+}: ShowOptions) => {
   const windowWidth = useWindowWidth()
   let buttonContent: JSX.Element
 
@@ -40,51 +49,56 @@ export const ShowOptions = ({ optionsAreShown, setOptionsAreShown }) => {
   }
 
   return (
-    <SelectOptionsButton onClick={() => setOptionsAreShown(!optionsAreShown)}>
+    <SelectOptionsButton
+      onClick={() => setOptionsAreShown(prevState => !prevState)}
+    >
       {buttonContent}
     </SelectOptionsButton>
   )
 }
 
 export const IngredientListOptions = () => {
-  const {
-    ingredientFilterList,
-    ingredientSortList,
-    toggleIngredientFilter,
-    toggleIngredientSort,
-  }: {
-    ingredientFilterList: IngredientFilter[]
-    ingredientSortList: IngredientSort[]
-    toggleIngredientFilter: Function
-    toggleIngredientSort: Function
-  } = useContext(GlobalState)
+  const { ingredients: ingredientState } = useTypedSelector(state => state)
+  const dispatch = useTypedDispatch()
+
+  const IngredientFilterButton = ({ filter }: { filter: IngredientFilter }) => (
+    <ButtonComponent
+      name={filter.name}
+      action={() => dispatch(toggleIngredientFilter(filter.name))}
+      cross
+      color="var(--color-filterSectionA)"
+      isApplied={filter.enabled}
+    />
+  )
+
+  const IngredientSortButton = ({ sort }: { sort: IngredientSort }) => (
+    <ButtonComponent
+      name={sort.name}
+      action={() => dispatch(toggleIngredientSort(sort.name))}
+      color="var(--color-text)"
+      isApplied={sort.enabled}
+      disabled={
+        sort.name !== "A-Z" &&
+        !ingredientState.filters.find(filter => filter.name === "En saison")
+          ?.enabled
+      }
+    />
+  )
 
   return (
     <>
       <OptionsList title="Filtres">
-        <FilterButtons
-          list={ingredientFilterList}
-          action={(filter: IngredientFilter) =>
-            toggleIngredientFilter(filter.name)
-          }
-          color="var(--color-filterSectionA)"
-          cross
-        />
+        {ingredientState.filters.map(filter => (
+          <IngredientFilterButton filter={filter} key={filter.name} />
+        ))}
       </OptionsList>
 
       <hr />
 
       <OptionsList title="Trier par">
-        <SortButtons
-          list={ingredientSortList}
-          action={(sort: IngredientSort) => toggleIngredientSort(sort.name)}
-          color="var(--color-text)"
-          disabledFunction={(sort: IngredientSort) =>
-            sort.name !== "A-Z" &&
-            !ingredientFilterList.find(filter => filter.name === "En saison")
-              .isApplied
-          }
-        />
+        {ingredientState.sorts.map(sort => (
+          <IngredientSortButton sort={sort} key={sort.name} />
+        ))}
       </OptionsList>
 
       <hr />

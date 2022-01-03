@@ -1,6 +1,6 @@
-import React, { MouseEventHandler, useContext } from "react"
+import React, { MouseEventHandler } from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
+import { useTypedSelector } from "../redux/typedFunctions"
 
 const ListOfOptions = styled.ul`
   position: relative;
@@ -90,55 +90,58 @@ interface ButtonComponent {
   color: string
   cross?: boolean
   disabled?: boolean
-  isDark: boolean
 }
 
-const ButtonComponent = ({
+export const ButtonComponent = ({
   name,
   action,
   isApplied,
   color,
   cross,
   disabled,
-  isDark,
-}: ButtonComponent) => (
-  <OptionButtonContainer onClick={action} disabled={disabled}>
-    <OptionButton
-      isDark={isDark}
-      color={color}
-      selected={isApplied}
-      disabled={disabled}
-    >
-      {name}
-    </OptionButton>
-    {cross && (
-      <CrossSVG
+}: ButtonComponent) => {
+  const theme = useTypedSelector(state => state.global.theme)
+
+  const isDark = theme === "dark"
+  return (
+    <OptionButtonContainer onClick={action} disabled={disabled}>
+      <OptionButton
+        isDark={isDark}
+        color={color}
         selected={isApplied}
-        width="36"
-        height="36"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+        disabled={disabled}
       >
-        <circle
-          cx="18"
-          cy="18"
-          r="8"
-          fill="var(--color-background)"
-          stroke={color}
-          strokeWidth="2"
-        />
-        <path
-          d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
-          fill={color}
-        />
-        <path
-          d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
-          fill={color}
-        />
-      </CrossSVG>
-    )}
-  </OptionButtonContainer>
-)
+        {name}
+      </OptionButton>
+      {cross && (
+        <CrossSVG
+          selected={isApplied}
+          width="36"
+          height="36"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="18"
+            cy="18"
+            r="8"
+            fill="var(--color-background)"
+            stroke={color}
+            strokeWidth="2"
+          />
+          <path
+            d="M20.828 13.757a1 1 0 111.414 1.414l-7.07 7.072a1 1 0 01-1.414-1.414l7.07-7.072z"
+            fill={color}
+          />
+          <path
+            d="M22.243 20.828a1 1 0 11-1.414 1.414l-7.072-7.07a1 1 0 111.414-1.414l7.072 7.07z"
+            fill={color}
+          />
+        </CrossSVG>
+      )}
+    </OptionButtonContainer>
+  )
+}
 
 export const OptionsList = ({ title, children }) => (
   <>
@@ -146,81 +149,3 @@ export const OptionsList = ({ title, children }) => (
     <ListOfOptions>{children}</ListOfOptions>
   </>
 )
-
-interface FilterOption {
-  name: string
-  logic: Function
-  isApplied: boolean
-  group?: string
-}
-
-interface FilterButtons {
-  list: FilterOption[]
-  action: Function
-  cross?: boolean
-  color: string
-}
-
-export const FilterButtons = ({
-  list,
-  action,
-  cross,
-  color,
-}: FilterButtons) => {
-  const { isDark } = useContext(GlobalState)
-  return (
-    <span>
-      {list.map(option => {
-        return (
-          <ButtonComponent
-            cross={cross}
-            key={option.name}
-            name={option.name}
-            action={() => action(option)}
-            isApplied={option.isApplied}
-            color={color}
-            isDark={isDark}
-          />
-        )
-      })}
-    </span>
-  )
-}
-
-interface SortOption {
-  name: string
-  isApplied: boolean
-}
-
-interface SortButton {
-  list: SortOption[]
-  action: Function
-  color: string
-  disabledFunction?: Function
-}
-
-export const SortButtons = ({
-  list,
-  action,
-  color,
-  disabledFunction,
-}: SortButton) => {
-  const { isDark } = useContext(GlobalState)
-  return (
-    <span>
-      {list.map(option => {
-        return (
-          <ButtonComponent
-            key={option.name}
-            name={option.name}
-            action={() => action(option)}
-            isApplied={option.isApplied}
-            color={color}
-            disabled={disabledFunction(option)}
-            isDark={isDark}
-          />
-        )
-      })}
-    </span>
-  )
-}

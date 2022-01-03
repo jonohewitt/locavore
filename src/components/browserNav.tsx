@@ -4,10 +4,11 @@ import styled from "styled-components"
 import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { useWindowWidth } from "../functions/useWindowWidth"
-import { GlobalState } from "../context/globalStateContext"
 import { searchSVG, crossSVG, arrowSVG } from "./icons"
 import { Search } from "./search"
 import { CSSTransition } from "react-transition-group"
+import { useTypedDispatch } from "../redux/typedFunctions"
+import { setSettings } from "../redux/slices/globalSlice"
 
 const NavWrapper = styled.nav<{ fadedIn: boolean }>`
   position: fixed;
@@ -26,7 +27,7 @@ const NavWrapper = styled.nav<{ fadedIn: boolean }>`
   ${props => props.fadedIn && "opacity: 1;"}
 `
 
-const MenuButton = styled.button<{ SVGrotation: number }>`
+const MenuButton = styled.button<{ SVGrotation?: number }>`
   font-size: 16px;
   font-weight: 700;
   padding: 10px 15px 10px 10px;
@@ -272,7 +273,7 @@ export const BrowserNav = ({
   const windowWidth = useWindowWidth()
   const [navFadedIn, setNavFadedIn] = useState(false)
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false)
-  const { setSettingsIsOpen } = useContext(GlobalState)
+  const dispatch = useTypedDispatch()
 
   const siteTitle: string = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -392,12 +393,12 @@ export const BrowserNav = ({
           </>
         ) : (
           <MenuButton
-            SVGrotation={dropDownIsOpen && 180}
+            SVGrotation={dropDownIsOpen ? 180 : undefined}
             aria-label="Toggle navigation menu"
             onClick={() => {
               setSearchIsActive(false)
               setDropDownIsOpen(!dropDownIsOpen)
-              setSettingsIsOpen(false)
+              dispatch(setSettings(false))
             }}
           >
             Menu {arrowSVG}

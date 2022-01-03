@@ -1,6 +1,7 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
-import { GlobalState } from "../context/globalStateContext"
+import { toggleSettings } from "../redux/slices/globalSlice"
+import { useTypedDispatch, useTypedSelector } from "../redux/typedFunctions"
 
 const IconWrapper = styled.button`
   position: relative;
@@ -83,17 +84,18 @@ const RightSlider = styled(SliderTemplate)`
   }
 `
 
-export const SettingsIcon = ({
-  clickFunctions,
-}: {
+interface SettingsIcon {
   clickFunctions?: Function
-}) => {
-  const { toggleSettings, settingsIsOpen } = useContext(GlobalState)
+}
+
+export const SettingsIcon = ({ clickFunctions }: SettingsIcon) => {
+  const settingsIsOpen = useTypedSelector(state => state.global.settingsIsOpen)
+  const dispatch = useTypedDispatch()
   return (
     <IconWrapper
       aria-label="Toggle settings menu"
       onClick={() => {
-        toggleSettings()
+        dispatch(toggleSettings())
         clickFunctions && clickFunctions()
       }}
     >

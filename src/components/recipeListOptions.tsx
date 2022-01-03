@@ -1,10 +1,16 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
-import { OptionsList, FilterButtons, SortButtons } from "./filterOrSortOptions"
-import { GlobalState } from "../context/globalStateContext"
-import { RecipeFilter, RecipeSort } from "../context/recipeListContext"
+import { OptionsList, ButtonComponent } from "./filterOrSortOptions"
+
+import { RecipeSort } from "../context/recipeContext"
+import { useTypedSelector, useTypedDispatch } from "../redux/typedFunctions"
+import {
+  RecipeFilter,
+  toggleRecipeFilter,
+  toggleRecipeSort,
+} from "../redux/slices/recipeSlice"
 
 const SelectOptionsButton = styled.button`
   display: flex;
@@ -57,42 +63,66 @@ export const ShowOptions = ({
 }
 
 export const RecipeListOptions = () => {
-  const {
-    recipeFilterList,
-    recipeSortList,
-    toggleRecipeFilter,
-    toggleRecipeSort,
-  } = useContext(GlobalState)
+  const { recipes: recipeState } = useTypedSelector(state => state)
+  const dispatch = useTypedDispatch()
+
+  interface FilterButton {
+    filter: RecipeFilter
+    color: string
+  }
+
+  const FilterButton = ({ filter, color }: FilterButton) => (
+    <ButtonComponent
+      name={filter.name}
+      action={() => dispatch(toggleRecipeFilter(filter.name))}
+      cross
+      color={color}
+      isApplied={filter.enabled}
+    />
+  )
+
+  const SortButton = ({ sort }: { sort: RecipeSort }) => (
+    <ButtonComponent
+      name={sort.name}
+      action={() => dispatch(toggleRecipeSort(sort.name))}
+      color="var(--color-text)"
+      isApplied={sort.enabled}
+      disabled={
+        sort.name !== "A-Z" &&
+        !recipeState.filters.find(filter => filter.name === "En saison").enabled
+      }
+    />
+  )
 
   return (
     <>
       <OptionsList title="Filtres">
-        <FilterButtons
-          list={recipeFilterList.filter(filter => filter.group === "green")}
-          action={(filter: RecipeFilter) => toggleRecipeFilter(filter.name)}
-          cross
-          color="var(--color-filterSectionA)"
-        />
-        <FilterButtons
-          list={recipeFilterList.filter(filter => filter.group === "course")}
-          action={(filter: RecipeFilter) => toggleRecipeFilter(filter.name)}
-          color="var(--color-text)"
-        />
+        {recipeState.filters
+          .filter(filter => filter.group === "green")
+          .map(filter => (
+            <FilterButton
+              filter={filter}
+              color="var(--color-filterSectionA)"
+              key={filter.name}
+            />
+          ))}
+        {recipeState.filters
+          .filter(filter => filter.group === "course")
+          .map(filter => (
+            <FilterButton
+              filter={filter}
+              color="var(--color-text)"
+              key={filter.name}
+            />
+          ))}
       </OptionsList>
 
       <hr />
 
       <OptionsList title="Trier par">
-        <SortButtons
-          list={recipeSortList}
-          action={(sort: RecipeSort) => toggleRecipeSort(sort.name)}
-          color="var(--color-text)"
-          disabledFunction={(sort: RecipeSort) =>
-            sort.name !== "A-Z" &&
-            !recipeFilterList.find(filter => filter.name === "En saison")
-              .isApplied
-          }
-        />
+        {recipeState.sorts.map(sort => (
+          <SortButton sort={sort} key={sort.name} />
+        ))}
       </OptionsList>
 
       <hr />

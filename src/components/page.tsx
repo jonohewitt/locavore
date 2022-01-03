@@ -1,5 +1,7 @@
-import React, { MouseEventHandler } from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import styled from "styled-components"
+import { toggleSettings } from "../redux/slices/globalSlice"
+import { useTypedDispatch, useTypedSelector } from "../redux/typedFunctions"
 
 const StyledPage = styled.div<{ settingsIsOpen: boolean }>`
   position: relative;
@@ -26,20 +28,23 @@ const ClickAwayCover = styled.div<{ settingsIsOpen: boolean }>`
 `
 
 interface Page {
-  settingsIsOpen: boolean
-  toggleSettings: MouseEventHandler
   children: JSX.Element
-  onClick: MouseEventHandler
+  setSearchIsActive: Dispatch<SetStateAction<boolean>>
 }
 
-export const Page = ({
-  settingsIsOpen,
-  toggleSettings,
-  children,
-  onClick,
-}: Page) => (
-  <StyledPage settingsIsOpen={settingsIsOpen} onClick={onClick}>
-    <ClickAwayCover onClick={toggleSettings} settingsIsOpen={settingsIsOpen} />
-    {children}
-  </StyledPage>
-)
+export const Page = ({ children, setSearchIsActive }: Page) => {
+  const settingsIsOpen = useTypedSelector(state => state.global.settingsIsOpen)
+  const dispatch = useTypedDispatch()
+  return (
+    <StyledPage
+      onClick={() => setSearchIsActive(false)}
+      settingsIsOpen={settingsIsOpen}
+    >
+      <ClickAwayCover
+        onClick={() => dispatch(toggleSettings())}
+        settingsIsOpen={settingsIsOpen}
+      />
+      {children}
+    </StyledPage>
+  )
+}

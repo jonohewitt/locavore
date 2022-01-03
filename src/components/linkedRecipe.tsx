@@ -1,13 +1,11 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import slugify from "slugify"
-import { GlobalState } from "../context/globalStateContext"
 import styled from "styled-components"
 import { tickSVG, crossSVG } from "./icons"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
-
-import { Recipe } from "../pages/recettes"
-import { Ingredient } from "../pages/ingredients"
+import { useTypedSelector } from "../redux/typedFunctions"
+import { Ingredient, Recipe } from "../../types"
 
 const IngredientLink = styled(Link)`
   color: ${props => props.color} !important;
@@ -34,7 +32,7 @@ interface LinkedRecipe {
 }
 
 export const LinkedRecipe = ({ id, children }: LinkedRecipe) => {
-  const { currentMonth } = useContext(GlobalState)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
   const queryResults = useStaticQuery(graphql`
     query {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {

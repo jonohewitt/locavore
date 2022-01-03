@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import useSWR, { mutate } from "swr"
-import { useNewContext } from "../context/newContext"
 import { getTimestamp } from "../functions/getTimestamp"
+import { useTypedSelector } from "../redux/typedFunctions"
 import { supabase } from "../supabaseClient"
 
 interface Comment {
@@ -40,9 +40,8 @@ export const CommentSectionComponent = ({
     commentsOpenRef.current
   )
 
-  const {
-    state: { session, username },
-  } = useNewContext()
+  const session = useTypedSelector(state => state.global.session)
+  const username = useTypedSelector(state => state.global.username)
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()

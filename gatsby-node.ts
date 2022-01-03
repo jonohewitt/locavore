@@ -1,6 +1,6 @@
 import path from "path"
 import slugify from "slugify"
-import { Ingredient } from "../src/pages/ingredients"
+import { Ingredient } from "./src/pages/ingredients"
 
 export const createPages = async ({
   graphql,

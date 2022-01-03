@@ -1,4 +1,2 @@
-const { generateConfig } = require('gatsby-plugin-ts-config');
-module.exports = generateConfig({
-    configDir: 'config'
-});
+const { useGatsbyConfig } = require("gatsby-plugin-ts-config")
+module.exports = useGatsbyConfig("./config/gatsby-config")

@@ -76,7 +76,6 @@ const config: GatsbyConfig = {
       },
     },
     `gatsby-plugin-netlify`,
-    `gatsby-theme-apollo`,
     `gatsby-transformer-json`,
     {
       resolve: `gatsby-source-filesystem`,

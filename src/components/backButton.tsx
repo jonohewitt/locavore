@@ -29,11 +29,9 @@ export const BackButton = () => {
     }
   }, [])
 
-  return (
-    history && (
-      <Button className="backArrow" onClick={() => navigate(-1)}>
-        {arrowSVG}
-      </Button>
-    )
-  )
+  return history ? (
+    <Button className="backArrow" onClick={() => navigate(-1)}>
+      {arrowSVG}
+    </Button>
+  ) : null
 }

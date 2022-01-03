@@ -38,10 +38,8 @@ const Styles = styled.main`
 `
 
 const Ingredients = () => {
-  const {
-    ingredients: ingredientState,
-    global: { currentMonth },
-  } = useTypedSelector(state => state)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const ingredientState = useTypedSelector(state => state.ingredients)
 
   return (
     <>
@@ -56,7 +54,8 @@ const Ingredients = () => {
           <ListOfIngredients
             ingredientFilterList={ingredientState.filters}
             sort={
-              ingredientState.sorts.find(option => option.enabled === true).name
+              ingredientState.sorts.find(option => option.enabled === true)
+                ?.name
             }
           />
         </Styles>

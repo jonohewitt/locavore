@@ -105,9 +105,7 @@ export const ListOfRecipes = ({
   recipeFilters,
   recipeSorts,
 }: ListOfRecipes) => {
-  const {
-    global: { currentMonth },
-  } = useTypedSelector(state => state)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
 
   interface FilterLogic {
     name: RecipeGreenFilterName | RecipeCourseFilterName

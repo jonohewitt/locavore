@@ -58,7 +58,7 @@ export const ShowOptions = ({
 }
 
 export const IngredientListOptions = () => {
-  const { ingredients: ingredientState } = useTypedSelector(state => state)
+  const ingredientState = useTypedSelector(state => state.ingredients)
   const dispatch = useTypedDispatch()
 
   const IngredientFilterButton = ({ filter }: { filter: IngredientFilter }) => (

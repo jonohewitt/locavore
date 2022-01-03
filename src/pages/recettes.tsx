@@ -34,10 +34,8 @@ const HeaderContent = styled.div`
 `
 
 const Recettes = () => {
-  const {
-    recipes: recipeState,
-    global: { currentMonth },
-  } = useTypedSelector(state => state)
+  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const recipeState = useTypedSelector(state => state.recipes)
 
   const [optionsAreShown, setOptionsAreShown] = useState(true)
 

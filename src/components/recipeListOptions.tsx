@@ -4,10 +4,10 @@ import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
 import { OptionsList, ButtonComponent } from "./filterOrSortOptions"
 
-import { RecipeSort } from "../context/recipeContext"
 import { useTypedSelector, useTypedDispatch } from "../redux/typedFunctions"
 import {
   RecipeFilter,
+  RecipeSort,
   toggleRecipeFilter,
   toggleRecipeSort,
 } from "../redux/slices/recipeSlice"
@@ -63,7 +63,7 @@ export const ShowOptions = ({
 }
 
 export const RecipeListOptions = () => {
-  const { recipes: recipeState } = useTypedSelector(state => state)
+  const recipeState = useTypedSelector(state => state.recipes)
   const dispatch = useTypedDispatch()
 
   interface FilterButton {
@@ -89,7 +89,8 @@ export const RecipeListOptions = () => {
       isApplied={sort.enabled}
       disabled={
         sort.name !== "A-Z" &&
-        !recipeState.filters.find(filter => filter.name === "En saison").enabled
+        !recipeState.filters.find(filter => filter.name === "En saison")
+          ?.enabled
       }
     />
   )

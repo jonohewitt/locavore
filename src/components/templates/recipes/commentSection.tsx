@@ -1,98 +1,85 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { FormEvent, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import useSWR, { mutate } from "swr"
-import { getTimestamp } from "../functions/getTimestamp"
-import { useTypedSelector } from "../redux/typedFunctions"
-import { supabase } from "../supabaseClient"
-
-interface Comment {
-  id: number
-  user_id: string
-  comment_text: string
-  slug: string
-  date_added: string
-  public_user_info: {
-    username: string
-  }
-}
+import { mutate } from "swr"
+import { getTimestamp } from "../../../functions/getTimestamp"
+import { useTypedSelector } from "../../../redux/typedFunctions"
+import { supabase } from "../../../supabaseClient"
+import { UserComment } from "../../../../types"
 
 interface CommentSection {
-  comments: Comment[]
-  commentsLoading: boolean
-  commentsOpenRef: React.MutableRefObject<boolean>
+  comments: UserComment[]
+  commentsError: any
   slug: string
 }
 
-interface User {
-  username: string
-  user_id: string
-}
-
-export const CommentSectionComponent = ({
-  comments,
-  commentsLoading,
-  commentsOpenRef,
+export const CommentSection = ({
   slug,
+  comments,
+  commentsError,
 }: CommentSection) => {
-  const commentRef = useRef<HTMLTextAreaElement>()
+  const commentRef = useRef<HTMLTextAreaElement>(null)
   const [commentError, setCommentError] = useState(false)
-  const [commentFormOpen, setCommentFormOpen] = useState(
-    commentsOpenRef.current
-  )
+  const commentsOpenRef = useRef(false)
+  const [commentFormOpen, setCommentFormOpen] = useState(false)
 
   const session = useTypedSelector(state => state.global.session)
   const username = useTypedSelector(state => state.global.username)
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    if (session) {
-      if (commentRef.current.value.trim().length) {
-        mutate(
-          slug,
-          [
-            {
-              id: "unvalidated",
-              user_id: session.user.id,
-              public_user_info: {
-                username: username,
+    if (commentRef.current) {
+      if (session?.user) {
+        if (commentRef.current.value.trim().length) {
+          const commentArray = comments || []
+          mutate(
+            slug,
+            [
+              {
+                id: "unvalidated",
+                user_id: session.user.id,
+                public_user_info: {
+                  username: username,
+                },
+                comment_text: commentRef.current.value,
+                date_added: new Date(),
               },
-              comment_text: commentRef.current.value,
-              date_added: new Date(),
-            },
-            ...comments,
-          ],
-          false
-        )
+              ...commentArray,
+            ],
+            false
+          )
 
-        await supabase.from("recipe_comments").insert({
-          comment_text: commentRef.current.value,
-          user_id: session.user.id,
-          recipe_slug: slug,
-        })
+          await supabase.from("recipe_comments").insert({
+            comment_text: commentRef.current.value,
+            user_id: session.user.id,
+            recipe_slug: slug,
+          })
 
-        mutate(slug)
-      } else {
-        if (!commentRef.current.value.trim().length) {
-          setCommentError(true)
-          commentRef.current.value = ""
-          commentRef.current.placeholder = "Veuillez entrer un commentaire"
+          mutate(slug)
+        } else {
+          if (!commentRef.current.value.trim().length) {
+            setCommentError(true)
+            commentRef.current.value = ""
+            commentRef.current.placeholder = "Veuillez entrer un commentaire"
+          }
         }
+      } else {
+        setCommentError(true)
+        commentRef.current.value = ""
+        commentRef.current.placeholder = "Please sign in first!"
       }
-    } else {
-      setCommentError(true)
-      commentRef.current.value = ""
-      commentRef.current.placeholder = "Please sign in first!"
     }
   }
 
   const handleCancel = () => {
-    commentRef.current.value = ""
-    setCommentFormOpen(false)
-    commentsOpenRef.current = false
+    if (commentRef.current) {
+      commentRef.current.value = ""
+      setCommentFormOpen(false)
+      commentsOpenRef.current = false
+    }
   }
 
-  const Comment = ({ comment }: { comment: Comment }) => {
-    const editRef = useRef<HTMLTextAreaElement>()
+  const Comment = ({ comment }: { comment: UserComment }) => {
+    const editRef = useRef<HTMLTextAreaElement>(null)
     const [editing, setEditing] = useState(false)
     const [timestamp, setTimestamp] = useState(
       getTimestamp(comment.date_added, { vague: true })
@@ -116,36 +103,44 @@ export const CommentSectionComponent = ({
     }, [])
 
     const handleSaveEdit = async (id: number) => {
-      mutate(
-        slug,
-        comments.map(comment => {
-          if (comment.id === id) {
-            comment.comment_text = editRef.current.value
-          }
-          return comment
-        }),
-        false
-      )
-      await supabase
-        .from("recipe_comments")
-        .update({ comment_text: editRef.current.value })
-        .eq("id", id)
+      if (editRef.current) {
+        const commentArray = comments || []
+        mutate(
+          slug,
+          commentArray.map(comment => {
+            if (comment.id === id) comment.comment_text = editRef.current!.value
+            return comment
+          }),
+          false
+        )
+        await supabase
+          .from("recipe_comments")
+          .update({ comment_text: editRef.current.value })
+          .eq("id", id)
 
-      mutate(slug)
-      setEditing(false)
+        mutate(slug)
+        setEditing(false)
+      }
     }
 
     const handleDelete = async (id: number) => {
-      mutate(slug, [...comments.filter(comment => comment.id !== id)], false)
+      const commentArray = comments || []
+      mutate(
+        slug,
+        [...commentArray.filter(comment => comment.id !== id)],
+        false
+      )
       await supabase.from("recipe_comments").delete().match({ id: id })
       mutate(slug)
     }
 
     const EditComment = () => {
       useEffect(() => {
-        const length = editRef.current.value.length
-        editRef.current.focus()
-        editRef.current.setSelectionRange(length, length)
+        if (editRef.current) {
+          const length = editRef.current.value.length
+          editRef.current.focus()
+          editRef.current.setSelectionRange(length, length)
+        }
       }, [])
       return <CommentEditor ref={editRef} defaultValue={comment.comment_text} />
     }
@@ -194,7 +189,8 @@ export const CommentSectionComponent = ({
               ref={commentRef}
               onFocus={() => setCommentError(false)}
               onBlur={() => {
-                commentRef.current.value = commentRef.current.value.trim()
+                if (commentRef.current)
+                  commentRef.current.value = commentRef.current.value.trim()
               }}
             />
           </CommentContainer>
@@ -249,11 +245,11 @@ export const CommentSectionComponent = ({
         </OpenCommentFormButton>
       )}
       <hr />
-      {commentsLoading ? (
+      {!comments && !commentsError ? (
         <p>Chargment...</p>
       ) : (
         <CommentList>
-          {comments.map(comment => (
+          {comments?.map(comment => (
             <Comment key={comment.id} comment={comment} />
           ))}
         </CommentList>

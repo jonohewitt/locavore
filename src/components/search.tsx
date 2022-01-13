@@ -1,11 +1,27 @@
-import React, { useState, useEffect, useMemo, useRef } from "react"
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  ChangeEventHandler,
+  FormEventHandler,
+  KeyboardEventHandler,
+  FocusEventHandler,
+  Dispatch,
+  SetStateAction,
+} from "react"
 import styled from "styled-components"
 import { Ing } from "./ingredientLink"
 import { navigate, useStaticQuery, Link, graphql } from "gatsby"
 import slugify from "slugify"
 import { searchSVG } from "./icons"
-import { Ingredient } from "../pages/ingredients"
-import { Frontmatter } from "../pages/recettes"
+import {
+  BlogFrontmatter,
+  BlogPost,
+  Frontmatter,
+  Ingredient,
+  Recipe,
+} from "../../types"
 
 const InputContainer = styled.div<{ shadow: boolean }>`
   border: 2px solid var(--color-hr);
@@ -145,8 +161,6 @@ interface Page {
   name: string
   type: string
   customSlug?: string
-  frontmatter?: Frontmatter
-  fields: { source: string }
 }
 
 const getSearchResults = (searchText: string, allPages: Page[]) => {
@@ -158,11 +172,11 @@ const getSearchResults = (searchText: string, allPages: Page[]) => {
 }
 
 interface Search {
-  setDropDownIsOpen?: Function
+  setDropDownIsOpen?: Dispatch<SetStateAction<boolean>>
   mobile?: boolean
   app?: boolean
   searchIsActive: boolean
-  setSearchIsActive: Function
+  setSearchIsActive: Dispatch<SetStateAction<boolean>>
 }
 
 export const Search = ({
@@ -173,11 +187,30 @@ export const Search = ({
   setSearchIsActive,
 }: Search) => {
   const [typedInput, setTypedInput] = useState("")
-  const [resultsList, setResultsList] = useState([])
+  const [resultsList, setResultsList] = useState<Page[]>([])
   const [indexHighlighted, setIndexHighlighted] = useState(0)
-  const searchInputRef = useRef<HTMLInputElement>()
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const queryResults = useStaticQuery(graphql`
+  interface QueryResults {
+    allMdx: {
+      nodes: {
+        fields: {
+          source: string
+        }
+        frontmatter: {
+          title: string
+          customSlug?: string
+        }
+      }[]
+    }
+    ingredientsByCountryJson: {
+      ingredients: Ingredient[]
+    }
+  }
+  const {
+    allMdx: { nodes: allPosts },
+    ingredientsByCountryJson: { ingredients: allIngredients },
+  }: QueryResults = useStaticQuery(graphql`
     query {
       allMdx {
         nodes {
@@ -203,38 +236,35 @@ export const Search = ({
     }
   `)
 
-  const allPosts: Page[] = queryResults.allMdx.nodes
-  const allIngredients: Ingredient[] =
-    queryResults.ingredientsByCountryJson.ingredients
-
   // get an array of every page I want to be searchable
   // at the moment this is every ingredient plus every mdx file - (blog, recipe)
   // memoised as it could be expensive in future and does not change after build time
-  const allPages = useMemo(() => {
-    const arr = []
-    allIngredients.forEach(ingredient =>
-      arr.push({
-        name: ingredient.name,
-        type: "ingredients",
-      })
-    )
-    allPosts.forEach(post =>
-      arr.push({
-        name: post.frontmatter.title,
-        type: post.fields.source,
-        customSlug: post.frontmatter.customSlug,
-      })
-    )
-    return arr
-  }, [allIngredients, allPosts])
+
+  const allPages: Page[] = useMemo(
+    () =>
+      allIngredients
+        .map(ing => {
+          return { name: ing.name, type: "ingredients" }
+        })
+        .concat(
+          allPosts.map(post => {
+            return {
+              name: post.frontmatter.title,
+              type: post.fields.source,
+              customSlug: post.frontmatter.customSlug,
+            }
+          })
+        ),
+    [allIngredients, allPosts]
+  )
 
   // clear the input and results resultsList when search is closed / opened
   useEffect(() => {
     setResultsList([])
-    searchInputRef.current.value = ""
+    searchInputRef.current!.value = ""
   }, [setResultsList, searchIsActive])
 
-  const handleChange = event => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = event => {
     // set the result highlight to the top of the list
     setIndexHighlighted(0)
 
@@ -250,7 +280,7 @@ export const Search = ({
       if (results.length) {
         setResultsList(results)
       } else {
-        setResultsList([{ type: "Error" }])
+        setResultsList([{ name: "Error", type: "Error" }])
       }
     } else {
       setResultsList([])
@@ -261,12 +291,12 @@ export const Search = ({
   // also set the active state to false
   // this functions as a more targeted onBlur to reset and close the search UI
   const handleSearchResultClick = () => {
-    if (mobile) setDropDownIsOpen(false)
+    if (mobile && setDropDownIsOpen) setDropDownIsOpen(false)
     setSearchIsActive(false)
   }
 
   // handle the behaviour when a user presses enter
-  const handleSubmit = async event => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault()
 
     // if there are valid results in the results list
@@ -283,18 +313,18 @@ export const Search = ({
       // wait for the page to navigate to the highlighted page
       await navigate(`/${resultsList[indexHighlighted].type}/${slug}`)
       // then close and reset the search UI
-      if (mobile) setDropDownIsOpen(false)
+      if (mobile && setDropDownIsOpen) setDropDownIsOpen(false)
       setSearchIsActive(false)
     }
   }
 
-  const handleKeyDown = event => {
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = event => {
     // if the down arrow is pressed, move the highlight down
     // and update the search input value to the highlighted name
     if (event.which === 40 && indexHighlighted < resultsList.length - 1) {
       setIndexHighlighted(indexHighlighted + 1)
       // setInputValue(resultsList[indexHighlighted + 1].name)
-      searchInputRef.current.value = resultsList[indexHighlighted + 1].name
+      searchInputRef.current!.value = resultsList[indexHighlighted + 1].name
     }
     // if the up arrow is pressed, update highlight and input value
     // except if the highlight is on the top option, in which case
@@ -303,9 +333,9 @@ export const Search = ({
       event.preventDefault()
       if (indexHighlighted > 0) {
         setIndexHighlighted(indexHighlighted - 1)
-        searchInputRef.current.value = resultsList[indexHighlighted - 1].name
+        searchInputRef.current!.value = resultsList[indexHighlighted - 1].name
       } else {
-        searchInputRef.current.value = typedInput
+        searchInputRef.current!.value = typedInput
       }
 
       // if escape is pressed, close and reset the search UI
@@ -314,67 +344,59 @@ export const Search = ({
     }
   }
 
-  const handleFocus = event => {
+  const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
     setSearchIsActive(true)
     handleChange(event)
   }
 
-  const IngredientResult = ({ element }) => (
-    <>
-      <CategoryLabel>Ingredients</CategoryLabel>
-      <Ing
-        clickAction={handleSearchResultClick}
-        className="searchResult"
-        id={element.name}
-      >
-        {element.name}
-      </Ing>
-    </>
-  )
-
-  const RecipeOrBlogResult = ({ element }) => {
-    let slug
-    if (element.customSlug) slug = element.customSlug
-    else slug = slugify(element.name, { lower: true, strict: true })
-
-    return (
-      <>
-        <CategoryLabel type={element.type}>{element.type}</CategoryLabel>
-        <Link
-          onClick={handleSearchResultClick}
-          className="searchResult"
-          to={`/${element.type}/${slug}`}
-        >
-          {element.name}
-        </Link>
-      </>
-    )
+  interface SearchResultItem {
+    pageResult: Page
+    index: number
   }
 
-  const NoResultsFound = ({ element }) => (
-    <>
-      <CategoryLabel type={element.type}>Désolé !</CategoryLabel>
-      <ErrorMessage>Aucun résultat trouvé</ErrorMessage>
-    </>
-  )
+  const SearchResultItem = ({ pageResult, index }: SearchResultItem) => {
+    if (pageResult.type === "blog" || pageResult.type === "recettes") {
+      const slug = pageResult.customSlug
+        ? pageResult.customSlug
+        : slugify(pageResult.name, { lower: true, strict: true })
 
-  const GetResult = (element, index) => {
-    let result
-    if (element.type === "blog" || element.type === "recettes") {
-      result = <RecipeOrBlogResult element={element} />
-    } else if (element.name) {
-      result = <IngredientResult element={element} />
-    } else result = <NoResultsFound element={element} />
-
-    return (
-      <SearchResult
-        selected={index === indexHighlighted}
-        key={element.name ? element.name : "Error"}
-      >
-        {result}
-        <hr />
-      </SearchResult>
-    )
+      return (
+        <SearchResult selected={index === indexHighlighted}>
+          <CategoryLabel type={pageResult.type}>
+            {pageResult.type}
+          </CategoryLabel>
+          <Link
+            onClick={handleSearchResultClick}
+            className="searchResult"
+            to={`/${pageResult.type}/${slug}`}
+          >
+            {pageResult.name}
+          </Link>
+          <hr />
+        </SearchResult>
+      )
+    } else if (pageResult.type === "ingredients") {
+      return (
+        <SearchResult selected={index === indexHighlighted}>
+          <CategoryLabel>Ingredients</CategoryLabel>
+          <Ing
+            clickAction={handleSearchResultClick}
+            className="searchResult"
+            id={pageResult.name}
+          >
+            {pageResult.name}
+          </Ing>
+          <hr />
+        </SearchResult>
+      )
+    } else
+      return (
+        <SearchResult selected={index === indexHighlighted}>
+          <CategoryLabel type={pageResult.type}>Désolé !</CategoryLabel>
+          <ErrorMessage>Aucun résultat trouvé</ErrorMessage>
+          <hr />
+        </SearchResult>
+      )
   }
 
   return (
@@ -398,9 +420,15 @@ export const Search = ({
         </InputContainer>
 
         {resultsList?.length > 0 && (
-          <SearchResultListContainer outline={mobile || app}>
+          <SearchResultListContainer outline={mobile === true || app === true}>
             <SearchResultList>
-              {resultsList.map((element, index) => GetResult(element, index))}
+              {resultsList.map((pageResult, index) => (
+                <SearchResultItem
+                  key={pageResult.name}
+                  pageResult={pageResult}
+                  index={index}
+                />
+              ))}
             </SearchResultList>
           </SearchResultListContainer>
         )}

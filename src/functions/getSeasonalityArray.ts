@@ -1,8 +1,7 @@
 import { Ingredient } from "../../types"
 
 export const getSeasonalityArray = (ingredient: Ingredient) => {
-  if (!ingredient.season)
-    return new Array(12).fill(true) as (boolean | string)[]
+  if (!ingredient.season) return new Array(12).fill(true)
   else {
     const start = ingredient.season.start
     const end = ingredient.season.end

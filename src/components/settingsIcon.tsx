@@ -85,7 +85,7 @@ const RightSlider = styled(SliderTemplate)`
 `
 
 interface SettingsIcon {
-  clickFunctions?: Function
+  clickFunctions?: () => void
 }
 
 export const SettingsIcon = ({ clickFunctions }: SettingsIcon) => {

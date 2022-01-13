@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from "react"
+import React, { useRef, useLayoutEffect, MouseEventHandler } from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
 
@@ -60,8 +60,8 @@ const Spotlight = styled.div`
 `
 
 export const SpotlightFeature = () => {
-  const areaRef = useRef<HTMLDivElement>()
-  const spotlightElement = useRef<HTMLDivElement>()
+  const areaRef = useRef<HTMLDivElement>(null)
+  const spotlightElement = useRef<HTMLDivElement>(null)
   const speed = useRef(0.05)
 
   const mouse = useRef({ x: 0, y: 0 })
@@ -84,10 +84,10 @@ export const SpotlightFeature = () => {
   }
 
   useLayoutEffect(() => {
-    const areaWidth = areaRef.current.getBoundingClientRect().width
-    const areaHeight = areaRef.current.getBoundingClientRect().height
-    const spotWidth = spotlightElement.current.getBoundingClientRect().width
-    const spotHeight = spotlightElement.current.getBoundingClientRect().height
+    const areaWidth = areaRef.current!.getBoundingClientRect().width
+    const areaHeight = areaRef.current!.getBoundingClientRect().height
+    const spotWidth = spotlightElement.current!.getBoundingClientRect().width
+    const spotHeight = spotlightElement.current!.getBoundingClientRect().height
 
     mouse.current.x = areaWidth / 2 - spotWidth / 2
     mouse.current.y = areaHeight / 2 - spotHeight / 2
@@ -97,22 +97,22 @@ export const SpotlightFeature = () => {
     animate()
   }, [])
 
-  const handleMouseMove = event => {
+  const handleMouseMove: MouseEventHandler<HTMLElement> = event => {
     speed.current = 0.05
     mouse.current.x =
-      event.pageX - spotlightElement.current.getBoundingClientRect().width / 2
+      event.pageX - spotlightElement.current!.getBoundingClientRect().width / 2
     mouse.current.y =
       event.pageY -
-      (window.pageYOffset + areaRef.current.getBoundingClientRect().top) -
-      spotlightElement.current.getBoundingClientRect().height / 2
+      (window.pageYOffset + areaRef.current!.getBoundingClientRect().top) -
+      spotlightElement.current!.getBoundingClientRect().height / 2
   }
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave: MouseEventHandler<HTMLElement> = () => {
     speed.current = 0.02
-    const areaWidth = areaRef.current.getBoundingClientRect().width
-    const areaHeight = areaRef.current.getBoundingClientRect().height
-    const spotWidth = spotlightElement.current.getBoundingClientRect().width
-    const spotHeight = spotlightElement.current.getBoundingClientRect().height
+    const areaWidth = areaRef.current!.getBoundingClientRect().width
+    const areaHeight = areaRef.current!.getBoundingClientRect().height
+    const spotWidth = spotlightElement.current!.getBoundingClientRect().width
+    const spotHeight = spotlightElement.current!.getBoundingClientRect().height
 
     mouse.current.x = areaWidth / 2 - spotWidth / 2
     mouse.current.y = areaHeight / 2 - spotHeight / 2

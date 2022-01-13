@@ -114,15 +114,15 @@ const userSVG = (
 )
 
 export const SignUpDisplayName = () => {
-  let prevPage: string
+  let prevPage: string | null
 
   useEffect(() => {
     prevPage = window.sessionStorage.getItem("postSignUpReturnTo")
     window.sessionStorage.removeItem("postSignUpReturnTo")
   }, [])
 
-  const formRef = useRef<HTMLFormElement>()
-  const displayNameRef = useRef<HTMLInputElement>()
+  const formRef = useRef<HTMLFormElement>(null)
+  const displayNameRef = useRef<HTMLInputElement>(null)
 
   const dispatch = useTypedDispatch()
 
@@ -137,8 +137,8 @@ export const SignUpDisplayName = () => {
   const handleSubmit: FormEventHandler = async event => {
     event.preventDefault()
 
-    const validForm = formRef.current.checkValidity()
-    if (!validForm) formRef.current.reportValidity()
+    const validForm = formRef.current!.checkValidity()
+    if (!validForm) formRef.current!.reportValidity()
     else {
       // console.log(checkAvailability(displayNameRef.current.value))
       const { data, error } = await supabase

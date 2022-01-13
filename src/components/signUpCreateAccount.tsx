@@ -161,33 +161,34 @@ const createUserSVG = (
   </svg>
 )
 
-export const SignUpCreateAccount = ({ location }) => {
-  const formRef = useRef<HTMLFormElement>()
-  const emailRef = useRef<HTMLInputElement>()
-  const passwordRef = useRef<HTMLInputElement>()
-  const confirmPasswordRef = useRef<HTMLInputElement>()
+interface SignUpCreateAccount {
+  previousPath: string
+}
+
+export const SignUpCreateAccount = ({ previousPath }: SignUpCreateAccount) => {
+  const formRef = useRef<HTMLFormElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (location?.state?.previousPath) {
-      window.sessionStorage.setItem(
-        "postSignUpReturnTo",
-        location.state.previousPath
-      )
+    if (previousPath) {
+      window.sessionStorage.setItem("postSignUpReturnTo", previousPath)
     }
   }, [])
 
-  const handleSubmit: FormEventHandler = async event => {
+  const handleSubmit: FormEventHandler<HTMLButtonElement> = async event => {
     event.preventDefault()
-    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
-      confirmPasswordRef.current.setCustomValidity("Passwords don't match")
+    if (passwordRef.current!.value !== confirmPasswordRef.current!.value) {
+      confirmPasswordRef.current!.setCustomValidity("Passwords don't match")
     }
-    const validForm = formRef.current.checkValidity()
+    const validForm = formRef.current!.checkValidity()
 
-    if (!validForm) formRef.current.reportValidity()
+    if (!validForm) formRef.current!.reportValidity()
     else {
       const { user, session, error } = await supabase.auth.signUp({
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
+        email: emailRef.current!.value,
+        password: passwordRef.current!.value,
       })
       console.log(user, session, error)
     }
@@ -249,7 +250,7 @@ export const SignUpCreateAccount = ({ location }) => {
               ref={confirmPasswordRef}
               required
               onInput={() => {
-                confirmPasswordRef.current.setCustomValidity("")
+                confirmPasswordRef.current!.setCustomValidity("")
               }}
             />
           </InputWrapper>

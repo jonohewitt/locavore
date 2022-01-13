@@ -1,4 +1,4 @@
-import { Ingredient } from "../.."
+import { Ingredient } from "../../types"
 
 export const checkIngredientInSeason = (
   ingredient: Ingredient,

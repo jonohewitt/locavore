@@ -2,7 +2,7 @@
 // This is done recursively to catch an unknown amount of nesting of linked recipes
 // It's unlikely to have a recipe nested deeper than 1 level but could be possible in future.
 
-import { Recipe } from "../.."
+import { Recipe } from "../../types"
 
 export const combineRecipeAndLinks = (recipe: Recipe, recipeList: Recipe[]) => {
   const uniqueRecipeSet = new Set<Recipe>()

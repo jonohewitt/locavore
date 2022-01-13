@@ -1,9 +1,8 @@
-import React from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import styled from "styled-components"
 import { plusSVG, minusSVG } from "./icons"
 import { useWindowWidth } from "../functions/useWindowWidth"
 import { OptionsList, ButtonComponent } from "./filterOrSortOptions"
-
 import { useTypedSelector, useTypedDispatch } from "../redux/typedFunctions"
 import {
   RecipeFilter,
@@ -31,7 +30,7 @@ const SelectOptionsButton = styled.button`
 
 interface ShowOptions {
   optionsAreShown: boolean
-  setOptionsAreShown: Function
+  setOptionsAreShown: Dispatch<SetStateAction<boolean>>
 }
 
 export const ShowOptions = ({

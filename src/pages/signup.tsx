@@ -1,4 +1,4 @@
-import { navigate } from "gatsby"
+import { navigate, PageProps } from "gatsby"
 import React, { useLayoutEffect } from "react"
 import styled from "styled-components"
 import { SignUpCreateAccount } from "../components/signUpCreateAccount"
@@ -22,7 +22,7 @@ const SignUpWrapper = styled.div`
   box-shadow: 0 0 15px hsla(0, 0%, 0%, 0.2);
 `
 
-const SignUp = ({ location }) => {
+const SignUp = ({ location }: PageProps) => {
   const session = useTypedSelector(state => state.global.session)
   const username = useTypedSelector(state => state.global.username)
 
@@ -36,7 +36,7 @@ const SignUp = ({ location }) => {
     <SignUpContainer>
       <SignUpWrapper>
         {!session && !username ? (
-          <SignUpCreateAccount location={location} />
+          <SignUpCreateAccount previousPath={location.state.previousPath} />
         ) : (
           <SignUpDisplayName />
         )}

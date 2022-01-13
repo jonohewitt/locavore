@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react"
+import React, { MouseEventHandler, ReactNode } from "react"
 import styled from "styled-components"
 import { useTypedSelector } from "../redux/typedFunctions"
 
@@ -104,7 +104,7 @@ export const ButtonComponent = ({
 
   const isDark = theme === "dark"
   return (
-    <OptionButtonContainer onClick={action} disabled={disabled}>
+    <OptionButtonContainer onClick={action} disabled={Boolean(disabled)}>
       <OptionButton
         isDark={isDark}
         color={color}
@@ -143,7 +143,12 @@ export const ButtonComponent = ({
   )
 }
 
-export const OptionsList = ({ title, children }) => (
+interface OptionsList {
+  title: string
+  children: ReactNode
+}
+
+export const OptionsList = ({ title, children }: OptionsList) => (
   <>
     <OptionTitle>{title}</OptionTitle>
     <ListOfOptions>{children}</ListOfOptions>

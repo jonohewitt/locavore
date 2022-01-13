@@ -1,11 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { Session } from "@supabase/supabase-js"
+import { MonthIndex, ThemeMode } from "../../../types"
 import { supabase } from "../../supabaseClient"
 import { darkTheme, lightTheme, Theme } from "../../theme/themeVariables"
-
-export type MonthIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
-
-type ThemeMode = "light" | "dark"
 
 interface GlobalState {
   appInterface: boolean | undefined

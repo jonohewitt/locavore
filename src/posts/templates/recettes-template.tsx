@@ -1,13 +1,8 @@
 import React, { useState, useLayoutEffect, useRef } from "react"
 import { graphql } from "gatsby"
-import { MDXProvider } from "@mdx-js/react"
-import { MDXRenderer } from "gatsby-plugin-mdx"
-import { Link } from "gatsby"
 import styled from "styled-components"
-import slugify from "slugify"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+
 import {
-  widthPercent,
   mobileWidthPercent,
   maxWidth,
   breakToMobile,
@@ -15,183 +10,21 @@ import {
 
 import { SEO } from "../../components/seo"
 import { PostStyles } from "../post-styles"
-import { Ing } from "../../components/ingredientLink"
-import { LinkedRecipe } from "../../components/linkedRecipe"
-import { BackButton } from "../../components/backButton"
-import { RecipeSeasonalityTable } from "../../components/recipeSeasonalityTable"
-import {
-  TimeIndicators,
-  DairyIndicator,
-} from "../../components/recipeIndicators"
-import { CommentSectionComponent } from "../../components/commentSectionNew"
 
+import { CommentSection } from "../../components/templates/recipes/commentSection"
+import { Metadata } from "../../components/templates/recipes/metadataSection"
+import {
+  FeatureImage,
+  FeatureImgContainer,
+} from "../../components/templates/recipes/featureImage"
+
+import { useAppInterface } from "../../redux/typedFunctions"
+import { Frontmatter, UserComment } from "../../../types"
+import { Ingredients } from "../../components/templates/recipes/ingredients"
+import { PreparationSection } from "../../components/templates/recipes/preparationSection"
+import slugify from "slugify"
 import useSWR from "swr"
 import { supabase } from "../../supabaseClient"
-import { useTypedSelector } from "../../redux/typedFunctions"
-import { Frontmatter } from "../../../types"
-
-const IngredientBox = styled.div<{ featureImage: boolean }>`
-  background-color: var(--color-graphBackground);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  padding: 20px 20px 30px 20px;
-  margin: 30px 0 40px 0;
-  font-weight: 600;
-  border-radius: 10px;
-
-  ul {
-    margin-bottom: 15px;
-  }
-
-  li {
-    margin-top: 15px;
-    line-height: 1.5;
-  }
-
-  hr {
-    margin-bottom: 15px;
-  }
-
-  h2,
-  h3 {
-    font-weight: 600;
-  }
-
-  @media (max-width: ${breakToMobile - 200}px) {
-    margin: 30px 0;
-    padding: 20px;
-    border-radius: 10px;
-    p {
-      margin: 15px 5px 5px 5px;
-    }
-  }
-
-  @media (max-width: 430px) {
-    margin: 4vw -2vw 40px -2vw;
-    padding: 20px;
-  }
-
-  @media (max-width: 350px) {
-    padding: 10px;
-  }
-`
-const IngredientsButton = styled.button<{
-  isDark?: boolean
-  selected?: boolean
-}>`
-  height: 45px;
-  font-size: 18px;
-  font-weight: 600;
-  color: ${props => (props.isDark || props.selected) && "#fff"};
-  background: ${props =>
-    props.selected ? "var(--color-settingsIcon)" : "var(--color-background)"};
-  width: 50%;
-  border-radius: 10px 0 0 10px;
-  box-shadow: ${props => !props.selected && "inset"} 0 0 15px
-    hsla(0, 0%, 0%, 0.2);
-
-  @media (max-width: ${breakToMobile}px) {
-    font-size: 18px;
-  }
-
-  @media (max-width: 430px) {
-    font-size: 16px;
-  }
-
-  span {
-    opacity: ${props => (props.selected ? 1 : 0.65)};
-  }
-`
-
-const SeasonalityButton = styled(IngredientsButton)`
-  border-radius: 0 10px 10px 0;
-`
-
-const IngredientsContent = styled.div`
-  margin-top: 30px;
-  margin-left: 5px;
-`
-
-const FeatureImgContainer = styled.div`
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  border-radius: 10px 10px 0 0;
-  overflow: hidden;
-
-  /* Create new stacking context to fix border-radius on Safari */
-  transform: translateZ(0);
-
-  @media (max-width: ${breakToMobile - 200}px) {
-    box-shadow: unset;
-    border-radius: 0;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-  }
-`
-
-const RecipeDescription = styled.p`
-  margin: 20px 0 10px 0;
-`
-
-const RecipeTitle = styled.div<{ backButton: boolean }>`
-  ${props =>
-    props.backButton &&
-    "position: relative; display: grid; grid-template-columns: 50px 1fr; align-items: start;"}
-
-  .backArrow {
-    grid-column: 1 / 2;
-    position: relative;
-    top: 3px;
-  }
-
-  h1 {
-    grid-column: 2 / 3;
-  }
-`
-
-const CourseAndFeeds = styled.p`
-  font-weight: 600;
-  margin-bottom: 5px;
-`
-
-const MetadataBox = styled.div<{ connectedImage: boolean }>`
-  border-radius: ${props => (props.connectedImage ? "0 0 10px 10px" : "10px")};
-  background: ${({ theme }) => theme.graphBackground};
-  padding: 20px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
-  padding-top: 30px;
-
-  @media (max-width: ${breakToMobile - 200}px) {
-    border-radius: 10px;
-    margin-top: 30px;
-  }
-
-  @media (max-width: 430px) {
-    margin: 4vw -2vw 40px -2vw;
-    padding: 20px;
-    margin-bottom: 10px;
-  }
-
-  @media (max-width: 350px) {
-    padding: 10px;
-  }
-`
-
-const RecipeIndicators = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 0;
-
-  p {
-    margin-bottom: 0;
-  }
-`
-
-const Preparation = styled.div`
-  margin-top: 20px;
-  ol {
-    margin-bottom: 50px;
-  }
-`
 
 const LeftColumn = styled.div``
 
@@ -215,7 +48,7 @@ const StyledArticle = styled.article<{
 
   ${props =>
     props.masonryLayout &&
-    "display: grid; column-gap: min(40px, 3vw); margin: 100px auto 0 auto; width: 92%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
+    "display: grid; column-gap: min(40px, 3vw); margin: 80px auto 0 auto; width: 92%; max-width: 1300px; grid-template-columns: 1fr 1fr;"}
 
   ${props => props.appInterface && props.masonryLayout && "margin-top: 35px;"}
 
@@ -224,42 +57,14 @@ const StyledArticle = styled.article<{
   }
 `
 
-// Keep out of the main RecipeTemplate function to prevent image flashing on re-renders
-const FeatureImage = ({ fm }: { fm: Frontmatter }) => {
-  const featureImg = getImage(fm.feature)
-  return (
-    featureImg && (
-      <FeatureImgContainer>
-        <GatsbyImage
-          image={featureImg}
-          loading="eager"
-          style={{
-            width: "100%",
-          }}
-          imgStyle={{
-            width: "100%",
-          }}
-          alt={fm.featureDescription}
-        />
-      </FeatureImgContainer>
-    )
-  )
-}
-
-const RecipeTemplate = ({ data }) => {
-  const fm: Frontmatter = data.mdx.frontmatter
-  const slug = slugify(fm.title, { strict: true, lower: true })
-
-  const theme = useTypedSelector(state => state.global.theme)
-  const appInterface =
-    useTypedSelector(state => state.global.appInterface) === true
-
-  // const { isDark, appInterface } = useContext(GlobalState)
+const RecipeTemplate = ({
+  data: {
+    mdx: { body: mdxBody, frontmatter: fm },
+  },
+}: RecipeTemplate) => {
+  const appInterface = useAppInterface()
   const [masonryLayout, setMasonryLayout] = useState(false)
-
-  // Remember selection states as refs for maintaining state between masonry and column layout re-renders. Use refs instead of state to prevent triggering re-renders on change.
   const ingredientsSelectedRef = useRef(true)
-  const commentsOpenRef = useRef(false)
 
   // Get window width and choose masonry or column layout accordingly before first render
   useLayoutEffect(() => {
@@ -271,110 +76,7 @@ const RecipeTemplate = ({ data }) => {
     return () => window.removeEventListener("resize", updateWidth)
   }, [])
 
-  // Assign each section to its own component for easy reordering between masonry and column layouts
-
-  const Ingredients = ({ children }) => {
-    const [ingredientsSelected, setIngredientsSelected] = useState(
-      ingredientsSelectedRef.current
-    )
-    return (
-      <IngredientBox featureImage={fm.feature}>
-        <IngredientsButton
-          isDark={theme === "dark"}
-          selected={ingredientsSelected}
-          onClick={() => {
-            setIngredientsSelected(true)
-            ingredientsSelectedRef.current = true
-          }}
-        >
-          <span>Ingrédients</span>
-        </IngredientsButton>
-        <SeasonalityButton
-          isDark={theme === "dark"}
-          selected={!ingredientsSelected}
-          onClick={() => {
-            setIngredientsSelected(false)
-            ingredientsSelectedRef.current = false
-          }}
-        >
-          <span>Saisonnalité</span>
-        </SeasonalityButton>
-        {ingredientsSelected ? (
-          <IngredientsContent>{children}</IngredientsContent>
-        ) : (
-          <RecipeSeasonalityTable ingredients={fm.ingredients} />
-        )}
-      </IngredientBox>
-    )
-  }
-
-  const Metadata = () => (
-    <MetadataBox connectedImage={!(masonryLayout && fm.feature)}>
-      <header>
-        <RecipeTitle backButton={Boolean(BackButton())}>
-          <BackButton />
-          <h1>{fm.title}</h1>
-        </RecipeTitle>
-        <hr />
-      </header>
-      <CourseAndFeeds>
-        {fm.course}
-        {fm.feeds && ` • ${fm.feeds} personnes`}
-      </CourseAndFeeds>
-      <RecipeIndicators>
-        <DairyIndicator
-          vegan={fm.vegan}
-          veganOption={fm.veganOption}
-          vegetarian={fm.vegetarian}
-        />
-        <TimeIndicators prepTime={fm.prepTime} cookTime={fm.cookTime} />
-      </RecipeIndicators>
-
-      {fm.description && (
-        <>
-          <hr />
-          <RecipeDescription>{fm.description}</RecipeDescription>
-        </>
-      )}
-    </MetadataBox>
-  )
-
-  const mdxComponents = {
-    Link,
-    Ing,
-    Ingredients,
-    LinkedRecipe,
-  }
-
-  const IngredientsSection = () => (
-    <MDXProvider
-      components={{
-        ...mdxComponents,
-        wrapper: ({ children }) => (
-          <>{children.filter(child => child.props.mdxType === "Ingredients")}</>
-        ),
-      }}
-    >
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
-    </MDXProvider>
-  )
-
-  const PreperationSection = () => (
-    <Preparation>
-      <MDXProvider
-        components={{
-          ...mdxComponents,
-          wrapper: ({ children }) => (
-            <>
-              {children.filter(child => child.props.mdxType !== "Ingredients")}
-            </>
-          ),
-        }}
-      >
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
-      </MDXProvider>
-    </Preparation>
-  )
+  const slug = slugify(fm.title, { strict: true, lower: true })
 
   const { data: comments, error: commentsError } = useSWR(
     slug,
@@ -383,30 +85,59 @@ const RecipeTemplate = ({ data }) => {
         .from("recipe_comments")
         .select(
           `id,
-              user_id,
-              comment_text,
-              date_added,
-              public_user_info ( 
-                  user_id, 
-                  username 
-              )
-          `
+          user_id,
+          comment_text,
+          date_added,
+          public_user_info ( 
+            user_id, 
+            username 
+          )
+        `
         )
         .order("id", { ascending: false })
         .eq("recipe_slug", slug)
-        .then(res => res.data)
+        .then(res => res.data as UserComment[])
   )
 
-  const CommentSection = () => {
-    return (
-      <CommentSectionComponent
-        comments={comments}
-        commentsLoading={!comments && !commentsError}
-        commentsOpenRef={commentsOpenRef}
-        slug={slug}
+  const Masonry = () => (
+    <>
+      <LeftColumn>
+        <Metadata masonryLayout={true} fm={fm} />
+        <Ingredients
+          body={mdxBody}
+          fm={fm}
+          ingredientsSelectedRef={ingredientsSelectedRef}
+        />
+        <CommentSection
+          comments={comments || []}
+          commentsError={commentsError}
+          slug={fm.title}
+        />
+      </LeftColumn>
+      <RightColumn>
+        <FeatureImage fm={fm} />
+        <PreparationSection body={mdxBody} />
+      </RightColumn>
+    </>
+  )
+
+  const Column = () => (
+    <>
+      <FeatureImage fm={fm} />
+      <Metadata masonryLayout={false} fm={fm} />
+      <Ingredients
+        body={mdxBody}
+        fm={fm}
+        ingredientsSelectedRef={ingredientsSelectedRef}
       />
-    )
-  }
+      <PreparationSection body={mdxBody} />
+      <CommentSection
+        comments={comments || []}
+        commentsError={commentsError}
+        slug={fm.title}
+      />
+    </>
+  )
 
   return (
     <>
@@ -416,31 +147,21 @@ const RecipeTemplate = ({ data }) => {
           masonryLayout={masonryLayout}
           appInterface={appInterface}
         >
-          {masonryLayout ? (
-            <>
-              <LeftColumn>
-                <Metadata />
-                <IngredientsSection />
-                <CommentSection />
-              </LeftColumn>
-              <RightColumn>
-                <FeatureImage fm={fm} />
-                <PreperationSection />
-              </RightColumn>
-            </>
-          ) : (
-            <>
-              <FeatureImage fm={fm} />
-              <Metadata />
-              <IngredientsSection />
-              <PreperationSection />
-              <CommentSection />
-            </>
-          )}
+          {masonryLayout ? <Masonry /> : <Column />}
         </StyledArticle>
       </PostStyles>
     </>
   )
+}
+
+interface RecipeTemplate {
+  data: {
+    mdx: {
+      id: string
+      body: any
+      frontmatter: Frontmatter
+    }
+  }
 }
 
 export const pageQuery = graphql`

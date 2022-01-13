@@ -6,7 +6,11 @@ import {
   setTheme,
   toggleInterface,
 } from "../redux/slices/globalSlice"
-import { useTypedDispatch, useTypedSelector } from "../redux/typedFunctions"
+import {
+  useAppInterface,
+  useTypedDispatch,
+  useTypedSelector,
+} from "../redux/typedFunctions"
 import { supabase } from "../supabaseClient"
 import { ToggleSwitch } from "./toggleSwitch"
 
@@ -53,7 +57,7 @@ const InitialHR = styled.hr`
 export const Settings = () => {
   const settingsIsOpen = useTypedSelector(state => state.global.settingsIsOpen)
   const session = useTypedSelector(state => state.global.session)
-  const appInterface = useTypedSelector(state => state.global.appInterface)
+  const appInterface = useAppInterface()
   const theme = useTypedSelector(state => state.global.theme)
   const dispatch = useTypedDispatch()
 

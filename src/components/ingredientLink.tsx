@@ -4,7 +4,7 @@ import slugify from "slugify"
 import styled from "styled-components"
 import { tickSVG, crossSVG } from "./icons"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useCurrentMonth } from "../redux/typedFunctions"
 import { Ingredient } from "../../types"
 
 const IngredientLink = styled(Link)<{ $inSeason: boolean }>`
@@ -37,7 +37,7 @@ interface Ing {
 }
 
 export const Ing = ({ id, text, children, className, clickAction }: Ing) => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
   const allIngredients: Ingredient[] = useStaticQuery(
     graphql`
       query {

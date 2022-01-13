@@ -11,7 +11,8 @@ import { PostStyles } from "../post-styles"
 import { Ing } from "../../components/ingredientLink"
 import { LinkedRecipe } from "../../components/linkedRecipe"
 import { BackButton } from "../../components/backButton"
-import { useTypedSelector } from "../../redux/typedFunctions"
+import { useAppInterface } from "../../redux/typedFunctions"
+import { BlogFrontmatter, BlogPost } from "../../../types"
 
 const Highlight = styled.div`
   background-color: var(--color-graphBackground);
@@ -61,10 +62,12 @@ const HeaderText = styled.div`
   width: 100%;
 `
 
-const BlogTemplate = ({ data }) => {
-  const appInterface =
-    useTypedSelector(state => state.global.appInterface) === true
-  const fm = data.mdx.frontmatter
+const BlogTemplate = ({
+  data: {
+    mdx: { body: blogBody, frontmatter: fm },
+  },
+}: BlogTemplate) => {
+  const appInterface = useAppInterface()
 
   const shortcodes = {
     Link,
@@ -73,12 +76,12 @@ const BlogTemplate = ({ data }) => {
     Highlight,
   }
 
-  return (
-    <>
-      <SEO title={fm.title} />
-      {fm.header && (
+  const HeaderImage = () => {
+    const headerImage = fm.header ? getImage(fm.header) : null
+    if (headerImage) {
+      return (
         <GatsbyImage
-          image={getImage(fm.header)}
+          image={headerImage}
           style={{
             width: "100%",
             height: appInterface ? "20vmax" : "30vmax",
@@ -89,10 +92,35 @@ const BlogTemplate = ({ data }) => {
             width: "100%",
             height: "100%",
           }}
-          alt={fm.headerDescription}
+          alt={fm.headerDescription || fm.title}
         />
-      )}
-      <ContentWrapper headerImg={fm.header}>
+      )
+    } else return null
+  }
+
+  const FeatureImage = () => {
+    const featureImage = fm.feature ? getImage(fm.feature) : null
+    if (featureImage) {
+      return (
+        <GatsbyImage
+          image={featureImage}
+          style={{
+            width: "100%",
+          }}
+          imgStyle={{
+            width: "100%",
+          }}
+          alt={fm.featureDescription || ""}
+        />
+      )
+    } else return null
+  }
+
+  return (
+    <>
+      <SEO title={fm.title} />
+      <HeaderImage />
+      <ContentWrapper headerImg={Boolean(fm.header)}>
         <PostStyles>
           <StyledArticle>
             <Header>
@@ -104,29 +132,26 @@ const BlogTemplate = ({ data }) => {
               </HeaderText>
             </Header>
 
-            {fm.feature && (
-              <FeatureImgContainer>
-                <GatsbyImage
-                  image={getImage(fm.feature)}
-                  style={{
-                    width: "100%",
-                  }}
-                  imgStyle={{
-                    width: "100%",
-                  }}
-                  alt={fm.featureDescription}
-                />
-              </FeatureImgContainer>
-            )}
+            <FeatureImage />
 
             <MDXProvider components={shortcodes}>
-              <MDXRenderer>{data.mdx.body}</MDXRenderer>
+              <MDXRenderer>{blogBody}</MDXRenderer>
             </MDXProvider>
           </StyledArticle>
         </PostStyles>
       </ContentWrapper>
     </>
   )
+}
+
+interface BlogTemplate {
+  data: {
+    mdx: {
+      id: string
+      body: any
+      frontmatter: BlogFrontmatter
+    }
+  }
 }
 
 export const pageQuery = graphql`

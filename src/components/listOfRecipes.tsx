@@ -7,14 +7,14 @@ import { TimeIndicators, DairyIndicator } from "./recipeIndicators"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { combineRecipeAndLinks } from "../functions/combineRecipeAndLinks"
 import { monthIndexToName } from "../functions/monthIndexToName"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useCurrentMonth } from "../redux/typedFunctions"
 import {
   RecipeCourseFilterName,
   RecipeFilter,
   RecipeGreenFilterName,
   RecipeSort,
 } from "../redux/slices/recipeSlice"
-import { Frontmatter, Ingredient, Recipe } from "../../types"
+import { Frontmatter, Ingredient, MonthIndex, Recipe } from "../../types"
 
 const StyledUL = styled.ul<{ fadedIn: boolean }>`
   margin-top: 25px;
@@ -68,7 +68,7 @@ const RecipeCard = styled.div`
   }
 `
 
-const RecipeText = styled.div<{ featureImg: string }>`
+const RecipeText = styled.div<{ featureImg: boolean }>`
   padding: 10px 20px 20px 20px;
   margin-bottom: 20px;
   ${props => !props.featureImg && "margin-top: 40px;"}
@@ -105,7 +105,7 @@ export const ListOfRecipes = ({
   recipeFilters,
   recipeSorts,
 }: ListOfRecipes) => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
 
   interface FilterLogic {
     name: RecipeGreenFilterName | RecipeCourseFilterName
@@ -183,7 +183,7 @@ export const ListOfRecipes = ({
   const getIngredientData = (recipe: Recipe) =>
     [
       ...combineRecipeAndLinks(recipe, recipeList).reduce(
-        (uniqueIngs, currentRecipe) => {
+        (uniqueIngs: Set<string>, currentRecipe: Recipe) => {
           currentRecipe.frontmatter.ingredients.forEach(ing =>
             uniqueIngs.add(ing)
           )
@@ -195,57 +195,53 @@ export const ListOfRecipes = ({
       .map(ing => allIngredients.find(obj => obj.name === ing))
       .filter(Boolean)
 
+  // *** WRITE CHECK IF CALC MONTHS IS POSSIBLE - E.G IF NOT ALL YEAR ROUND && SOMETIMES IN SEASON
+
   // Get the max / min number of months to a specified event ("start" or "end" of season)
   const calcMonths = (
     recipe: Recipe,
-    comparison: string,
-    seasonalEvent: string
+    comparison: "furthestInFuture" | "mostRecent" | "soonest",
+    seasonalEvent: "start" | "end"
   ) => {
     const recipeIngredients = getIngredientData(recipe)
 
-    // if the recipe is available all year round, return null as there is no comparison to make
-    if (recipeIngredients.every(ingredient => !ingredient.season)) {
-      return null
-    } else {
-      let outlierDifference: number
+    let outlierDifference!: number
 
-      // set the initial value depending on whether a min or a max value of being searched for
-      if (comparison === "mostRecent" || comparison === "soonest")
-        outlierDifference = 12
-      else if (comparison === "furthestInFuture") outlierDifference = 0
-      else console.error("Comparison value error")
+    // set the initial value depending on whether a min or a max value of being searched for
+    if (comparison === "mostRecent" || comparison === "soonest")
+      outlierDifference = 12
+    else if (comparison === "furthestInFuture") outlierDifference = 0
 
-      recipeIngredients.forEach(ingredient => {
-        let difference: number
+    recipeIngredients.forEach(ingredient => {
+      let difference: number
 
-        // if the difference in month indices is negative, add 12
-        // e.g if it was currently Jan [0] and the seasonal event ("start" / "end") was in Dec [11]
-        // 0 - 11 + 12 = 1 month difference
+      // if the difference in month indices is negative, add 12
+      // e.g if it was currently Jan [0] and the seasonal event ("start" / "end") was in Dec [11]
+      // 0 - 11 + 12 = 1 month difference
 
-        if (ingredient.season) {
-          switch (comparison) {
-            case "mostRecent":
-              difference = currentMonth - ingredient.season[seasonalEvent]
-              if (difference < 0) difference += 12
-              if (difference < outlierDifference) outlierDifference = difference
-              break
-            case "soonest":
-              difference = ingredient.season[seasonalEvent] - currentMonth
-              if (difference < 0) difference += 12
-              if (difference < outlierDifference) outlierDifference = difference
-              break
-            case "furthestInFuture":
-              difference = ingredient.season[seasonalEvent] - currentMonth
-              if (difference < 0) difference += 12
-              if (difference > outlierDifference) outlierDifference = difference
-              break
-            default:
-              break
-          }
+      if (ingredient?.season) {
+        switch (comparison) {
+          case "mostRecent":
+            difference = currentMonth - ingredient.season[seasonalEvent]
+            if (difference < 0) difference += 12
+            if (difference < outlierDifference) outlierDifference = difference
+            break
+          case "soonest":
+            difference = ingredient.season[seasonalEvent] - currentMonth
+            if (difference < 0) difference += 12
+            if (difference < outlierDifference) outlierDifference = difference
+            break
+          case "furthestInFuture":
+            difference = ingredient.season[seasonalEvent] - currentMonth
+            if (difference < 0) difference += 12
+            if (difference > outlierDifference) outlierDifference = difference
+            break
+          default:
+            break
         }
-      })
-      return outlierDifference
-    }
+      }
+    })
+    return outlierDifference
   }
 
   // return the string name of the outlier month
@@ -253,38 +249,36 @@ export const ListOfRecipes = ({
   // also handles past and furthest in future events
   const getOutlierMonthName = (
     recipe: Recipe,
-    comparison: string,
-    seasonalEvent: string
+    comparison: "furthestInFuture" | "mostRecent" | "soonest",
+    seasonalEvent: "start" | "end"
   ) => {
     const numberOfMonths = calcMonths(recipe, comparison, seasonalEvent)
-    if (numberOfMonths === null) return null
-    else {
-      let outlierMonthIndex: number
 
-      switch (comparison) {
-        case "mostRecent":
-          outlierMonthIndex = currentMonth - numberOfMonths
-          break
-        case "soonest":
-          outlierMonthIndex = currentMonth + numberOfMonths + 1
-          break
-        case "furthestInFuture":
-          outlierMonthIndex = currentMonth + numberOfMonths
-          break
-        default:
-          break
-      }
+    let outlierMonthIndex!: number
 
-      if (outlierMonthIndex > 11) outlierMonthIndex -= 12
-      if (outlierMonthIndex < 0) outlierMonthIndex += 12
-
-      return monthIndexToName(outlierMonthIndex)
+    switch (comparison) {
+      case "mostRecent":
+        outlierMonthIndex = currentMonth - numberOfMonths
+        break
+      case "soonest":
+        outlierMonthIndex = currentMonth + numberOfMonths + 1
+        break
+      case "furthestInFuture":
+        outlierMonthIndex = currentMonth + numberOfMonths
+        break
     }
+
+    if (outlierMonthIndex > 11) outlierMonthIndex -= 12
+    if (outlierMonthIndex < 0) outlierMonthIndex += 12
+
+    return monthIndexToName(outlierMonthIndex as MonthIndex)
   }
 
   // Check if none of the ingredients in the recipe are seasonal - meaning it is available year round
   const recipeIsYearRound = (recipe: Recipe) =>
-    getIngredientData(recipe).every(ingredientObj => !ingredientObj.season)
+    getIngredientData(recipe).every(
+      ingredientObj => ingredientObj && !ingredientObj.season
+    )
 
   // Check if all ingredients in a recipe and its linked recipes are currently in season, including year round
   const allInSeason = (recipe: Recipe) =>
@@ -314,7 +308,7 @@ export const ListOfRecipes = ({
             )
         )
         .sort((a, b) => {
-          let sortValue: number
+          let sortValue!: number
 
           if (sort) {
             switch (sort) {
@@ -333,7 +327,7 @@ export const ListOfRecipes = ({
                       calcMonths(b, "mostRecent", "start")
                     // otherwise if both of the recipes are year round
                   } else if (recipeIsYearRound(a) && recipeIsYearRound(b)) {
-                    // sort them by the default alphabetical sort
+                    // sort them by the default (alphabetical) sort
                     sortValue = 0
                   } else {
                     // only one of them can be year round, sort it lower
@@ -379,13 +373,10 @@ export const ListOfRecipes = ({
                   sortValue = allInSeason(a) ? -1 : 1
                 }
                 break
-
-              default:
-                break
             }
           }
 
-          if (sortValue) return sortValue
+          if (sortValue !== 0) return sortValue
           else {
             // Sort by French alphabetical if sort function returns a tie
             // or if no sort preference is given in the ListOfRecipes args
@@ -410,51 +401,51 @@ export const ListOfRecipes = ({
 
           const endMonthName = getOutlierMonthName(recipe, "soonest", "end")
 
-          let seasonalityInfo: string
+          let seasonalityInfo!: string
 
-          switch (sort) {
-            // if the newest sort option is selected, show the month it came into season
-            case "Nouveautés":
-              if (allInSeason(recipe) && startMonthName)
-                seasonalityInfo = `En saison depuis ${startMonthName}`
-              break
+          if (recipeIsYearRound(recipe)) {
+            seasonalityInfo = "Disponible toute l'année"
+          } else if (!allInSeason(recipe)) {
+            const futureStartName = getOutlierMonthName(
+              recipe,
+              "furthestInFuture",
+              "start"
+            )
+            seasonalityInfo = `Hors saison jusqu'en ${futureStartName}`
+          } else {
+            switch (sort) {
+              // if the newest sort option is selected, show the month it came into season
+              case "Nouveautés":
+                if (allInSeason(recipe) && startMonthName)
+                  seasonalityInfo = `En saison depuis ${startMonthName}`
+                break
 
-            case "Bientôt hors saison":
-              // if the 'almost out of season' sort option is selected, show the month it will go out of season
-              if (allInSeason(recipe) && endMonthName)
-                seasonalityInfo = `En saison jusqu'en ${endMonthName}`
-              break
+              case "Bientôt hors saison":
+                // if the 'almost out of season' sort option is selected, show the month it will go out of season
+                if (allInSeason(recipe) && endMonthName)
+                  seasonalityInfo = `En saison jusqu'en ${endMonthName}`
+                break
 
-            default:
-              // default to showing the start and end
-              if (allInSeason(recipe) && startMonthName && endMonthName) {
-                const fromForm = startMonthName.charAt(0).match(/^[aeiouy]/)
-                  ? "d'"
-                  : "de "
-                seasonalityInfo = `En saison ${fromForm}${startMonthName} à ${endMonthName}`
-              }
-          }
-          // if the above switch didn't provide a message, the recipe is either year round or out of season
-          if (!seasonalityInfo) {
-            if (recipeIsYearRound(recipe))
-              seasonalityInfo = "Disponible toute l'année"
-            else {
-              const futureStartName = getOutlierMonthName(
-                recipe,
-                "furthestInFuture",
-                "start"
-              )
-              seasonalityInfo = `Hors saison jusqu'en ${futureStartName}`
+              default:
+                // default to showing the start and end
+                if (allInSeason(recipe) && startMonthName && endMonthName) {
+                  const fromForm = startMonthName.charAt(0).match(/^[aeiouy]/)
+                    ? "d'"
+                    : "de "
+                  seasonalityInfo = `En saison ${fromForm}${startMonthName} à ${endMonthName}`
+                }
             }
           }
+
+          const cardImage = fm.feature ? getImage(fm.feature) : null
 
           return (
             <RecipeCardContainer key={recipe.id}>
               <Link to={`/recettes${slug}`}>
                 <RecipeCard>
-                  {fm.feature && (
+                  {cardImage && (
                     <GatsbyImage
-                      image={getImage(fm.feature)}
+                      image={cardImage}
                       style={{
                         width: "100%",
                         maxHeight: "200px",
@@ -464,11 +455,11 @@ export const ListOfRecipes = ({
                         width: "100%",
                         height: "100%",
                       }}
-                      alt={fm.featureDescription}
+                      alt={fm.featureDescription || fm.title}
                       loading={index < 4 ? "eager" : "lazy"}
                     />
                   )}
-                  <RecipeText featureImg={fm.feature}>
+                  <RecipeText featureImg={Boolean(fm.feature)}>
                     <h3>{fm.title}</h3>
                     <hr />
                     <CourseFeeds>

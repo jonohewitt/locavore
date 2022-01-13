@@ -6,7 +6,7 @@ import { infoSVG, tickSVG } from "./icons"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 import { graphql, useStaticQuery } from "gatsby"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useCurrentMonth } from "../redux/typedFunctions"
 import { Ingredient, MonthIndex } from "../../types"
 
 const NoIngredientData = styled.div`
@@ -116,7 +116,7 @@ const MonthInitialRow = styled.tr`
 `
 
 const MonthInitials = () => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
   const initials = []
 
   for (let i = 0; i < 12; i++) {

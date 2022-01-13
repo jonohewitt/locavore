@@ -5,7 +5,7 @@ import { ContentWrapper } from "../components/contentWrapper"
 import { ListOfIngredients } from "../components/listOfIngredients"
 import { IngredientListOptions } from "../components/ingredientListOptions"
 import { monthIndexToName } from "../functions/monthIndexToName"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useCurrentMonth, useTypedSelector } from "../redux/typedFunctions"
 
 const Styles = styled.main`
   section {
@@ -38,7 +38,7 @@ const Styles = styled.main`
 `
 
 const Ingredients = () => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
   const ingredientState = useTypedSelector(state => state.ingredients)
 
   return (

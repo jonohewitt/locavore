@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { ShowOptions, RecipeListOptions } from "../components/recipeListOptions"
 import { ListOfRecipes } from "../components/listOfRecipes"
 import { monthIndexToName } from "../functions/monthIndexToName"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useCurrentMonth, useTypedSelector } from "../redux/typedFunctions"
 const RecipeIndexWrapper = styled.div`
   ul {
     hr {
@@ -34,7 +34,7 @@ const HeaderContent = styled.div`
 `
 
 const Recettes = () => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
   const recipeState = useTypedSelector(state => state.recipes)
 
   const [optionsAreShown, setOptionsAreShown] = useState(true)

@@ -4,7 +4,7 @@ import slugify from "slugify"
 import styled from "styled-components"
 import { tickSVG, crossSVG } from "./icons"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useCurrentMonth } from "../redux/typedFunctions"
 import { Ingredient, Recipe } from "../../types"
 
 const IngredientLink = styled(Link)`
@@ -31,9 +31,22 @@ interface LinkedRecipe {
   children: string
 }
 
+interface QueryResults {
+  allMdx: {
+    nodes: Recipe[]
+  }
+  ingredientsByCountryJson: {
+    ingredients: Ingredient[]
+  }
+}
+
 export const LinkedRecipe = ({ id, children }: LinkedRecipe) => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
-  const queryResults = useStaticQuery(graphql`
+  const currentMonth = useCurrentMonth()
+
+  const {
+    allMdx: { nodes: allRecipes },
+    ingredientsByCountryJson: { ingredients: allIngredients },
+  }: QueryResults = useStaticQuery(graphql`
     query {
       allMdx(filter: { fields: { source: { eq: "recettes" } } }) {
         nodes {
@@ -56,13 +69,9 @@ export const LinkedRecipe = ({ id, children }: LinkedRecipe) => {
     }
   `)
 
-  const allRecipes: Recipe[] = queryResults.allMdx.nodes
-  const allIngredients: Ingredient[] =
-    queryResults.ingredientsByCountryJson.ingredients
-
   const foundRecipe = allRecipes.find(recipe => recipe.frontmatter.title === id)
 
-  let allInSeason: boolean
+  let allInSeason!: boolean
 
   if (foundRecipe) {
     allInSeason = foundRecipe.frontmatter.ingredients.every(ingredientStr => {
@@ -76,7 +85,7 @@ export const LinkedRecipe = ({ id, children }: LinkedRecipe) => {
   }
 
   let color: string
-  let icon: JSX.Element
+  let icon: JSX.Element | null = null
 
   if (allInSeason !== undefined) {
     if (allInSeason) {
@@ -91,24 +100,14 @@ export const LinkedRecipe = ({ id, children }: LinkedRecipe) => {
   }
 
   const childrenWords = children.split(" ")
-
-  let startingWordsArray: string[] = []
-  let startingWords: string
-  let finalWord: string
-
-  if (childrenWords.length > 1) {
-    for (let i = 0; i < childrenWords.length - 1; i++) {
-      startingWordsArray.push(childrenWords[i])
-    }
-    startingWords = startingWordsArray.join(" ")
-    finalWord = childrenWords[childrenWords.length - 1]
-  }
+  const startingWords = childrenWords.slice(0, -1).join(" ")
+  const finalWord = childrenWords[childrenWords.length - 1]
 
   return (
     <IngredientLink
       color={color}
       to={`/recettes${
-        foundRecipe.frontmatter.customSlug
+        foundRecipe?.frontmatter.customSlug
           ? foundRecipe.frontmatter.customSlug
           : "/" + slugify(id, { lower: true, strict: true })
       }`}

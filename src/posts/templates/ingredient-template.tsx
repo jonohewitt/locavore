@@ -10,7 +10,7 @@ import { monthIndexToName } from "../../functions/monthIndexToName"
 import { BackButton } from "../../components/backButton"
 import { checkIngredientInSeason } from "../../functions/checkIngredientInSeason"
 import { combineRecipeAndLinks } from "../../functions/combineRecipeAndLinks"
-import { useTypedSelector } from "../../redux/typedFunctions"
+import { useCurrentMonth } from "../../redux/typedFunctions"
 import { Ingredient, Recipe } from "../../../types"
 
 const IngredientStyles = styled.div`
@@ -58,8 +58,15 @@ const SeasonalIndicator = styled.h2<{ foundIngredient: boolean }>`
   ${props => !props.foundIngredient && "margin-bottom: 50px;"}
 `
 
-const IngredientTemplate = ({ pageContext, data }) => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+interface IngredientTemplate {
+  pageContext: {
+    name: string
+  }
+  data: PageQuery
+}
+
+const IngredientTemplate = ({ pageContext, data }: IngredientTemplate) => {
+  const currentMonth = useCurrentMonth()
   const allRecipes: Recipe[] = data.allMdx.nodes
   const allIngredients: Ingredient[] = data.ingredientsByCountryJson.ingredients
 
@@ -128,6 +135,15 @@ const IngredientTemplate = ({ pageContext, data }) => {
       </ContentWrapper>
     </IngredientStyles>
   )
+}
+
+interface PageQuery {
+  allMdx: {
+    nodes: Recipe[]
+  }
+  ingredientsByCountryJson: {
+    ingredients: Ingredient[]
+  }
 }
 
 export const pageQuery = graphql`

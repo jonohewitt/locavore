@@ -9,14 +9,18 @@ import { Settings } from "./settings"
 import { Footer, footerHeight } from "./footer"
 import { AppUI } from "./appUI"
 import { CSSTransition } from "react-transition-group"
-import { useTypedDispatch, useTypedSelector } from "../redux/typedFunctions"
 import {
-  MonthIndex,
+  useAppInterface,
+  useTypedDispatch,
+  useTypedSelector,
+} from "../redux/typedFunctions"
+import {
   setGlobalState,
   updateSession,
   updateUsername,
 } from "../redux/slices/globalSlice"
 import { supabase } from "../supabaseClient"
+import { MonthIndex } from "../../types"
 
 const FadeInWrapper = styled.div<{ fadedIn: boolean }>`
   opacity: 0;
@@ -58,7 +62,7 @@ export const Layout = ({ children }: { children: JSX.Element }) => {
   // )
   const dispatch = useTypedDispatch()
   const session = useTypedSelector(state => state.global.session)
-  const appInterface = useTypedSelector(state => state.global.appInterface)
+  const appInterface = useAppInterface()
 
   const [fadedIn, setFadedIn] = useState(false)
 
@@ -93,7 +97,8 @@ export const Layout = ({ children }: { children: JSX.Element }) => {
         .eq("user_id", supabase.auth.user()?.id)
 
       if (error) console.log(error)
-      return data[0]?.username || null
+      if (data) return data[0].username
+      else return null
     }
 
     if (session) {

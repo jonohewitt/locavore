@@ -15,7 +15,7 @@ import { SpotlightFeature } from "../components/spotlightFeature"
 // import StrawberriesKnife from "../images/strawberries-knife.svg"
 // import strawb from "../images/strawb.png"
 import { StaticImage } from "gatsby-plugin-image"
-import { useTypedSelector } from "../redux/typedFunctions"
+import { useAppInterface, useTypedSelector } from "../redux/typedFunctions"
 
 const SearchAndSettingsContainer = styled.div`
   position: absolute;
@@ -195,7 +195,7 @@ const SectionText = styled.div`
 `
 
 const IndexPage = () => {
-  const appInterface = useTypedSelector(state => state.global.appInterface)
+  const appInterface = useAppInterface()
   const theme = useTypedSelector(state => state.global.theme)
   const [appSearchIsActive, setAppSearchIsActive] = useState(false)
 
@@ -215,7 +215,7 @@ const IndexPage = () => {
         </SearchAndSettingsContainer>
       )}
       <ContentWrapper>
-        <Header app={appInterface === true}>
+        <Header app={appInterface}>
           <h1>
             Nourriture locale et saisonnière en{" "}
             <NoWrap>

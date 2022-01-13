@@ -5,8 +5,8 @@ import slugify from "slugify"
 import { checkIngredientInSeason } from "../functions/checkIngredientInSeason"
 import { calcIngredientMonths } from "../functions/calcIngredientMonths"
 import { IngredientFilter } from "../redux/slices/ingredientSlice"
-import { useTypedSelector } from "../redux/typedFunctions"
-import { Ingredient } from "../../types"
+import { useCurrentMonth } from "../redux/typedFunctions"
+import { Ingredient, SeasonalIngredient } from "../../types"
 
 const AllIngredientTypes = styled.ul<{ fadedIn: boolean }>`
   opacity: 0;
@@ -64,7 +64,7 @@ export const ListOfIngredients = ({
   ingredientFilterList,
   sort,
 }: ListOfIngredients) => {
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
 
   const allIngredients: Ingredient[] = useStaticQuery(graphql`
     query {
@@ -128,7 +128,7 @@ export const ListOfIngredients = ({
         )
     )
     .sort((a, b) => {
-      let sortValue: number
+      let sortValue!: number
       if (sort) {
         switch (sort) {
           case "Nouveautés":
@@ -142,8 +142,18 @@ export const ListOfIngredients = ({
               if (a.season && b.season) {
                 // sort by most recently come into season
                 sortValue =
-                  calcIngredientMonths(a, "since", "start", currentMonth) -
-                  calcIngredientMonths(b, "since", "start", currentMonth)
+                  calcIngredientMonths(
+                    a as SeasonalIngredient,
+                    "since",
+                    "start",
+                    currentMonth
+                  ) -
+                  calcIngredientMonths(
+                    b as SeasonalIngredient,
+                    "since",
+                    "start",
+                    currentMonth
+                  )
                 // otherwise if both are year round
               } else if (!a.season && !b.season) {
                 // sort by default alphabetical
@@ -172,8 +182,18 @@ export const ListOfIngredients = ({
               if (a.season && b.season) {
                 // sort by soonest to go out of season
                 sortValue =
-                  calcIngredientMonths(a, "until", "end", currentMonth) -
-                  calcIngredientMonths(b, "until", "end", currentMonth)
+                  calcIngredientMonths(
+                    a as SeasonalIngredient,
+                    "until",
+                    "end",
+                    currentMonth
+                  ) -
+                  calcIngredientMonths(
+                    b as SeasonalIngredient,
+                    "until",
+                    "end",
+                    currentMonth
+                  )
                 // otherwise if both are year round
               } else if (!a.season && !b.season) {
                 // sort by default alphabetical
@@ -192,9 +212,24 @@ export const ListOfIngredients = ({
             }
             break
           case "A venir":
-            sortValue =
-              calcIngredientMonths(a, "until", "start", currentMonth) -
-              calcIngredientMonths(b, "until", "start", currentMonth)
+            if (a.season && b.season) {
+              sortValue =
+                calcIngredientMonths(
+                  a as SeasonalIngredient,
+                  "until",
+                  "start",
+                  currentMonth
+                ) -
+                calcIngredientMonths(
+                  b as SeasonalIngredient,
+                  "until",
+                  "start",
+                  currentMonth
+                )
+            } else if (!a.season && !b.season) {
+              sortValue = 0
+            } else sortValue = a.season ? -1 : 1
+
             break
           default:
             break
@@ -225,13 +260,13 @@ export const ListOfIngredients = ({
   }: {
     data: { list: Ingredient[]; title: string }
   }) =>
-    data.list.length > 0 && (
+    data.list.length > 0 ? (
       <li>
         <h3>{data.title}</h3>
         <hr />
         <StyledUL>{mappedList(data.list)}</StyledUL>
       </li>
-    )
+    ) : null
 
   const sectionData = [
     { title: "Légumes", list: categorisedList("veg") },
@@ -243,13 +278,11 @@ export const ListOfIngredients = ({
     },
   ]
 
-  return (
-    sectionData.some(section => section.list.length) && (
-      <AllIngredientTypes fadedIn={fadedIn}>
-        {sectionData.map(data => (
-          <CategorySection key={data.title} data={data} />
-        ))}
-      </AllIngredientTypes>
-    )
-  )
+  return sectionData.some(section => section.list.length) ? (
+    <AllIngredientTypes fadedIn={fadedIn}>
+      {sectionData.map(data => (
+        <CategorySection key={data.title} data={data} />
+      ))}
+    </AllIngredientTypes>
+  ) : null
 }

@@ -4,8 +4,8 @@ import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
 import { monthIndexToName } from "../functions/monthIndexToName"
 import { getSeasonalityArray } from "../functions/getSeasonalityArray"
 
-import { useTypedSelector } from "../redux/typedFunctions"
-import { Ingredient } from "../../types"
+import { useCurrentMonth } from "../redux/typedFunctions"
+import { Ingredient, MonthIndex } from "../../types"
 
 const ChartWrapper = styled.div<{ fadedIn: boolean }>`
   background: ${props => props.theme.graphBackground};
@@ -107,7 +107,7 @@ const SourceText = styled.p`
 
 interface Month {
   value: string | boolean
-  index: number
+  index: MonthIndex
   monthIndex: number
   toolTipsCanShow: boolean
 }
@@ -204,7 +204,7 @@ export const IndividualSeasonalChart = ({
     }
   }, [])
 
-  const currentMonth = useTypedSelector(state => state.global.currentMonth)
+  const currentMonth = useCurrentMonth()
   return (
     <>
       <ChartWrapper fadedIn={fadedIn}>
@@ -213,7 +213,7 @@ export const IndividualSeasonalChart = ({
             <Month
               toolTipsCanShow={toolTipsCanShow}
               key={index}
-              index={index}
+              index={index as MonthIndex}
               value={month}
               monthIndex={currentMonth}
             />

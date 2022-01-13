@@ -1,5 +1,5 @@
 import { Link, useStaticQuery, graphql } from "gatsby"
-import React, { useState, useContext, useEffect } from "react"
+import React, { useState, useEffect, SetStateAction, Dispatch } from "react"
 import styled from "styled-components"
 import { SettingsIcon } from "./settingsIcon"
 import { widthPercent, maxWidth, breakToMobile } from "./contentWrapper"
@@ -262,7 +262,7 @@ const SearchButton = styled.button`
 
 interface BrowserNav {
   searchIsActive: boolean
-  setSearchIsActive: Function
+  setSearchIsActive: Dispatch<SetStateAction<boolean>>
 }
 
 export const BrowserNav = ({
